@@ -195,6 +195,16 @@ msgstr "El asiento contable no puede ser creado porque ya existe"
 #: code:addons/l10n_es_aeat_mod303_special_prorate_regularization_capital_asset/models/mod303.py:0
 #, python-format
 msgid ""
+"The following assets require a capital asset type before creating the "
+"capital asset prorate regularization: %s"
+msgstr ""
+"Los siguientes activos requieren un tipo de bien de inversión antes de crear "
+"la regularización de prorrata de bienes de inversión: %s"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
+#: code:addons/l10n_es_aeat_mod303_special_prorate_regularization_capital_asset/models/mod303.py:0
+#, python-format
+msgid ""
 "The following invoices %s have products with capital asset taxes but without"
 " asset"
 msgstr ""

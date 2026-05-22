@@ -129,6 +129,10 @@ class L10nEsAeatMod303Report(models.AbstractModel):
         precision = self.env["decimal.precision"].precision_get("Account")
         lines = []
         move_lines_values = self._prepare_move_lines(tax_lines)
+        assets = self.env["account.asset"].browse(
+            [x["asset_id"][0] for x in move_lines_values]
+        )
+        self._check_assets_have_capital_asset_type(assets)
         for move_line in move_lines_values:
             asset = self.env["account.asset"].browse(move_line["asset_id"][0])
             percent_diff = (
@@ -222,7 +226,19 @@ class L10nEsAeatMod303Report(models.AbstractModel):
         )
         return tax_line_vals
 
+    def _check_assets_have_capital_asset_type(self, assets):
+        missing_assets = assets.filtered(lambda x: not x.capital_asset_type_id)
+        if missing_assets:
+            raise UserError(
+                _(
+                    "The following assets require a capital asset type before "
+                    "creating the capital asset prorate regularization: %s"
+                )
+                % ", ".join(missing_assets.mapped("display_name"))
+            )
+
     def _calculate_amount(self, assets_to_regularize, tax_final_percentage):
+        self._check_assets_have_capital_asset_type(assets_to_regularize)
         precision = self.env["decimal.precision"].precision_get("Account")
         amount = 0
         for asset in assets_to_regularize:
