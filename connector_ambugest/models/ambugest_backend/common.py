@@ -142,14 +142,18 @@ class AmbugestBackend(models.Model):
         domain = [("company_id", "=", company_id.id)]
         self.search(domain).import_services_since()
 
-    def tz_to_utc(self, dt):
-        t = pytz.timezone(self.tz).localize(dt)
-        t = t.astimezone(pytz.utc)
-        t = t.replace(tzinfo=None)
-        return t
+    @staticmethod
+    def _convert_tz(dt_naive, from_tz, to_tz):
+        dt = pytz.timezone(from_tz).localize(dt_naive)
+        dt = dt.astimezone(pytz.timezone(to_tz))
+        return dt.replace(tzinfo=None)
 
-    def tz_to_local(self, dt):
-        local_tz = pytz.timezone(self.tz)
-        datetime_utc = pytz.utc.localize(dt)
-        datetime_local = datetime_utc.astimezone(local_tz)
-        return datetime_local
+    def tz_to_utc(self, datetime_local_naive):
+        return self._convert_tz(datetime_local_naive, self.tz, "UTC")
+
+    def utc_to_local(self, datetime_utc_naive):
+        return self._convert_tz(datetime_utc_naive, "UTC", self.tz)
+
+    # Deprecated: use utc_to_local instead
+    def tz_to_local(self, datetime_utc_naive):
+        return self.utc_to_local(datetime_utc_naive)
