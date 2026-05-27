@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>Document Page Archive Reason</title>
+</head>
+<body>
+<div class="document" id="document-page-archive-reason">
+<h1 class="title">Document Page Archive Reason</h1>
+<p>This module makes the <tt class="docutils literal">Archive</tt> action on document pages require a
+mandatory reason: instead of archiving in one click, a wizard asks the user
+for a reason. The reason is stored on the document and logged in its chatter
+(who, when, why). Unarchiving stays the standard, one-click action.</p>
+<p>Useful for environments with audit or traceability requirements
+(GMP, ISO, regulated industries), where archiving a controlled document
+must be justified.</p>
+<p>Behavior:</p>
+<ul class="simple">
+<li>Archiving opens a modal wizard requesting the <tt class="docutils literal">Reason</tt> text. The reason
+is mandatory.</li>
+<li>On confirm, the reason is stored on each document (field <tt class="docutils literal">Archive Reason</tt>)
+and posted as an internal note in its chatter, then the documents are
+archived through the standard archive action.</li>
+<li>Archiving a selection that already contains archived documents is rejected
+with a <tt class="docutils literal">UserError</tt> listing them, so a single reason is never recorded
+against the wrong set.</li>
+<li>Unarchiving is the standard, direct Odoo action: it reactivates the
+document and clears the stored archive reason, while the change is recorded
+automatically through the tracked <tt class="docutils literal">active</tt> field. Past archive reasons
+remain visible in the chatter history.</li>
+</ul>
+</div>
+</body>
+</html>
