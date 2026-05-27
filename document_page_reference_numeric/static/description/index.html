@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<title>Document Page Numeric Reference</title>
+</head>
+<body>
+<div class="document" id="document-page-numeric-reference">
+<h1 class="title">Document Page Numeric Reference</h1>
+<p>By default, the OCA module <tt class="docutils literal">document_page_reference</tt> generates a new
+reference from a slug of the document title. That is unsuitable for
+environments where each document is identified by a fixed-width numeric
+code (legacy DMS migrations, ERP integrations, GMP traceability, etc.).</p>
+<p>This module replaces the default behavior:</p>
+<ul class="simple">
+<li>When a new document page is created without an explicit <tt class="docutils literal">reference</tt>,
+the field is auto-filled from a dedicated <tt class="docutils literal">ir.sequence</tt> (code
+<tt class="docutils literal">document.page.reference.numeric</tt>) as a zero-padded, 10-digit number.</li>
+<li>When a <tt class="docutils literal">reference</tt> is provided manually it is left untouched, so
+migrated documents keep their legacy code verbatim.</li>
+<li>Existing document pages keep their current reference.</li>
+<li>Uniqueness is enforced via the existing <tt class="docutils literal">_check_reference</tt> constraint.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Legacy migration: import the existing documents first (their numeric codes
+are preserved verbatim), then install this module. A post-init hook advances
+the <tt class="docutils literal">document.page.reference.numeric</tt> sequence above the highest existing
+numeric reference, so auto-generated references never collide with the imported
+ones. (You can also set the sequence's <em>Next Number</em> manually.)</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A purely numeric reference cannot be used as a <tt class="docutils literal">${...}</tt> cross-link in a
+page body. <tt class="docutils literal">document_page_reference</tt> resolves <tt class="docutils literal">${code}</tt> by
+treating <tt class="docutils literal">code</tt> as a Jinja variable name, but a pure-digit
+expression such as <tt class="docutils literal">${0000000001}</tt> is parsed as an integer literal
+instead of a name, so no link is produced. Pages that must be cross-linked need
+a manual, alphanumeric reference.</p>
+</div>
+</div>
+</body>
+</html>

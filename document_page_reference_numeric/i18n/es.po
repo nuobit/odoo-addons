@@ -1,0 +1,59 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* document_page_reference_numeric
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-09 14:56+0000\n"
+"PO-Revision-Date: 2026-06-09 14:56+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: document_page_reference_numeric
+#: code:addons/document_page_reference_numeric/hooks.py:0
+#, python-format
+msgid ""
+"Cannot initialise the numeric reference sequence: a document page has the "
+"reference %(ref)s, which reaches or exceeds the maximum supported value "
+"%(max)s. Fix the references at or above that value before installing this "
+"module."
+msgstr ""
+"No se puede inicializar la secuencia de referencias numéricas: una página "
+"de documento tiene la referencia %(ref)s, que alcanza o supera el valor "
+"máximo admitido %(max)s. Corrija las referencias iguales o superiores a ese "
+"valor antes de instalar este módulo."
+
+#. module: document_page_reference_numeric
+#: model:ir.model.fields,field_description:document_page_reference_numeric.field_document_page__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: document_page_reference_numeric
+#: model:ir.model,name:document_page_reference_numeric.model_document_page
+msgid "Document Page"
+msgstr "Página de documento"
+
+#. module: document_page_reference_numeric
+#: model:ir.model.fields,field_description:document_page_reference_numeric.field_document_page__id
+msgid "ID"
+msgstr ""
+
+#. module: document_page_reference_numeric
+#: model:ir.model.fields,field_description:document_page_reference_numeric.field_document_page____last_update
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: document_page_reference_numeric
+#: code:addons/document_page_reference_numeric/models/document_page.py:0
+#, python-format
+msgid "Numeric reference %(ref)s is too large: it must be below %(max)s."
+msgstr ""
+"La referencia numérica %(ref)s es demasiado grande: debe ser inferior a "
+"%(max)s."
