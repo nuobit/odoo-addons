@@ -1,0 +1,90 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* document_page_archive_reason
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: document_page_archive_reason
+#: model:ir.model,name:document_page_archive_reason.model_document_page
+msgid "Document Page"
+msgstr "Página de documento"
+
+#. module: document_page_archive_reason
+#: model:ir.model,name:document_page_archive_reason.model_document_page_archive_reason
+msgid "Archive document pages with reason"
+msgstr "Archivar páginas de documento con motivo"
+
+#. module: document_page_archive_reason
+#: code:addons/document_page_archive_reason/models/document_page.py:0
+#, python-format
+msgid "Archive"
+msgstr "Archivar"
+
+#. module: document_page_archive_reason
+#: code:addons/document_page_archive_reason/models/document_page.py:0
+#, python-format
+msgid "Cannot archive document(s) that are already archived:\n%s"
+msgstr "No se pueden archivar documentos que ya están archivados:\n%s"
+
+#. module: document_page_archive_reason
+#: code:addons/document_page_archive_reason/models/document_page.py:0
+#, python-format
+msgid "Cannot unarchive document(s) that are already active:\n%s"
+msgstr "No se pueden desarchivar documentos que ya están activos:\n%s"
+
+#. module: document_page_archive_reason
+#: code:addons/document_page_archive_reason/wizards/document_page_archive_reason.py:0
+#, python-format
+msgid "<strong>Document archived.</strong><br/><strong>Reason:</strong> %s"
+msgstr "<strong>Documento archivado.</strong><br/><strong>Motivo:</strong> %s"
+
+#. module: document_page_archive_reason
+#: model:ir.model.fields,field_description:document_page_archive_reason.field_document_page_archive_reason__reason
+msgid "Reason"
+msgstr "Motivo"
+
+#. module: document_page_archive_reason
+#: model:ir.model.fields,help:document_page_archive_reason.field_document_page_archive_reason__reason
+msgid ""
+"Reason for archiving. Will be logged in the chatter of each affected "
+"document for traceability."
+msgstr ""
+"Motivo del archivado. Se registrará en el chatter de cada documento "
+"afectado para trazabilidad."
+
+#. module: document_page_archive_reason
+#: model:ir.model.fields,field_description:document_page_archive_reason.field_document_page_archive_reason__document_page_ids
+msgid "Document Pages"
+msgstr "Páginas de documento"
+
+#. module: document_page_archive_reason
+#: model_terms:ir.ui.view,arch_db:document_page_archive_reason.document_page_archive_reason_form
+msgid ""
+"You are about to archive the selected document page(s). Please provide a "
+"reason — it will be logged in the document chatter for traceability."
+msgstr ""
+"Va a archivar las páginas de documento seleccionadas. Indique un motivo — "
+"quedará registrado en el chatter del documento para trazabilidad."
+
+#. module: document_page_archive_reason
+#: model_terms:ir.ui.view,arch_db:document_page_archive_reason.document_page_archive_reason_form
+msgid "e.g. Replaced by procedure P-016 revision 03"
+msgstr "ej. Sustituido por el procedimiento P-016 revisión 03"
+
+#. module: document_page_archive_reason
+#: model_terms:ir.ui.view,arch_db:document_page_archive_reason.document_page_archive_reason_form
+msgid "Confirm"
+msgstr "Confirmar"
+
+#. module: document_page_archive_reason
+#: model_terms:ir.ui.view,arch_db:document_page_archive_reason.document_page_archive_reason_form
+msgid "Cancel"
+msgstr "Cancelar"
