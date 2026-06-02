@@ -1,0 +1,84 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* mgmtsystem_document_category
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-16 12:00+0000\n"
+"PO-Revision-Date: 2026-06-16 12:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: mgmtsystem_document_category
+#: model:ir.model.fields,field_description:mgmtsystem_document_category.field_document_page__display_name
+#: model:ir.model.fields,field_description:mgmtsystem_document_category.field_mgmtsystem_nonconformity__display_name
+msgid "Display Name"
+msgstr "Nom mostrat"
+
+#. module: mgmtsystem_document_category
+#: model:ir.model,name:mgmtsystem_document_category.model_document_page
+msgid "Document Page"
+msgstr "Pàgina de document"
+
+#. module: mgmtsystem_document_category
+#: model:ir.model.fields.selection,name:mgmtsystem_document_category.selection__document_page__mgmtsystem_category_type__environment_manual
+msgid "Environment Manual"
+msgstr "Manual de medi ambient"
+
+#. module: mgmtsystem_document_category
+#: model:ir.model.fields.selection,name:mgmtsystem_document_category.selection__document_page__mgmtsystem_category_type__environmental_aspect
+msgid "Environmental Aspect"
+msgstr "Aspecte ambiental"
+
+#. module: mgmtsystem_document_category
+#: model:ir.model.fields,field_description:mgmtsystem_document_category.field_document_page__id
+#: model:ir.model.fields,field_description:mgmtsystem_document_category.field_mgmtsystem_nonconformity__id
+msgid "ID"
+msgstr "ID"
+
+#. module: mgmtsystem_document_category
+#: model:ir.model.fields,field_description:mgmtsystem_document_category.field_document_page____last_update
+#: model:ir.model.fields,field_description:mgmtsystem_document_category.field_mgmtsystem_nonconformity____last_update
+msgid "Last Modified on"
+msgstr "Última modificació el"
+
+#. module: mgmtsystem_document_category
+#: model:ir.model.fields,field_description:mgmtsystem_document_category.field_document_page__mgmtsystem_category_type
+msgid "Management System Category Type"
+msgstr "Tipus de categoria del sistema de gestió"
+
+#. module: mgmtsystem_document_category
+#: model:ir.model.fields,help:mgmtsystem_document_category.field_document_page__mgmtsystem_category_type
+msgid ""
+"Management system classification of this document category. Documents stored"
+" under a classified category become available in the related management "
+"system fields (e.g. nonconformity procedures), regardless of the category "
+"name or language."
+msgstr ""
+"Classificació del sistema de gestió d'aquesta categoria de documents. Els "
+"documents emmagatzemats sota una categoria classificada queden disponibles "
+"als camps del sistema de gestió relacionats (p. ex. els procediments de no "
+"conformitat), independentment del nom o l'idioma de la categoria."
+
+#. module: mgmtsystem_document_category
+#: model:ir.model,name:mgmtsystem_document_category.model_mgmtsystem_nonconformity
+msgid "Nonconformity"
+msgstr "No conformitat"
+
+#. module: mgmtsystem_document_category
+#: model:ir.model.fields,field_description:mgmtsystem_document_category.field_mgmtsystem_nonconformity__procedure_ids
+#: model:ir.model.fields.selection,name:mgmtsystem_document_category.selection__document_page__mgmtsystem_category_type__procedure
+msgid "Procedure"
+msgstr "Procediment"
+
+#. module: mgmtsystem_document_category
+#: model:ir.model.fields.selection,name:mgmtsystem_document_category.selection__document_page__mgmtsystem_category_type__quality_manual
+msgid "Quality Manual"
+msgstr "Manual de qualitat"
