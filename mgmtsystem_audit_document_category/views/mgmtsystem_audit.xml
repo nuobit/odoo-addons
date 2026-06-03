@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dev1@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+
+    <record id="view_mgmtsystem_verification_line_filter" model="ir.ui.view">
+        <field
+            name="name"
+        >mgmtsystem.verification.line.filter - procedure filter</field>
+        <field name="model">mgmtsystem.verification.line</field>
+        <field
+            name="inherit_id"
+            ref="mgmtsystem_audit.view_mgmtsystem_verification_line_filter"
+        />
+        <field name="arch" type="xml">
+            <field name="procedure_id" position="attributes">
+                <attribute
+                    name="domain"
+                >[('parent_id.type', '=', 'category'), ('parent_id.mgmtsystem_category_type', '!=', False)]</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_mgmtsystem_verification_line_form" model="ir.ui.view">
+        <field name="name">mgmtsystem.verification.line.form - procedure filter</field>
+        <field name="model">mgmtsystem.verification.line</field>
+        <field
+            name="inherit_id"
+            ref="mgmtsystem_audit.view_mgmtsystem_verification_line_form"
+        />
+        <field name="arch" type="xml">
+            <field name="procedure_id" position="attributes">
+                <attribute
+                    name="domain"
+                >[('parent_id.type', '=', 'category'), ('parent_id.mgmtsystem_category_type', '!=', False)]</attribute>
+            </field>
+        </field>
+    </record>
+
+</odoo>
