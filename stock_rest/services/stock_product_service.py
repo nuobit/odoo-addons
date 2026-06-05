@@ -287,7 +287,14 @@ class ProductService(Component):
                         "lots": lots,
                     }
                 )
-        product_list.sort(key=itemgetter("code"))
+        product_list.sort(
+            key=lambda product: (
+                product["code"] is None,
+                product["code"] or "",
+                product["description"] or "",
+                product["id"],
+            )
+        )
         return {"rows": product_list}
 
     def _validator_search(self):
