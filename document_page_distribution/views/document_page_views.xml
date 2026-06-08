@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="view_wiki_form_distribution" model="ir.ui.view">
+        <field name="name">document.page.form.distribution</field>
+        <field name="model">document.page</field>
+        <field name="inherit_id" ref="document_page.view_wiki_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button
+                        name="action_distribute"
+                        type="object"
+                        string="Distribute"
+                        class="oe_highlight"
+                        groups="document_page.group_document_manager"
+                    />
+                </header>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page
+                    name="distribution"
+                    string="Distribution"
+                    groups="knowledge.group_document_user"
+                >
+                    <field name="current_distribution_count" invisible="1" />
+                    <p
+                        class="text-muted"
+                        attrs="{'invisible': [('current_distribution_count', '!=', 0)]}"
+                    >The current version has not been distributed yet.</p>
+                    <field
+                        name="current_recipient_ids"
+                        attrs="{'invisible': [('current_distribution_count', '=', 0)]}"
+                    >
+                        <tree>
+                            <field name="user_id" />
+                            <field name="email" />
+                            <field name="state" />
+                            <field name="sent_count" />
+                            <field name="last_sent_date" />
+                            <field name="last_email" optional="hide" />
+                            <field name="last_notification_status" />
+                            <button
+                                name="action_open_sends"
+                                type="object"
+                                icon="fa-envelope-o"
+                                string="Sends"
+                            />
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
