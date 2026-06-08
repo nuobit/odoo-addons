@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo noupdate="1">
+    <record id="document_page_history_recipient_download_company_rule" model="ir.rule">
+        <field
+            name="name"
+        >document.page.history.recipient.download multi-company</field>
+        <field name="model_id" ref="model_document_page_history_recipient_download" />
+        <field name="global" eval="True" />
+        <field
+            name="domain_force"
+        >['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+    <!-- mirror of the document read access by groups (document_page_access_group):
+         the download evidence is only visible to users that can read the document -->
+    <record id="document_page_history_recipient_download_groups_rule" model="ir.rule">
+        <field
+            name="name"
+        >document.page.history.recipient.download document groups</field>
+        <field name="model_id" ref="model_document_page_history_recipient_download" />
+        <field name="global" eval="False" />
+        <field name="groups" eval="[(4, ref('knowledge.group_document_user'))]" />
+        <field
+            name="domain_force"
+        >['|', ('document_page_id.groups_id', '=', False), ('document_page_id.groups_id', 'in', [g.id for g in user.groups_id])]</field>
+    </record>
+    <record
+        id="document_page_history_recipient_download_full_access_rule"
+        model="ir.rule"
+    >
+        <field name="name">document.page.history.recipient.download full access</field>
+        <field name="model_id" ref="model_document_page_history_recipient_download" />
+        <field name="global" eval="False" />
+        <field
+            name="groups"
+            eval="[(4, ref('document_page.group_document_manager'))]"
+        />
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+</odoo>
