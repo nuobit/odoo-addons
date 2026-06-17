@@ -81,8 +81,10 @@ class DocumentPage(models.Model):
         Called on a recordset it processes those pages' attachments; called on
         the model it processes every ``document.page`` attachment. ``batch_size``
         caps how many attachments are reindexed per call (re-run until
-        ``processed`` is 0); ``only_missing`` skips attachments that already have
-        indexed content.
+        ``processed`` is 0); ``only_missing`` reprocesses attachments lacking
+        real indexed text — both an empty ``index_content`` and the bare
+        mime-family placeholder (e.g. ``application`` for a PDF indexed without
+        ``pdfminer.six``) — and skips only those already carrying extracted text.
 
         Returns ``{"processed", "skipped", "no_text"}``: ``processed`` how many
         were reindexed, ``skipped`` how many were left untouched (already indexed
@@ -101,7 +103,15 @@ class DocumentPage(models.Model):
         for attachment in attachments:
             if batch_size and processed >= batch_size:
                 break
-            if only_missing and attachment.index_content:
+            family = (attachment.mimetype or "").split("/")[0]
+            # A bare mime-family value (e.g. "application" for a PDF indexed
+            # without pdfminer.six, or a scanned PDF) carries no real text, so
+            # only_missing must reprocess it rather than treat it as indexed.
+            if (
+                only_missing
+                and attachment.index_content
+                and attachment.index_content != family
+            ):
                 skipped += 1
                 continue
             datas = attachment.with_context(bin_size=False).datas
@@ -111,7 +121,6 @@ class DocumentPage(models.Model):
             content = attachment._index(base64.b64decode(datas), attachment.mimetype)
             attachment.index_content = content
             processed += 1
-            family = (attachment.mimetype or "").split("/")[0]
             if not content or content == family:
                 no_text.append((attachment.id, attachment.name))
         return {"processed": processed, "skipped": skipped, "no_text": no_text}

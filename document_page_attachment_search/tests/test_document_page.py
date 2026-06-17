@@ -234,6 +234,24 @@ class TestDocumentPageAttachmentSearch(TransactionCase):
         self.assertEqual(result["skipped"], 2)
         self.assertEqual(result["no_text"], [])
 
+    def test_reindex_only_missing_reprocesses_mime_family_placeholder(self):
+        # index_content equal to the bare mime-family ("text" here; "application"
+        # for a PDF indexed without pdfminer.six) carries no real text, so
+        # only_missing=True must reprocess it instead of skipping it.
+        page = self.DocumentPage.create(
+            {
+                "name": "Page Placeholder",
+                "type": "content",
+                "parent_id": self.category.id,
+            }
+        )
+        attachment = self._attach(page, "stuck.txt", b"the file says PLACEHOLDERWORD")
+        attachment.index_content = "text"
+        self.assertNotIn(page, self._search_content("PLACEHOLDERWORD"))
+        result = page.reindex_attachment_content()
+        self.assertEqual(result["processed"], 1)
+        self.assertIn(page, self._search_content("PLACEHOLDERWORD"))
+
     def test_reindex_force_with_only_missing_false(self):
         self.attachment.index_content = "stale index"
         self.assertNotIn(self.page_attached, self._search_content("UNIQUEATTACH"))
