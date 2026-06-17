@@ -2,15 +2,34 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 import base64
+import re
 
-from odoo import models
+from lxml import etree, html
+
+from odoo import api, models
 from odoo.osv import expression
 
 POSITIVE_TEXT_OPERATORS = ("like", "ilike", "=like", "=ilike")
+ATTACHMENT_URL_RE = re.compile(r"/web/(?:content|image)/(\d+)")
 
 
 class DocumentPage(models.Model):
     _inherit = "document.page"
+
+    def _linked_attachment_ids(self):
+        self.ensure_one()
+        if not self.content:
+            return set()
+        try:
+            tree = html.fragment_fromstring(self.content, create_parent=True)
+        except (etree.ParserError, ValueError):
+            return set()
+        linked_ids = set()
+        for url in tree.xpath(".//@href | .//@src"):
+            match = ATTACHMENT_URL_RE.search(url)
+            if match:
+                linked_ids.add(int(match.group(1)))
+        return linked_ids
 
     def _search_content(self, operator, value):
         domain = super()._search_content(operator, value)
@@ -26,6 +45,32 @@ class DocumentPage(models.Model):
         if not page_ids:
             return domain
         return expression.OR([domain, [("id", "in", page_ids)]])
+
+    def _anchor_orphan_attachments(self):
+        Attachment = self.env["ir.attachment"]
+        for page in self:
+            linked = page._linked_attachment_ids()
+            if not linked:
+                continue
+            orphans = (
+                Attachment.browse(sorted(linked))
+                .exists()
+                .filtered(lambda a: a.res_model == "document.page" and not a.res_id)
+            )
+            if orphans:
+                orphans.write({"res_id": page.id})
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        pages = super().create(vals_list)
+        pages._anchor_orphan_attachments()
+        return pages
+
+    def write(self, vals):
+        res = super().write(vals)
+        if "content" in vals:
+            self._anchor_orphan_attachments()
+        return res
 
     def reindex_attachment_content(self, batch_size=500, only_missing=True):
         """Recompute ``ir.attachment.index_content`` for the files attached to

@@ -131,6 +131,55 @@ class TestDocumentPageAttachmentSearch(TransactionCase):
         self.assertIn(page, self._search_content("MULTIWORDA"))
         self.assertIn(page, self._search_content("MULTIWORDB"))
 
+    def _orphan(self, name, raw):
+        return self.Attachment.create(
+            {
+                "name": name,
+                "res_model": "document.page",
+                "res_id": 0,
+                "datas": base64.b64encode(raw),
+                "mimetype": "text/plain",
+            }
+        )
+
+    def test_anchor_sets_res_id_when_embedded_before_save(self):
+        orphan = self._orphan("embedded.txt", b"the file says ANCHORWORD")
+        page = self.DocumentPage.create(
+            {
+                "name": "Page Anchor Create",
+                "type": "content",
+                "parent_id": self.category.id,
+                "content": '<a href="/web/content/%d">file</a>' % orphan.id,
+            }
+        )
+        self.assertEqual(orphan.res_id, page.id)
+        self.assertIn(page, self._search_content("ANCHORWORD"))
+
+    def test_anchor_sets_res_id_on_write(self):
+        orphan = self._orphan("embedded2.txt", b"the file says ANCHORWRITE")
+        page = self.DocumentPage.create(
+            {
+                "name": "Page Anchor Write",
+                "type": "content",
+                "parent_id": self.category.id,
+            }
+        )
+        page.write({"content": '<a href="/web/content/%d">file</a>' % orphan.id})
+        self.assertEqual(orphan.res_id, page.id)
+        self.assertIn(page, self._search_content("ANCHORWRITE"))
+
+    def test_anchor_does_not_steal_attachment_of_another_page(self):
+        owned = self._attach(self.page_html, "owned.txt", b"the file says OWNEDWORD")
+        self.DocumentPage.create(
+            {
+                "name": "Page Anchor Steal",
+                "type": "content",
+                "parent_id": self.category.id,
+                "content": '<a href="/web/content/%d">file</a>' % owned.id,
+            }
+        )
+        self.assertEqual(owned.res_id, self.page_html.id)
+
     def test_reindex_indexes_missing_content(self):
         page = self.DocumentPage.create(
             {
