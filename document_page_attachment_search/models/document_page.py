@@ -6,7 +6,7 @@ import re
 
 from lxml import etree, html
 
-from odoo import api, models
+from odoo import models
 from odoo.osv import expression
 
 POSITIVE_TEXT_OPERATORS = ("like", "ilike", "=like", "=ilike")
@@ -54,32 +54,6 @@ class DocumentPage(models.Model):
         if not page_ids:
             return domain
         return expression.OR([domain, [("id", "in", list(page_ids))]])
-
-    def _anchor_orphan_attachments(self):
-        Attachment = self.env["ir.attachment"]
-        for page in self:
-            linked = page._linked_attachment_ids()
-            if not linked:
-                continue
-            orphans = (
-                Attachment.browse(sorted(linked))
-                .exists()
-                .filtered(lambda a: a.res_model == "document.page" and not a.res_id)
-            )
-            if orphans:
-                orphans.write({"res_id": page.id})
-
-    @api.model_create_multi
-    def create(self, vals_list):
-        pages = super().create(vals_list)
-        pages._anchor_orphan_attachments()
-        return pages
-
-    def write(self, vals):
-        res = super().write(vals)
-        if "content" in vals:
-            self._anchor_orphan_attachments()
-        return res
 
     def reindex_linked_attachment_content(self, batch_size=500, only_missing=True):
         """Recompute ``ir.attachment.index_content`` for the attachments linked
