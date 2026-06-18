@@ -48,6 +48,14 @@ Behavior:
   would change the semantics of the original search.
 * No new fields, views or menus are added; the existing OCA search box is the
   single entry point.
+* When a page is created or its content is saved, any file embedded in the body
+  (``/web/content/<id>`` or ``/web/image/<id>``) that is not yet linked to a
+  record is anchored to that page (its ``res_id`` is set). A file embedded before
+  the page's first save (``res_id=0``) therefore becomes searchable on the next
+  save, with no manual step.
+* A file still linked to an existing ``document.page`` (via ``res_model`` /
+  ``res_id``) cannot be deleted. This avoids leaving a dead ``/web/content`` link
+  in the page body and keeps the content search consistent.
 
 Scope:
 
@@ -56,8 +64,10 @@ Scope:
   ``res_id`` link that Odoo maintains, not on parsing the page HTML, so it is
   unaffected by modules that rewrite the body links (e.g.
   ``document_page_distribution_download_log``).
-* A file uploaded into a page that has not been saved yet gets ``res_id=0`` and
-  cannot be mapped back to a page, so it is not matched until that link is set.
+* A file uploaded into a page that has not been saved yet gets ``res_id=0``; it
+  becomes searchable once the page is saved (the save anchors it, see above) or
+  after the post-migration linking below. A file removed or replaced in the body
+  is intentionally not re-anchored, so the page stops matching it.
 
 Prerequisites:
 
@@ -89,6 +99,21 @@ rewriting the page content (so no new revision is created), from a shell::
 ``{"processed", "skipped", "no_text"}``; ``no_text`` lists the ``(id, name)`` of
 attachments that yielded no extractable text (scanned PDFs, or PDFs indexed
 without ``pdfminer.six``).
+
+Post-migration linking:
+
+Pages imported in bulk may have body-embedded files left with ``res_id=0`` (for
+example, files embedded before the page was first saved). New edits anchor them
+automatically, but to relink the ones already in the database in a single pass,
+from a shell::
+
+    odoo-bin shell -c <odoo.conf> -d <database>
+    >>> env["document.page"].search([])._anchor_orphan_attachments()
+    >>> env.cr.commit()
+
+Each orphan attachment gets its ``res_id`` set to the page whose current body
+references it. Attachments that no longer appear in any page body (files removed
+or replaced) are intentionally left untouched.
 
 **Table of contents**
 
