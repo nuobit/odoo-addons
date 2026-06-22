@@ -398,6 +398,15 @@ download route that carries the version id.</li>
 download against the recipient’s coverage line of that exact version, and
 redirects to the standard <tt class="docutils literal">/web/content</tt> file download.</li>
 </ul>
+<p><strong>Audit contract</strong></p>
+<p>The download log is <strong>append-only</strong>. Evidence rows are written only by the
+system, through the download controller, on the recipient’s behalf; the access
+rights are <strong>read-only for every role, the Document Manager included</strong>
+(<tt class="docutils literal">perm_read</tt> only). No user can create, edit or delete a download record, so
+the trail cannot be tampered with — which is the point of a compliance log.
+Visibility follows the document’s own Security groups: a user sees the download
+evidence of the documents they are allowed to read, and a Document Manager sees
+all of it.</p>
 <p><strong>Table of contents</strong></p>
 <div class="contents local topic" id="contents">
 <ul class="simple">

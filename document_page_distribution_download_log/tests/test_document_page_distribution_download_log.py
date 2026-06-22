@@ -288,3 +288,93 @@ class TestDocumentPageDistributionDownloadLog(SavepointCase):
         )
         self.assertEqual(foreign.res_model, "res.partner")
         self.assertEqual(foreign.res_id, partner.id)
+
+    def test_web_content_url_variants_resolve_to_attachment(self):
+        # the parser must recognise every shape Odoo emits, including the
+        # slugged /web/content/<id>-name.pdf that was previously missed
+        aid = self.attachment.id
+        for href in (
+            "/web/content/%s" % aid,
+            "/web/content/%s?download=true" % aid,
+            "/web/content/%s-procedure.pdf" % aid,
+            "/web/content/ir.attachment/%s/datas" % aid,
+        ):
+            self.assertEqual(
+                self.head._download_link_attachment_id(href),
+                aid,
+                "URL not recognised: %s" % href,
+            )
+
+    def test_slugified_pdf_link_is_rewritten(self):
+        page = self.env["document.page"].create(
+            {
+                "name": "Slug link",
+                "type": "content",
+                "groups_id": [(6, 0, [self.group.id])],
+                "content": '<p><a href="/web/content/%s-procedure.pdf">f</a></p>'
+                % self.attachment.id,
+            }
+        )
+        head = page.history_head
+        route = "/document_page_distribution_download_log/download/%s/%s" % (
+            head.id,
+            self.attachment.id,
+        )
+        self.assertIn(route, head.content)
+
+    def test_non_pdf_link_is_not_tracked(self):
+        notes = self.env["ir.attachment"].create(
+            {
+                "name": "notes.txt",
+                "datas": base64.b64encode(b"just text").decode(),
+            }
+        )
+        self.assertNotEqual(notes.mimetype, "application/pdf")
+        page = self.env["document.page"].create(
+            {
+                "name": "Non-PDF link",
+                "type": "content",
+                "groups_id": [(6, 0, [self.group.id])],
+                "content": '<p><a href="/web/content/%s">notes</a></p>' % notes.id,
+            }
+        )
+        head = page.history_head
+        # left untouched: not rewritten, not tracked
+        self.assertIn('/web/content/%s"' % notes.id, head.content)
+        self.assertNotIn("/document_page_distribution_download_log/", head.content)
+        self.assertFalse(head._tracked_attachment_ids(head.content))
+
+    def test_non_pdf_link_does_not_trip_single_document_rule(self):
+        # one PDF + one non-PDF must save fine: only the PDF is a document
+        notes = self.env["ir.attachment"].create(
+            {
+                "name": "annex.txt",
+                "datas": base64.b64encode(b"annex text").decode(),
+            }
+        )
+        page = self.env["document.page"].create(
+            {
+                "name": "PDF plus non-PDF",
+                "type": "content",
+                "groups_id": [(6, 0, [self.group.id])],
+                "content": '<p><a href="/web/content/%s">pdf</a>'
+                '<a href="/web/content/%s">txt</a></p>'
+                % (self.attachment.id, notes.id),
+            }
+        )
+        head = page.history_head
+        route = "/document_page_distribution_download_log/download/%s/%s" % (
+            head.id,
+            self.attachment.id,
+        )
+        self.assertIn(route, head.content)  # the PDF is tracked
+        self.assertIn('/web/content/%s"' % notes.id, head.content)  # the txt is not
+
+    def test_opening_page_does_not_log_download(self):
+        # merely reading the page/version content must not create evidence;
+        # a download is only logged by the controller click
+        download_model = self.env["document.page.history.recipient.download"]
+        before = download_model.search_count([])
+        self.page.with_user(self.alice).read(["content"])
+        self.head.with_user(self.alice).read(["content"])
+        self.assertEqual(download_model.search_count([]), before)
