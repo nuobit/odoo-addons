@@ -21,6 +21,7 @@
         "data/mail_template_data.xml",
         "wizards/document_page_distribute_views.xml",
         "views/document_page_history_recipient_views.xml",
+        "views/document_page_history_views.xml",
         "views/document_page_views.xml",
         "views/res_config_settings_views.xml",
     ],

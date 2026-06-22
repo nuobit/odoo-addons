@@ -297,3 +297,54 @@ class TestDocumentPageDistribution(SavepointCase):
         self.page.groups_id = [(6, 0, [self.group_b.id])]
         self.assertEqual(len(es_rec.send_ids), sends_before)
         self.assertTrue(es_rec.exists())
+
+    # ------------------------------------------------------------------
+    # historical versions
+    # ------------------------------------------------------------------
+    def test_old_version_keeps_recipients_and_sends(self):
+        # distribute the first version
+        self._distribute(only_partners=self.reader_es.partner_id)
+        v1 = self.page.history_head
+        v1_rec = v1.recipient_ids.filtered(
+            lambda r: r.partner_id == self.reader_es.partner_id
+        )
+        self.assertTrue(v1_rec)
+        self.assertTrue(v1_rec.send_ids)
+        sends_before = len(v1_rec.send_ids)
+
+        # publish a new version: history_head moves to v2
+        self.page.write({"content": "<p>Second version</p>"})
+        self.page.invalidate_cache()
+        v2 = self.page.history_head
+        self.assertNotEqual(v1, v2)
+
+        # the old version still owns its recipients and their sends
+        self.assertIn(v1_rec, v1.recipient_ids)
+        self.assertTrue(v1_rec.exists())
+        self.assertEqual(len(v1_rec.send_ids), sends_before)
+
+        # the document's "current" distribution reflects v2 (empty), not v1
+        self.assertFalse(self.page.current_recipient_ids)
+        self.assertNotIn(v1_rec, self.page.current_recipient_ids)
+
+        # the historical sends stay reachable through the per-recipient action
+        action = v1_rec.action_open_sends()
+        self.assertEqual(action["res_model"], "document.page.history.recipient.send")
+        sends = self.env["document.page.history.recipient.send"].search(
+            action["domain"]
+        )
+        self.assertEqual(sends, v1_rec.send_ids)
+
+    def test_distribution_count_per_version(self):
+        # a distributed version reports its own recipient count...
+        self._distribute(only_partners=self.reader_es.partner_id)
+        v1 = self.page.history_head
+        self.assertTrue(v1.distribution_count > 0)
+        self.assertEqual(v1.distribution_count, len(v1.recipient_ids))
+        # ...and a newer, undistributed version keeps its own count at 0
+        self.page.write({"content": "<p>Second version</p>"})
+        self.page.invalidate_cache()
+        v2 = self.page.history_head
+        self.assertNotEqual(v1, v2)
+        self.assertEqual(v2.distribution_count, 0)
+        self.assertTrue(v1.distribution_count > 0)
