@@ -565,6 +565,11 @@ msgid "The current version has not been distributed yet."
 msgstr "La versió actual encara no s'ha distribuït."
 
 #. module: document_page_distribution
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.view_wiki_history_form_distribution
+msgid "This version has not been distributed."
+msgstr "Aquesta versió no s'ha distribuït."
+
+#. module: document_page_distribution
 #: code:addons/document_page_distribution/wizards/document_page_distribute.py:0
 #, python-format
 msgid ""
