@@ -22,3 +22,14 @@ invents recipients (that remains the responsibility of
 * Opening that link checks the user's read access to the page, records the
   download against the recipient's coverage line of that exact version, and
   redirects to the standard ``/web/content`` file download.
+
+**Audit contract**
+
+The download log is **append-only**. Evidence rows are written only by the
+system, through the download controller, on the recipient's behalf; the access
+rights are **read-only for every role, the Document Manager included**
+(``perm_read`` only). No user can create, edit or delete a download record, so
+the trail cannot be tampered with — which is the point of a compliance log.
+Visibility follows the document's own Security groups: a user sees the download
+evidence of the documents they are allowed to read, and a Document Manager sees
+all of it.

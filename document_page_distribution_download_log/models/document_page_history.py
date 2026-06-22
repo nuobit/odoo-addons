@@ -53,13 +53,24 @@ class DocumentPageHistory(models.Model):
             ):
                 attachment.res_id = self.page_id.id
 
-    def _download_link_attachment_id(self, href):
-        """Attachment id of a trackable PDF link, or ``False``.
+    @staticmethod
+    def _leading_int(segment):
+        digits = ""
+        for char in segment:
+            if not char.isdigit():
+                break
+            digits += char
+        return int(digits) if digits else False
 
-        Recognises raw ``/web/content`` links (``/web/content/42``,
-        ``/web/content/ir.attachment/42/datas``, with an optional query string)
-        and already-tracked controller links. Inline images
-        (``/web/image/...``) are not trackable. URL parsing only, no regex.
+    def _download_link_attachment_id(self, href):
+        """Attachment id of a ``/web/content`` document link, or ``False``.
+
+        Recognises the URL shapes Odoo emits: ``/web/content/42``,
+        ``/web/content/42?download=true``, the slugged
+        ``/web/content/42-name.pdf`` and ``/web/content/ir.attachment/42/datas``,
+        plus already-tracked controller links. Inline images
+        (``/web/image/...``) are not matched. URL parsing only, no regex; the
+        PDF restriction is applied separately in :meth:`_is_trackable_pdf`.
         """
         path = (href or "").split("?", 1)[0]
         if path.startswith(TRACKING_ROUTE + "/"):
@@ -71,10 +82,14 @@ class DocumentPageHistory(models.Model):
             rest = path[len(WEB_CONTENT_PREFIX) :]
             if rest.startswith("ir.attachment/"):
                 rest = rest[len("ir.attachment/") :]
-            segment = rest.split("/", 1)[0]
-            if segment.isdigit():
-                return int(segment)
+            return self._leading_int(rest.split("/", 1)[0])
         return False
+
+    def _is_trackable_pdf(self, attachment_id):
+        if not attachment_id:
+            return False
+        attachment = self.env["ir.attachment"].sudo().browse(attachment_id)
+        return attachment.exists() and attachment.mimetype == "application/pdf"
 
     def _tracked_attachment_ids(self, content):
         if not content or "<a" not in content:
@@ -83,7 +98,7 @@ class DocumentPageHistory(models.Model):
         ids = set()
         for anchor in fragment.findall(".//a"):
             attachment_id = self._download_link_attachment_id(anchor.get("href"))
-            if attachment_id:
+            if self._is_trackable_pdf(attachment_id):
                 ids.add(attachment_id)
         return ids
 
@@ -95,7 +110,9 @@ class DocumentPageHistory(models.Model):
         trackable = [
             anchor
             for anchor in fragment.findall(".//a")
-            if self._download_link_attachment_id(anchor.get("href"))
+            if self._is_trackable_pdf(
+                self._download_link_attachment_id(anchor.get("href"))
+            )
         ]
         if len(trackable) > 1:
             raise ValidationError(
