@@ -29,7 +29,7 @@
                             <field name="state" />
                             <field name="sent_count" />
                             <field name="last_sent_date" />
-                            <field name="last_email" optional="hide" />
+                            <field name="last_email" optional="show" />
                             <field name="last_notification_status" />
                             <button
                                 name="action_open_sends"

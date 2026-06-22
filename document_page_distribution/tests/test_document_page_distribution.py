@@ -348,3 +348,73 @@ class TestDocumentPageDistribution(SavepointCase):
         self.assertNotEqual(v1, v2)
         self.assertEqual(v2.distribution_count, 0)
         self.assertTrue(v1.distribution_count > 0)
+
+    # ------------------------------------------------------------------
+    # review follow-ups (#2630)
+    # ------------------------------------------------------------------
+    def test_failed_states_are_represelected(self):
+        # a recipient whose last status is a failure is preselected again
+        self._distribute(only_partners=self.reader_es.partner_id)
+        es_rec = self._recipients().filtered(
+            lambda r: r.partner_id == self.reader_es.partner_id
+        )
+        notif = es_rec.send_ids.mail_notification_id
+        self.assertTrue(notif)
+        for status, expected in (
+            ("bounce", "bounce"),
+            ("exception", "error"),
+            ("canceled", "canceled"),
+        ):
+            notif.notification_status = status
+            es_rec.invalidate_cache()
+            self.assertEqual(es_rec.state, expected)
+            wizard = self._open_wizard()
+            es_line = wizard.line_ids.filtered(
+                lambda line: line.partner_id == self.reader_es.partner_id
+            )
+            self.assertTrue(
+                es_line.selected, "state %s must be re-preselected" % status
+            )
+
+    def test_blank_lang_user_grouped_as_en_us(self):
+        # a user with no language is treated and grouped as en_US
+        self.reader_es.lang = False
+        self.assertFalse(self.reader_es.lang)
+        before = self.page.message_ids
+        self._distribute(
+            only_partners=self.manager.partner_id | self.reader_es.partner_id
+        )
+        notes = (self.page.message_ids - before).filtered(
+            lambda m: m.message_type == "notification"
+        )
+        # blank lang grouped with the en_US manager -> a single message
+        self.assertEqual(len(notes), 1)
+        es_rec = self._recipients().filtered(
+            lambda r: r.partner_id == self.reader_es.partner_id
+        )
+        self.assertTrue(es_rec.send_ids)
+
+    def test_async_notification_status_reflected_in_state(self):
+        # a later asynchronous status change reaches the line summary
+        self._distribute(only_partners=self.reader_es.partner_id)
+        es_rec = self._recipients().filtered(
+            lambda r: r.partner_id == self.reader_es.partner_id
+        )
+        self.assertEqual(es_rec.state, "queued")  # ready -> queued
+        notif = es_rec.send_ids.mail_notification_id
+        self.assertTrue(notif)
+        notif.notification_status = "bounce"
+        es_rec.invalidate_cache()
+        self.assertEqual(es_rec.last_notification_status, "bounce")
+        self.assertEqual(es_rec.state, "bounce")
+
+    def test_cancel_wizard_creates_no_records(self):
+        # opening the wizard and not confirming must not persist anything
+        Recipient = self.env["document.page.history.recipient"]
+        Send = self.env["document.page.history.recipient.send"]
+        domain = [("document_page_id", "=", self.page.id)]
+        self.assertEqual(Recipient.search_count(domain), 0)
+        self.assertEqual(Send.search_count(domain), 0)
+        self._open_wizard()  # built but never confirmed == cancelled
+        self.assertEqual(Recipient.search_count(domain), 0)
+        self.assertEqual(Send.search_count(domain), 0)
