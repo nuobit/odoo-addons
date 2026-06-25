@@ -44,7 +44,7 @@
         />
         <field name="arch" type="xml">
             <xpath
-                expr="//field[@name='current_recipient_ids']/tree/field[@name='last_notification_status']"
+                expr="//field[@name='current_recipient_ids']/tree/field[@name='last_successful_notification_status']"
                 position="after"
             >
                 <field name="downloaded" />
@@ -53,6 +53,35 @@
             </xpath>
             <xpath
                 expr="//field[@name='current_recipient_ids']/tree/button[@name='action_open_sends']"
+                position="after"
+            >
+                <button
+                    name="action_open_downloads"
+                    type="object"
+                    icon="fa-download"
+                    string="Downloads"
+                />
+            </xpath>
+        </field>
+    </record>
+    <record id="view_wiki_history_form_distribution_download_log" model="ir.ui.view">
+        <field name="name">document.page.history.form.distribution.download.log</field>
+        <field name="model">document.page.history</field>
+        <field
+            name="inherit_id"
+            ref="document_page_distribution.view_wiki_history_form_distribution"
+        />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='recipient_ids']/tree/field[@name='last_successful_notification_status']"
+                position="after"
+            >
+                <field name="downloaded" />
+                <field name="download_count" optional="hide" />
+                <field name="last_download_date" optional="hide" />
+            </xpath>
+            <xpath
+                expr="//field[@name='recipient_ids']/tree/button[@name='action_open_sends']"
                 position="after"
             >
                 <button
