@@ -23,21 +23,22 @@
                 </group>
                 <field name="line_ids">
                     <tree editable="bottom" create="false" delete="false">
-                        <field name="partner_id" force_save="1" />
+                        <field name="partner_id" force_save="1" invisible="1" />
                         <field
                             name="sendable"
                             invisible="1"
                             readonly="1"
                             force_save="1"
                         />
+
+                        <field name="user_id" readonly="1" />
+                        <field name="email" readonly="1" />
+                        <field name="current_state" readonly="1" />
                         <field
                             name="selected"
                             widget="boolean_toggle"
                             attrs="{'readonly': [('sendable', '=', False)]}"
                         />
-                        <field name="user_id" readonly="1" />
-                        <field name="email" readonly="1" />
-                        <field name="current_state" readonly="1" />
                     </tree>
                 </field>
                 <footer>

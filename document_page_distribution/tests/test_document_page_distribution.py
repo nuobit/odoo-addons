@@ -405,7 +405,6 @@ class TestDocumentPageDistribution(SavepointCase):
         self.assertTrue(notif)
         notif.notification_status = "bounce"
         es_rec.invalidate_cache()
-        self.assertEqual(es_rec.last_notification_status, "bounce")
         self.assertEqual(es_rec.state, "bounce")
 
     def test_cancel_wizard_creates_no_records(self):

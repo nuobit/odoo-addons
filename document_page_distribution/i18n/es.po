@@ -170,18 +170,12 @@ msgid "Bounce"
 msgstr "Rebotado"
 
 #. module: document_page_distribution
-#: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_history_recipient__last_notification_status__bounce
-msgid "Bounced"
-msgstr "Rebotado"
-
-#. module: document_page_distribution
 #: model_terms:ir.ui.view,arch_db:document_page_distribution.document_page_distribute_form
 msgid "Cancel"
 msgstr "Cancelar"
 
 #. module: document_page_distribution
 #: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_distribute_line__current_state__canceled
-#: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_history_recipient__last_notification_status__canceled
 #: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_history_recipient__state__canceled
 msgid "Canceled"
 msgstr "Cancelado"
@@ -351,11 +345,6 @@ msgid "Error"
 msgstr "Error"
 
 #. module: document_page_distribution
-#: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_history_recipient__last_notification_status__exception
-msgid "Exception"
-msgstr "Excepción"
-
-#. module: document_page_distribution
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__history_id
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__history_id
 msgid "History"
@@ -380,11 +369,6 @@ msgid "If set, page is accessible only from this company"
 msgstr "Si se configura, solo se puede acceder a la página desde esta empresa"
 
 #. module: document_page_distribution
-#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__last_email
-msgid "Last Email"
-msgstr "Último correo"
-
-#. module: document_page_distribution
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page____last_update
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute____last_update
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute_line____last_update
@@ -395,16 +379,6 @@ msgstr "Último correo"
 #: model:ir.model.fields,field_description:document_page_distribution.field_res_config_settings____last_update
 msgid "Last Modified on"
 msgstr "Última modificación el"
-
-#. module: document_page_distribution
-#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__last_notification_status
-msgid "Last Notification Status"
-msgstr "Último estado de notificación"
-
-#. module: document_page_distribution
-#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__last_sent_date
-msgid "Last Sent Date"
-msgstr "Última fecha de envío"
 
 #. module: document_page_distribution
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute__write_uid
@@ -421,6 +395,11 @@ msgstr "Última actualización por"
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__write_date
 msgid "Last Updated on"
 msgstr "Última actualización el"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__last_successful_sent_date
+msgid "Last send"
+msgstr "Último envío"
 
 #. module: document_page_distribution
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__mail_message_id
@@ -488,11 +467,6 @@ msgid "Queued"
 msgstr "En cola"
 
 #. module: document_page_distribution
-#: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_history_recipient__last_notification_status__ready
-msgid "Ready to Send"
-msgstr "Listo para enviar"
-
-#. module: document_page_distribution
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__recipient_id
 msgid "Recipient"
 msgstr "Destinatario"
@@ -524,7 +498,6 @@ msgstr "Envíos"
 
 #. module: document_page_distribution
 #: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_distribute_line__current_state__sent
-#: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_history_recipient__last_notification_status__sent
 #: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_history_recipient__state__sent
 msgid "Sent"
 msgstr "Enviado"

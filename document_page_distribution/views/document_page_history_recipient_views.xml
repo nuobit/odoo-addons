@@ -6,13 +6,17 @@
         <field name="name">document.page.history.recipient.send.tree</field>
         <field name="model">document.page.history.recipient.send</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree
+                create="false"
+                import="false"
+                export_xlsx="false"
+                default_order="sent_date, id"
+            >
                 <field name="sent_date" />
-                <field name="sent_by" />
                 <field name="email" />
                 <field name="template_id" />
                 <field name="notification_status" />
-                <field name="mail_message_id" />
+                <field name="sent_by" />
             </tree>
         </field>
     </record>

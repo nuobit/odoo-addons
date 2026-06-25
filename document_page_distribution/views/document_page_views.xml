@@ -36,11 +36,8 @@
                         <tree>
                             <field name="user_id" />
                             <field name="email" />
-                            <field name="state" />
+                            <field name="last_successful_sent_date" />
                             <field name="sent_count" />
-                            <field name="last_sent_date" />
-                            <field name="last_email" optional="show" />
-                            <field name="last_notification_status" />
                             <button
                                 name="action_open_sends"
                                 type="object"

@@ -62,19 +62,14 @@ class DocumentPageHistoryRecipient(models.Model):
         "recipient_id",
         string="Sends",
     )
-    sent_count = fields.Integer(compute="_compute_send_info", store=True)
-    last_sent_date = fields.Datetime(compute="_compute_send_info", store=True)
-    last_email = fields.Char(compute="_compute_send_info", store=True)
-    last_notification_status = fields.Selection(
-        NOTIFICATION_STATUS_SELECTION,
+    sent_count = fields.Integer(compute="_compute_send_info")
+    last_successful_sent_date = fields.Datetime(
+        string="Last send",
         compute="_compute_send_info",
-        store=True,
     )
     state = fields.Selection(
         STATE_SELECTION,
         compute="_compute_send_info",
-        store=True,
-        index=True,
     )
 
     _sql_constraints = [
@@ -96,10 +91,11 @@ class DocumentPageHistoryRecipient(models.Model):
             real_sends = rec.send_ids.filtered("sent_date").sorted("sent_date")
             rec.sent_count = len(real_sends)
             last = real_sends[-1:]
-            rec.last_sent_date = last.sent_date if last else False
-            rec.last_email = last.email if last else False
+            last_ok = real_sends.filtered(lambda s: s.notification_status == "sent")[
+                -1:
+            ]
+            rec.last_successful_sent_date = last_ok.sent_date if last_ok else False
             status = last.notification_status if last else False
-            rec.last_notification_status = status
             if status:
                 rec.state = NOTIFICATION_STATE_MAP.get(status, "queued")
             elif not rec.email:
