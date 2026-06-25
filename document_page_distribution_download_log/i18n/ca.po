@@ -88,6 +88,7 @@ msgstr "Descarregat"
 #: code:addons/document_page_distribution_download_log/models/document_page_history_recipient.py:0
 #: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient__download_ids
 #: model_terms:ir.ui.view,arch_db:document_page_distribution_download_log.view_wiki_form_distribution_download_log
+#: model_terms:ir.ui.view,arch_db:document_page_distribution_download_log.view_wiki_history_form_distribution_download_log
 #, python-format
 msgid "Downloads"
 msgstr "Descàrregues"
