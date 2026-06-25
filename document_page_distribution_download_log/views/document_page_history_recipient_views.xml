@@ -44,7 +44,7 @@
         />
         <field name="arch" type="xml">
             <xpath
-                expr="//field[@name='current_recipient_ids']/tree/field[@name='last_successful_notification_status']"
+                expr="//field[@name='current_recipient_ids']/tree/field[@name='last_successful_sent_date']"
                 position="after"
             >
                 <field name="downloaded" />
@@ -73,7 +73,7 @@
         />
         <field name="arch" type="xml">
             <xpath
-                expr="//field[@name='recipient_ids']/tree/field[@name='last_successful_notification_status']"
+                expr="//field[@name='recipient_ids']/tree/field[@name='last_successful_sent_date']"
                 position="after"
             >
                 <field name="downloaded" />
