@@ -6,7 +6,7 @@
         <field name="name">document.page.history.recipient.download.tree</field>
         <field name="model">document.page.history.recipient.download</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree export_xlsx="false" default_order="download_date, id">
                 <field name="download_date" />
                 <field name="user_id" />
                 <field name="attachment_id" />
