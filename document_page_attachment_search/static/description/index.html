@@ -385,7 +385,10 @@ files is not reachable from that search even though Odoo’s
 query also matches the indexed text of the files attached to the page.</p>
 <p>Behavior:</p>
 <ul class="simple">
-<li>The existing search box keeps working exactly as before.</li>
+<li>The existing search box keeps working as before; the default search field keeps
+matching the revision summary and is widened to also match the page body and the
+text of its attachments, so typing a term and pressing Enter searches them
+directly.</li>
 <li>For text operators (<tt class="docutils literal">like</tt>, <tt class="docutils literal">ilike</tt>, <tt class="docutils literal">=like</tt>, <tt class="docutils literal">=ilike</tt>) the search
 domain is widened to also match pages that have an attachment
 (<tt class="docutils literal">ir.attachment</tt> with <tt class="docutils literal">res_model=document.page</tt>) whose indexed content
@@ -393,8 +396,10 @@ contains the query. The page is resolved from the attachment’s <tt class="docu
 <li>For other operators (<tt class="docutils literal">=</tt>, <tt class="docutils literal">!=</tt>, <tt class="docutils literal">not ilike</tt>, etc.) the original behavior
 is preserved untouched: combining attachment matches with equality or negation
 would change the semantics of the original search.</li>
-<li>No new fields, views or menus are added; the existing OCA search box is the
-single entry point.</li>
+<li>This is implemented with a single inherited search view that widens the default
+field’s <tt class="docutils literal">filter_domain</tt> (<tt class="docutils literal"><span class="pre">position=&quot;attributes&quot;</span></tt>) to also search the page
+content; no search fields are moved, added or removed, and the OCA search box
+stays the single entry point.</li>
 <li>When a page is created or its content is saved, any file embedded in the body
 (<tt class="docutils literal"><span class="pre">/web/content/&lt;id&gt;</span></tt> or <tt class="docutils literal"><span class="pre">/web/image/&lt;id&gt;</span></tt>) that is not yet linked to a
 record is anchored to that page (its <tt class="docutils literal">res_id</tt> is set). A file embedded before
