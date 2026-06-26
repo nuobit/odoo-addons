@@ -15,6 +15,9 @@
         "document_page",
         "attachment_indexation",
     ],
+    "data": [
+        "views/document_page_views.xml",
+    ],
     "external_dependencies": {"python": ["pdfminer.six"]},
     "installable": True,
 }

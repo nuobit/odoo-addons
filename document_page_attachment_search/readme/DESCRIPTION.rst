@@ -10,7 +10,10 @@ query also matches the indexed text of the files attached to the page.
 
 Behavior:
 
-* The existing search box keeps working exactly as before.
+* The existing search box keeps working as before; the default search field keeps
+  matching the revision summary and is widened to also match the page body and the
+  text of its attachments, so typing a term and pressing Enter searches them
+  directly.
 * For text operators (``like``, ``ilike``, ``=like``, ``=ilike``) the search
   domain is widened to also match pages that have an attachment
   (``ir.attachment`` with ``res_model=document.page``) whose indexed content
@@ -18,8 +21,10 @@ Behavior:
 * For other operators (``=``, ``!=``, ``not ilike``, etc.) the original behavior
   is preserved untouched: combining attachment matches with equality or negation
   would change the semantics of the original search.
-* No new fields, views or menus are added; the existing OCA search box is the
-  single entry point.
+* This is implemented with a single inherited search view that widens the default
+  field's ``filter_domain`` (``position="attributes"``) to also search the page
+  content; no search fields are moved, added or removed, and the OCA search box
+  stays the single entry point.
 * When a page is created or its content is saved, any file embedded in the body
   (``/web/content/<id>`` or ``/web/image/<id>``) that is not yet linked to a
   record is anchored to that page (its ``res_id`` is set). A file embedded before
