@@ -17,33 +17,34 @@ class TestSaleOrder(SavepointCase):
         cls.customer_location = cls.env.ref("stock.stock_location_customers")
         cls.stock_location = cls.picking_type.default_location_src_id
 
-    def _create_woocommerce_order(self, picking_state):
+    def _create_woocommerce_order(self, cancel_picking=False):
         order = self.env["sale.order"].create(
             {
                 "partner_id": self.partner.id,
                 "is_woocommerce": True,
             }
         )
-        self.env["stock.picking"].create(
+        picking = self.env["stock.picking"].create(
             {
                 "partner_id": self.partner.id,
                 "picking_type_id": self.picking_type.id,
                 "location_id": self.stock_location.id,
                 "location_dest_id": self.customer_location.id,
                 "sale_id": order.id,
-                "state": picking_state,
             }
         )
+        if cancel_picking:
+            picking.action_cancel()
         return order
 
     def test_compute_woocommerce_order_state_uses_current_order_pickings(self):
-        processing_order = self._create_woocommerce_order("assigned")
-        done_order = self._create_woocommerce_order("done")
-        orders = processing_order | done_order
+        processing_order = self._create_woocommerce_order()
+        cancel_order = self._create_woocommerce_order(cancel_picking=True)
+        orders = processing_order | cancel_order
 
         orders._compute_woocommerce_order_state()
 
         self.assertEqual(processing_order.woocommerce_order_state, "processing")
-        self.assertEqual(done_order.woocommerce_order_state, "done")
+        self.assertEqual(cancel_order.woocommerce_order_state, "cancel")
         self.assertEqual(processing_order.done_picking_count, 0)
-        self.assertEqual(done_order.done_picking_count, 1)
+        self.assertEqual(cancel_order.done_picking_count, 0)
