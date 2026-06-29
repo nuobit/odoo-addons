@@ -22,11 +22,26 @@ class SaleOrder(models.Model):
         store=True,
     )
 
-    @api.depends("state", "picking_ids", "picking_ids.state")
+    def _filter_woocommerce_orders(self):
+        """Avoid ORM prefetching all sale.order columns during install recompute."""
+        if not self:
+            return self
+        self.env.cr.execute(
+            """
+            SELECT id
+            FROM sale_order
+            WHERE id = ANY(%s)
+                AND is_woocommerce
+            """,
+            (self.ids,),
+        )
+        return self.browse([row[0] for row in self.env.cr.fetchall()])
+
+    @api.depends("is_woocommerce", "state", "picking_ids", "picking_ids.state")
     def _compute_woocommerce_status_write_date(self):
-        for rec in self:
-            if rec.is_woocommerce:
-                rec.woocommerce_status_write_date = fields.Datetime.now()
+        woocommerce_orders = self._filter_woocommerce_orders()
+        (self - woocommerce_orders).woocommerce_status_write_date = False
+        woocommerce_orders.woocommerce_status_write_date = fields.Datetime.now()
 
     woocommerce_order_state = fields.Selection(
         compute="_compute_woocommerce_order_state",
@@ -55,6 +70,7 @@ class SaleOrder(models.Model):
         return woocommerce_order_state
 
     @api.depends(
+        "is_woocommerce",
         "state",
         "order_line.qty_delivered",
         "order_line.product_uom_qty",
@@ -63,24 +79,23 @@ class SaleOrder(models.Model):
         "picking_ids.state",
     )
     def _compute_woocommerce_order_state(self):
-        for rec in self:
-            if rec.is_woocommerce:
-                picking_states = rec.picking_ids.mapped(
-                    "woocommerce_stock_picking_state"
+        woocommerce_orders = self._filter_woocommerce_orders()
+        non_woocommerce_orders = self - woocommerce_orders
+        non_woocommerce_orders.woocommerce_order_state = False
+        non_woocommerce_orders.done_picking_count = 0
+        for rec in woocommerce_orders:
+            picking_states = rec.picking_ids.mapped("woocommerce_stock_picking_state")
+            woocommerce_order_state = rec._get_woocommerce_order_state(picking_states)
+            new_count = len(rec.picking_ids.filtered(lambda p: p.state == "done"))
+            if (
+                woocommerce_order_state != rec.woocommerce_order_state
+                or new_count != rec.done_picking_count
+            ):
+                rec.woocommerce_order_state = woocommerce_order_state
+                rec.done_picking_count = new_count
+                self._event("on_compute_woocommerce_order_state").notify(
+                    rec, fields={"woocommerce_order_state"}
                 )
-                woocommerce_order_state = rec._get_woocommerce_order_state(
-                    picking_states
-                )
-                new_count = len(rec.picking_ids.filtered(lambda p: p.state == "done"))
-                if (
-                    woocommerce_order_state != rec.woocommerce_order_state
-                    or new_count != rec.done_picking_count
-                ):
-                    rec.woocommerce_order_state = woocommerce_order_state
-                    rec.done_picking_count = new_count
-                    self._event("on_compute_woocommerce_order_state").notify(
-                        rec, fields={"woocommerce_order_state"}
-                    )
 
     def action_confirm(self):
         res = super().action_confirm()
