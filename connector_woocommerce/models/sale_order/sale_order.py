@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
@@ -64,7 +65,7 @@ class SaleOrder(models.Model):
     def _compute_woocommerce_order_state(self):
         for rec in self:
             if rec.is_woocommerce:
-                picking_states = self.picking_ids.mapped(
+                picking_states = rec.picking_ids.mapped(
                     "woocommerce_stock_picking_state"
                 )
                 woocommerce_order_state = rec._get_woocommerce_order_state(
