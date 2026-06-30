@@ -58,6 +58,19 @@ class SaleOrder(models.Model):
         for order in self:
             order.is_rental_order = bool(rental_type and order.type_id == rental_type)
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if not vals.get("type_id"):
+                # sale_order_type assigns the sequence before computed values
+                # are stored. Resolve the in-memory order type first so the
+                # name uses that type's sequence instead of the generic
+                # sale.order fallback, which rental_base also overrides.
+                order_type = self.new(vals).type_id
+                if order_type:
+                    vals["type_id"] = order_type.id
+        return super().create(vals_list)
+
     @api.depends(
         "state",
         "is_rental_order",
