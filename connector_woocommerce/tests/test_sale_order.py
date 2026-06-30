@@ -61,3 +61,39 @@ class TestSaleOrder(SavepointCase):
         self.assertFalse(sale_order.woocommerce_status_write_date)
         self.assertFalse(sale_order.woocommerce_order_state)
         self.assertEqual(sale_order.done_picking_count, 0)
+
+    def test_create_line_as_salesperson_without_settings_group(self):
+        """Saving a sale order line must not require ORM access to
+        ``decimal.precision``.
+
+        Regression: ``create``/``write`` read the Discount precision via
+        ``self.env.ref("product.decimal_discount").digits`` (an ORM read of a
+        ``decimal.precision`` record), which raised AccessError for users
+        without the Settings group (``base.group_system``).
+        """
+        salesperson = self.env["res.users"].create(
+            {
+                "name": "Salesperson Without Settings",
+                "login": "wc_salesperson_no_settings",
+                "groups_id": [
+                    (6, 0, [self.env.ref("sales_team.group_sale_salesman").id])
+                ],
+            }
+        )
+        product = self.env["product.product"].create({"name": "WC Test Product"})
+        line_vals = {
+            "product_id": product.id,
+            "product_uom_qty": 1.0,
+            "discount": 10.0,
+        }
+        order = (
+            self.env["sale.order"]
+            .with_user(salesperson)
+            .create(
+                {
+                    "partner_id": self.partner.id,
+                    "order_line": [(0, 0, line_vals)],
+                }
+            )
+        )
+        self.assertEqual(len(order.order_line), 1)

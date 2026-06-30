@@ -29,7 +29,7 @@ class SaleOrderLine(models.Model):
     )
 
     def write(self, vals):
-        prec = self.env.ref("product.decimal_discount").digits
+        prec = self.env["decimal.precision"].precision_get("Discount")
         if "woocommerce_discount" in vals:
             vals["discount"] = vals["woocommerce_discount"]
         elif "discount" in vals and not self.woocommerce_discount:
@@ -38,7 +38,7 @@ class SaleOrderLine(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        prec = self.env.ref("product.decimal_discount").digits
+        prec = self.env["decimal.precision"].precision_get("Discount")
         for values in vals_list:
             if "woocommerce_discount" in values:
                 values["discount"] = values["woocommerce_discount"]
