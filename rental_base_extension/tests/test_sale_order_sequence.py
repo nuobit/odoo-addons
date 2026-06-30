@@ -14,6 +14,7 @@ class TestSaleOrderSequence(common.TransactionCase):
         cls.partner = cls.env["res.partner"].create(
             {
                 "name": "Test Sequence Partner",
+                "email": "test.sequence@example.com",
             }
         )
 
