@@ -22,7 +22,10 @@ AEAT Modelo 322 Extension
 
 |badge1| |badge2| |badge3|
 
-AEAT Modelo 322 Extension
+This module reports the *IVA Exento SDD* tax (exempt sale, without right
+to deduction — defined in ``l10n_es_extension``) in box 83 "Operaciones
+exentas sin derecho a deducción" of the AEAT Modelo 322, instead of the
+standard ``s_iva0`` tax.
 
 **Table of contents**
 
@@ -45,15 +48,15 @@ Credits
 Authors
 -------
 
-* NuoBiT Solutions
-* S.L.
+* NuoBiT Solutions SL
 
 Contributors
 ------------
 
 - `NuoBiT <https://www.nuobit.com>`__:
 
-  - Eric Antones <eantones@nuobit.com>
+  - Eric Antones eantones@nuobit.com
+  - Deniz Gallo dgallo@nuobit.com
 
 Maintainers
 -----------
