@@ -3,6 +3,9 @@
 
 from odoo.addons.component.core import Component
 
+# SAP stores BP address streets in CRD1.Street, an NVARCHAR(100) column
+SAP_STREET_MAXLEN = 100
+
 
 class SapB1ResPartnerAdapter(Component):
     _name = "sapb1.res.partner.adapter"
@@ -27,7 +30,7 @@ class SapB1ResPartnerAdapter(Component):
 
     def _format_partner_values(self, values):
         conv_mapper = {
-            "/Street": lambda x: x or None,
+            "/Street": lambda x: x and x[:SAP_STREET_MAXLEN] or None,
             "/ZipCode": lambda x: x or None,
             "/City": lambda x: x or None,
             "/AddressName3": lambda x: x or None,
@@ -36,7 +39,7 @@ class SapB1ResPartnerAdapter(Component):
 
     def _format_partner_domain(self, domain):
         conv_mapper = {
-            "Street": lambda x: x or None,
+            "Street": lambda x: x and x[:SAP_STREET_MAXLEN] or None,
             "ZipCode": lambda x: x or None,
             "City": lambda x: x or None,
             "AddressName3": lambda x: x or None,
@@ -60,5 +63,6 @@ class SapB1ResPartnerAdapter(Component):
         """Update records on the external system"""
         values.pop("CardCode")
         values.pop("AddressName")
+        self._format_partner_values(values)
         res = self._exec("update_address", external_id=external_id, values=values)
         return res
