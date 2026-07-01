@@ -18,7 +18,6 @@ class ResPartnerBinder(Component):
         "AddressName2",
         "AddressName3",
         "Street",
-        "Block",
         "ZipCode",
         "City",
     ]

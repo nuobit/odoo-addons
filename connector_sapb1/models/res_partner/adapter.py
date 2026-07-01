@@ -27,7 +27,6 @@ class SapB1ResPartnerAdapter(Component):
 
     def _format_partner_values(self, values):
         conv_mapper = {
-            "/Block": lambda x: x or None,
             "/Street": lambda x: x or None,
             "/ZipCode": lambda x: x or None,
             "/City": lambda x: x or None,
@@ -37,7 +36,6 @@ class SapB1ResPartnerAdapter(Component):
 
     def _format_partner_domain(self, domain):
         conv_mapper = {
-            "Block": lambda x: x or None,
             "Street": lambda x: x or None,
             "ZipCode": lambda x: x or None,
             "City": lambda x: x or None,
