@@ -61,7 +61,9 @@ class ResPartnerExportMapper(Component):
                 lambda x: x.strip(), filter(None, [record["street"], record["street2"]])
             )
         )
-        return {"Street": street_l and " ".join(street_l) or None}
+        street = street_l and " ".join(street_l) or None
+        # SAP Street is NVARCHAR(100); truncate so an over-long address still exports
+        return {"Street": street and street[:100] or None}
 
     @changed_by("zip")
     @mapping
