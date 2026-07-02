@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+     Copyright 2025 NuoBiT - Bijaya Kumal <bkumal@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_update_multi_chart" model="ir.ui.view">
+        <field name="model">wizard.update.charts.accounts</field>
+        <field name="inherit_id" ref="account_chart_update.view_update_multi_chart"/>
+        <field name="arch" type="xml">
+
+        </field>
+    </record>
+</odoo>
