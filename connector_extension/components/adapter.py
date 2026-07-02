@@ -234,6 +234,17 @@ class ConnectorExtensionAdapterCRUD(AbstractComponent):
             for ch in elem:
                 self._convert_format(ch, mapper, path)
 
+    def _convert_format_domain_values(self, domain, conv_mapper):
+        res = []
+        for k, op, v in domain:
+            if k in conv_mapper:
+                if isinstance(v, (list, tuple)):
+                    v = type(v)(conv_mapper[k](x) for x in v)
+                else:
+                    v = conv_mapper[k](v)
+            res.append((k, op, v))
+        return res
+
     def _convert_format_domain(self, domain):
         res = []
         for k, op, v in domain:
