@@ -25,6 +25,10 @@ class SapB1ResPartnerAdapter(Component):
             **self._prepare_parameters(kw_base_params, [], filters_values)
         )
         res = self._reorg_partner_data(res)
+        # normalize like written values so empty backend strings compare
+        # equal to the None values used in lookup domains
+        for address in res:
+            self._format_partner_values(address)
         filtered_res = self._filter(res, common_domain)
         return filtered_res
 
