@@ -132,6 +132,18 @@
                                         class="oe_inline"
                                         nolabel="1"
                                     />
+                                    <div groups="base.group_no_one">
+                                        <label
+                                            string="Export Product Template by ID"
+                                            class="oe_inline"
+                                            for="export_product_tmpl_id"
+                                        />
+                                        <field
+                                            name="export_product_tmpl_id"
+                                            class="oe_inline"
+                                            nolabel="1"
+                                        />
+                                    </div>
                                 </div>
                                 <button
                                     name="export_product_tmpl_since"
@@ -152,6 +164,18 @@
                                         class="oe_inline"
                                         nolabel="1"
                                     />
+                                    <div groups="base.group_no_one">
+                                        <label
+                                            string="Export Product Variant by ID"
+                                            class="oe_inline"
+                                            for="export_product_id"
+                                        />
+                                        <field
+                                            name="export_product_id"
+                                            class="oe_inline"
+                                            nolabel="1"
+                                        />
+                                    </div>
                                 </div>
                                 <button
                                     name="export_products_since"

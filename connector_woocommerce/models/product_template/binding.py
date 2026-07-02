@@ -38,9 +38,13 @@ class WooCommerceProductTemplate(models.Model):
             ("has_attributes", "=", False),
         ]
 
-    def export_product_tmpl_since(self, backend_record=None, since_date=None):
+    def export_product_tmpl_since(
+        self, backend_record=None, since_date=None, product=None
+    ):
         domain = self._get_base_domain()
-        if since_date:
+        if product:
+            domain.append(("id", "=", product.id))
+        elif since_date:
             domain = [
                 (
                     "woocommerce_write_date",

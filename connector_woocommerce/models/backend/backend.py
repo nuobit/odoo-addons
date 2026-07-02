@@ -108,6 +108,20 @@ class WooCommerceBackend(models.Model):
     import_sale_order_since_date = fields.Datetime(
         string="Import Sale Order Since",
     )
+    export_product_tmpl_id = fields.Many2one(
+        comodel_name="product.template",
+        string="Export Product Template by ID",
+        copy=False,
+        help="If set, the export ignores the 'since' date and exports only this "
+        "product template by its Odoo ID.",
+    )
+    export_product_id = fields.Many2one(
+        comodel_name="product.product",
+        string="Export Product Variant by ID",
+        copy=False,
+        help="If set, the export ignores the 'since' date and exports only this "
+        "product variant by its Odoo ID.",
+    )
     stock_location_ids = fields.Many2many(
         string="Locations",
         comodel_name="stock.location",
@@ -122,8 +136,11 @@ class WooCommerceBackend(models.Model):
             since_date = fields.Datetime.from_string(rec.export_product_tmpl_since_date)
             rec.export_product_tmpl_since_date = fields.Datetime.now()
             self.env["woocommerce.product.template"].export_product_tmpl_since(
-                backend_record=rec, since_date=since_date
+                backend_record=rec,
+                since_date=since_date,
+                product=rec.export_product_tmpl_id,
             )
+            rec.export_product_tmpl_id = False
 
     def export_products_since(self):
         self.env.user.company_id = self.company_id
@@ -131,8 +148,11 @@ class WooCommerceBackend(models.Model):
             since_date = fields.Datetime.from_string(rec.export_products_since_date)
             rec.export_products_since_date = fields.Datetime.now()
             self.env["woocommerce.product.product"].export_products_since(
-                backend_record=rec, since_date=since_date
+                backend_record=rec,
+                since_date=since_date,
+                product=rec.export_product_id,
             )
+            rec.export_product_id = False
 
     def export_sale_orders_since(self):
         self.env.user.company_id = self.company_id

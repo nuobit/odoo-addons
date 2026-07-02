@@ -1502,6 +1502,12 @@ msgid "Export Product Template Since"
 msgstr ""
 
 #. module: connector_woocommerce
+#: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_backend__export_product_tmpl_id
+#: model_terms:ir.ui.view,arch_db:connector_woocommerce.woocommerce_backend_view_form
+msgid "Export Product Template by ID"
+msgstr "Exportar plantilla de producte per ID"
+
+#. module: connector_woocommerce
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_backend__export_product_tmpl_since_date
 msgid "Export Product Templates Since"
 msgstr ""
@@ -1520,6 +1526,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_backend__export_product_public_category_since_date
 msgid "Export Product public category Since"
 msgstr ""
+
+#. module: connector_woocommerce
+#: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_backend__export_product_id
+#: model_terms:ir.ui.view,arch_db:connector_woocommerce.woocommerce_backend_view_form
+msgid "Export Product Variant by ID"
+msgstr "Exportar variant de producte per ID"
 
 #. module: connector_woocommerce
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_backend__export_products_since_date
@@ -1902,6 +1914,24 @@ msgstr ""
 #: model:ir.model.fields,help:connector_woocommerce.field_woocommerce_res_partner__sale_invoicing_grouping_criteria_id
 msgid "If empty, company default (if any) or default will be applied."
 msgstr ""
+
+#. module: connector_woocommerce
+#: model:ir.model.fields,help:connector_woocommerce.field_woocommerce_backend__export_product_tmpl_id
+msgid ""
+"If set, the export ignores the 'since' date and exports only this product "
+"template by its Odoo ID."
+msgstr ""
+"Si s'informa, l'exportació ignora la data 'des de' i exporta només aquesta "
+"plantilla de producte pel seu ID d'Odoo."
+
+#. module: connector_woocommerce
+#: model:ir.model.fields,help:connector_woocommerce.field_woocommerce_backend__export_product_id
+msgid ""
+"If set, the export ignores the 'since' date and exports only this product "
+"variant by its Odoo ID."
+msgstr ""
+"Si s'informa, l'exportació ignora la data 'des de' i exporta només aquesta "
+"variant de producte pel seu ID d'Odoo."
 
 #. module: connector_woocommerce
 #: model:ir.model.fields,help:connector_woocommerce.field_woocommerce_res_partner__team_id
