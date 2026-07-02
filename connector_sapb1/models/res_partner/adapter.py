@@ -43,7 +43,8 @@ class SapB1ResPartnerAdapter(Component):
             "City": lambda x: x or None,
             "AddressName3": lambda x: x or None,
         }
-        return self._convert_format_domain(domain, conv_mapper)
+        domain = self._convert_format_domain(domain)
+        return self._convert_format_domain_values(domain, conv_mapper)
 
     def _reorg_partner_data(self, values):
         for address in values["BPAddresses"]:
