@@ -254,6 +254,8 @@ class ConnectorExtensionAdapterCRUD(AbstractComponent):
                 v = v.strftime(self._date_format)
             elif isinstance(v, (int, str, list, tuple, bool)):
                 pass
+            elif v is None:
+                pass
             else:
                 raise Exception("Type '%s' not supported" % type(v))
             res.append((k, op, v))
