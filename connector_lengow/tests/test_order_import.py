@@ -244,6 +244,49 @@ class TestOrderImport(TransactionCase):
         self.assertFalse(self._get_order("TEST-7"))
         self.assertFalse(self._get_buyer_partners())
 
+    def test_anonymized_resync_keeps_partners(self):
+        """A late re-sync of an already-imported order whose contact names
+        were erased upstream (GDPR anonymization) must not fail the job:
+        the update proceeds and the order keeps the partners of the
+        original import. Nobody can bring the erased name back, so a
+        failure here would stay red forever."""
+        person = {"full_name": "", "first_name": "Jane", "last_name": "Doe"}
+        self._run_import(self._order_payload("TEST-9", person, person))
+        binding = self._get_order("TEST-9")
+        self.assertEqual(len(binding), 1)
+        order = binding.odoo_id
+        partners_before = self._get_buyer_partners()
+        shipping_before = order.partner_shipping_id
+        invoice_before = order.partner_invoice_id
+        erased = {"full_name": "", "first_name": "", "last_name": ""}
+        payload = self._order_payload("TEST-9", erased, erased)
+        payload["marketplace_status"] = "closed"
+        self._run_import(payload)
+        # the re-sync went through: the status update landed...
+        self.assertEqual(binding.marketplace_status, "closed")
+        # ...and the partners stayed exactly as originally imported
+        self.assertEqual(order.partner_shipping_id, shipping_before)
+        self.assertEqual(order.partner_invoice_id, invoice_before)
+        self.assertEqual(self._get_buyer_partners(), partners_before)
+
+    def test_partially_anonymized_resync(self):
+        """Each address is judged on its own: a re-sync erasing only the
+        delivery contact name skips only that partner; the billing one
+        follows the normal flow."""
+        person = {"full_name": "", "first_name": "Jane", "last_name": "Doe"}
+        self._run_import(self._order_payload("TEST-10", person, person))
+        binding = self._get_order("TEST-10")
+        self.assertEqual(len(binding), 1)
+        order = binding.odoo_id
+        partners_before = self._get_buyer_partners()
+        shipping_before = order.partner_shipping_id
+        invoice_before = order.partner_invoice_id
+        erased = {"full_name": "", "first_name": "", "last_name": ""}
+        self._run_import(self._order_payload("TEST-10", person, erased))
+        self.assertEqual(order.partner_shipping_id, shipping_before)
+        self.assertEqual(order.partner_invoice_id, invoice_before)
+        self.assertEqual(self._get_buyer_partners(), partners_before)
+
     def test_import_record_without_external_data_reads_backend(self):
         """import_record without external_data falls back to the adapter
         read() (e.g. a manual single-order import) and imports normally."""

@@ -49,6 +49,13 @@ class SaleOrderImportMapper(Component):
     @mapping
     def delivery_address(self, record):
         if record["delivery_address"]:
+            # Anonymized re-sync: the contact name was erased upstream and
+            # the partner import was skipped (see
+            # SaleOrderImporter._import_dependencies) -- keep the partner
+            # of the original import.
+            binding = self.options.get("binding")
+            if binding and not record["delivery_address"]["complete_name"]:
+                return None
             binder = self.binder_for("lengow.res.partner")
             external_id = binder.dict2id(record["delivery_address"], in_field=False)
             if not external_id:
@@ -74,6 +81,13 @@ class SaleOrderImportMapper(Component):
     @mapping
     def billing_address(self, record):
         if record["billing_address"]:
+            # Anonymized re-sync: the contact name was erased upstream and
+            # the partner import was skipped (see
+            # SaleOrderImporter._import_dependencies) -- keep the partner
+            # of the original import.
+            binding = self.options.get("binding")
+            if binding and not record["billing_address"]["complete_name"]:
+                return None
             binder = self.binder_for("lengow.res.partner")
             external_id = binder.dict2id(record["billing_address"], in_field=False)
             partner = binder.to_internal(external_id, unwrap=True)
