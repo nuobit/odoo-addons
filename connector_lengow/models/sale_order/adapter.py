@@ -34,12 +34,11 @@ class LengowSaleOrderTypeAdapter(Component):
         res = self.search_read(domain)
         external_values = None
         if res:
-            values = res[0]
-            if len(values) > 1:
+            if len(res) > 1:
                 raise ValidationError(
                     _("Found more than 1 record for an unique key %s") % _id
                 )
-            external_values = values[0]
+            external_values = res[0]
         return external_values
 
     def search_read(self, domain):
