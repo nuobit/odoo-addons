@@ -34,12 +34,11 @@ class LengowSaleOrderTypeAdapter(Component):
         res = self.search_read(domain)
         external_values = None
         if res:
-            values = res[0]
-            if len(values) > 1:
+            if len(res) > 1:
                 raise ValidationError(
                     _("Found more than 1 record for an unique key %s") % _id
                 )
-            external_values = values[0]
+            external_values = res[0]
         return external_values
 
     def search_read(self, domain):
@@ -117,15 +116,33 @@ class LengowSaleOrderTypeAdapter(Component):
                             "common_country_iso_a2"
                         ]
                     value[f]["marketplace"] = value["marketplace"]
-                    if not value[f].get("full_name") or "full_name" not in value[f]:
-                        name_values = [
-                            value[f][y].strip()
-                            for y in ["first_name", "last_name"]
-                            if value.get(f) and value[f].get(y)
-                        ]
-                        complete_name = " ".join(name_values) or None
+                    value[f]["marketplace_order_id"] = value["marketplace_order_id"]
+                    # complete_name (and the identity hash derived from it)
+                    # comes strictly from the contact name source configured
+                    # on the marketplace mapping. No resolvable mapping or
+                    # empty source -> None: no default source is ever assumed
+                    # and nothing raises here (one order must never break the
+                    # whole fetched batch) -- the order fails later, in its
+                    # own import job.
+                    try:
+                        name_source = self.backend_record.get_marketplace_map(
+                            value[f]["marketplace"],
+                            value[f]["parent_country_iso_a2"],
+                        ).name_source
+                    except ValidationError:
+                        complete_name = None
                     else:
-                        complete_name = value[f]["full_name"]
+                        if name_source == "full_name":
+                            complete_name = (
+                                value[f].get("full_name") or ""
+                            ).strip() or None
+                        else:
+                            name_values = [
+                                value[f][y].strip()
+                                for y in ["first_name", "last_name"]
+                                if value[f].get(y) and value[f][y].strip()
+                            ]
+                            complete_name = " ".join(name_values) or None
                     value[f]["complete_name"] = complete_name
                     value[f]["hash"] = list2hash(value[f].get(x) for x in hash_fields)
             for item in value["items"]:

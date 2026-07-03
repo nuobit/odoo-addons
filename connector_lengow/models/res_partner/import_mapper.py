@@ -19,8 +19,51 @@ class ResPartnerImportMapper(Component):
         ("phone_home", "phone"),
         ("phone_mobile", "mobile"),
         ("email", "email"),
-        ("complete_name", "name"),
     ]
+
+    def _raise_empty_contact_name(self, record):
+        # Resolve the mapping first: if it is the actual problem, its own
+        # error must surface instead of the empty-name one.
+        marketplace_map = self.backend_record.get_marketplace_map(
+            record["marketplace"], record["parent_country_iso_a2"]
+        )
+        source_labels = dict(
+            marketplace_map._fields["name_source"]._description_selection(self.env)
+        )
+        fields_state = ", ".join(
+            "%s is %s"
+            % (
+                field_name,
+                "filled" if (record.get(field_name) or "").strip() else "empty",
+            )
+            for field_name in ["full_name", "first_name", "last_name"]
+        )
+        raise ValidationError(
+            _(
+                "No contact name found on the %(address_type)s address of "
+                "order %(order)s from marketplace %(marketplace)s: its "
+                'configured contact name source "%(source)s" came empty '
+                "(%(fields_state)s). If this marketplace publishes contact "
+                'names in the other field, change "Contact name source" on '
+                "the marketplace mapping and import the order again from "
+                "the backend (the data carried by an already-failed job "
+                "keeps the values read at download time). Otherwise, fix "
+                "the order data on Lengow and import it again."
+            )
+            % {
+                "address_type": record["type"],
+                "order": record["marketplace_order_id"],
+                "marketplace": record["marketplace"],
+                "source": source_labels[marketplace_map.name_source],
+                "fields_state": fields_state,
+            }
+        )
+
+    @mapping
+    def name(self, record):
+        if not record["complete_name"]:
+            self._raise_empty_contact_name(record)
+        return {"name": record["complete_name"]}
 
     @only_create
     @mapping
