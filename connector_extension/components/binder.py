@@ -43,6 +43,12 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
 
     _default_binding_field = None
 
+    # Alternate-id components listed here may be null and still match on
+    # null as a value (an address without zip stores NULL there). The rest
+    # are mandatory: a null on them means the record has no usable identity
+    # and the export fails. At least one component must stay mandatory.
+    external_alt_id_nullable_fields = []
+
     def idhash(self, external_id):
         odoo_hash = hashlib.sha256()
         for e in external_id:
@@ -464,6 +470,59 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
                 return res[0]
         return {}
 
+    def _check_external_alt_id(self, id_values):
+        alt_id_fields = self.get_id_fields(in_field=False, alt_field=True)
+        nullable_fields = self.external_alt_id_nullable_fields
+        unknown_fields = set(nullable_fields) - set(alt_id_fields)
+        if unknown_fields:
+            raise ValidationError(
+                _(
+                    "Nullable fields %(FIELDS)s are not components of the "
+                    "alternate id %(ALT_ID)s of %(MODEL)s"
+                )
+                % {
+                    "FIELDS": sorted(unknown_fields),
+                    "ALT_ID": alt_id_fields,
+                    "MODEL": self.model._name,
+                }
+            )
+        if not set(alt_id_fields) - set(nullable_fields):
+            raise ValidationError(
+                _(
+                    "At least one component of the alternate id %(ALT_ID)s "
+                    "of %(MODEL)s must be mandatory"
+                )
+                % {
+                    "ALT_ID": alt_id_fields,
+                    "MODEL": self.model._name,
+                }
+            )
+        external_alt_id = self.dict2id(id_values, in_field=False, alt_field=True)
+        if external_alt_id is None:
+            missing_fields = [
+                f for f in alt_id_fields if f.split(".")[0] not in id_values
+            ]
+            raise ValidationError(
+                _(
+                    "Components %(FIELDS)s of the alternate id of %(MODEL)s "
+                    "are not produced by the export mapper"
+                )
+                % {
+                    "FIELDS": missing_fields,
+                    "MODEL": self.model._name,
+                }
+            )
+        null_mandatory_fields = [
+            field
+            for field, value in zip(alt_id_fields, external_alt_id)
+            if value is None and field not in nullable_fields
+        ]
+        if null_mandatory_fields:
+            raise InvalidDataError(
+                "Mandatory components %s of the alternate id of %s are null"
+                % (null_mandatory_fields, self.model._name)
+            )
+
     def to_binding_from_internal_key(self, relation):
         """
         Given an odoo object (not binding object) without binding related
@@ -493,10 +552,7 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
                 binding=self.model,
                 ignore_required_fields=True,
             )
-            # TODO: check if we can put this in a hook
-            external_alt_id = self.dict2id(id_values, in_field=False, alt_field=True)
-            if self.is_id_null(external_alt_id):
-                return self.model
+            self._check_external_alt_id(id_values)
         record = self._get_external_record_alt(relation, id_values)
         if record:
             external_id = self.dict2id(record, in_field=False)

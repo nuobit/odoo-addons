@@ -122,6 +122,7 @@ class SapB1Adapter(AbstractComponent):
             else:
                 raise ValidationError(r.text)
         self._logout(session)
+        return result
 
     def _create_order(self, session, params):
         self._login(session)

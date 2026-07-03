@@ -18,7 +18,16 @@ class ResPartnerBinder(Component):
         "AddressName2",
         "AddressName3",
         "Street",
-        "Block",
+        "ZipCode",
+        "City",
+    ]
+    # CardCode and AddressName2 identify the account and the addressee and
+    # are mandatory; the remaining components describe the address and may
+    # be null: an address without email, street, zip or city stores NULL
+    # there, and null is part of its identity, not a reason to skip matching
+    external_alt_id_nullable_fields = [
+        "AddressName3",
+        "Street",
         "ZipCode",
         "City",
     ]
