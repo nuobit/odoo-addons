@@ -129,6 +129,7 @@
                                         <field name="partner_id" />
                                         <field name="country_id" />
                                         <field name="lengow_marketplace" />
+                                        <field name="name_source" />
                                     </tree>
                                 </field>
                             </group>
