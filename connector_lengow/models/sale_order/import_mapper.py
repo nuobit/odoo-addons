@@ -48,7 +48,14 @@ class SaleOrderImportMapper(Component):
 
     @mapping
     def delivery_address(self, record):
+        binding = self.options.get("binding")
         if record["delivery_address"]:
+            # Anonymized re-sync: the contact name was erased upstream and
+            # the partner import was skipped (see
+            # LengowResPartnerImporter._must_skip) -- keep the partner of
+            # the original import.
+            if binding and not record["delivery_address"]["complete_name"]:
+                return None
             binder = self.binder_for("lengow.res.partner")
             external_id = binder.dict2id(record["delivery_address"], in_field=False)
             if not external_id:
@@ -64,7 +71,6 @@ class SaleOrderImportMapper(Component):
             )
             return {"partner_shipping_id": partner.id}
         else:
-            binding = self.options.get("binding")
             if not binding:
                 parent = self.backend_record.get_marketplace_map(
                     record["marketplace"], record["parent_country_iso_a2"]
@@ -73,7 +79,14 @@ class SaleOrderImportMapper(Component):
 
     @mapping
     def billing_address(self, record):
+        binding = self.options.get("binding")
         if record["billing_address"]:
+            # Anonymized re-sync: the contact name was erased upstream and
+            # the partner import was skipped (see
+            # LengowResPartnerImporter._must_skip) -- keep the partner of
+            # the original import.
+            if binding and not record["billing_address"]["complete_name"]:
+                return None
             binder = self.binder_for("lengow.res.partner")
             external_id = binder.dict2id(record["billing_address"], in_field=False)
             partner = binder.to_internal(external_id, unwrap=True)
@@ -95,7 +108,6 @@ class SaleOrderImportMapper(Component):
                 partner_return["partner_id"] = partner.id
             return partner_return
         else:
-            binding = self.options.get("binding")
             if not binding:
                 country = record.get("parent_country_iso_a2")
                 if not country:
