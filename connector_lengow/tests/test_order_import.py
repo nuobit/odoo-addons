@@ -1,6 +1,7 @@
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+import datetime
 from unittest import mock
 
 from odoo import fields
@@ -201,6 +202,33 @@ class TestOrderImport(TransactionCase):
         self.assertIn("last_name is empty", str(cm.exception))
         self.assertFalse(self._get_order("TEST-4"))
         self.assertFalse(self._get_buyer_partners())
+
+    def test_old_order_empty_name_explains_probable_anonymization(self):
+        """A first import of an OLD order with no contact name anywhere is
+        most likely a marketplace GDPR anonymization (the connector met the
+        order too late): the error explains it, with the order date, and
+        states the name cannot be recovered from Lengow. A recent order
+        keeps the plain configuration-oriented message."""
+        self.marketplace_map.name_source = "full_name"
+        empty = {"full_name": "", "first_name": "", "last_name": ""}
+        payload = self._order_payload("TEST-11", empty, empty)
+        payload["marketplace_order_date"] = "2024-04-16T10:00:00Z"
+        with self.assertRaisesRegex(ValidationError, "Contact name source") as cm:
+            self._run_import(payload)
+        self.assertIn("2024-04-16", str(cm.exception))
+        self.assertIn("GDPR anonymization", str(cm.exception))
+        self.assertIn("cannot be recovered", str(cm.exception))
+        self.assertFalse(self._get_order("TEST-11"))
+        self.assertFalse(self._get_buyer_partners())
+        # recent order: same failure, no anonymization hypothesis
+        recent = self._order_payload("TEST-12", empty, empty)
+        recent["marketplace_order_date"] = (
+            fields.Datetime.now() - datetime.timedelta(days=10)
+        ).strftime("%Y-%m-%dT%H:%M:%SZ")
+        with self.assertRaisesRegex(ValidationError, "Contact name source") as cm:
+            self._run_import(recent)
+        self.assertNotIn("GDPR anonymization", str(cm.exception))
+        self.assertFalse(self._get_order("TEST-12"))
 
     def test_reconfigure_and_reimport_heals(self):
         """The remediation the error message instructs: wrong source ->

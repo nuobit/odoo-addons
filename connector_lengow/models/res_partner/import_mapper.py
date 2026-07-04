@@ -2,11 +2,20 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import _
+import datetime
+
+from odoo import _, fields
 from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping, only_create
+
+# Wording heuristic only, no behavior depends on it: from this age on, an
+# empty contact name on an order being imported for the first time is most
+# likely a marketplace GDPR anonymization (they erase buyer data from old
+# orders) rather than a configuration problem, and the empty-name error
+# explains that.
+ANONYMIZATION_LIKELY_AGE_DAYS = 90
 
 
 class ResPartnerImportMapper(Component):
@@ -38,26 +47,42 @@ class ResPartnerImportMapper(Component):
             )
             for field_name in ["full_name", "first_name", "last_name"]
         )
-        raise ValidationError(
-            _(
-                "No contact name found on the %(address_type)s address of "
-                "order %(order)s from marketplace %(marketplace)s: its "
-                'configured contact name source "%(source)s" came empty '
-                "(%(fields_state)s). If this marketplace publishes contact "
-                'names in the other field, change "Contact name source" on '
-                "the marketplace mapping and import the order again from "
-                "the backend (the data carried by an already-failed job "
-                "keeps the values read at download time). Otherwise, fix "
-                "the order data on Lengow and import it again."
-            )
-            % {
-                "address_type": record["type"],
-                "order": record["marketplace_order_id"],
-                "marketplace": record["marketplace"],
-                "source": source_labels[marketplace_map.name_source],
-                "fields_state": fields_state,
-            }
-        )
+        message = _(
+            "No contact name found on the %(address_type)s address of "
+            "order %(order)s from marketplace %(marketplace)s: its "
+            'configured contact name source "%(source)s" came empty '
+            "(%(fields_state)s). If this marketplace publishes contact "
+            'names in the other field, change "Contact name source" on '
+            "the marketplace mapping and import the order again from "
+            "the backend (the data carried by an already-failed job "
+            "keeps the values read at download time). Otherwise, fix "
+            "the order data on Lengow and import it again."
+        ) % {
+            "address_type": record["type"],
+            "order": record["marketplace_order_id"],
+            "marketplace": record["marketplace"],
+            "source": source_labels[marketplace_map.name_source],
+            "fields_state": fields_state,
+        }
+        order_date = record.get("marketplace_order_date")
+        if isinstance(order_date, datetime.datetime):
+            age_days = (fields.Datetime.now() - order_date).days
+            if age_days >= ANONYMIZATION_LIKELY_AGE_DAYS:
+                message += _(
+                    " Note that this order was placed on %(order_date)s, "
+                    "%(age_days)s days ago, and it does not exist in Odoo "
+                    "yet: marketplaces erase buyer contact data from old "
+                    "orders (GDPR anonymization), so most likely the name "
+                    "no longer exists in any field Lengow sends and cannot "
+                    "be recovered by re-importing. If this order still "
+                    "needs to be imported, its contact data must be "
+                    "recovered outside Lengow (marketplace back office, "
+                    "invoices, ...)."
+                ) % {
+                    "order_date": fields.Date.to_string(order_date.date()),
+                    "age_days": age_days,
+                }
+        raise ValidationError(message)
 
     @mapping
     def name(self, record):
