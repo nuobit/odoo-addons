@@ -1410,7 +1410,7 @@ class TestStockPicking(TestCommon):
         raw_move = production.move_raw_ids
         self.assertEqual(len(raw_move), 1, "Should have exactly one raw move")
 
-        # ASSERT — each lot has exactly one line with both reservation and qty_done
+        # ASSERT — each lot has exactly one line with quantity set and picked
         for lot in (lot_a, lot_b):
             lot_lines = raw_move.move_line_ids.filtered(
                 lambda ml, lt=lot: ml.lot_id == lt
@@ -1418,18 +1418,17 @@ class TestStockPicking(TestCommon):
             self.assertEqual(
                 len(lot_lines),
                 1,
-                "Lot %s should have exactly one move line, got %d"
-                % (lot.name, len(lot_lines)),
+                f"Lot {lot.name} should have exactly one move line,"
+                f" got {len(lot_lines)}",
             )
             self.assertGreater(
-                lot_lines.product_uom_qty,
+                lot_lines.quantity,
                 0,
-                "Lot %s line must have product_uom_qty > 0" % lot.name,
+                f"Lot {lot.name} line must have quantity > 0",
             )
-            self.assertGreater(
-                lot_lines.qty_done,
-                0,
-                "Lot %s line must have qty_done > 0" % lot.name,
+            self.assertTrue(
+                lot_lines.picked,
+                f"Lot {lot.name} line must be picked",
             )
 
         # CLEANUP
