@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
-# Copyright 2026 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, fields, models
@@ -29,12 +29,12 @@ class StockPicking(models.Model):
             action["context"] = {**self.env.context, "search_default_todo": False}
         return action
 
-    def _prepare_lot_values(self, product, location_dest, qty_done):
+    def _prepare_lot_values(self, product, location_dest, quantity):
         self.ensure_one()
         return {
             "name": location_dest.flowable_sequence_id._next(),
             "product_id": product.id,
-            "product_qty": qty_done,
+            "product_qty": quantity,
             "product_uom_id": product.uom_id.id,
         }
 
@@ -81,7 +81,8 @@ class StockPicking(models.Model):
             if ml:
                 ml.write(
                     {
-                        "qty_done": quant.quantity,
+                        "quantity": quant.quantity,
+                        "picked": True,
                         "location_dest_id": production_location.id,
                     }
                 )
@@ -134,10 +135,14 @@ class StockPicking(models.Model):
         return super().button_validate()
 
     def _action_done(self):
-        res = super(
-            StockPicking,
-            self.with_context(flowable_skip_trigger_assign=True),
-        )._action_done()
+        # has_flowable = any(
+        #     ml.location_dest_id.flowable_storage
+        #     for rec in self
+        #     for ml in rec.move_line_ids_without_package
+        # )
+        # if has_flowable:
+        #     self = self.with_context(flowable_skip_trigger_assign=True)
+        res = super()._action_done()
         for rec in self:
             flowable_lines = rec.move_line_ids_without_package.filtered(
                 lambda x: x.location_dest_id.flowable_storage
@@ -157,26 +162,26 @@ class StockPicking(models.Model):
                 raise UserError(
                     _(
                         "Not found flowable manufacturing picking type"
-                        " in warehouse %s"
+                        " in warehouse %(warehouse)s"
                     )
-                    % rec.picking_type_id.warehouse_id.name
+                    % {"warehouse": rec.picking_type_id.warehouse_id.name}
                 )
             elif len(mrp_operation_type) > 1:
                 raise UserError(
                     _(
                         "More than one flowable manufacturing picking type"
-                        " in warehouse %s"
+                        " in warehouse %(warehouse)s"
                     )
-                    % rec.picking_type_id.warehouse_id.name
+                    % {"warehouse": rec.picking_type_id.warehouse_id.name}
                 )
             else:
                 if not mrp_operation_type.sequence_id:
                     raise UserError(
                         _(
                             "Not found sequence in flowable manufacturing"
-                            " picking type %s"
+                            " picking type %(picking_type)s"
                         )
-                        % mrp_operation_type.display_name
+                        % {"picking_type": mrp_operation_type.display_name}
                     )
 
             # Group move lines by (product, dest location, lot) and check for
@@ -187,43 +192,58 @@ class StockPicking(models.Model):
             lines = {}
             for line in flowable_lines:
                 key = (line.product_id, line.location_dest_id, line.lot_id)
-                lines[key] = lines.get(key, 0) + line.qty_done
+                lines[key] = lines.get(key, 0) + line.quantity
                 existing = [k for k in lines if k[1] == line.location_dest_id]
                 if len(existing) > 1:
                     details = ", ".join(
-                        "%s (%s)" % (k[0].name, k[2].name) if k[2] else k[0].name
+                        f"{k[0].name} ({k[2].name})" if k[2] else k[0].name
                         for k in existing
                     )
                     raise UserError(
                         _(
                             "Cannot receive multiple product/lot combinations"
-                            " (%s) at flowable location '%s' in the same"
+                            " (%(details)s) at flowable location '%(location)s'"
+                            " in the same"
                             " receipt. Each combination generates a separate"
                             " mixing order and the location is blocked after"
                             " the first one. Create a backorder to receive"
                             " them in separate steps."
                         )
-                        % (details, line.location_dest_id.name)
+                        % {
+                            "details": details,
+                            "location": line.location_dest_id.name,
+                        }
                     )
 
             # create manufacturing orders
-            for (product, location_dest, lot), qty_done in lines.items():
+            for (product, location_dest, lot), quantity in lines.items():
                 if product not in location_dest.flowable_allowed_product_ids:
                     raise UserError(
-                        _("Product %s not allowed in flowable location %s")
-                        % (product.name, location_dest.name)
+                        _(
+                            "Product %(product)s not allowed"
+                            " in flowable location %(location)s"
+                        )
+                        % {
+                            "product": product.name,
+                            "location": location_dest.name,
+                        }
                     )
                 if product.uom_id != location_dest.flowable_uom_id:
                     raise UserError(
                         _(
-                            "The allowed products %s cannot have different Unit of"
-                            " Measure than flowable location %s"
+                            "The allowed products %(product)s cannot have"
+                            " different Unit of Measure than"
+                            " flowable location %(location)s"
                         )
-                        % (product.name, location_dest.name)
+                        % {
+                            "product": product.name,
+                            "location": location_dest.name,
+                        }
                     )
                 if product.tracking != "lot":
                     raise UserError(
-                        _("Product %s must be tracked by lot") % product.name
+                        _("Product %(product)s must be tracked by lot")
+                        % {"product": product.name}
                     )
                 component_quant = rec.env["stock.quant"].search(
                     [
@@ -242,13 +262,10 @@ class StockPicking(models.Model):
                         product, location_dest, quantity_to_prod, mrp_operation_type
                     )
                 )
-                production._onchange_move_finished_product()
-                production._onchange_move_finished()
-                production._onchange_location_dest()
                 production.action_confirm()
                 if location_dest.flowable_create_lots:
-                    producing_lot = rec.env["stock.production.lot"].create(
-                        rec._prepare_lot_values(product, location_dest, qty_done)
+                    producing_lot = rec.env["stock.lot"].create(
+                        rec._prepare_lot_values(product, location_dest, quantity)
                     )
                 else:
                     producing_lot = lot
@@ -264,29 +281,42 @@ class StockPicking(models.Model):
             if len(quants) != 1:
                 raise UserError(
                     _(
-                        "Initial reception at flowable location '%s'"
-                        " for product '%s': expected 1 positive quant"
-                        " (empty tank) but found %d."
+                        "Initial reception at flowable location '%(location)s'"
+                        " for product '%(product)s': expected 1 positive quant"
+                        " (empty tank) but found %(count)d."
                     )
-                    % (location.name, product.name, len(quants))
+                    % {
+                        "location": location.name,
+                        "product": product.name,
+                        "count": len(quants),
+                    }
                 )
         else:
             if len(quants) != 2:
                 raise UserError(
                     _(
-                        "Mixing reception at flowable location '%s'"
-                        " for product '%s': expected 2 positive quants"
-                        " but found %d."
+                        "Mixing reception at flowable location '%(location)s'"
+                        " for product '%(product)s': expected 2 positive quants"
+                        " but found %(count)d."
                     )
-                    % (location.name, product.name, len(quants))
+                    % {
+                        "location": location.name,
+                        "product": product.name,
+                        "count": len(quants),
+                    }
                 )
             received = quants.filtered(lambda q: q.lot_id == lot)
             if len(received) != 1:
                 raise UserError(
                     _(
-                        "Mixing reception at flowable location '%s'"
-                        " for product '%s': expected exactly 1 quant"
-                        " for the received lot '%s' but found %d."
+                        "Mixing reception at flowable location '%(location)s'"
+                        " for product '%(product)s': expected exactly 1 quant"
+                        " for the received lot '%(lot)s' but found %(count)d."
                     )
-                    % (location.name, product.name, lot.name, len(received))
+                    % {
+                        "location": location.name,
+                        "product": product.name,
+                        "lot": lot.name,
+                        "count": len(received),
+                    }
                 )
