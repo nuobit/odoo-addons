@@ -26,7 +26,9 @@ class WooCommerceSaleOrderExportMapper(Component):
         tracking = {}
         picking = record.picking_ids.filtered(
             lambda p: p.state == "done" and p.carrier_id
-        ).sorted(key=lambda p: p.id,)[-1:]
+        ).sorted(
+            key=lambda p: p.id,
+        )[-1:]
         if picking:
             carrier = self.backend_record.carrier_provider_ids.filtered(
                 lambda x: picking.carrier_id.delivery_type == x.delivery_type
