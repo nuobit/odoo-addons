@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
      Copyright NuoBiT 2025 - Bijaya Kumal <bkumal@nuobit.com>
+     Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="view_tax_group_tree" model="ir.ui.view">
