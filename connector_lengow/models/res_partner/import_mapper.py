@@ -10,13 +10,6 @@ from odoo.exceptions import ValidationError
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping, only_create
 
-# Wording heuristic only, no behavior depends on it: from this age on, an
-# empty contact name on an order being imported for the first time is most
-# likely a marketplace GDPR anonymization (they erase buyer data from old
-# orders) rather than a configuration problem, and the empty-name error
-# explains that.
-ANONYMIZATION_LIKELY_AGE_DAYS = 90
-
 
 class ResPartnerImportMapper(Component):
     _name = "lengow.res.partner.import.mapper"
@@ -66,22 +59,19 @@ class ResPartnerImportMapper(Component):
         }
         order_date = record.get("marketplace_order_date")
         if isinstance(order_date, datetime.datetime):
-            age_days = (fields.Datetime.now() - order_date).days
-            if age_days >= ANONYMIZATION_LIKELY_AGE_DAYS:
-                message += _(
-                    " Note that this order was placed on %(order_date)s, "
-                    "%(age_days)s days ago, and it does not exist in Odoo "
-                    "yet: marketplaces erase buyer contact data from old "
-                    "orders (GDPR anonymization), so most likely the name "
-                    "no longer exists in any field Lengow sends and cannot "
-                    "be recovered by re-importing. If this order still "
-                    "needs to be imported, its contact data must be "
-                    "recovered outside Lengow (marketplace back office, "
-                    "invoices, ...)."
-                ) % {
-                    "order_date": fields.Date.to_string(order_date.date()),
-                    "age_days": age_days,
-                }
+            message += _(
+                " Note that this order was placed on %(order_date)s, "
+                "%(age_days)s days ago. If it is an old order, the likely "
+                "cause is marketplace anonymization (GDPR): the buyer name "
+                "no longer exists in what Lengow sends and cannot be "
+                "recovered by re-importing. In that case, if the order "
+                "still needs to be imported, its contact data must be "
+                "recovered outside Lengow (marketplace back office, "
+                "invoices, ...)."
+            ) % {
+                "order_date": fields.Date.to_string(order_date.date()),
+                "age_days": (fields.Datetime.now() - order_date).days,
+            }
         raise ValidationError(message)
 
     @mapping
