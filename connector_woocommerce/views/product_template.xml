@@ -33,7 +33,7 @@
             <group name="extra_info" position="inside">
                 <field
                     name="woocommerce_enabled"
-                    readonly="woocommerce_enabled == True or woocommerce_bind_ids != []"
+                    readonly="woocommerce_enabled and woocommerce_bind_ids"
                 />
                 <field name="woocommerce_bind_ids" invisible="1" />
             </group>
