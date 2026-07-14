@@ -4,7 +4,7 @@
 
 {
     "name": "Sage-Odoo connector",
-    "version": "18.0.1.0.0",
+    "version": "18.0.1.0.1",
     "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
     "category": "Connector",
@@ -16,7 +16,9 @@
     ],
     "external_dependencies": {
         "python": [
-            "pymssql>=2.2.5,<2.3",
+            "pymssql<=2.2.5 ; python_version <= '3.10'",
+            "pymssql<=2.2.8 ; python_version < '3.12'",
+            "pymssql<=2.3.7 ; python_version >= '3.12'",
         ],
     },
     "data": [
