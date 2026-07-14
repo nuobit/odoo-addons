@@ -9,9 +9,9 @@
         <field name="model">account.tax.group</field>
         <field name="inherit_id" ref="account.view_tax_group_tree" />
         <field name="arch" type="xml">
-            <tree position="inside">
+            <list position="inside">
                 <field name="is_vat" />
-            </tree>
+            </list>
         </field>
     </record>
 </odoo>
