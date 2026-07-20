@@ -9,7 +9,9 @@ class ResPartner(models.Model):
     _inherit = "res.partner"
 
     def _check_email_mobile(self):
-        if self.env.context.get("skip_email_mobile_check"):
+        if self.env.context.get("skip_email_mobile_check") or self.env.context.get(
+            "install_module"
+        ):
             return
         for rec in self:
             if not rec.email and not rec.mobile:
