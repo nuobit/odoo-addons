@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- ************************************************************* -->
+    <!-- Fiscal Position Tax Templates -->
+    <!-- ************************************************************* -->
+    <!-- Mapping lines that plug the non-deductible family into the
+         official l10n_es fiscal positions, the same way
+         l10n_es_special_prorate plugs its prorate taxes. Until
+         14.0.1.1.0 of oxigen_l10n_es these lines lived there; the
+         terminal xml-id names are kept identical on purpose (see
+         data/account_tax_data.xml). -->
+
+    <!-- Intracomunitarios -->
+
+    <record id="fptt_intra_nd4s" model="account.fiscal.position.tax.template">
+        <field name="position_id" ref="l10n_es.fp_intra" />
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva4_nd" />
+        <field name="tax_dest_id" ref="account_tax_template_p_iva4nd_sp_in" />
+    </record>
+
+    <record id="fptt_intra_nd10s" model="account.fiscal.position.tax.template">
+        <field name="position_id" ref="l10n_es.fp_intra" />
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva10_nd" />
+        <field name="tax_dest_id" ref="account_tax_template_p_iva10nd_sp_in" />
+    </record>
+
+    <record id="fptt_intra_nd21s" model="account.fiscal.position.tax.template">
+        <field name="position_id" ref="l10n_es.fp_intra" />
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva0_nd" />
+        <field name="tax_dest_id" ref="account_tax_template_p_iva21nd_sp_in" />
+    </record>
+
+    <record id="fptt_intra_nd4b" model="account.fiscal.position.tax.template">
+        <field name="position_id" ref="l10n_es.fp_intra" />
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva4_nd" />
+        <field name="tax_dest_id" ref="account_tax_template_p_iva4nd_ic_bc" />
+    </record>
+
+    <record id="fptt_intra_nd10b" model="account.fiscal.position.tax.template">
+        <field name="position_id" ref="l10n_es.fp_intra" />
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva10_nd" />
+        <field name="tax_dest_id" ref="account_tax_template_p_iva10nd_ic_bc" />
+    </record>
+
+    <record id="fptt_intra_nd21b" model="account.fiscal.position.tax.template">
+        <field name="position_id" ref="l10n_es.fp_intra" />
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva0_nd" />
+        <field name="tax_dest_id" ref="account_tax_template_p_iva21nd_ic_bc" />
+    </record>
+
+    <record id="fptt_intra_nd4_inv" model="account.fiscal.position.tax.template">
+        <field name="position_id" ref="l10n_es.fp_intra" />
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva4_nd" />
+        <field name="tax_dest_id" ref="account_tax_template_p_iva4nd_ic_bi" />
+    </record>
+
+    <record id="fptt_intra_nd10_inv" model="account.fiscal.position.tax.template">
+        <field name="position_id" ref="l10n_es.fp_intra" />
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva10_nd" />
+        <field name="tax_dest_id" ref="account_tax_template_p_iva10nd_ic_bi" />
+    </record>
+
+    <record id="fptt_intra_nd21b_inv" model="account.fiscal.position.tax.template">
+        <field name="position_id" ref="l10n_es.fp_intra" />
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva0_nd" />
+        <field name="tax_dest_id" ref="account_tax_template_p_iva21nd_ic_bi" />
+    </record>
+
+
+    <!-- Retención IRPF 15% -->
+
+    <record id="fptt_irpf15_nd4_nd4" model="account.fiscal.position.tax.template">
+        <field name="position_id" ref="l10n_es.fp_irpf15" />
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva4_nd" />
+        <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_iva4_nd" />
+    </record>
+
+    <record id="fptt_irpf15_nd10_nd10" model="account.fiscal.position.tax.template">
+        <field name="position_id" ref="l10n_es.fp_irpf15" />
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva10_nd" />
+        <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_iva10_nd" />
+    </record>
+
+    <record id="fptt_irpf15_nd21_nd21" model="account.fiscal.position.tax.template">
+        <field name="position_id" ref="l10n_es.fp_irpf15" />
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva0_nd" />
+        <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_iva0_nd" />
+    </record>
+
+    <record id="fptt_irpf15_nd4_irpf15" model="account.fiscal.position.tax.template">
+        <field name="position_id" ref="l10n_es.fp_irpf15" />
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva4_nd" />
+        <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_irpf15" />
+    </record>
+
+    <record id="fptt_irpf15_nd10_irpf15" model="account.fiscal.position.tax.template">
+        <field name="position_id" ref="l10n_es.fp_irpf15" />
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva10_nd" />
+        <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_irpf15" />
+    </record>
+
+    <record id="fptt_irpf15_nd21_irpf15" model="account.fiscal.position.tax.template">
+        <field name="position_id" ref="l10n_es.fp_irpf15" />
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva0_nd" />
+        <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_irpf15" />
+    </record>
+
+</odoo>
