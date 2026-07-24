@@ -5,7 +5,7 @@
 {
     "name": "L10n ES Extension",
     "summary": "This module extends l10n_es",
-    "version": "14.0.3.0.0",
+    "version": "14.0.3.1.0",
     "category": "Accounting",
     "author": "NuoBiT Solutions, S.L.",
     "website": "https://github.com/nuobit/odoo-addons",
