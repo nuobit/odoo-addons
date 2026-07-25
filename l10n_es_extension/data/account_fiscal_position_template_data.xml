@@ -107,4 +107,90 @@
         <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_irpf15" />
     </record>
 
+
+    <!-- No sujeto por reglas de localización (TAI) -->
+    <!-- The official position only maps the deductible taxes; the
+         non-deductible family must fall to "no sujeto" the same way.
+         The 14.0.3.0.0 migration materializes these lines on the
+         positions of existing companies (template lines do not flow
+         down by themselves outside the chart wizard). -->
+
+    <!--     4% -->
+    <record id="fptt_not_subject_tai_nd4s" model="account.fiscal.position.tax.template">
+        <field name="position_id" ref="l10n_es.fp_not_subject_tai" />
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva4_nd" />
+        <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_iva0_ns" />
+    </record>
+
+    <record id="fptt_not_subject_tai_nd4b" model="account.fiscal.position.tax.template">
+        <field name="position_id" ref="l10n_es.fp_not_subject_tai" />
+        <field name="tax_src_id" ref="account_tax_template_p_iva4_nd_bc" />
+        <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_iva0_ns_b" />
+    </record>
+
+    <record
+        id="fptt_not_subject_tai_nd4_inv"
+        model="account.fiscal.position.tax.template"
+    >
+        <field name="position_id" ref="l10n_es.fp_not_subject_tai" />
+        <field name="tax_src_id" ref="account_tax_template_p_iva4_nd_bi" />
+        <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_iva0_ns_b" />
+    </record>
+
+    <!--     10% -->
+    <record
+        id="fptt_not_subject_tai_nd10s"
+        model="account.fiscal.position.tax.template"
+    >
+        <field name="position_id" ref="l10n_es.fp_not_subject_tai" />
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva10_nd" />
+        <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_iva0_ns" />
+    </record>
+
+    <record
+        id="fptt_not_subject_tai_nd10b"
+        model="account.fiscal.position.tax.template"
+    >
+        <field name="position_id" ref="l10n_es.fp_not_subject_tai" />
+        <field name="tax_src_id" ref="account_tax_template_p_iva10_nd_bc" />
+        <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_iva0_ns_b" />
+    </record>
+
+    <record
+        id="fptt_not_subject_tai_nd10_inv"
+        model="account.fiscal.position.tax.template"
+    >
+        <field name="position_id" ref="l10n_es.fp_not_subject_tai" />
+        <field name="tax_src_id" ref="account_tax_template_p_iva10_nd_bi" />
+        <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_iva0_ns_b" />
+    </record>
+
+    <!--     21% -->
+    <record
+        id="fptt_not_subject_tai_nd21s"
+        model="account.fiscal.position.tax.template"
+    >
+        <field name="position_id" ref="l10n_es.fp_not_subject_tai" />
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva0_nd" />
+        <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_iva0_ns" />
+    </record>
+
+    <record
+        id="fptt_not_subject_tai_nd21b"
+        model="account.fiscal.position.tax.template"
+    >
+        <field name="position_id" ref="l10n_es.fp_not_subject_tai" />
+        <field name="tax_src_id" ref="account_tax_template_p_iva0_nd_bc" />
+        <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_iva0_ns_b" />
+    </record>
+
+    <record
+        id="fptt_not_subject_tai_nd21_inv"
+        model="account.fiscal.position.tax.template"
+    >
+        <field name="position_id" ref="l10n_es.fp_not_subject_tai" />
+        <field name="tax_src_id" ref="account_tax_template_p_iva0_nd_bi" />
+        <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_iva0_ns_b" />
+    </record>
+
 </odoo>
