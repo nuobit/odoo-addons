@@ -370,8 +370,18 @@ ul.auto-toc {
 !! source digest: sha256:bbe734074653cf6dc868bf0095e337dfbb817d1d65b6aaf830681edc2cd4fe25
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 <p><a class="reference external image-reference" href="https://odoo-community.org/page/development-status"><img alt="Beta" src="https://img.shields.io/badge/maturity-Beta-yellow.png" /></a> <a class="reference external image-reference" href="http://www.gnu.org/licenses/agpl-3.0-standalone.html"><img alt="License: AGPL-3" src="https://img.shields.io/badge/licence-AGPL--3-blue.png" /></a> <a class="reference external image-reference" href="https://github.com/NuoBiT/odoo-addons/tree/18.0/l10n_es_extension"><img alt="NuoBiT/odoo-addons" src="https://img.shields.io/badge/github-NuoBiT%2Fodoo--addons-lightgray.png?logo=github" /></a></p>
+<p>This module extends l10n_es with generic pieces the official Spanish
+localization does not ship:</p>
 <ul class="simple">
-<li>This module extends l10n_es</li>
+<li>Split of the exempt output VAT into “con derecho a deducción” / “sin
+derecho a deducción” variants.</li>
+<li>The complete non-deductible input VAT family: goods variants (bienes
+corrientes / bienes de inversión) for the official 4%, 10% and 21%
+non-deductible templates, plus the intra-community and reverse-charge
+non-deductible cases, wired into the official intra-community and IRPF
+15 fiscal positions.</li>
+<li>VAT group flags (<tt class="docutils literal">is_vat</tt>) on the official tax groups and
+consistency checks on taxes and journal entries.</li>
 </ul>
 <p><strong>Table of contents</strong></p>
 <div class="contents local topic" id="contents">
@@ -408,6 +418,7 @@ If you spotted it first, help us to smash it by providing a detailed and welcome
 <li>Kilian Niubo <a class="reference external" href="mailto:kniubo&#64;nuobit.com">kniubo&#64;nuobit.com</a></li>
 <li>Bijaya Kumal <a class="reference external" href="mailto:bkumal&#64;nuobit.com">bkumal&#64;nuobit.com</a></li>
 <li>Deniz Gallo <a class="reference external" href="mailto:dgallo&#64;nuobit.com">dgallo&#64;nuobit.com</a></li>
+<li>Eric Antones <a class="reference external" href="mailto:eantones&#64;nuobit.com">eantones&#64;nuobit.com</a></li>
 </ul>
 </li>
 </ul>
