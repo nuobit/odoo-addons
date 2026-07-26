@@ -68,19 +68,19 @@
     <!-- Name overrides of the official templates. The official 21%
          template keeps the historical l10n_es xml-id p_iva0_nd. -->
     <record id="l10n_es.account_tax_template_p_iva4_nd" model="account.tax.template">
-        <field name="name">IVA Soportado no deducible 4% (servicios corrientes)</field>
+        <field name="name">4% IVA Soportado no deducible (servicios corrientes)</field>
     </record>
 
     <record id="l10n_es.account_tax_template_p_iva5_nd" model="account.tax.template">
-        <field name="name">IVA Soportado no deducible 5% (servicios corrientes)</field>
+        <field name="name">5% IVA Soportado no deducible (servicios corrientes)</field>
     </record>
 
     <record id="l10n_es.account_tax_template_p_iva10_nd" model="account.tax.template">
-        <field name="name">IVA Soportado no deducible 10% (servicios corrientes)</field>
+        <field name="name">10% IVA Soportado no deducible (servicios corrientes)</field>
     </record>
 
     <record id="l10n_es.account_tax_template_p_iva0_nd" model="account.tax.template">
-        <field name="name">IVA Soportado no deducible 21% (servicios corrientes)</field>
+        <field name="name">21% IVA Soportado no deducible (servicios corrientes)</field>
     </record>
 
     <!--     4% -->
