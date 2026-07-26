@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+<!-- Copyright NuoBiT Solutions SL (<https://www.nuobit.com>)
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="l10n_es_aeat_mod349.aeat_349_map_line_A" model="aeat.349.map.line">
         <field
-            name="tax_tmpl_ids"
+            name="tax_xmlid_ids"
             eval="[
-                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ic_bc')),
-                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ic_bc')),
-                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ic_bc')),
-                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_ic_bi')),
-                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_ic_bi')),
-                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_ic_bi')),
+                (4, ref('p_priva4_ic_bc')),
+                (4, ref('p_priva10_ic_bc')),
+                (4, ref('p_priva21_ic_bc')),
+                (4, ref('p_priva4_ic_bi')),
+                (4, ref('p_priva10_ic_bi')),
+                (4, ref('p_priva21_ic_bi')),
             ]"
         />
     </record>
     <record id="l10n_es_aeat_mod349.aeat_349_map_line_I" model="aeat.349.map.line">
         <field
-            name="tax_tmpl_ids"
+            name="tax_xmlid_ids"
             eval="[
-                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva4_sp_in')),
-                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva10_sp_in')),
-                (4, ref('l10n_es_special_prorate.account_tax_template_p_priva21_sp_in')),
+                (4, ref('p_priva4_sp_in')),
+                (4, ref('p_priva10_sp_in')),
+                (4, ref('p_priva21_sp_in')),
             ]"
         />
     </record>
