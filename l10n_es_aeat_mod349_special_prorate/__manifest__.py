@@ -5,9 +5,9 @@
 {
     "name": "Special prorate tax mapping for 349",
     "summary": "This module adds special prorate template taxes to the 349 model mapping",
-    "version": "14.0.1.0.0",
+    "version": "16.0.1.0.0",
     "category": "Accounting",
-    "author": "NuoBiT Solutions, S.L.",
+    "author": "NuoBiT Solutions SL",
     "website": "https://github.com/nuobit/odoo-addons",
     "license": "AGPL-3",
     "depends": [
