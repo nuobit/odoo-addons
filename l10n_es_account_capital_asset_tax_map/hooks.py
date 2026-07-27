@@ -22,11 +22,6 @@ def post_init_hook(env):
     with file_open(_TEMPLATE_FILE) as template_file:
         records = list(csv.DictReader(template_file))
     for company in companies:
-        existing = env["l10n.es.account.capital.asset.map.tax"].search_count(
-            [("company_id", "=", company.id)]
-        )
-        if existing:
-            continue
         for record in records:
             tax_src = env.ref(
                 f"account.{company.id}_{record['tax_src_id']}",
@@ -37,6 +32,14 @@ def post_init_hook(env):
                 raise_if_not_found=False,
             )
             if not tax_src or not tax_dest:
+                continue
+            if env["l10n.es.account.capital.asset.map.tax"].search_count(
+                [
+                    ("company_id", "=", company.id),
+                    ("tax_src_id", "=", tax_src.id),
+                    ("tax_dest_id", "=", tax_dest.id),
+                ]
+            ):
                 continue
             env["l10n.es.account.capital.asset.map.tax"].create(
                 {
