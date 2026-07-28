@@ -5,6 +5,7 @@
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
+from odoo.osv import expression
 
 
 class AccountAsset(models.Model):
@@ -14,6 +15,7 @@ class AccountAsset(models.Model):
         string="VAT Tax",
         comodel_name="account.tax",
         compute="_compute_vat_tax_id",
+        search="_search_vat_tax_id",
     )
 
     @api.depends("tax_ids", "tax_ids.tax_group_id", "tax_ids.tax_group_id.is_vat")
@@ -25,6 +27,38 @@ class AccountAsset(models.Model):
                     _("Asset has more than 1 VAT tax. Please, review the taxes")
                 )
             rec.vat_tax_id = taxes._origin
+
+    @api.model
+    def _search_vat_tax_id(self, operator, value):
+        if operator not in ("=", "!=", "in", "not in"):
+            raise NotImplementedError(
+                _("Unsupported operator %s for VAT tax search") % operator
+            )
+
+        is_negative = operator in ("!=", "not in")
+
+        if operator in ("=", "!=") and not value:
+            domain = [("tax_ids.tax_group_id.is_vat", "=", True)]
+            return domain if is_negative else [expression.NOT_OPERATOR] + domain
+
+        value_ids = value.ids if hasattr(value, "ids") else value
+        if isinstance(value_ids, int):
+            value_ids = [value_ids]
+
+        if not value_ids:
+            return expression.TRUE_DOMAIN if is_negative else expression.FALSE_DOMAIN
+
+        vat_taxes = (
+            self.env["account.tax"]
+            .browse(value_ids)
+            .exists()
+            .filtered(lambda t: t.tax_group_id.is_vat)
+        )
+        if not vat_taxes:
+            return expression.TRUE_DOMAIN if is_negative else expression.FALSE_DOMAIN
+
+        domain = [("tax_ids", "in", vat_taxes.ids)]
+        return [expression.NOT_OPERATOR] + domain if is_negative else domain
 
     vat_tax_amount = fields.Float(
         string="VAT Tax Amount",
