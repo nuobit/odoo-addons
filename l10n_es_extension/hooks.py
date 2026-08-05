@@ -8,6 +8,10 @@ from odoo.tools import file_open
 
 
 def _get_nd_tax_data(chart_template):
+    # The parent-chain walk of _parse_csv reads every file of the module on
+    # the es_common_mainland lineage: account.tax-es_common.csv (per-field
+    # invoice_label overrides of the official taxes; partial rows) and
+    # account.tax-es_common_mainland.csv (the ND family definitions).
     tax_data = chart_template._parse_csv(
         "es_common_mainland",
         "account.tax",
@@ -114,6 +118,12 @@ def post_init_hook(env):
         # already instantiated under the account.<company>_<template> xml-ids).
         for xmlid in list(tax_data):
             if ChartTemplate.ref(xmlid, raise_if_not_found=False):
+                del tax_data[xmlid]
+            elif "name" not in tax_data[xmlid]:
+                # Partial rows (the invoice_label overrides of the official
+                # taxes) are merge payloads for the template framework; when
+                # the referenced tax is missing in this database they must
+                # never become create payloads.
                 del tax_data[xmlid]
         if tax_data:
             ChartTemplate._load_data({"account.tax": tax_data})
