@@ -12,7 +12,12 @@ class AccountChartTemplate(models.AbstractModel):
     _inherit = "account.chart.template"
 
     @template("es_common_mainland", "account.tax")
-    def _get_es_common_mainland_template_data(self):
+    def _get_es_common_mainland_prorate_tax_data(self):
+        # The method name must be unique across every account.chart.template
+        # class: the template register resolves functions with getmembers on
+        # the registry class, so a homonym of another module's method (here
+        # l10n_es's _get_es_common_mainland_template_data) shadows it and
+        # silently drops its data from the register.
         return _get_prorate_tax_data(self)
 
     def _post_load_data(self, template_code, company, template_data):
