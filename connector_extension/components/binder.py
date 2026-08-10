@@ -20,7 +20,6 @@ from contextlib import contextmanager
 
 import psycopg2
 
-import odoo
 from odoo import _, fields, models
 from odoo.exceptions import ValidationError
 from odoo.osv import expression
@@ -97,7 +96,7 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
             if not isinstance(_id, (tuple | list)):
                 _id = [_id]
             fields = self.get_id_fields(in_field=in_field, alt_field=alt_field)
-            return dict(zip(fields, _id, strict=True))
+            return dict(zip(fields, _id, strict=False))
         else:
             return None
 
@@ -280,7 +279,6 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
                     **self.id2dict(external_id, in_field=True),
                 }
             )
-        self.env.cr.commit()  # pylint: disable=E8102
 
     def _prepare_binding_export_values(self, relation, external_data):
         external_id = self.dict2id(external_data, in_field=False)
@@ -313,13 +311,6 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
         with self._retry_unique_violation():
             values = self._prepare_binding_export_values(relation, external_data)
             binding = self.model.with_context(connector_no_export=True).create(values)
-            # Eager commit to avoid having 2 jobs
-            # exporting at the same time. The constraint
-            # will pop if an other job already created
-            # the same binding. It will be caught and
-            # raise a RetryableJobError.
-            if not odoo.tools.config["test_enable"]:
-                self.env.cr.commit()  # pylint: disable=E8102
             return binding
 
     def _additional_external_binding_fields(self, external_data, relation):
@@ -478,8 +469,6 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
         :param relation: odoo object, not a binding and without binding
         :return: binding
         """
-        export_mapper = self.component(usage="export.mapper")
-        mapper_external_data = export_mapper.map_record(relation)
         ext_alt_id = getattr(self, self._external_alt_field, None)
         if not ext_alt_id:
             id_values = {}
@@ -487,6 +476,8 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
             if isinstance(ext_alt_id, str):
                 ext_alt_id = [ext_alt_id]
 
+            export_mapper = self.component(usage="export.mapper")
+            mapper_external_data = export_mapper.map_record(relation)
             id_fields = mapper_external_data._mapper.get_target_fields(
                 mapper_external_data, fields=ext_alt_id
             )
@@ -550,7 +541,7 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
                     import_mapper_exists = False
                 if not import_mapper_exists:
                     binding = self.bind_export(record, relation)
-                    binding[self._sync_date_field] = fields.Datetime.now()
+                    # binding[self._sync_date_field] = fields.Datetime.now()
             if not binding:
                 raise InvalidDataError(
                     f"The binding with external id {external_id} "
@@ -576,9 +567,9 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
         external_id = self.to_external(relation, wrap=False)
         if check_external_id:
             assert external_id, (
-                f"Unexpected error on {relation._name}:"
-                "The backend id cannot be obtained."
-                "At this stage, the backend record should have "
+                f"Error on {relation._name}:"
+                "The external id cannot be obtained."
+                "At this stage, the external record should have "
                 "been already linked via "
                 "._export_dependencies. "
             )
