@@ -504,8 +504,21 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
             # TODO: check if we can put this in a hook
             external_alt_id = self.dict2id(id_values, in_field=False, alt_field=True)
             if self.is_id_null(external_alt_id):
-                return self.model
+                record = self._get_external_record_alt_fallback(relation, id_values)
+                return self._to_binding_from_external_record(relation, record)
         record = self._get_external_record_alt(relation, id_values)
+        return self._to_binding_from_external_record(relation, record)
+
+    def _get_external_record_alt_fallback(self, relation, id_values):
+        """Hook called when the external alternate key is incomplete (some
+        of its fields are null) and the external record cannot be searched
+        directly. Override it to find the external record by indirect means.
+        By default it returns no record, keeping the standard behaviour:
+        the record will be created on the external system.
+        """
+        return {}
+
+    def _to_binding_from_external_record(self, relation, record):
         if record:
             external_id = self.dict2id(record, in_field=False)
             binding = self.wrap_record(relation)
@@ -513,9 +526,9 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
                 current_external_id = self.to_external(binding)
                 if current_external_id != external_id:
                     raise InvalidDataError(
-                        f"More than one external records found. "
-                        f"The alternate external id field '{ext_alt_id}'"
-                        f" is not unique in the backend"
+                        f"Integrity error: The current external_id "
+                        f"'{current_external_id}' should be the same as the "
+                        f"one we are trying to assign '{external_id}'"
                     )
                 _logger.debug("%d already binded to Backend", binding)
             else:
