@@ -41,15 +41,21 @@ class WooCommerceProductProductBinder(Component):
     def _get_external_record_alt(self, relation, id_values):
         res = super()._get_external_record_alt(relation, id_values)
         if res:
-            relation_wp_lang = self.env["res.lang"]._get_wpml_code_from_iso_code(
-                relation.env.context.get("lang")
-            )
-            if res.get("lang") != relation_wp_lang:
-                if res.get("translations") and res["translations"].get(
-                    relation_wp_lang
-                ):
-                    adapter = self.component(usage="backend.adapter")
-                    res = adapter.read(res["translations"][relation_wp_lang])
-                else:
-                    return None
+            res = self._wpml_redirect_record_lang(relation, res)
         return res
+
+    def _get_external_record_alt_fallback(self, relation, id_values):
+        record = super()._get_external_record_alt_fallback(relation, id_values)
+        if record:
+            record = self._wpml_redirect_record_lang(relation, record)
+        return record or {}
+
+    def _wpml_read_translation(self, relation, record, translation_id):
+        # A variation is read under its parent product: resolve the parent
+        # for the requested language through the template binding.
+        template_binder = self.binder_for("woocommerce.product.template")
+        template_binding = template_binder.wrap_record(relation.product_tmpl_id)
+        if not template_binding:
+            return None
+        adapter = self.component(usage="adapter")
+        return adapter.read([template_binding.woocommerce_idproduct, translation_id])
