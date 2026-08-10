@@ -26,6 +26,29 @@ class WooCommerceProductTemplateBinder(Component):
     def internal_alt_id(self):
         return ["default_code"]
 
+    def _get_external_record_alt_fallback(self, relation, id_values):
+        # A variable product template carries no SKU of its own on WooCommerce
+        # (the SKUs belong to its variations), so it can never be found through
+        # the alternate key. Derive the external parent product through one of
+        # its variations instead.
+        if not relation.has_attributes:
+            return super()._get_external_record_alt_fallback(relation, id_values)
+        adapter = self.component(usage="adapter")
+        variants = relation.with_context(active_test=False).product_variant_ids
+        for binding in variants.woocommerce_bind_ids.filtered(
+            lambda x: x.backend_id == self.backend_record
+        ):
+            if binding.woocommerce_idparent:
+                return adapter.read(binding.woocommerce_idparent)
+        variation_adapter = self.component(
+            usage="adapter", model_name="woocommerce.product.product"
+        )
+        for sku in variants.filtered("default_code").mapped("default_code"):
+            for variation in variation_adapter.search_read([("sku", "=", sku)]):
+                if variation.get("parent_id"):
+                    return adapter.read(variation["parent_id"])
+        return super()._get_external_record_alt_fallback(relation, id_values)
+
     # def _additional_external_binding_fields(self, external_data, relation):
     #     return {
     #         **super()._additional_external_binding_fields(external_data, relation),
