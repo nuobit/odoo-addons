@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <template id="report_picking" inherit_id="stock.report_picking">
+        <xpath expr="//tr[@t-as='ml']" position="attributes">
+            <attribute
+                name="t-foreach"
+            >o.move_line_ids_without_package.location_sorted()</attribute>
+        </xpath>
+    </template>
+</odoo>
