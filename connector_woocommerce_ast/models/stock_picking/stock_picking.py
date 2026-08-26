@@ -1,0 +1,25 @@
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+
+from odoo import fields, models
+
+
+class StockPicking(models.Model):
+    _inherit = "stock.picking"
+
+    woocommerce_stock_picking_state = fields.Selection(
+        selection_add=[
+            ("delivered", "Delivered"),
+        ],
+    )
+
+    def _get_woocommerce_stock_picking_state(self):
+        self.ensure_one()
+        woocommerce_stock_picking_state = super()._get_woocommerce_stock_picking_state()
+        if (
+            woocommerce_stock_picking_state == "done"
+            and self.delivery_state == "customer_delivered"
+        ):
+            woocommerce_stock_picking_state = "delivered"
+        return woocommerce_stock_picking_state
