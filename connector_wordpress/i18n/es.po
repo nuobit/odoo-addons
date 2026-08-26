@@ -1,0 +1,562 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* connector_wordpress
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-16 09:55+0000\n"
+"PO-Revision-Date: 2024-10-16 09:55+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: connector_wordpress
+#: model:ir.model.constraint,message:connector_wordpress.constraint_wordpress_binding_internal_uniq
+#: model:ir.model.constraint,message:connector_wordpress.constraint_wordpress_ir_attachment_internal_uniq
+msgid "A binding already exists with the same External (odoo_id) ID."
+msgstr "Existe un enlace con el mismo ID externo (odoo_id)."
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__access_token
+msgid "Access Token"
+msgstr "Token de acceso"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__active
+msgid "Active"
+msgstr "Activo"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_product_image__alternate_text
+msgid "Alternate Text"
+msgstr "Texto alternativo"
+
+#. module: connector_wordpress
+#: model_terms:ir.ui.view,arch_db:connector_wordpress.view_product_image_form
+msgid "Alternate text"
+msgstr "Texto alternativo"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__application_password
+msgid "Application Password"
+msgstr "Contraseña de la aplicación"
+
+#. module: connector_wordpress
+#: model_terms:ir.ui.view,arch_db:connector_wordpress.wordpress_backend_view_form
+msgid "Archived"
+msgstr "Archivado"
+
+#. module: connector_wordpress
+#: model:ir.actions.act_window,name:connector_wordpress.wordpress_ir_attachment_action
+#: model:ir.model,name:connector_wordpress.model_ir_attachment
+msgid "Attachment"
+msgstr "Archivo adjunto"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__local_url
+msgid "Attachment URL"
+msgstr "URL del archivo adjunto"
+
+#. module: connector_wordpress
+#: model:ir.ui.menu,name:connector_wordpress.wordpress_backend_menu_action
+msgid "Backends"
+msgstr ""
+
+#. module: connector_wordpress
+#: model_terms:ir.ui.view,arch_db:connector_wordpress.wordpress_backend_view_form
+msgid "Check Connection"
+msgstr "Comprobar conexión"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__checksum
+msgid "Checksum/SHA1"
+msgstr ""
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__chunk_size
+msgid "Chunk Size"
+msgstr "Tamaño del Chunk"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__company_id
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__company_id
+msgid "Company"
+msgstr "Compañía"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__create_uid
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__create_date
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__db_datas
+msgid "Database Data"
+msgstr "Datos de la base de datos"
+
+#. module: connector_wordpress
+#: model_terms:ir.ui.view,arch_db:connector_wordpress.wordpress_backend_view_form
+msgid "Debug"
+msgstr "Depurar"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__description
+msgid "Description"
+msgstr "Descripción"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_ir_attachment__display_name
+#: model:ir.model.fields,field_description:connector_wordpress.field_product_document__display_name
+#: model:ir.model.fields,field_description:connector_wordpress.field_product_image__display_name
+#: model:ir.model.fields,field_description:connector_wordpress.field_product_product__display_name
+#: model:ir.model.fields,field_description:connector_wordpress.field_product_template__display_name
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__display_name
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_binding__display_name
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: connector_wordpress
+#: code:addons/connector_wordpress/models/common/tools.py:0
+#: code:addons/connector_wordpress/models/common/tools.py:0
+#: code:addons/connector_wordpress/models/common/tools.py:0
+#, python-format
+msgid "Duplicated field %s"
+msgstr "Campo duplicado %s"
+
+#. module: connector_wordpress
+#: model:ir.ui.menu,name:connector_wordpress.wordpress_external_objects_menu
+msgid "External Objects"
+msgstr "Objetos externos"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__datas
+msgid "File Content (base64)"
+msgstr "Contenido del archivo (base64)"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__raw
+msgid "File Content (raw)"
+msgstr "Contenido del archivo (raw)"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__file_size
+msgid "File Size"
+msgstr "Tamaño del archivo"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_ir_attachment__id
+#: model:ir.model.fields,field_description:connector_wordpress.field_product_document__id
+#: model:ir.model.fields,field_description:connector_wordpress.field_product_image__id
+#: model:ir.model.fields,field_description:connector_wordpress.field_product_product__id
+#: model:ir.model.fields,field_description:connector_wordpress.field_product_template__id
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__id
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_binding__id
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__id
+msgid "ID"
+msgstr ""
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__wordpress_idattachment
+msgid "ID Attachment"
+msgstr "ID del adjunto"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,help:connector_wordpress.field_wordpress_backend__test_database
+msgid ""
+"If a test database is being used, the attachments routes can be empty.This "
+"check allow to avoid the error of not finding the image and don't raise an "
+"error."
+msgstr ""
+"Si se está utilizando una base de datos de prueba, las rutas de los "
+"adjuntos pueden estar vacías. Esta comprobación permite evitar el error de "
+"no encontrar la imagen y no generar un error."
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__image_height
+msgid "Image Height"
+msgstr "Altura de la imagen"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__image_src
+msgid "Image Src"
+msgstr "Fuente de la imagen"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__image_width
+msgid "Image Width"
+msgstr "Ancho de la imagen"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__index_content
+msgid "Indexed Content"
+msgstr "Contenido indexado"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__odoo_id
+msgid "Ir Attachment"
+msgstr ""
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__public
+msgid "Is public document"
+msgstr "Es un documento público"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__key
+msgid "Key"
+msgstr "Clave"
+
+#. module: connector_wordpress
+#: code:addons/connector_wordpress/models/common/tools.py:0
+#, python-format
+msgid "Key %s already exists"
+msgstr "La clave %s ya existe"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_ir_attachment____last_update
+#: model:ir.model.fields,field_description:connector_wordpress.field_product_document____last_update
+#: model:ir.model.fields,field_description:connector_wordpress.field_product_image____last_update
+#: model:ir.model.fields,field_description:connector_wordpress.field_product_product____last_update
+#: model:ir.model.fields,field_description:connector_wordpress.field_product_template____last_update
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend____last_update
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_binding____last_update
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment____last_update
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__write_uid
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__write_uid
+msgid "Last Updated by"
+msgstr "Ultima actualización por"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__write_date
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_binding__sync_date
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__sync_date
+msgid "Last synchronization date"
+msgstr "Última fecha de sincronización"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__mimetype
+msgid "Mime Type"
+msgstr "Tipo Mime"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,help:connector_wordpress.field_wordpress_backend__sync_offset
+msgid ""
+"Minutes to start the synchronization before(negative)/after(positive) the "
+"last one"
+msgstr ""
+"Minutos para iniciar la sincronización antes(negativo)/después(positivo) de "
+"la última"
+
+#. module: connector_wordpress
+#: code:addons/connector_wordpress/models/common/tools.py:0
+#, python-format
+msgid "Multiple values found for '%s'"
+msgstr "Se encontraron varios valores para '%s'"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__name
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: connector_wordpress
+#: code:addons/connector_wordpress/models/common/tools.py:0
+#, python-format
+msgid "Not equal operation not supported for non boolean fields"
+msgstr "Operación no igual no soportada para campos no booleanos"
+
+#. module: connector_wordpress
+#: code:addons/connector_wordpress/models/common/tools.py:0
+#, python-format
+msgid "Operator %s not supported"
+msgstr "Operador %s no soportado"
+
+#. module: connector_wordpress
+#: code:addons/connector_wordpress/models/common/tools.py:0
+#, python-format
+msgid "Operator '%(OPERATOR)s' only supports tuples or lists, not %(TYPES)s"
+msgstr "Operador '%(OPERATOR)s' solo soporta tuplas o listas, no %(TYPES)s"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__original_id
+msgid "Original (unoptimized, unresized) attachment"
+msgstr "Adjunto original (no optimizado, no redimensionado)"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__page_size
+msgid "Page Size"
+msgstr "Tamaño de página"
+
+#. module: connector_wordpress
+#: model:ir.model,name:connector_wordpress.model_product_product
+msgid "Product"
+msgstr "Producto"
+
+#. module: connector_wordpress
+#: model:ir.model,name:connector_wordpress.model_product_document
+msgid "Product Document"
+msgstr "Documento del producto"
+
+#. module: connector_wordpress
+#: model:ir.model,name:connector_wordpress.model_product_image
+msgid "Product Image"
+msgstr "Imagen del producto"
+
+#. module: connector_wordpress
+#: model:ir.model,name:connector_wordpress.model_product_template
+msgid "Product Template"
+msgstr "Plantilla de producto"
+
+#. module: connector_wordpress
+#: model_terms:ir.ui.view,arch_db:connector_wordpress.wordpress_backend_view_form
+msgid "Reset To draft Connection"
+msgstr "Restablecer a conexión de borrador"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__res_field
+msgid "Resource Field"
+msgstr "Campo de recurso"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__res_id
+msgid "Resource ID"
+msgstr "ID de recurso"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__res_model
+msgid "Resource Model"
+msgstr "Modelo de recurso"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__res_name
+msgid "Resource Name"
+msgstr "Nombre de recurso"
+
+#. module: connector_wordpress
+#: model_terms:ir.ui.view,arch_db:connector_wordpress.wordpress_ir_attachment_view_tree
+msgid "Resynchronize"
+msgstr "Resincronizar"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__wordpress_source_url
+msgid "Source URL"
+msgstr "URL de origen"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__state
+msgid "State"
+msgstr "Estado"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__store_fname
+msgid "Stored Filename"
+msgstr "Nombre de archivo almacenado"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__sync_offset
+msgid "Sync Offset"
+msgstr ""
+
+#. module: connector_wordpress
+#: model:ir.model.fields,help:connector_wordpress.field_wordpress_ir_attachment__key
+msgid ""
+"Technical field used to resolve multiple attachments in a multi-website "
+"environment."
+msgstr ""
+"Campo técnico usado para resolver múltiples adjuntos en un entorno multi-"
+"sitio web."
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__test_database
+msgid "Test Database"
+msgstr "Testear base de datos"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,help:connector_wordpress.field_wordpress_ir_attachment__res_model
+msgid "The database object this attachment will be attached to."
+msgstr "La base de datos del objeto al que se adjuntará este adjunto."
+
+#. module: connector_wordpress
+#: model:ir.model.fields,help:connector_wordpress.field_wordpress_ir_attachment__res_id
+msgid "The record id this is attached to."
+msgstr "El ID de registro al que está adjunto."
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__theme_template_id
+msgid "Theme Template"
+msgstr "Plantilla de tema"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,help:connector_wordpress.field_wordpress_backend__page_size
+msgid ""
+"This field is used in order to define the number of records imported at the "
+"same time."
+msgstr ""
+"Este campo se usa para definir el número de registros importados al mismo "
+"tiempo."
+
+#. module: connector_wordpress
+#: model:ir.model.fields,help:connector_wordpress.field_wordpress_backend__tz
+msgid "This field is used to define in which timezone the backend will work."
+msgstr "Este campo se usa para definir en qué zona horaria trabajará el backend."
+
+#. module: connector_wordpress
+#: model:ir.model.fields,help:connector_wordpress.field_wordpress_backend__chunk_size
+msgid ""
+"This field is used to define the chunk size to import from the backend."
+msgstr ""
+"Este campo se usa para definir el tamaño del fragmento a importar desde el "
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__tz
+msgid "Timezone"
+msgstr "Zona horaria"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_product_image__title
+msgid "Title"
+msgstr "Título"
+
+#. module: connector_wordpress
+#: model_terms:ir.ui.view,arch_db:connector_wordpress.view_product_image_form
+msgid "Tittle"
+msgstr "Título"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__type
+msgid "Type"
+msgstr "Tipo"
+
+#. module: connector_wordpress
+#: code:addons/connector_wordpress/models/common/tools.py:0
+#, python-format
+msgid "Type {} not supported for operator {}"
+msgstr "Tipo {} no soportado para el operador {}"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__url
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__url
+msgid "Url"
+msgstr ""
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__username
+msgid "Username"
+msgstr "Nombre de usuario"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,help:connector_wordpress.field_wordpress_backend__verify_ssl
+msgid "Verify SSL certificate of the WordPress server."
+msgstr "Verificar el certificado SSL del servidor de WordPress."
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__verify_ssl
+msgid "Verify Ssl"
+msgstr "Verificar SSL"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_backend__version
+msgid "Version"
+msgstr ""
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__website_id
+msgid "Website"
+msgstr ""
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__website_url
+msgid "Website URL"
+msgstr ""
+
+#. module: connector_wordpress
+#: model:ir.ui.menu,name:connector_wordpress.wordpress_menu_root
+msgid "WordPress"
+msgstr ""
+
+#. module: connector_wordpress
+#: model:ir.model,name:connector_wordpress.model_wordpress_backend
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_binding__backend_id
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__backend_id
+#: model_terms:ir.ui.view,arch_db:connector_wordpress.wordpress_backend_view_form
+msgid "WordPress Backend"
+msgstr ""
+
+#. module: connector_wordpress
+#: model:ir.actions.act_window,name:connector_wordpress.wordpress_backend_action
+msgid "WordPress Backends"
+msgstr ""
+
+#. module: connector_wordpress
+#: model:ir.model,name:connector_wordpress.model_wordpress_binding
+msgid "WordPress Binding"
+msgstr ""
+
+#. module: connector_wordpress
+#: model:ir.model.fields,field_description:connector_wordpress.field_ir_attachment__wordpress_bind_ids
+#: model:ir.model.fields,field_description:connector_wordpress.field_mrp_document__wordpress_bind_ids
+#: model:ir.model.fields,field_description:connector_wordpress.field_wordpress_ir_attachment__wordpress_bind_ids
+msgid "WordPress Bindings"
+msgstr ""
+
+#. module: connector_wordpress
+#: model_terms:ir.ui.view,arch_db:connector_wordpress.wordpress_ir_attachment_view_form
+msgid "WordPress Ir Attachment"
+msgstr ""
+
+#. module: connector_wordpress
+#: model:ir.model,name:connector_wordpress.model_wordpress_ir_attachment
+msgid "WordPress Ir Attachment Binding"
+msgstr ""
+
+#. module: connector_wordpress
+#: model:ir.model.fields,help:connector_wordpress.field_wordpress_backend__url
+msgid "WordPress URL"
+msgstr ""
+
+#. module: connector_wordpress
+#: model:ir.model.fields,help:connector_wordpress.field_wordpress_backend__username
+msgid "WordPress Username"
+msgstr "WordPress Nombre de usuario"
+
+#. module: connector_wordpress
+#: code:addons/connector_wordpress/models/common/tools.py:0
+#, python-format
+msgid "Wrong domain clause format %s"
+msgstr "Incorrecto formato de cláusula de dominio %s"
+
+#. module: connector_wordpress
+#: model:ir.model.fields,help:connector_wordpress.field_wordpress_ir_attachment__type
+msgid ""
+"You can either upload a file from your computer or copy/paste an internet "
+"link to your file."
+msgstr ""
+"Puede cargar un archivo desde su computadora o copiar/pegar un enlace de "
+"internet a su archivo."
+
+#. module: connector_wordpress
+#: code:addons/connector_wordpress/models/ir_attachment/ir_attachment.py:0
+#, python-format
+msgid "it should always return a dictionary"
+msgstr "debería siempre devolver un diccionario"
