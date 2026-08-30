@@ -2,7 +2,7 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import _, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -19,6 +19,13 @@ class ProductTemplate(models.Model):
             rec.oxigesti_product_variant_bind_ids = rec.with_context(
                 active_test=False
             ).product_variant_ids.oxigesti_bind_ids
+
+    # TODO: Review move the default_code logic (required) in a separate module.
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        records._compute_default_code()
+        return records
 
     def write(self, vals):
         if "default_code" in vals:
