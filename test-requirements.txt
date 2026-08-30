@@ -1,0 +1,2 @@
+odoo-addon-web_login_default_logo@git+https://github.com/nuobit/odoo-addons.git@refs/pull/647/head#subdirectory=web_login_default_logo
+odoo-addon-website_erp_login@git+https://github.com/nuobit/odoo-addons.git@refs/pull/749/head#subdirectory=website_erp_login
