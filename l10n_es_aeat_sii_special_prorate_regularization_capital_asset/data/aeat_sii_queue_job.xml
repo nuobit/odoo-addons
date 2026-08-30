@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="capital_asset_validate_sii" model="queue.job.channel">
+        <field name="name">root.capital_asset_validate_sii</field>
+        <field name="parent_id" ref="queue_job.channel_root" />
+    </record>
+    <record
+        id="job_function_confirm_one_capital_asset_prorate_line"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="l10n_es_aeat_sii_special_prorate_regularization_capital_asset.model_capital_asset_prorate_regularization"
+        />
+        <field name="method">confirm_one_capital_asset_prorate_line</field>
+        <field name="channel_id" ref="capital_asset_validate_sii" />
+    </record>
+    <record
+        id="job_function_cancel_one_capital_asset_prorate_line"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="l10n_es_aeat_sii_special_prorate_regularization_capital_asset.model_capital_asset_prorate_regularization"
+        />
+        <field name="method">cancel_one_capital_asset_prorate_line</field>
+        <field name="channel_id" ref="capital_asset_validate_sii" />
+    </record>
+</odoo>
