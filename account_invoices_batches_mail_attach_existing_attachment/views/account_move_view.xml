@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<!---->
+<odoo>
+    <record id="invoice_form" model="ir.ui.view">
+        <field name="name">account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account_invoice_batches.invoice_form" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='invoice_batch_email_partner_id']"
+                position="attributes"
+            >
+                <attribute
+                    name="invisible"
+                >invoice_batch_sending_method not in ('email', 'emailattachments')
+                </attribute>
+                <attribute name="required">
+                   invoice_batch_sending_method in ('email', 'emailattachments')
+                </attribute>
+                <attribute name="readonly">
+                   is_move_sent == True
+                </attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
