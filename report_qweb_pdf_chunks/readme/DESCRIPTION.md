@@ -1,0 +1,1 @@
+This module temporarily splits all selected documents to print into chunks and invokes the external Wkhtmltopdf (0.12.5) program for each chunk to avoid the well known memory problems when printing many documents.
