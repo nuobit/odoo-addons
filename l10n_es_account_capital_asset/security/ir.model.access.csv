@@ -1,0 +1,5 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_l10n_es_account_capital_asset_type_user","Account capital asset type - Account User","model_l10n_es_account_capital_asset_type","account.group_account_invoice",1,0,0,0
+"access_l10n_es_account_capital_asset_type_manager","Account capital asset type - Account Manager","model_l10n_es_account_capital_asset_type","account.group_account_manager",1,1,1,1
+"access_l10n_es_account_capital_asset_map_tax_user","Account capital asset - Account User","model_l10n_es_account_capital_asset_map_tax","account.group_account_invoice",1,0,0,0
+"access_l10n_es_account_capital_asset_map_tax_manager","Account capital asset - Account Manager","model_l10n_es_account_capital_asset_map_tax","account.group_account_manager",1,1,1,1
