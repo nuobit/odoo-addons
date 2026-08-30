@@ -1,0 +1,18 @@
+# Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+
+from odoo import api, fields, models
+
+
+class ResPartner(models.Model):
+    _inherit = "res.partner"
+
+    @api.model
+    def _default_company(self):
+        return (
+            not self.env.context.get("company_creation", False)
+            and self.env.company
+            or self.env["res.company"]
+        )
+
+    company_id = fields.Many2one(default=_default_company)
