@@ -14,9 +14,9 @@
                 <button
                     name="get_calculated_assets"
                     type="object"
-                    help="Show asset items"
-                    aria-label="Show asset items"
-                    title="Show asset items"
+                    help="Show Legacy Assets"
+                    aria-label="Show Legacy Assets"
+                    title="Show Legacy Assets"
                     icon="fa-search-plus"
                     attrs="{'invisible':['|',('field_number','!=', 43),('mod303_period_type','not in',('4T','12'))]}"
                 />
