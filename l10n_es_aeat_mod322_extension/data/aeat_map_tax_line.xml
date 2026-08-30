@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record
+        id="l10n_es_aeat_mod322.aeat_mod322_2023_map_line_83"
+        model="l10n.es.aeat.map.tax.line"
+    >
+        <field
+            name="tax_xmlid_ids"
+            eval="[(3, ref('l10n_es_aeat_mod322.s_iva0')), (4, ref('s_iva0_sdd'))]"
+        />
+    </record>
+    <record
+        id="l10n_es_aeat_mod322.aeat_mod322_2024_10_map_line_83"
+        model="l10n.es.aeat.map.tax.line"
+    >
+        <field
+            name="tax_xmlid_ids"
+            eval="[(3, ref('l10n_es_aeat_mod322.s_iva0')), (4, ref('s_iva0_sdd'))]"
+        />
+    </record>
+</odoo>
