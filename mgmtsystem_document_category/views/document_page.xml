@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dev1@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+
+    <record id="view_wiki_form" model="ir.ui.view">
+        <field name="name">document.page.form - mgmtsystem category type</field>
+        <field name="model">document.page</field>
+        <field name="inherit_id" ref="document_page.view_wiki_form" />
+        <field name="arch" type="xml">
+            <field name="parent_id" position="after">
+                <field
+                    name="mgmtsystem_category_type"
+                    attrs="{'invisible': [('type', '!=', 'category')]}"
+                />
+            </field>
+        </field>
+    </record>
+
+    <record id="view_category_form" model="ir.ui.view">
+        <field
+            name="name"
+        >document.page.category.form - mgmtsystem category type</field>
+        <field name="model">document.page</field>
+        <field name="inherit_id" ref="document_page.view_category_form" />
+        <field name="arch" type="xml">
+            <field name="parent_id" position="after">
+                <field name="mgmtsystem_category_type" />
+            </field>
+        </field>
+    </record>
+
+</odoo>
