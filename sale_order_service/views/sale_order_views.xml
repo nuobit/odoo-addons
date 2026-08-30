@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     Copyright 2025 NuoBiT Solutions SL - Bijaya Kumal <bkumal@nuobit.com>
+ -->
+<odoo>
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">sale.order.service.form</field>
+        <field name="priority" eval="10" />
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Service detail">
+                    <group>
+                        <group string="Patient data">
+                            <field name="contract_number" readonly="state != 'draft'" />
+                            <field name="insured_name" readonly="state != 'draft'" />
+                            <field
+                                name="insured_ident_cardnum"
+                                readonly="state != 'draft'"
+                            />
+                            <field name="policy_number" readonly="state != 'draft'" />
+                            <field name="auth_number" readonly="state != 'draft'" />
+                        </group>
+                        <group string="Service data">
+                            <field name="plate_number" readonly="state != 'draft'" />
+                            <field name="service_number" readonly="state != 'draft'" />
+                            <field name="service_date" readonly="state != 'draft'" />
+                            <field name="origin" readonly="state != 'draft'" />
+                            <field name="destination" readonly="state != 'draft'" />
+                            <field name="round_trip_code" readonly="state != 'draft'" />
+                            <field name="return_service" readonly="state != 'draft'" />
+                            <field name="service_key" readonly="state != 'draft'" />
+                            <field
+                                name="service_transfer_reason"
+                                readonly="state != 'draft'"
+                            />
+                            <field
+                                name="service_insurer_code"
+                                readonly="state != 'draft'"
+                            />
+                            <field
+                                name="service_insurer_name"
+                                readonly="state != 'draft'"
+                            />
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_sales_order_filter" model="ir.ui.view">
+        <field name="name">sale.order.service.search.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter" />
+        <field name="arch" type="xml">
+            <field name="name" position="attributes">
+                <attribute name="filter_domain">
+                    ['|','|','|','|','|','|','|','|',
+                    ('name','ilike',self),
+                    ('client_order_ref','ilike',self),
+                    ('service_number','ilike',self),
+                    ('partner_id','child_of',self),
+                    ('contract_number','ilike',self),
+                    ('insured_name','ilike',self),
+                    ('insured_ident_cardnum','ilike',self),
+                    ('policy_number','ilike',self),
+                    ('auth_number','ilike',self)]
+                </attribute>
+            </field>
+            <field name="partner_id" position="after">
+                <field name="service_number" />
+                <field name="contract_number" />
+                <field name="insured_name" />
+                <field name="insured_ident_cardnum" />
+                <field name="policy_number" />
+                <field name="auth_number" />
+            </field>
+            <xpath expr="//group" position="inside">
+                <filter
+                    name="contract_number"
+                    string="Contract number"
+                    domain="[]"
+                    context="{'group_by':'contract_number'}"
+                />
+                <filter
+                    name="insured_name"
+                    string="Insured person's name"
+                    domain="[]"
+                    context="{'group_by':'insured_name'}"
+                />
+                <filter
+                    name="insured_ident_cardnum"
+                    string="Insured identity card number"
+                    domain="[]"
+                    context="{'group_by':'insured_ident_cardnum'}"
+                />
+                <filter
+                    name="policy_number"
+                    string="Policy number"
+                    domain="[]"
+                    context="{'group_by':'policy_number'}"
+                />
+                <filter
+                    name="auth_number"
+                    string="Authorization Number"
+                    domain="[]"
+                    context="{'group_by':'auth_number'}"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>
