@@ -1,0 +1,3 @@
+odoo-addon-sale_line_partner_description@git+https://github.com/nuobit/odoo-addons.git@refs/pull/738/head#subdirectory=sale_line_partner_description
+odoo-addon-stock_picking_report_delivery_note@git+https://github.com/nuobit/odoo-addons.git@refs/pull/791/head#subdirectory=stock_picking_report_delivery_note
+odoo-addon-stock_whole_kit_constraint@git+https://github.com/OCA/manufacture.git@refs/pull/1715/head#subdirectory=stock_whole_kit_constraint
