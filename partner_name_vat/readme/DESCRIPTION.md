@@ -1,0 +1,1 @@
+This module concatenates vat number to partner name on display_name
