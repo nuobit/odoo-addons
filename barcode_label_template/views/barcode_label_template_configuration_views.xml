@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
+     Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="barcode_label_template_configuration_view_tree" model="ir.ui.view">
+        <field name="name">barcode.label.template.configuration.tree</field>
+        <field name="model">barcode.label.template.configuration</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="default" />
+                <field name="name" />
+                <field name="template" filename="template_name" invisible="1" />
+                <field name="template_name" />
+                <field name="paperformat_id" />
+            </list>
+        </field>
+    </record>
+
+    <record id="barcode_label_template_configuration_view_form" model="ir.ui.view">
+        <field name="name">barcode.label.template.configuration.form</field>
+        <field name="model">barcode.label.template.configuration</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <h1>
+                        <field name="name" placeholder="Name" />
+                    </h1>
+                    <group>
+                        <field name="default" widget="boolean_toggle" />
+                    </group>
+                    <group>
+                        <group>
+                            <field name="template" filename="template_name" />
+                            <field name="template_name" invisible="1" />
+                        </group>
+                        <group>
+                            <field name="paperformat_id" />
+                        </group>
+                    </group>
+                    <group string="Barcode Configuration">
+                        <group colspan="4">
+                            <group>
+                                <field name="barcode_type" />
+                                <field name="humanreadable" />
+                                <field name="resolution_ppi" />
+                                <field name="correction_ratio_pxmm" />
+                            </group>
+                            <group>
+                                <field
+                                    name="check_barcode_encoding"
+                                    invisible="barcode_type != 'EAN13'"
+                                />
+                            </group>
+                        </group>
+                        <group string="Position">
+                            <field name="position_x" />
+                            <field name="position_y" />
+                        </group>
+                        <group string="Size">
+                            <field name="width" />
+                            <field name="height" />
+                        </group>
+                    </group>
+                    <group string="Field configuration">
+                        <field name="configuration_field_ids" nolabel="1" colspan="2">
+                            <list editable="bottom">
+                                <field name="sequence" widget="handle" />
+                                <field
+                                    name="field_id"
+                                    options="{'no_open':True,'no_create':True}"
+                                />
+                                <field name="target_field" />
+                                <field name="position_x" />
+                                <field name="position_y" />
+                                <field name="width" />
+                            </list>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record
+        id="barcode_label_template_configuration_field_view_form"
+        model="ir.ui.view"
+    >
+        <field name="name">barcode.label.template.configuration.field.form</field>
+        <field name="model">barcode.label.template.configuration.field</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field
+                            name="field_id"
+                            options="{'no_open':True,'no_create':True}"
+                        />
+                        <field name="target_field" />
+                    </group>
+                    <group>
+                        <field name="position_x" />
+                        <field name="position_y" />
+                    </group>
+                    <group>
+                        <field name="width" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record
+        id="action_barcode_label_template_configuration_tree"
+        model="ir.actions.act_window"
+    >
+        <field name="name">Barcode Label Template Configuration</field>
+        <field name="res_model">barcode.label.template.configuration</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No barcode label template configuration defined yet. Let's create one!
+            </p>
+            <p>
+                Create new barcode label template configuration to customize the barcode label template.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_putaway"
+        name="Template Configuration"
+        parent="barcodes_gs1_label.barcodes_gs1_label_options_menu"
+        action="action_barcode_label_template_configuration_tree"
+        sequence="5"
+        groups="stock.group_stock_manager"
+    />
+</odoo>
