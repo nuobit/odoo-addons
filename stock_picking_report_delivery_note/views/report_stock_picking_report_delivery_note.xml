@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <template id="stock_picking_report_delivery_note_external_layout">
+        <t t-if="not o and doc">
+            <t t-set="o" t-value="doc" />
+        </t>
+
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id.sudo()" />
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company" />
+        </t>
+
+        <div
+            class="header sprdn-header"
+            t-attf-style="height: {{ header_max_height }}px;"
+        >
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-6">
+                        <img
+                            t-if="company.logo"
+                            class="img-responsive"
+                            t-att-src="image_data_uri(company.logo)"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="article o_report_layout_standard sprdn-body">
+            <t t-raw="0" />
+        </div>
+
+        <div class="footer sprdn-footer">
+            <div class="text-center" style="font-size: 10px;">
+                <ul class="list-unstyled mt4 mb4">
+                    <li>
+                        <span t-field="company.name" />
+                        -
+                        <t t-esc="company.country_id.vat_label or 'CIF'" />:
+                        <span t-field="company.vat" />
+                    </li>
+                    <li t-if="company.street or company.street2">
+                        <span
+                        t-esc="' '.join(filter(lambda x: x, [company.street,company.street2]))"
+                    />
+                        -
+                        <span
+                        t-esc="' '.join(filter(lambda x: x, [company.zip,company.city,company.state_id.name, company.country_id.name]))"
+                    />
+                    </li>
+                    <li>
+                        <t t-if="company.phone">
+                            Tel.
+                            <span t-field="company.phone" />
+                        </t>
+                        <span
+                            t-esc="' / '.join(filter(lambda x: x, [company.email, company.website]))"
+                        />
+                    </li>
+                </ul>
+                <div class="text-muted">
+                    Page
+                    <span class="page" />
+                    of
+                    <span class="topage" />
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="sprdn_document">
+        <t
+            t-call="stock_picking_report_delivery_note.stock_picking_report_delivery_note_external_layout"
+        >
+            <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)" />
+            <div class="page">
+                <table class="table table-condensed sprdn-table3 table-borderless">
+                    <thead>
+                        <tr>
+                            <th>
+                                <table class="sprdn-table-1">
+                                    <tbody>
+                                        <tr style="">
+                                            <td width="60%" />
+                                            <td class="customer_address" width="40%">
+                                                <div
+                                                    style="margin-bottom: 10px;margin-top: 10px;"
+                                                >
+                                                    <div>
+                                                        <t
+                                                            t-set="partner"
+                                                            t-value="o.partner_id.parent_id or o.partner_id"
+                                                        />
+                                                        <strong t-esc="partner.name" />
+                                                    </div>
+                                                    <div style="font-size: 12px;">
+                                                        <div
+                                                            t-if="o.partner_id.street"
+                                                            t-field="o.partner_id.street"
+                                                        />
+                                                        <div
+                                                            t-if="o.partner_id.street2"
+                                                            t-field="o.partner_id.street2"
+                                                        />
+                                                        <div>
+                                                            <span
+                                                                t-if="o.partner_id.zip"
+                                                                t-field="o.partner_id.zip"
+                                                            />
+                                                            <span
+                                                                t-if="o.partner_id.city"
+                                                                t-field="o.partner_id.city"
+                                                            />
+                                                            <span
+                                                                t-if="o.partner_id.country_id"
+                                                            >(<span
+                                                                t-field="o.partner_id.country_id"
+                                                            />)
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <h3 style="margin-top: 10px;">
+                                                    <span t-if="o.state == 'done'">
+                                                        <span>Delivery note</span>
+                                                    </span>
+                                                    <span t-if="o.state == 'draft'">
+                                                        <span>Draft delivery note</span>
+                                                    </span>
+                                                    <span t-if="o.state == 'cancel'">
+                                                        <span
+                                                        >Cancelled delivery note</span>
+                                                    </span>
+                                                    <span
+                                                        t-if="o.state not in ('done', 'draft', 'cancel')"
+                                                    >
+                                                        <span
+                                                        >Pending delivery note</span>
+                                                    </span>
+                                                    <span t-field="o.name" />
+                                                </h3>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <div
+                                                    class="row mt16 mb16"
+                                                    id="informations"
+                                                >
+                                                    <div t-if="o.origin" class="col-2">
+                                                        <strong>Origin</strong>
+                                                        <p t-field="o.origin" />
+                                                    </div>
+                                                    <div
+                                                        t-if="o.date_done"
+                                                        class="col-2"
+                                                    >
+                                                        <strong
+                                                        >Delivery note date</strong>
+                                                        <p
+                                                            t-field="o.date_done"
+                                                            t-options="{'widget': 'date'}"
+                                                        />
+                                                    </div>
+                                                    <div
+                                                        t-if="o.sale_id.client_order_ref"
+                                                        class="col-3"
+                                                    >
+                                                        <strong
+                                                        >Customer reference</strong>
+                                                        <p
+                                                            t-field="o.sale_id.client_order_ref"
+                                                        />
+                                                    </div>
+                                                    <div
+                                                        t-if="o.partner_id.ref"
+                                                        class="col-2"
+                                                    >
+                                                        <strong>Customer code</strong>
+                                                        <p t-field="o.partner_id.ref" />
+                                                    </div>
+                                                    <div
+                                                        name="payment_term"
+                                                        t-if="o.sale_id.payment_term_id"
+                                                        class="col-3"
+                                                    >
+                                                        <strong>Payment terms</strong>
+                                                        <p
+                                                            t-field="o.sale_id.payment_term_id"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <table class="sprdn-table0">
+                                    <thead>
+                                        <tr>
+                                            <th
+                                                width="15%"
+                                                style="padding: 8px;"
+                                            >Ref./Ref.cli.</th>
+                                            <th
+                                                width="50%"
+                                                style="padding: 8px;"
+                                            >Description</th>
+                                            <th
+                                                width="13%"
+                                                class="text-right"
+                                                style="padding: 8px;"
+                                            >Quantity</th>
+                                            <th
+                                                width="12%"
+                                                class="text-right"
+                                                style="padding: 8px;"
+                                            >Unit Price</th>
+                                            <th
+                                                width="10%"
+                                                class="text-right"
+                                                style="padding: 8px;"
+                                            >Amount</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <table class="sprdn-table2">
+                                    <tbody name="sprdn_document_tbody">
+                                        <t
+                                            t-set="grouped_moves"
+                                            t-value="o.get_delivery_note_moves()"
+                                        />
+                                        <t t-foreach="grouped_moves" t-as="gm">
+                                            <t
+                                                t-call="stock_picking_report_delivery_note.sprdn_document_body"
+                                                class="report_stock"
+                                            />
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="clearfix">
+                    <div id="total" class="row">
+                        <t t-set="picking_amounts" t-value="o._get_amounts()" />
+                        <t
+                            t-set="tax_amount_by_group"
+                            t-value="list(filter(lambda x: x[1], o._get_tax_amount_by_group()))"
+                        />
+                        <div class="col-4 offset-8">
+                            <table
+                                class="table table-condensed"
+                                style="min-width: 250px;max-width: 400px;"
+                            >
+                                <t t-if="tax_amount_by_group">
+                                    <tr
+                                        class="border-black"
+                                        style="border-bottom:1px solid #bbbbbb;"
+                                    >
+                                        <td>
+                                            <strong>Subtotal</strong>
+                                        </td>
+                                        <td class="text-right">
+                                            <span
+                                                t-esc="picking_amounts['untaxed']"
+                                                t-options='{"widget": "monetary", "display_currency": o.sale_id.pricelist_id.currency_id}'
+                                            />
+                                        </td>
+                                    </tr>
+                                    <t
+                                        t-foreach="tax_amount_by_group"
+                                        t-as="amount_by_group"
+                                    >
+                                        <tr style="border-bottom:1px solid #dddddd;">
+                                            <t
+                                                t-if="amount_by_group[3] == 1 and picking_amounts['untaxed'] == amount_by_group[2]"
+                                            >
+                                                <td>
+                                                    <span t-esc="amount_by_group[0]" />
+                                                </td>
+                                                <td class="text-right">
+                                                    <span
+                                                        t-esc="amount_by_group[1]"
+                                                        t-options='{"widget": "monetary", "display_currency": o.sale_id.pricelist_id.currency_id}'
+                                                    />
+                                                </td>
+                                            </t>
+                                            <t t-else="">
+                                                <td>
+                                                    <span t-esc="amount_by_group[0]" />
+                                                    <span>
+                                                        <span>on</span>
+                                                        <t
+                                                            t-esc="amount_by_group[2]"
+                                                            t-options='{"widget": "monetary", "display_currency": o.sale_id.pricelist_id.currency_id}'
+                                                        />
+                                                    </span>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span
+                                                        t-esc="amount_by_group[1]"
+                                                        t-options='{"widget": "monetary", "display_currency": o.sale_id.pricelist_id.currency_id}'
+                                                    />
+                                                </td>
+                                            </t>
+                                        </tr>
+                                    </t>
+                                </t>
+                                <tr style="border: white;border-top:2px solid #000000;">
+                                    <td>
+                                        <strong>Total</strong>
+                                    </td>
+                                    <td class="text-right">
+                                        <span
+                                            t-if="o.sale_id.pricelist_id.currency_id"
+                                            t-esc="picking_amounts['total']"
+                                            t-options='{"widget": "monetary", "display_currency": o.sale_id.pricelist_id.currency_id}'
+                                        />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <p t-if="o.note" t-field="o.note" />
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="sprdn">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t
+                    t-call="stock_picking_report_delivery_note.sprdn_document"
+                    t-lang="o.partner_id.lang"
+                />
+            </t>
+        </t>
+    </template>
+    <template id="sprdn_document_body">
+        <t name="move_ids" t-foreach="gm" t-as="l">
+            <tr
+                style="border-top: 2px #bbbbbb;border-left: white;border-right: white;margin"
+            >
+                <t t-set="line_amounts" t-value="l._get_amounts()" />
+                <t
+                    t-set="l_default_codes"
+                    t-value="filter(None, list(l.get_product_codes()))"
+                />
+                <td
+                    width="15%"
+                    style="padding-top:10px;padding-bottom:10px;padding-left:5px;"
+                >
+                    <t t-foreach="l_default_codes" t-as="lc">
+                        <div t-esc="lc" />
+                    </t>
+                </td>
+                <t t-set="l_name" t-value="l.get_splited_line_description()" />
+                <td
+                    width="50%"
+                    style="padding-top:10px;padding-bottom:10px;padding-left:5px;"
+                >
+                    <t t-foreach="l_name.split('\n')" t-as="ln">
+                        <div t-esc="ln" />
+                    </t>
+                    <t t-set="lots" t-value="l.get_line_lots()" />
+                    <div t-if="lots">
+                        <span t-if="l.product_id.tracking == 'lot'">
+                            Lots:
+                        </span>
+                        <span t-if="l.product_id.tracking == 'serial'">
+                            Serial numbers:
+                        </span>
+                        <span t-esc="', '.join(lots)" />
+                    </div>
+                </td>
+                <td
+                    width="13%"
+                    class="text-right"
+                    style="padding-top:10px;padding-bottom:10px;padding-left:5px;"
+                >
+                    <span t-field="l.quantity" />
+                    <span
+                        class="units"
+                        t-field="l.product_uom"
+                        groups="uom.group_uom"
+                    />
+                </td>
+                <td
+                    width="12%"
+                    class="text-right"
+                    style="padding-top:10px;padding-bottom:10px;padding-left:5px;"
+                >
+                    <span t-if="l.sale_line_id" t-field="l.sale_price_unit" />
+                </td>
+                <td
+                    width="10%"
+                    class="text-right"
+                    style="padding-top:10px;padding-bottom:10px;padding-left:5px;"
+                >
+                    <t t-if="l.sale_line_id">
+                        <span
+                            t-esc="line_amounts['subtotal']"
+                            t-options="{'widget': 'monetary', 'display_currency': o.sale_id.pricelist_id.currency_id}"
+                        />
+                    </t>
+                </td>
+            </tr>
+        </t>
+    </template>
+</odoo>

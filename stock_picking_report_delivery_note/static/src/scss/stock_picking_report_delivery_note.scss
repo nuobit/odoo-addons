@@ -1,0 +1,57 @@
+.sprdn-body,
+.sprdn-header,
+.sprdn-footer {
+    font-family: "Arial";
+}
+
+// ensure image always inside parent divs
+.sprdn-header {
+    div {
+        height: 100%;
+    }
+
+    img {
+        max-height: 100%;
+    }
+}
+@mixin sprdn-max-width {
+    width: 100%;
+    max-width: 100%;
+}
+
+.sprdn-basetable {
+    @include sprdn-max-width;
+}
+
+.sprdn-table-1 {
+    @include sprdn-max-width;
+    margin-bottom: 5px;
+}
+
+.sprdn-table-1 .customer_address {
+    vertical-align: top;
+}
+
+.sprdn-table-2 {
+    @include sprdn-max-width;
+}
+
+.sprdn-table0 {
+    @include sprdn-max-width;
+}
+
+.sprdn-table1 {
+    @include sprdn-max-width;
+}
+
+.sprdn-table2 {
+    @include sprdn-max-width;
+}
+
+.sprdn-table3 > thead > tr > th {
+    border: none;
+}
+
+.sprdn-table3 > tbody > tr:first-child > td {
+    border-top: 1px solid #291a63;
+}
