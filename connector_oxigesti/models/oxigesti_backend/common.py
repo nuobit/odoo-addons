@@ -85,6 +85,12 @@ class OxigestiBackend(models.Model):
             if rec.chunk_size < 0:
                 raise exceptions.ValidationError(_("Chunk size cannot be negative"))
 
+    product_attribute_map_ids = fields.One2many(
+        comodel_name="oxigesti.backend.product.attribute.map",
+        inverse_name="backend_id",
+        string="Product Attribute Map",
+    )
+
     def button_reset_to_draft(self):
         self.ensure_one()
         self.write({"state": "draft", "version": None})
@@ -115,6 +121,7 @@ class OxigestiBackend(models.Model):
     export_stock_production_lot_since_date = fields.Datetime("Export Lots since")
     import_services_since_date = fields.Datetime("Import Services since")
     export_services_since_date = fields.Datetime("Export Services since")
+    export_mrp_production_since_date = fields.Datetime("Export Productions since")
 
     sync_offset = fields.Integer(
         string="Sync Offset",
@@ -179,6 +186,12 @@ class OxigestiBackend(models.Model):
             rec.export_services_since_date = fields.Datetime.now()
             self.env["oxigesti.sale.order"].export_data(rec, since_date)
 
+    def export_mrp_production_since(self):
+        for rec in self:
+            since_date = rec.export_mrp_production_since_date
+            rec.export_mrp_production_since_date = fields.Datetime.now()
+            self.env["oxigesti.mrp.production"].export_data(rec, since_date)
+
     # Scheduler methods
     @api.model
     def get_current_user_company(self):
@@ -237,6 +250,11 @@ class OxigestiBackend(models.Model):
         company_id = self.get_current_user_company()
         domain = [("company_id", "=", company_id.id)]
         self.search(domain).export_services_since()
+
+    def _scheduler_export_mrp_production(self):
+        company_id = self.get_current_user_company()
+        domain = [("company_id", "=", company_id.id)]
+        self.search(domain).export_mrp_production_since()
 
     def tz_to_utc(self, dt):
         t = pytz.timezone(self.tz).localize(dt)

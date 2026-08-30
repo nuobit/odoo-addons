@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import Component
-from odoo.addons.connector.components.mapper import mapping
+from odoo.addons.connector.components.mapper import follow_m2o_relations, mapping, none
 
 
 class StockProductionLotExportMapper(Component):
@@ -14,6 +14,12 @@ class StockProductionLotExportMapper(Component):
 
     direct = [
         ("name", "Lote"),
+        (none(follow_m2o_relations("manufacturer_id.name")), "Fabricante"),
+        (none("weight"), "Peso"),
+        (none("manufacture_date"), "FechaFabricacion"),
+        (none("retesting_date"), "FechaRetimbrado"),
+        (none("next_retesting_date"), "FechaProximoRetimbrado"),
+        (none("removal_date"), "FechaCaducidad"),
     ]
 
     @mapping
