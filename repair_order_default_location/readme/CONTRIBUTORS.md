@@ -1,0 +1,3 @@
+- [NoBiT](https://www.nuobi.com):
+  - Eric Antones <eantones@nuobit.com>
+  - Deniz Gallo <dgallo@nuobit.com>
