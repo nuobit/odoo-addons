@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_warehouse_orderpoint_form" model="ir.ui.view">
+        <field name="name">stock.warehouse.orderpoint.form</field>
+        <field name="model">stock.warehouse.orderpoint</field>
+        <field name="inherit_id" ref="stock.view_warehouse_orderpoint_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_min_qty']/../.." position="inside">
+                <field name="sync_template_id" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_warehouse_orderpoint_tree_editable" model="ir.ui.view">
+        <field name="name">stock.warehouse.orderpoint.tree.editable</field>
+        <field name="model">stock.warehouse.orderpoint</field>
+        <field name="inherit_id" ref="stock.view_warehouse_orderpoint_tree_editable" />
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="inside">
+                <field name="sync_template_id" />
+            </xpath>
+        </field>
+    </record>
+
+    <!--    <record id="view_warehouse_orderpoint_tree_editable_config" model="ir.ui.view">-->
+    <!--        <field name="name">stock.warehouse.orderpoint.tree.editable.config</field>-->
+    <!--        <field name="model">stock.warehouse.orderpoint</field>-->
+    <!--        <field-->
+    <!--            name="inherit_id"-->
+    <!--            ref="stock.view_warehouse_orderpoint_tree_editable_config"-->
+    <!--        />-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <xpath expr="//list" position="inside">-->
+    <!--                <field name="sync_template_id" />-->
+    <!--            </xpath>-->
+    <!--        </field>-->
+    <!--    </record>-->
+
+    <record id="warehouse_orderpoint_search" model="ir.ui.view">
+        <field name="name">stock.warehouse.orderpoint.search</field>
+        <field name="model">stock.warehouse.orderpoint</field>
+        <field name="inherit_id" ref="stock.warehouse_orderpoint_search" />
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="inside">
+                <filter
+                    name="group_by_sync_template"
+                    string="Template"
+                    domain="[]"
+                    context="{'group_by':'sync_template_id'}"
+                />
+            </xpath>
+            <xpath expr="//filter[@name='inactive']" position="before">
+                <filter
+                    string="With template"
+                    name="sync_template"
+                    domain="[('sync_template_id','!=',False)]"
+                />
+            </xpath>
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="sync_template_id" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="stock_reorder_report_search" model="ir.ui.view">
+        <field name="name">stock.warehouse.orderpoint.reorder.search</field>
+        <field name="model">stock.warehouse.orderpoint</field>
+        <field name="inherit_id" ref="stock.stock_reorder_report_search" />
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="inside">
+                <filter
+                    name="group_by_sync_template"
+                    string="Template"
+                    domain="[]"
+                    context="{'group_by':'sync_template_id'}"
+                />
+            </xpath>
+            <xpath expr="//filter[@name='filter_to_reorder']" position="before">
+                <filter
+                    string="With template"
+                    name="sync_template"
+                    domain="[('sync_template_id','!=',False)]"
+                />
+            </xpath>
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="sync_template_id" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
