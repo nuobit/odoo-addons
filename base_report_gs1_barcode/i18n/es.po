@@ -1,0 +1,55 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* base_report_gs1_barcode
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-11 15:14+0000\n"
+"PO-Revision-Date: 2026-03-11 15:14+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: base_report_gs1_barcode
+#: model:ir.model,name:base_report_gs1_barcode.model_report_paperformat
+msgid "Paper Format Config"
+msgstr "Configuración del formato de papel"
+
+#. module: base_report_gs1_barcode
+#: model:ir.model,name:base_report_gs1_barcode.model_ir_actions_report
+msgid "Report Action"
+msgstr "Acción de informe"
+
+#. module: base_report_gs1_barcode
+#. odoo-python
+#: code:addons/base_report_gs1_barcode/models/report_paperformat.py:0
+msgid "The format '%(paper_format)s' has no data defined"
+msgstr ""
+"El formato '%(paper_format)s' no tiene datos definidos"
+
+#. module: base_report_gs1_barcode
+#. odoo-python
+#: code:addons/base_report_gs1_barcode/models/report_paperformat.py:0
+msgid ""
+"The page height (%(height)s) must be greater than the page width "
+"(%(width)s). Orientation will decide ultimately which will be the large and "
+"short side."
+msgstr ""
+"La altura de la página (%(height)s) debe ser mayor que el ancho de la "
+"página (%(width)s). La orientación decidirá en última instancia cuál será el "
+"lado largo y el lado corto."
+
+#. module: base_report_gs1_barcode
+#. odoo-python
+#: code:addons/base_report_gs1_barcode/models/report_paperformat.py:0
+msgid ""
+"The paperformat '%(paper_format)s' has an invalid orientation "
+"'%(orientation)s'"
+msgstr ""
+"El formato de papel '%(paper_format)s' tiene una orientación no válida "
+"'%(orientation)s'"
