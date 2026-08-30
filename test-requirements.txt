@@ -1,0 +1,2 @@
+odoo-addon-connector_extension@git+https://github.com/nuobit/odoo-addons.git@refs/pull/663/head#subdirectory=connector_extension
+odoo-addon-connector_extension_sql@git+https://github.com/nuobit/odoo-addons.git@refs/pull/664/head#subdirectory=connector_extension_sql
