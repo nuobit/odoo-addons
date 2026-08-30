@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 import re
 
@@ -92,6 +93,16 @@ class ResPartnerImportMapper(Component):
     def type(self, record):
         return {"type": "contact"}
 
+    def sage_identity(self, record):
+        """Normalize a Sage person identity (SiglaNacion+Dni) to a string.
+
+        Single source of the normalization: euvat seeds the partner vat
+        with it and the reassignment guard compares against that vat, so
+        both sides must build the string exactly the same way.
+        """
+        parts = [part for part in (record["SiglaNacion"], record["Dni"]) if part]
+        return "".join(parts).strip().upper()
+
     @only_create
     @mapping
     def euvat(self, record):
@@ -100,5 +111,4 @@ class ResPartnerImportMapper(Component):
             m = re.match(nif_pattern, record["Dni"])
             if m:
                 return {"vat": None}
-        parts = [part for part in (record["SiglaNacion"], record["Dni"]) if part]
-        return {"vat": "".join(parts).strip().upper()}
+        return {"vat": self.sage_identity(record)}
