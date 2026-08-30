@@ -1,7 +1,8 @@
 # Copyright NuoBiT - Eric Antones <eantones@nuobit.com>
+# Copyright 2025 NuoBiT - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, models
+from odoo import _, api, models
 
 
 def insert_after(lst, item, new_item):
@@ -38,7 +39,7 @@ class AccountAsset(models.Model):
         AssetReport = self.env["report.account_asset_management.asset_report_xls"]
         return {
             "category": {
-                "header": {"type": "string", "value": AssetReport._("Category")},
+                "header": {"type": "string", "value": _("Category")},
                 "asset": {
                     "type": "string",
                     "value": AssetReport._render("asset.profile_id.display_name or ''"),
