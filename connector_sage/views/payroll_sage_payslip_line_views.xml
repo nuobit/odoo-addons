@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="payslip_line_view_form_inherit_connector_sage" model="ir.ui.view">
+        <field name="name">payslip.line.form.inherit.connector.sage</field>
+        <field name="model">payroll.sage.payslip.line</field>
+        <field name="inherit_id" ref="payroll_sage.payslip_line_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="after">
+                <group
+                    string="Payroll Sage Bindings"
+                    invisible="payslip_type != 'payroll'"
+                    groups="connector.group_connector_manager"
+                >
+                    <field name="sage_payroll_bind_ids" nolabel="1" />
+                </group>
+                <group
+                    string="Transfer Sage Bindings"
+                    invisible="payslip_type != 'transfer'"
+                >
+                    <field name="sage_transfer_bind_ids" nolabel="1" />
+                </group>
+                <group invisible="1">
+                    <field name="payslip_type" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sage_payslip_line_payroll_view_form" model="ir.ui.view">
+        <field name="name">sage.payslip.line.payroll.form</field>
+        <field name="model">sage.payroll.sage.payslip.line.payroll</field>
+        <field name="arch" type="xml">
+            <form string="Sage Payslip Line Payroll">
+                <group>
+                    <field name="backend_id" />
+                    <field name="odoo_id" readonly="True" />
+                    <field name="sage_codigo_empresa" readonly="True" />
+                    <field name="sage_codigo_convenio" readonly="True" />
+                    <field name="sage_fecha_registro_cv" readonly="True" />
+                    <field name="sage_ano" readonly="True" />
+                    <field name="sage_mesd" readonly="True" />
+                    <field name="sage_tipo_proceso" readonly="True" />
+                    <field name="sage_codigo_empleado" readonly="True" />
+                    <field name="sage_codigo_concepto_nom" readonly="True" />
+                    <field name="sync_date" readonly="True" />
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="sage_payslip_line_payroll_view_tree" model="ir.ui.view">
+        <field name="name">sage.payslip.line.payroll.list</field>
+        <field name="model">sage.payroll.sage.payslip.line.payroll</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="backend_id" />
+                <field name="odoo_id" />
+                <field name="sage_codigo_empresa" readonly="True" />
+                <field name="sage_codigo_convenio" readonly="True" />
+                <field name="sage_fecha_registro_cv" readonly="True" />
+                <field name="sage_ano" readonly="True" />
+                <field name="sage_mesd" readonly="True" />
+                <field name="sage_tipo_proceso" readonly="True" />
+                <field name="sage_codigo_empleado" readonly="True" />
+                <field name="sage_codigo_concepto_nom" readonly="True" />
+                <field name="sync_date" />
+                <button
+                    name="resync"
+                    type="object"
+                    string="Resynchronize"
+                    icon="fa-refresh fa-lg"
+                />
+            </list>
+        </field>
+    </record>
+
+    <record id="sage_payslip_line_transfer_view_form" model="ir.ui.view">
+        <field name="name">sage.payslip.line.transfer.form</field>
+        <field name="model">sage.payroll.sage.payslip.line.transfer</field>
+        <field name="arch" type="xml">
+            <form string="Sage Payslip Line Transfer">
+                <group>
+                    <field name="backend_id" />
+                    <field name="odoo_id" readonly="True" />
+                    <field name="sage_codigo_empresa" readonly="True" />
+                    <field name="sage_codigo_convenio" readonly="True" />
+                    <field name="sage_fecha_registro_cv" readonly="True" />
+                    <field name="sage_ano" readonly="True" />
+                    <field name="sage_mesd" readonly="True" />
+                    <field name="sage_codigo_empleado" readonly="True" />
+                    <field name="sage_codigo_concepto_nom" readonly="True" />
+
+                    <field name="sage_fecha_cobro" readonly="True" />
+                    <field name="sync_date" readonly="True" />
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="sage_payslip_line_transfer_view_tree" model="ir.ui.view">
+        <field name="name">sage.payslip.line.transfer.list</field>
+        <field name="model">sage.payroll.sage.payslip.line.transfer</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="backend_id" />
+                <field name="odoo_id" />
+                <field name="sage_codigo_empresa" readonly="True" />
+                <field name="sage_codigo_convenio" readonly="True" />
+                <field name="sage_fecha_registro_cv" readonly="True" />
+                <field name="sage_ano" readonly="True" />
+                <field name="sage_mesd" readonly="True" />
+                <field name="sage_codigo_empleado" readonly="True" />
+                <field name="sage_codigo_concepto_nom" readonly="True" />
+
+                <field name="sage_fecha_cobro" readonly="True" />
+                <field name="sync_date" />
+                <button
+                    name="resync"
+                    type="object"
+                    string="Resynchronize"
+                    icon="fa-refresh fa-lg"
+                />
+            </list>
+        </field>
+    </record>
+</odoo>
