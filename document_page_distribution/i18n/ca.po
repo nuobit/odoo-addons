@@ -1,0 +1,599 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-29 00:00+0000\n"
+"PO-Revision-Date: 2026-05-29 00:00+0000\n"
+"Last-Translator: Deniz Gallo <dgallo@nuobit.com>\n"
+"Language-Team: Catalan\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: document_page_distribution
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.res_config_settings_view_form
+msgid ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
+msgstr ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Els valors establerts aquí "
+"són específics de l'empresa.\" groups=\"base.group_multi_company\"/>"
+
+#. module: document_page_distribution
+#: model:mail.template,body_html:document_page_distribution.mail_template_document_page_distribution
+msgid ""
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"padding-top: 16px; background-color: #F1F1F1; font-family: Verdana, Arial, sans-serif; color: #454748; width: 100%; border-collapse: separate;\">\n"
+"                <tr>\n"
+"                    <td align=\"center\">\n"
+"                        <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"padding: 16px; background-color: #FFFFFF; color: #454748; border-collapse: separate;\">\n"
+"                            <tbody>\n"
+"                                <!-- HEADER -->\n"
+"                                <tr>\n"
+"                                    <td align=\"center\" style=\"min-width: 590px;\">\n"
+"                                        <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: #FFFFFF; padding: 0px 8px; border-collapse: separate;\">\n"
+"                                            <tr>\n"
+"                                                <td valign=\"middle\">\n"
+"                                                    <span style=\"font-size: 10px;\">Document Management</span><br/>\n"
+"                                                    <span style=\"font-size: 20px; font-weight: bold;\">${object.name}</span>\n"
+"                                                </td>\n"
+"                                            </tr>\n"
+"                                            <tr>\n"
+"                                                <td colspan=\"2\" style=\"text-align: center;\">\n"
+"                                                    <hr width=\"100%\" style=\"background-color: #CCCCCC; border: medium none; clear: both; display: block; font-size: 0px; min-height: 1px; line-height: 0; margin: 16px 0px;\"/>\n"
+"                                                </td>\n"
+"                                            </tr>\n"
+"                                        </table>\n"
+"                                    </td>\n"
+"                                </tr>\n"
+"                                <!-- CONTENT -->\n"
+"                                <tr>\n"
+"                                    <td align=\"center\" style=\"min-width: 590px;\">\n"
+"                                        <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: #FFFFFF; padding: 0px 8px; border-collapse: separate;\">\n"
+"                                            <tr>\n"
+"                                                <td valign=\"top\" style=\"font-size: 13px;\">\n"
+"                                                    Hello,<br/><br/>\n"
+"                                                    A new version of the document\n"
+"                                                    <strong>${object.name}</strong>\n"
+"                                                    has been published in the\n"
+"                                                    document management system.\n"
+"                                                    <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"margin: 16px 0px; background-color: #F8FAFC; border-collapse: separate;\">\n"
+"                                                        <tr>\n"
+"                                                            <td style=\"padding: 12px 16px; border-left: 4px solid #875A7B; font-size: 13px;\">\n"
+"                                                                Version:\n"
+"                                                                <strong>${object.draft_name or 'latest version'}</strong><br/>\n"
+"                                                                Change summary:\n"
+"                                                                ${object.draft_summary or '-'}\n"
+"                                                            </td>\n"
+"                                                        </tr>\n"
+"                                                    </table>\n"
+"                                                    <div style=\"margin: 16px 0px;\">\n"
+"                                                        <a href=\"${object.get_base_url()}/web#id=${object.id}&amp;model=document.page&amp;view_type=form\" style=\"background-color: #875A7B; padding: 8px 16px; text-decoration: none; color: #FFFFFF; border-radius: 5px; font-size: 13px;\">Open the document page</a>\n"
+"                                                    </div>\n"
+"                                                    This notice is sent to the\n"
+"                                                    users with read access to the\n"
+"                                                    document and is recorded in\n"
+"                                                    the document's communication\n"
+"                                                    history.\n"
+"                                                </td>\n"
+"                                            </tr>\n"
+"                                            <tr>\n"
+"                                                <td style=\"text-align: center;\">\n"
+"                                                    <hr width=\"100%\" style=\"background-color: #CCCCCC; border: medium none; clear: both; display: block; font-size: 0px; min-height: 1px; line-height: 0; margin: 16px 0px;\"/>\n"
+"                                                </td>\n"
+"                                            </tr>\n"
+"                                        </table>\n"
+"                                    </td>\n"
+"                                </tr>\n"
+"                            </tbody>\n"
+"                        </table>\n"
+"                    </td>\n"
+"                </tr>\n"
+"            </table>\n"
+"        "
+msgstr ""
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"padding-top: 16px; background-color: #F1F1F1; font-family: Verdana, Arial, sans-serif; color: #454748; width: 100%; border-collapse: separate;\">\n"
+"                <tr>\n"
+"                    <td align=\"center\">\n"
+"                        <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"padding: 16px; background-color: #FFFFFF; color: #454748; border-collapse: separate;\">\n"
+"                            <tbody>\n"
+"                                <!-- HEADER -->\n"
+"                                <tr>\n"
+"                                    <td align=\"center\" style=\"min-width: 590px;\">\n"
+"                                        <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: #FFFFFF; padding: 0px 8px; border-collapse: separate;\">\n"
+"                                            <tr>\n"
+"                                                <td valign=\"middle\">\n"
+"                                                    <span style=\"font-size: 10px;\">Gestió documental</span><br/>\n"
+"                                                    <span style=\"font-size: 20px; font-weight: bold;\">${object.name}</span>\n"
+"                                                </td>\n"
+"                                            </tr>\n"
+"                                            <tr>\n"
+"                                                <td colspan=\"2\" style=\"text-align: center;\">\n"
+"                                                    <hr width=\"100%\" style=\"background-color: #CCCCCC; border: medium none; clear: both; display: block; font-size: 0px; min-height: 1px; line-height: 0; margin: 16px 0px;\"/>\n"
+"                                                </td>\n"
+"                                            </tr>\n"
+"                                        </table>\n"
+"                                    </td>\n"
+"                                </tr>\n"
+"                                <!-- CONTENT -->\n"
+"                                <tr>\n"
+"                                    <td align=\"center\" style=\"min-width: 590px;\">\n"
+"                                        <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: #FFFFFF; padding: 0px 8px; border-collapse: separate;\">\n"
+"                                            <tr>\n"
+"                                                <td valign=\"top\" style=\"font-size: 13px;\">\n"
+"                                                    Hola,<br/><br/>\n"
+"                                                    S'ha publicat una nova versió del document\n"
+"                                                    <strong>${object.name}</strong>\n"
+"                                                    al sistema de gestió documental.\n"
+"                                                    <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"margin: 16px 0px; background-color: #F8FAFC; border-collapse: separate;\">\n"
+"                                                        <tr>\n"
+"                                                            <td style=\"padding: 12px 16px; border-left: 4px solid #875A7B; font-size: 13px;\">\n"
+"                                                                Versió:\n"
+"                                                                <strong>${object.draft_name or 'última versió'}</strong><br/>\n"
+"                                                                Resum del canvi: ${object.draft_summary or '-'}\n"
+"                                                            </td>\n"
+"                                                        </tr>\n"
+"                                                    </table>\n"
+"                                                    <div style=\"margin: 16px 0px;\">\n"
+"                                                        <a href=\"${object.get_base_url()}/web#id=${object.id}&amp;model=document.page&amp;view_type=form\" style=\"background-color: #875A7B; padding: 8px 16px; text-decoration: none; color: #FFFFFF; border-radius: 5px; font-size: 13px;\">Obre la pàgina del document</a>\n"
+"                                                    </div>\n"
+"                                                    Aquest avís s'envia als usuaris amb accés de lectura al document i queda registrat a l'historial de comunicacions del document.\n"
+"                                                </td>\n"
+"                                            </tr>\n"
+"                                            <tr>\n"
+"                                                <td style=\"text-align: center;\">\n"
+"                                                    <hr width=\"100%\" style=\"background-color: #CCCCCC; border: medium none; clear: both; display: block; font-size: 0px; min-height: 1px; line-height: 0; margin: 16px 0px;\"/>\n"
+"                                                </td>\n"
+"                                            </tr>\n"
+"                                        </table>\n"
+"                                    </td>\n"
+"                                </tr>\n"
+"                            </tbody>\n"
+"                        </table>\n"
+"                    </td>\n"
+"                </tr>\n"
+"            </table>\n"
+"        "
+
+#. module: document_page_distribution
+#: model:ir.model.constraint,message:document_page_distribution.constraint_document_page_history_recipient_history_partner_uniq
+msgid "A recipient can only appear once per document version."
+msgstr ""
+"Un destinatari només pot aparèixer una vegada per versió del document."
+
+#. module: document_page_distribution
+#: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_distribute_line__current_state__bounce
+#: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_history_recipient__state__bounce
+msgid "Bounce"
+msgstr "Rebotat"
+
+#. module: document_page_distribution
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.document_page_distribute_form
+msgid "Cancel"
+msgstr "Cancel·la"
+
+#. module: document_page_distribution
+#: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_distribute_line__current_state__canceled
+#: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_history_recipient__state__canceled
+msgid "Canceled"
+msgstr "Cancel·lat"
+
+#. module: document_page_distribution
+#: model:ir.model,name:document_page_distribution.model_res_company
+msgid "Companies"
+msgstr "Empreses"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__company_id
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__company_id
+msgid "Company"
+msgstr "Empresa"
+
+#. module: document_page_distribution
+#: model:ir.model,name:document_page_distribution.model_res_config_settings
+msgid "Config Settings"
+msgstr "Paràmetres de configuració"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute__create_uid
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute_line__create_uid
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__create_uid
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__create_uid
+msgid "Created by"
+msgstr "Creat per"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute__create_date
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute_line__create_date
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__create_date
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__create_date
+msgid "Created on"
+msgstr "Creat el"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page__current_recipient_ids
+msgid "Current Distribution"
+msgstr "Distribució actual"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page__current_distribution_count
+msgid "Current Distribution Count"
+msgstr "Recompte de distribució actual"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute_line__current_state
+msgid "Current State"
+msgstr "Estat actual"
+
+#. module: document_page_distribution
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.res_config_settings_view_form
+msgid "Default Distribution Template"
+msgstr "Plantilla de distribució per defecte"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,help:document_page_distribution.field_res_company__document_page_distribution_template_id
+#: model:ir.model.fields,help:document_page_distribution.field_res_config_settings__document_page_distribution_template_id
+msgid ""
+"Default email template used to distribute document pages of this company."
+msgstr ""
+"Plantilla de correu per defecte utilitzada per distribuir les pàgines de "
+"document d'aquesta empresa."
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page__display_name
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute__display_name
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute_line__display_name
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history__display_name
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__display_name
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__display_name
+#: model:ir.model.fields,field_description:document_page_distribution.field_res_company__display_name
+#: model:ir.model.fields,field_description:document_page_distribution.field_res_config_settings__display_name
+msgid "Display Name"
+msgstr "Nom mostrat"
+
+#. module: document_page_distribution
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.view_wiki_form_distribution
+msgid "Distribute"
+msgstr "Distribueix"
+
+#. module: document_page_distribution
+#: code:addons/document_page_distribution/models/document_page.py:0
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.document_page_distribute_form
+#, python-format
+msgid "Distribute Document"
+msgstr "Distribueix el document"
+
+#. module: document_page_distribution
+#: model:ir.model,name:document_page_distribution.model_document_page_distribute
+msgid "Distribute Document Page"
+msgstr "Distribuir pàgina de document"
+
+#. module: document_page_distribution
+#: model:ir.model,name:document_page_distribution.model_document_page_distribute_line
+msgid "Distribute Document Page Line"
+msgstr "Línia de distribució de pàgina de document"
+
+#. module: document_page_distribution
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.view_wiki_form_distribution
+msgid "Distribution"
+msgstr "Distribució"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history__recipient_ids
+msgid "Distribution Recipients"
+msgstr "Destinataris de la distribució"
+
+#. module: document_page_distribution
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.res_config_settings_view_form
+msgid "Document Distribution"
+msgstr "Distribució documental"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_res_company__document_page_distribution_template_id
+#: model:ir.model.fields,field_description:document_page_distribution.field_res_config_settings__document_page_distribution_template_id
+msgid "Document Distribution Template"
+msgstr "Plantilla de distribució documental"
+
+#. module: document_page_distribution
+#: model:ir.model,name:document_page_distribution.model_document_page
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute__document_page_id
+msgid "Document Page"
+msgstr "Pàgina de document"
+
+#. module: document_page_distribution
+#: model:ir.model,name:document_page_distribution.model_document_page_history_recipient
+msgid "Document Page Distribution Recipient"
+msgstr "Destinatari de distribució de pàgina de document"
+
+#. module: document_page_distribution
+#: model:ir.model,name:document_page_distribution.model_document_page_history_recipient_send
+msgid "Document Page Distribution Send"
+msgstr "Enviament de distribució de pàgina de document"
+
+#. module: document_page_distribution
+#: model:ir.model,name:document_page_distribution.model_document_page_history
+msgid "Document Page History"
+msgstr "Historial de pàgina de document"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute_line__email
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__email
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__email
+msgid "Email"
+msgstr "Correu electrònic"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute__template_id
+msgid "Email Template"
+msgstr "Plantilla de correu"
+
+#. module: document_page_distribution
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.res_config_settings_view_form
+msgid ""
+"Email template used by default to distribute document\n"
+"                                pages of the company."
+msgstr ""
+"Plantilla de correu utilitzada per defecte per distribuir les pàgines de "
+"document de l'empresa."
+
+#. module: document_page_distribution
+#: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_distribute_line__current_state__error
+#: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_history_recipient__state__error
+msgid "Error"
+msgstr "Error"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__history_id
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__history_id
+msgid "History"
+msgstr "Historial"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page__id
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute__id
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute_line__id
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history__id
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__id
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__id
+#: model:ir.model.fields,field_description:document_page_distribution.field_res_company__id
+#: model:ir.model.fields,field_description:document_page_distribution.field_res_config_settings__id
+msgid "ID"
+msgstr "ID"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,help:document_page_distribution.field_document_page_history_recipient__company_id
+#: model:ir.model.fields,help:document_page_distribution.field_document_page_history_recipient_send__company_id
+msgid "If set, page is accessible only from this company"
+msgstr ""
+"Si es configura, només es pot accedir a la pàgina des d'aquesta empresa"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page____last_update
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute____last_update
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute_line____last_update
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history____last_update
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient____last_update
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send____last_update
+#: model:ir.model.fields,field_description:document_page_distribution.field_res_company____last_update
+#: model:ir.model.fields,field_description:document_page_distribution.field_res_config_settings____last_update
+msgid "Last Modified on"
+msgstr "Última modificació el"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute__write_uid
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute_line__write_uid
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__write_uid
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__write_uid
+msgid "Last Updated by"
+msgstr "Última actualització per"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute__write_date
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute_line__write_date
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__write_date
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__write_date
+msgid "Last Updated on"
+msgstr "Última actualització el"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__last_successful_sent_date
+msgid "Last send"
+msgstr "Últim enviament"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__mail_message_id
+msgid "Mail Message"
+msgstr "Missatge de correu"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__mail_notification_id
+msgid "Mail Notification"
+msgstr "Notificació de correu"
+
+#. module: document_page_distribution
+#: model:mail.template,subject:document_page_distribution.mail_template_document_page_distribution
+msgid ""
+"New document version available: ${object.name} (${object.draft_name or "
+"'latest version'})"
+msgstr ""
+"Nova versió documental disponible: ${object.name} (${object.draft_name or "
+"'última versió'})"
+
+#. module: document_page_distribution
+#: code:addons/document_page_distribution/models/document_page.py:0
+#, python-format
+msgid ""
+"No default distribution template is configured for company '%s'. Please "
+"configure it in Settings before distributing."
+msgstr ""
+"No hi ha cap plantilla de distribució per defecte configurada per a "
+"l'empresa '%s'. Configureu-la a Configuració abans de distribuir."
+
+#. module: document_page_distribution
+#: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_distribute_line__current_state__no_email
+#: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_history_recipient__state__no_email
+msgid "No email"
+msgstr "Sense correu"
+
+#. module: document_page_distribution
+#: code:addons/document_page_distribution/models/document_page.py:0
+#, python-format
+msgid "Only document managers are allowed to distribute documents."
+msgstr "Només els gestors documentals poden distribuir documents."
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__document_page_id
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__document_page_id
+msgid "Page"
+msgstr "Pàgina"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute_line__partner_id
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__partner_id
+msgid "Partner"
+msgstr "Contacte"
+
+#. module: document_page_distribution
+#: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_distribute_line__current_state__pending
+#: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_history_recipient__state__pending
+msgid "Pending"
+msgstr "Pendent"
+
+#. module: document_page_distribution
+#: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_distribute_line__current_state__queued
+#: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_history_recipient__state__queued
+msgid "Queued"
+msgstr "En cua"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__recipient_id
+msgid "Recipient"
+msgstr "Destinatari"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute__line_ids
+msgid "Recipients"
+msgstr "Destinataris"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute_line__selected
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.document_page_distribute_form
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.document_page_history_recipient_send_form
+msgid "Send"
+msgstr "Enviar"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute_line__sendable
+msgid "Sendable"
+msgstr "Enviable"
+
+#. module: document_page_distribution
+#: code:addons/document_page_distribution/models/document_page_history_recipient.py:0
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__send_ids
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.view_wiki_form_distribution
+#, python-format
+msgid "Sends"
+msgstr "Enviaments"
+
+#. module: document_page_distribution
+#: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_distribute_line__current_state__sent
+#: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_history_recipient__state__sent
+msgid "Sent"
+msgstr "Enviat"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__sent_by
+msgid "Sent By"
+msgstr "Enviat per"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__sent_count
+msgid "Sent Count"
+msgstr "Nombre d'enviaments"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__sent_date
+msgid "Sent Date"
+msgstr "Data d'enviament"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__state
+msgid "State"
+msgstr "Estat"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__notification_status
+msgid "Status"
+msgstr "Estat"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__template_id
+msgid "Template"
+msgstr "Plantilla"
+
+#. module: document_page_distribution
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.view_wiki_form_distribution
+msgid "The current version has not been distributed yet."
+msgstr "La versió actual encara no s'ha distribuït."
+
+#. module: document_page_distribution
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.view_wiki_history_form_distribution
+msgid "This version has not been distributed."
+msgstr "Aquesta versió no s'ha distribuït."
+
+#. module: document_page_distribution
+#: code:addons/document_page_distribution/wizards/document_page_distribute.py:0
+#, python-format
+msgid ""
+"The current version of the document has changed. Close this window and "
+"distribute again."
+msgstr ""
+"La versió actual del document ha canviat. Tanca aquesta finestra i torna a "
+"distribuir."
+
+#. module: document_page_distribution
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.document_page_distribute_form
+msgid ""
+"The current version of the document will be distributed to the\n"
+"                    selected recipients. The email content comes from the chosen\n"
+"                    template and cannot be edited here."
+msgstr ""
+"La versió actual del document es distribuirà als destinataris seleccionats. "
+"El contingut del correu prové de la plantilla triada i no es pot editar "
+"aquí."
+
+#. module: document_page_distribution
+#: code:addons/document_page_distribution/models/document_page.py:0
+#: code:addons/document_page_distribution/wizards/document_page_distribute.py:0
+#: code:addons/document_page_distribution/wizards/document_page_distribute.py:0
+#, python-format
+msgid "This document has no current version to distribute."
+msgstr "Aquest document no té cap versió actual per distribuir."
+
+#. module: document_page_distribution
+#: code:addons/document_page_distribution/models/document_page.py:0
+#, python-format
+msgid ""
+"This document has no group defined in Security. The distribution coverage "
+"cannot be computed."
+msgstr ""
+"Aquest document no té cap grup definit a Seguretat. No es pot calcular la "
+"cobertura de distribució."
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute_line__user_id
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__user_id
+msgid "User"
+msgstr "Usuari"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute__history_id
+msgid "Version"
+msgstr "Versió"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute_line__wizard_id
+msgid "Wizard"
+msgstr "Assistent"

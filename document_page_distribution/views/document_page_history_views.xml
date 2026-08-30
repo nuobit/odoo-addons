@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="view_wiki_history_form_distribution" model="ir.ui.view">
+        <field name="name">document.page.history.form.distribution</field>
+        <field name="model">document.page.history</field>
+        <field name="inherit_id" ref="document_page.wiki_history_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page
+                    name="distribution"
+                    string="Distribution"
+                    groups="knowledge.group_document_user"
+                >
+                    <field name="distribution_count" invisible="1" />
+                    <p
+                        class="text-muted"
+                        attrs="{'invisible': [('distribution_count', '!=', 0)]}"
+                    >This version has not been distributed.</p>
+                    <field
+                        name="recipient_ids"
+                        readonly="1"
+                        attrs="{'invisible': [('distribution_count', '=', 0)]}"
+                    >
+                        <tree>
+                            <field name="user_id" />
+                            <field name="email" />
+                            <field name="last_successful_sent_date" />
+                            <field name="sent_count" />
+                            <button
+                                name="action_open_sends"
+                                type="object"
+                                icon="fa-envelope-o"
+                                string="Sends"
+                            />
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_wiki_history_tree_distribution" model="ir.ui.view">
+        <field name="name">document.page.history.tree.distribution</field>
+        <field name="model">document.page.history</field>
+        <field name="inherit_id" ref="document_page.view_wiki_history_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='create_date']" position="after">
+                <field
+                    name="distribution_count"
+                    groups="knowledge.group_document_user"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>
