@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 NuoBiT - Bijaya Kumal <bkumal@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <template
+        id="snippet_options"
+        inherit_id="website.snippet_options"
+        name="Event Thin List Layout Option"
+    >
+        <xpath
+            expr="//div[@data-selector='main:has(.o_wevent_events_list)']//we-select"
+            position="inside"
+        >
+            <we-button
+                data-customize-website-views="website_event_thin_list.opt_events_list_thin"
+            >Thin List</we-button>
+        </xpath>
+    </template>
+</odoo>
