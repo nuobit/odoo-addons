@@ -1,0 +1,2 @@
+odoo-addon-account_asset_tax_consistency@git+https://github.com/nuobit/odoo-addons.git@refs/pull/797/head#subdirectory=account_asset_tax_consistency
+odoo-addon-account_asset_management_extension@git+https://github.com/nuobit/odoo-addons.git@refs/pull/754/head#subdirectory=account_asset_management_extension
