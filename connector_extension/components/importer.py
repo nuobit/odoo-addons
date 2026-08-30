@@ -115,8 +115,16 @@ class ConnectorExtensionGenericDirectImporter(AbstractComponent):
     def _after_import(self, binding):
         return
 
-    def _must_skip(self, binding):
-        """Hook called right after we read the data from the backend.
+    def _must_skip(self, binding, external_data):
+        """Hook called right after we read the data from the backend,
+        before importing the record dependencies: a skipped record must
+        not leave the side effects of its dependency imports behind.
+
+        ``binding`` is resolved by primary key only: a record adoptable
+        via the alternate key is not bound yet at this point (adoption
+        runs later, on the create path, because it consumes the mapped
+        values and mapping the record may need its dependencies already
+        imported).
 
         If the method returns a message giving a reason for the
         skipping, the import will be interrupted and the message
@@ -155,6 +163,15 @@ class ConnectorExtensionGenericDirectImporter(AbstractComponent):
                     % (external_id,)
                 )
 
+        binder = self.binder_for()
+        # find if the external id already exists in odoo
+        binding = binder.to_internal(external_id)
+
+        # skip record
+        skip = self._must_skip(binding, external_data)
+        if skip:
+            return skip
+
         # import the missing linked resources
         self._import_dependencies(external_data, sync_date)
 
@@ -165,18 +182,9 @@ class ConnectorExtensionGenericDirectImporter(AbstractComponent):
         # convert to odoo data
         internal_data = mapper.map_record(external_data)
 
-        binder = self.binder_for()
-        # find if the external id already exists in odoo
-        binding = binder.to_internal(external_id)
-
         # if binding not exists, try to link existing internal object
         if not binding:
             binding = binder.to_binding_from_external_key(internal_data, sync_date)
-
-        # skip binding
-        skip = self._must_skip(binding)
-        if skip:
-            return skip
 
         # passing info to the mapper
         opts = self._mapper_options(binding, sync_date)
