@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="barcodes" model="ir.ui.view">
+        <field name="name">barcodes.option.wizard.form</field>
+        <field name="model">barcodes.gs1.label.options.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Print barcodes">
+                <header />
+                <notebook>
+                    <page string="General">
+                        <group col="2">
+                            <field name="label_config_id" />
+                        </group>
+                        <group col="4">
+                            <group colspan="2">
+                                <field name="start_row" />
+                                <field name="start_col" />
+                            </group>
+                            <group colspan="2">
+                                <field name="label_copies" />
+                            </group>
+                        </group>
+                        <group
+                            col="4"
+                            invisible="context.get('active_model') not in ('product.product', 'stock.lot')"
+                        >
+                            <group colspan="2">
+                                <field name="with_stock" />
+                            </group>
+                            <group colspan="2">
+                                <field
+                                    name="stock_location_ids"
+                                    widget="many2many_tags"
+                                    invisible="not with_stock"
+                                    required="with_stock"
+                                />
+                            </group>
+                        </group>
+                        <group
+                            col="2"
+                            invisible="context.get('active_model') not in ('product.product', 'stock.lot')"
+                        >
+                            <field name="weight" />
+                        </group>
+                    </page>
+                    <page string="Advanced">
+                        <group>
+                            <field name="show_borders" />
+                            <field
+                                name="border_color"
+                                required="[(show_borders, '=', True)]"
+                                invisible="[(show_borders, '!=', True)]"
+                            />
+                        </group>
+                        <group>
+                            <field name="px_mm_rate_correction" />
+                        </group>
+                    </page>
+                </notebook>
+                <footer>
+                    <button
+                        string="Ok"
+                        name="print_product_barcodes"
+                        type="object"
+                        default_focus="1"
+                        class="btn-primary"
+                    />
+                    <button string="Cancel" class="btn-default" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record
+        id="barcodes_product_option_wizard_view_action"
+        model="ir.actions.act_window"
+    >
+        <field name="name">Print barcodes</field>
+        <field name="res_model">barcodes.gs1.label.options.wizard</field>
+        <field name="binding_model_id" ref="model_product_product" />
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="barcodes_lot_option_wizard_view_action" model="ir.actions.act_window">
+        <field name="name">Print barcodes</field>
+        <field name="res_model">barcodes.gs1.label.options.wizard</field>
+        <field name="binding_model_id" ref="model_stock_lot" />
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record
+        id="barcodes_picking_option_wizard_view_action"
+        model="ir.actions.act_window"
+    >
+        <field name="name">Print barcodes</field>
+        <field name="res_model">barcodes.gs1.label.options.wizard</field>
+        <field name="binding_model_id" ref="model_stock_picking" />
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="barcodes_quant_option_wizard_view_action" model="ir.actions.act_window">
+        <field name="name">Print barcodes</field>
+        <field name="res_model">barcodes.gs1.label.options.wizard</field>
+        <field name="binding_model_id" ref="model_stock_quant" />
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

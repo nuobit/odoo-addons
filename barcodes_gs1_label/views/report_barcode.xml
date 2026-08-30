@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
+     Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     Copyright 2025 NuoBiT Solutions SL - Bijaya Kumal <bkumal@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- ========================== COMMON ============================== -->
+
+    <!-- layout gs1productdata -->
+    <template id="layout_gs1productdata">
+        <div class="bgp-product">
+            <div t-if="show_price">
+                <div class="clearfix">
+                    <div class="bgp-sku" style="float: left;">
+                        <p t-field="wc[1]['product'].default_code" />
+                    </div>
+                    <div class="bgp-price" style="float: right;">
+                        <p
+                            t-field="wc[1]['product'].lst_price"
+                            t-options="{'widget': 'monetary', 'display_currency': wc[1]['product'].currency_id}"
+                        />
+                    </div>
+                </div>
+                <div class="text-left bgp-description">
+                    <div>
+                        <span t-esc="wc[1]['product'].name" />
+                        <t t-if="wc[1]['product'].product_template_attribute_value_ids">
+                            <t
+                                t-set="attribute_values"
+                                t-value="', '.join([ptav.name for ptav in wc[1]['product'].product_template_attribute_value_ids])"
+                            />
+                            <t t-if="attribute_values">
+                                <span class="attribute-values">
+                                    (<t t-esc="attribute_values" />)
+                                </span>
+                            </t>
+                        </t>
+                    </div>
+                </div>
+            </div>
+            <div t-if="not show_price" class="text-left">
+                <div class="bgp-sku">
+                    <p t-field="wc[1]['product'].default_code" />
+                </div>
+                <div class="bgp-description">
+                    <div>
+                        <span t-esc="wc[1]['product'].name" />
+                        <t t-if="wc[1]['product'].product_template_attribute_value_ids">
+                            <t
+                                t-set="attribute_values"
+                                t-value="', '.join([ptav.name for ptav in wc[1]['product'].product_template_attribute_value_ids])"
+                            />
+                            <t t-if="attribute_values">
+                                <span class="attribute-values">
+                                    (<t t-esc="attribute_values" />)
+                                </span>
+                            </t>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- ========================== LAYOUTS ============================== -->
+
+    <!-- layout gs1datamatrix1 -->
+    <template id="layout_gs1datamatrix1">
+        <div class="bgp-gs1-datamatrix">
+            <div t-if="barcode_values" class="bgp-barcode">
+                <div class="bgp-barcode-img">
+                    <img
+                        t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;height=%s' % (barcode_type, wc[1]['barcode_string'], 100)"
+                        t-attf-class="bgp-img"
+                    />
+                </div>
+                <div class="bgp-barcode-text">
+                    <ul class="list-unstyled">
+                        <t t-foreach="barcode_values.items()" t-as="bv">
+                            <li t-esc="'(%s)%s' % bv" />
+                        </t>
+                    </ul>
+                </div>
+            </div>
+            <t t-call="barcodes_gs1_label.layout_gs1productdata" />
+        </div>
+    </template>
+
+    <!-- layout gs1code128 -->
+    <template id="layout_gs1code128">
+        <div class="bgp-gs1-128">
+            <div t-if="barcode_values" class="bgp-barcode">
+                <div class="bgp-barcode-img">
+                    <img
+                        t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;height=%s' % (barcode_type, wc[1]['barcode_string'], 100)"
+                        t-attf-class="bgp-img"
+                    />
+                </div>
+                <div class="bgp-barcode-text text-center">
+                    <p
+                        t-esc="''.join(['(%s)%s' % bv for bv in barcode_values.items()])"
+                    />
+                </div>
+            </div>
+
+            <!-- product data -->
+            <t t-call="barcodes_gs1_label.layout_gs1productdata" />
+        </div>
+    </template>
+
+    <!-- layout ean13code1281 -->
+    <template id="layout_ean13code1281">
+        <div class="bgp-ean13-code128">
+            <!-- barcode -->
+            <div class="bgp-product-barcode">
+                <t t-if="barcode_values[0]">
+                    <div class="bgp-barcode-img">
+                        <img
+                            t-att-src="'/report/barcode/?barcode_type=EAN13&amp;quiet=0&amp;value=%s&amp;height=%s' % (barcode_values[0], 80)"
+                            t-attf-class="bgp-img"
+                        />
+                    </div>
+                    <div class="bgp-barcode-text text-center">
+                        <p t-esc="barcode_values[0]" />
+                    </div>
+                </t>
+            </div>
+
+            <!-- product data -->
+            <t t-call="barcodes_gs1_label.layout_gs1productdata" />
+
+            <!-- serial/lot -->
+            <div class="bgp-lot-barcode">
+                <t t-if="barcode_values[1]">
+                    <div class="bgp-barcode-img">
+                        <img
+                            t-att-src="'/report/barcode/?barcode_type=Code128&amp;quiet=0&amp;value=%s&amp;height=%s' % (barcode_values[1], 80)"
+                            t-attf-class="bgp-img"
+                        />
+                    </div>
+                    <div class="bgp-barcode-text text-center">
+                        <p t-esc="barcode_values[1]" />
+                    </div>
+                </t>
+            </div>
+        </div>
+    </template>
+
+    <!-- layout ean13 -->
+    <template id="layout_ean13">
+        <div class="bgp-ean13">
+            <!-- product barcode -->
+            <div class="bgp-product-barcode">
+                <t t-if="barcode_values">
+                    <div class="bgp-barcode-img">
+                        <img
+                            t-att-src="'/report/barcode/?barcode_type=EAN13&amp;quiet=0&amp;value=%s&amp;height=%s' % (barcode_values, 80)"
+                            t-attf-class="bgp-img"
+                        />
+                    </div>
+                    <div class="bgp-barcode-text text-center">
+                        <p t-esc="barcode_values" />
+                    </div>
+                </t>
+            </div>
+
+            <!-- product data -->
+            <t t-call="barcodes_gs1_label.layout_gs1productdata" />
+        </div>
+    </template>
+
+    <!-- ========================== BODY ============================== -->
+    <template id="report_gs1_barcode_document">
+        <t t-call="barcodes_gs1_label.external_layout">
+            <t t-foreach="docs" t-as="page_docs">
+                <div class="page bgp-page">
+                    <div
+                        class="bgp-container clearfix"
+                        t-attf-style="width: {{layout['container_width']}}px;padding-top: {{ layout['container_top'] }}px;"
+                    >
+                        <t
+                            t-foreach="zip(layout['label_heights']*len(page_docs), page_docs)"
+                            t-as="hc"
+                        >
+                            <t t-foreach="zip(layout['label_widths'], hc[1])" t-as="wc">
+                                <div
+                                    class="bgp-cell"
+                                    t-attf-style="width:{{wc[0]}}px;height:{{hc[0]}}px;{{ layout['show_borders'] and 'border:1px solid %s;' % layout['border_color'] or None }}"
+                                >
+                                    <t t-if="wc[1]">
+                                        <t
+                                            t-set="barcode_values"
+                                            t-value="wc[1]['barcode_values']"
+                                        />
+                                        <t
+                                            t-if="barcode_type in ('gs1-datamatrix', 'gs1-128')"
+                                        >
+                                            <t t-if="barcode_values">
+                                                <t
+                                                    t-if="barcode_type == 'gs1-datamatrix'"
+                                                    t-call="barcodes_gs1_label.layout_gs1datamatrix1"
+                                                />
+                                                <t
+                                                    t-if="barcode_type == 'gs1-128'"
+                                                    t-call="barcodes_gs1_label.layout_gs1code128"
+                                                />
+                                            </t>
+                                        </t>
+                                        <t
+                                            t-if="barcode_type == 'ean13-code128'"
+                                            t-call="barcodes_gs1_label.layout_ean13code1281"
+                                        />
+                                        <t
+                                            t-if="barcode_type == 'ean13'"
+                                            t-call="barcodes_gs1_label.layout_ean13"
+                                        />
+                                    </t>
+                                </div>
+                            </t>
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_gs1_barcode">
+        <t t-call="web.html_container">
+            <t t-call="barcodes_gs1_label.report_gs1_barcode_document" />
+        </t>
+    </template>
+
+    <template id="external_layout">
+        <div class="article bgp-paddingless">
+            <t t-out="0" />
+        </div>
+    </template>
+</odoo>
