@@ -1,0 +1,168 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* document_page_distribution_download_log
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-08 00:00+0000\n"
+"PO-Revision-Date: 2026-06-08 00:00+0000\n"
+"Last-Translator: Deniz Gallo <dgallo@nuobit.com>\n"
+"Language-Team: Catalan\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: document_page_distribution_download_log
+#: code:addons/document_page_distribution_download_log/models/document_page_history.py:0
+#, python-format
+msgid "A document version can contain at most one downloadable document link."
+msgstr "Una versió del document pot contenir com a màxim un enllaç de document descarregable."
+
+#. module: document_page_distribution_download_log
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__attachment_id
+msgid "Attachment"
+msgstr "Adjunt"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__company_id
+msgid "Company"
+msgstr "Empresa"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__create_uid
+msgid "Created by"
+msgstr "Creat per"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__create_date
+msgid "Created on"
+msgstr "Creat el"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history__display_name
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient__display_name
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__display_name
+msgid "Display Name"
+msgstr "Nom mostrat"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model,name:document_page_distribution_download_log.model_document_page_history_recipient_download
+msgid "Document Page Distribution Download"
+msgstr "Descàrrega de distribució de pàgina de document"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model,name:document_page_distribution_download_log.model_document_page_history_recipient
+msgid "Document Page Distribution Recipient"
+msgstr "Destinatari de distribució de pàgina de document"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model,name:document_page_distribution_download_log.model_document_page_history
+msgid "Document Page History"
+msgstr "Historial de pàgina de document"
+
+#. module: document_page_distribution_download_log
+#: model_terms:ir.ui.view,arch_db:document_page_distribution_download_log.document_page_history_recipient_download_form
+msgid "Download"
+msgstr "Descàrrega"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient__download_count
+msgid "Download Count"
+msgstr "Nombre de descàrregues"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__download_date
+msgid "Download Date"
+msgstr "Data de descàrrega"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient__downloaded
+msgid "Downloaded"
+msgstr "Descarregat"
+
+#. module: document_page_distribution_download_log
+#: code:addons/document_page_distribution_download_log/models/document_page_history_recipient.py:0
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient__download_ids
+#: model_terms:ir.ui.view,arch_db:document_page_distribution_download_log.view_wiki_form_distribution_download_log
+#: model_terms:ir.ui.view,arch_db:document_page_distribution_download_log.view_wiki_history_form_distribution_download_log
+#, python-format
+msgid "Downloads"
+msgstr "Descàrregues"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient__first_download_date
+msgid "First Download Date"
+msgstr "Data de primera descàrrega"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__history_id
+msgid "History"
+msgstr "Historial"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history__id
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient__id
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__id
+msgid "ID"
+msgstr "ID"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__ip_address
+msgid "IP Address"
+msgstr "Adreça IP"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model.fields,help:document_page_distribution_download_log.field_document_page_history_recipient_download__company_id
+msgid "If set, page is accessible only from this company"
+msgstr "Si es configura, només es pot accedir a la pàgina des d'aquesta empresa"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient__last_download_date
+msgid "Last Download Date"
+msgstr "Data de darrera descàrrega"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history____last_update
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient____last_update
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download____last_update
+msgid "Last Modified on"
+msgstr "Última modificació el"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__write_uid
+msgid "Last Updated by"
+msgstr "Última actualització per"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__write_date
+msgid "Last Updated on"
+msgstr "Última actualització el"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__document_page_id
+msgid "Page"
+msgstr "Pàgina"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__partner_id
+msgid "Partner"
+msgstr "Contacte"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__recipient_id
+msgid "Recipient"
+msgstr "Destinatari"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__user_id
+msgid "User"
+msgstr "Usuari"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__user_agent
+msgid "User Agent"
+msgstr "Agent d'usuari"
