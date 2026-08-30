@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="380" viewBox="0 0 1000 380">
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+  </style>
+  <rect width="1000" height="380" fill="#1a1a2e"/>
+
+  <defs>
+    <marker id="a1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#3a86ff"/></marker>
+    <marker id="a2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#e94560"/></marker>
+    <marker id="a3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#4ecca3"/></marker>
+    <marker id="a4" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#888"/></marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="500" y="30" text-anchor="middle" fill="#e94560" font-size="20" font-weight="bold">Tank Lifecycle — One Tank, Four States</text>
+  <text x="500" y="52" text-anchor="middle" fill="#888" font-size="13">This is ONE tank (flowable location) going through states over time.</text>
+  <text x="500" y="70" text-anchor="middle" fill="#888" font-size="13">A reception never reserves — it just delivers stock to the tank.</text>
+
+  <!-- Tank drawing (single, centered at top) -->
+  <rect x="410" y="85" width="180" height="50" rx="8" fill="#0f3460" stroke="#3a86ff" stroke-width="1.5"/>
+  <text x="500" y="107" text-anchor="middle" fill="#3a86ff" font-size="13" font-weight="bold">Tank (flowable location)</text>
+  <text x="500" y="125" text-anchor="middle" fill="#888" font-size="10">e.g. Tank-A, Tank-B</text>
+
+  <!-- Time arrow -->
+  <line x1="50" y1="165" x2="950" y2="165" stroke="#666" stroke-width="1" marker-end="url(#a4)"/>
+  <text x="500" y="158" text-anchor="middle" fill="#666" font-size="10">TIME →</text>
+
+  <!-- State 1: Available (no stock) -->
+  <rect x="40" y="180" width="170" height="100" rx="10" fill="none" stroke="#888" stroke-width="1.5"/>
+  <text x="125" y="205" text-anchor="middle" fill="#888" font-size="14" font-weight="bold">AVAILABLE</text>
+  <text x="125" y="225" text-anchor="middle" fill="#666" font-size="10">No active MO</text>
+  <text x="125" y="240" text-anchor="middle" fill="#666" font-size="10">No blocking</text>
+  <text x="125" y="260" text-anchor="middle" fill="#666" font-size="10">Tank may have stock</text>
+  <text x="125" y="273" text-anchor="middle" fill="#666" font-size="10">or be empty</text>
+
+  <!-- Arrow: PO reception picking validated -->
+  <line x1="215" y1="230" x2="270" y2="230" stroke="#3a86ff" stroke-width="2" marker-end="url(#a1)"/>
+  <text x="243" y="218" text-anchor="middle" fill="#3a86ff" font-size="9" font-weight="bold">PO reception</text>
+  <text x="243" y="207" text-anchor="middle" fill="#3a86ff" font-size="9" font-weight="bold">picking validated</text>
+
+  <!-- State 2: Blocked -->
+  <rect x="275" y="180" width="190" height="100" rx="10" fill="#e94560" fill-opacity="0.12" stroke="#e94560" stroke-width="2.5"/>
+  <rect x="282" y="230" width="176" height="45" rx="5" fill="#e94560" opacity="0.15"/>
+  <text x="370" y="205" text-anchor="middle" fill="#e94560" font-size="14" font-weight="bold">BLOCKED 🔒</text>
+  <text x="370" y="248" text-anchor="middle" fill="#e94560" font-size="10">Stock arrived + MO created</text>
+  <text x="370" y="262" text-anchor="middle" fill="#e94560" font-size="10">No one else can receive</text>
+
+  <!-- Arrow: MO processes -->
+  <line x1="470" y1="230" x2="525" y2="230" stroke="#3a86ff" stroke-width="2" marker-end="url(#a1)"/>
+  <text x="498" y="218" text-anchor="middle" fill="#3a86ff" font-size="9" font-weight="bold">MO mixes /</text>
+  <text x="498" y="207" text-anchor="middle" fill="#3a86ff" font-size="9" font-weight="bold">consumes</text>
+
+  <!-- State 3: Processing -->
+  <rect x="530" y="180" width="190" height="100" rx="10" fill="#3a86ff" fill-opacity="0.08" stroke="#3a86ff" stroke-width="1.5"/>
+  <rect x="537" y="230" width="176" height="45" rx="5" fill="#3a86ff" opacity="0.1"/>
+  <text x="625" y="205" text-anchor="middle" fill="#3a86ff" font-size="14" font-weight="bold">PROCESSING</text>
+  <text x="625" y="248" text-anchor="middle" fill="#3a86ff" font-size="10">MO consuming stock</text>
+  <text x="625" y="262" text-anchor="middle" fill="#888" font-size="10">Still blocked (MO active)</text>
+
+  <!-- Arrow: MO done -->
+  <line x1="725" y1="230" x2="780" y2="230" stroke="#4ecca3" stroke-width="2" marker-end="url(#a3)"/>
+  <text x="753" y="218" text-anchor="middle" fill="#4ecca3" font-size="9" font-weight="bold">MO marked</text>
+  <text x="753" y="207" text-anchor="middle" fill="#4ecca3" font-size="9" font-weight="bold">done</text>
+
+  <!-- State 4: Available again -->
+  <rect x="785" y="180" width="170" height="100" rx="10" fill="none" stroke="#4ecca3" stroke-width="1.5"/>
+  <text x="870" y="205" text-anchor="middle" fill="#4ecca3" font-size="14" font-weight="bold">AVAILABLE</text>
+  <text x="870" y="225" text-anchor="middle" fill="#4ecca3" font-size="10">MO completed</text>
+  <text x="870" y="240" text-anchor="middle" fill="#4ecca3" font-size="10">Blocking cleared</text>
+  <text x="870" y="260" text-anchor="middle" fill="#4ecca3" font-size="10">Ready for next</text>
+  <text x="870" y="273" text-anchor="middle" fill="#4ecca3" font-size="10">PO reception</text>
+
+  <!-- Cycle arrow: back to start -->
+  <path d="M 955 230 Q 980 230 980 310 Q 980 330 500 330 Q 30 330 30 285" fill="none" stroke="#888" stroke-width="1.5" stroke-dasharray="5,5" marker-end="url(#a4)"/>
+  <text x="500" y="348" text-anchor="middle" fill="#666" font-size="11">cycle repeats with next PO reception</text>
+
+  <!-- Bottom bar: what runs at each transition -->
+  <rect x="215" y="295" width="60" height="18" rx="4" fill="#3a86ff" fill-opacity="0.3"/>
+  <text x="245" y="308" text-anchor="middle" fill="#3a86ff" font-size="8">picking</text>
+  <rect x="470" y="295" width="60" height="18" rx="4" fill="#3a86ff" fill-opacity="0.3"/>
+  <text x="500" y="308" text-anchor="middle" fill="#3a86ff" font-size="8">MO</text>
+  <rect x="725" y="295" width="60" height="18" rx="4" fill="#4ecca3" fill-opacity="0.3"/>
+  <text x="755" y="308" text-anchor="middle" fill="#4ecca3" font-size="8">move.write</text>
+</svg>
