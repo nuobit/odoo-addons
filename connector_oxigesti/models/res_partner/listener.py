@@ -18,5 +18,5 @@ class ProductPricelistItemListener(Component):
                 lambda x: x.odoo_partner_id == relation
             )
         )
-        for backend, domain in bindings.get_external_ids_domain_by_backend().items():
-            bindings.with_delay().export_delete_batch(backend, domain=domain)
+        for backend, external_ids in bindings.get_external_ids_by_backend().items():
+            bindings.export_delete_batch(backend, external_ids=external_ids)
