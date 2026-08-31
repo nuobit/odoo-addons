@@ -12,11 +12,10 @@ class ProductTemplateListener(Component):
 
     def on_record_unlink(self, relation):
         bindings = (
-            relation.sudo()
+            self.env["oxigesti.product.pricelist.item"]
+            .sudo()
             .with_context(active_test=False)
-            .product_variant_ids.oxigesti_bind_ids
+            .search([("product_tmpl_id", "=", relation.id)])
         )
-        for backend, domain in bindings.get_external_ids_domain_by_backend().items():
-            self.env[
-                "oxigesti.product.pricelist.item"
-            ].with_delay().export_delete_batch(backend, domain)
+        for backend, external_ids in bindings.get_external_ids_by_backend().items():
+            bindings.export_delete_batch(backend, external_ids=external_ids)
