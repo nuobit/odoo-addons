@@ -16,6 +16,14 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: sale_order_invoicing_exclude
+#: code:addons/sale_order_invoicing_exclude/models/sale_order.py:0
+#, python-format
+msgid "'Never invoice' only makes sense on an order excluded from invoicing (%s)."
+msgstr ""
+"'No facturar nunca' solo tiene sentido en un pedido excluido de la "
+"facturación (%s)."
+
+#. module: sale_order_invoicing_exclude
 #: model:ir.model.fields,field_description:sale_order_invoicing_exclude.field_sale_order__display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
@@ -44,6 +52,25 @@ msgstr "Incluido en la facturación"
 #: model:ir.model.fields,field_description:sale_order_invoicing_exclude.field_sale_order____last_update
 msgid "Last Modified on"
 msgstr "Última modificación el"
+
+#. module: sale_order_invoicing_exclude
+#: model:ir.model.fields,field_description:sale_order_invoicing_exclude.field_sale_order__sale_invoicing_exclude_never_invoice
+msgid "Never invoice"
+msgstr "No facturar nunca"
+
+#. module: sale_order_invoicing_exclude
+#: model_terms:ir.ui.view,arch_db:sale_order_invoicing_exclude.view_sales_order_filter
+msgid "Never to be invoiced"
+msgstr "No facturar nunca"
+
+#. module: sale_order_invoicing_exclude
+#: model:ir.model.fields,field_help:sale_order_invoicing_exclude.field_sale_order__sale_invoicing_exclude_never_invoice
+msgid ""
+"Report the order as 'Nothing to invoice' instead of 'To invoice'. Only for "
+"orders excluded from invoicing."
+msgstr ""
+"Muestra el pedido como 'Nada que facturar' en lugar de 'Para facturar'. Solo "
+"para pedidos excluidos de la facturación."
 
 #. module: sale_order_invoicing_exclude
 #: model:ir.model,name:sale_order_invoicing_exclude.model_sale_order
