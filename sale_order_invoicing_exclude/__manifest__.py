@@ -5,7 +5,7 @@
 {
     "name": "Sale order exclude invoicing",
     "summary": "Exclude orders from being invoiced.",
-    "version": "14.0.1.2.0",
+    "version": "14.0.1.2.1",
     "category": "Sales Management",
     "license": "AGPL-3",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
