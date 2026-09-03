@@ -2,7 +2,8 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class SaleOrder(models.Model):
@@ -13,12 +14,41 @@ class SaleOrder(models.Model):
         default=False,
         tracking=True,
     )
+    sale_invoicing_exclude_never_invoice = fields.Boolean(
+        string="Never invoice",
+        default=False,
+        tracking=True,
+        help="Report the order as 'Nothing to invoice' instead of 'To invoice'. "
+        "Only for orders excluded from invoicing.",
+    )
 
-    @api.depends("sale_invoicing_exclude_from_invoicing")
+    @api.constrains(
+        "sale_invoicing_exclude_from_invoicing",
+        "sale_invoicing_exclude_never_invoice",
+    )
+    def _check_never_invoice(self):
+        for order in self.filtered(
+            lambda so: so.sale_invoicing_exclude_never_invoice
+            and not so.sale_invoicing_exclude_from_invoicing
+        ):
+            raise ValidationError(
+                _(
+                    "'Never invoice' only makes sense on an order excluded "
+                    "from invoicing (%s).",
+                    order.name,
+                )
+            )
+
+    @api.onchange("sale_invoicing_exclude_from_invoicing")
+    def _onchange_sale_invoicing_exclude_from_invoicing(self):
+        if not self.sale_invoicing_exclude_from_invoicing:
+            self.sale_invoicing_exclude_never_invoice = False
+
+    @api.depends("sale_invoicing_exclude_never_invoice")
     def _get_invoice_status(self):
         super()._get_invoice_status()
         for order in self.filtered(
-            lambda so: so.sale_invoicing_exclude_from_invoicing
+            lambda so: so.sale_invoicing_exclude_never_invoice
             and so.state in ("sale", "done")
             and so.invoice_status == "to invoice"
         ):

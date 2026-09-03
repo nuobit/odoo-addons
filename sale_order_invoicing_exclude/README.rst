@@ -6,7 +6,10 @@
 Sale order exclude invoicing
 ============================
 
-* Exclude orders from being invoiced.
+* Exclude orders from being invoiced: the invoicing process skips them while
+  they keep reporting *To invoice*, so they stay visible as pending.
+* Flag an excluded order as *Never invoice* to report it as *Nothing to
+  invoice* instead. The flag is only allowed on excluded orders.
 
 
 Bug Tracker

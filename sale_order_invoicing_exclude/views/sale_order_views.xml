@@ -9,6 +9,10 @@
         <field name="arch" type="xml">
             <xpath expr="//group[@name='sale_info']" position="inside">
                 <field name="sale_invoicing_exclude_from_invoicing" />
+                <field
+                    name="sale_invoicing_exclude_never_invoice"
+                    attrs="{'invisible': [('sale_invoicing_exclude_from_invoicing', '=', False)]}"
+                />
             </xpath>
         </field>
     </record>
@@ -29,6 +33,11 @@
                     string="Included in invoicing"
                     name="sale_invoicing_exclude_from_invoicing"
                     domain="[('sale_invoicing_exclude_from_invoicing', '!=', 'True')]"
+                />
+                <filter
+                    string="Never to be invoiced"
+                    name="sale_invoicing_exclude_never_invoice"
+                    domain="[('sale_invoicing_exclude_never_invoice', '=', True)]"
                 />
             </xpath>
             <xpath expr="//group" position="inside">
