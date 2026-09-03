@@ -34,11 +34,6 @@
                     name="sale_invoicing_exclude_from_invoicing"
                     domain="[('sale_invoicing_exclude_from_invoicing', '!=', 'True')]"
                 />
-                <filter
-                    string="Never to be invoiced"
-                    name="sale_invoicing_exclude_never_invoice"
-                    domain="[('sale_invoicing_exclude_never_invoice', '=', True)]"
-                />
             </xpath>
             <xpath expr="//group" position="inside">
                 <separator />

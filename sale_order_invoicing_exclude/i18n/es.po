@@ -59,11 +59,6 @@ msgid "Never invoice"
 msgstr "No facturar nunca"
 
 #. module: sale_order_invoicing_exclude
-#: model_terms:ir.ui.view,arch_db:sale_order_invoicing_exclude.view_sales_order_filter
-msgid "Never to be invoiced"
-msgstr "No facturar nunca"
-
-#. module: sale_order_invoicing_exclude
 #: model:ir.model.fields,field_help:sale_order_invoicing_exclude.field_sale_order__sale_invoicing_exclude_never_invoice
 msgid ""
 "Report the order as 'Nothing to invoice' instead of 'To invoice'. Only for "
