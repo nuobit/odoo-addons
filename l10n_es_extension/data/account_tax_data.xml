@@ -6,14 +6,14 @@
         <field name="description">IVA Exento CDD</field>
         <field
             name="name"
-        >IVA Exento Repercutido Sujeto (Con derecho a deducción)</field>
+        >IVA Exento Repercutido Sujeto CDD (Con derecho a deducción)</field>
     </record>
     <record id="account_tax_template_s_iva0_sdd" model="account.tax.template">
         <field name="description">IVA Exento SDD</field>
         <field name="type_tax_use">sale</field>
         <field
             name="name"
-        >IVA Exento Repercutido Sujeto (Sin derecho a deducción)</field>
+        >IVA Exento Repercutido Sujeto SDD (Sin derecho a deducción)</field>
         <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
         <field name="amount" eval="0" />
         <field name="amount_type">percent</field>
@@ -46,6 +46,86 @@
                 'factor_percent': 100,
                 'repartition_type': 'tax',
                 'account_id': ref('l10n_es.account_common_472'),
+            }),
+        ]"
+        />
+    </record>
+    <record id="account_tax_template_s_iva_ns_bi" model="account.tax.template">
+        <field name="description">IVA Soportado no sujeto (Bienes Inversión)</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="name">IVA Soportado no sujeto (Bienes Inversión)</field>
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount" eval="0" />
+        <field name="amount_type">percent</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_0" />
+        <field name="analytic" eval="True" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+            }),
+
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+            }),
+        ]"
+        />
+    </record>
+    <record id="account_tax_template_p_iva0_sp_in" model="account.tax.template">
+        <field
+            name="description"
+        >IVA Exento Adquisición de servicios intracomunitarios</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="name">IVA Exento Adquisición de servicios intracomunitarios</field>
+        <field name="chart_template_id" ref="l10n_es.account_chart_template_common" />
+        <field name="amount" eval="0" />
+        <field name="amount_type">percent</field>
+        <field name="tax_group_id" ref="l10n_es.tax_group_iva_0" />
+        <field name="analytic" eval="False" />
+        <field
+            name="invoice_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
+            }),
+
+        ]"
+        />
+        <field
+            name="refund_repartition_line_ids"
+            eval="[(5, 0, 0),
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'base',
+            }),
+
+            (0,0, {
+                'factor_percent': 100,
+                'repartition_type': 'tax',
             }),
         ]"
         />

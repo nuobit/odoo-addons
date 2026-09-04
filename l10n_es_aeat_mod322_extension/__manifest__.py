@@ -14,6 +14,8 @@
         "l10n_es_extension",
     ],
     "data": [
+        "data/aeat_map_tax.xml",
         "data/aeat_map_tax_line.xml",
+        "data/2025/l10n.es.aeat.map.tax.line.csv",
     ],
 }

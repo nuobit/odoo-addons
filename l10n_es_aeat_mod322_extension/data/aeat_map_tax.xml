@@ -1,0 +1,15 @@
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record
+        id="l10n_es_aeat_mod322.aeat_mod322_2024_10_map"
+        model="l10n.es.aeat.map.tax"
+    >
+        <field name="date_to">2024-12-31</field>
+    </record>
+
+    <record id="aeat_mod322_2025_map" model="l10n.es.aeat.map.tax">
+        <field name="model">322</field>
+        <field name="date_from">2025-01-01</field>
+    </record>
+</odoo>

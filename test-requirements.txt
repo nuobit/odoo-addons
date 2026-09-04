@@ -1,4 +1,5 @@
 openupgradelib@git+https://github.com/OCA/openupgradelib.git@master
 pyveloedi@git+https://github.com/nuobit/pyveloedi3.git@master
+odoo14-addon-l10n_es_aeat_mod322@git+https://github.com/OCA/l10n-spain.git@refs/pull/4005/head#subdirectory=setup/l10n_es_aeat_mod322
 odoo14-addon-oxigen_stock_alternate_lot@git+https://github.com/oxigensalud/odoo-addons.git@14.0#subdirectory=setup/oxigen_stock_alternate_lot
 odoo14-addon-pricelist_massive_update@git+https://github.com/oxigensalud/odoo-community-addons.git@14.0#subdirectory=setup/pricelist_massive_update

@@ -68,4 +68,15 @@
         <field name="tax_src_id" ref="l10n_es.account_tax_template_p_iva21_ibc" />
         <field name="tax_dest_id" ref="l10n_es.account_tax_template_p_iva21_ibi" />
     </record>
+    <!--    IVA Soportado no sujeto (bienes)-->
+    <record
+        id="account_tax_template_s_iva_ns_b_bi"
+        model="l10n.es.account.capital.asset.map.tax"
+    >
+        <field name="tax_src_id" ref="l10n_es.account_tax_template_s_iva_ns_b" />
+        <field
+            name="tax_dest_id"
+            ref="l10n_es_extension.account_tax_template_s_iva_ns_bi"
+        />
+    </record>
 </odoo>
