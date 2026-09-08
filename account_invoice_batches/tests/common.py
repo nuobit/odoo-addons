@@ -3,6 +3,20 @@
 
 from odoo.addons.mail.tests.common import MailCommon, mail_new_test_user
 
+# a plain-text customer reply, formatted by MockEmail.format()
+REPLY_TEMPLATE = """Return-Path: {return_path}
+To: {to}
+Cc: {cc}
+From: {email_from}
+Subject: {subject}
+Date: Tue, 08 Sep 2026 14:16:26 +0000
+Message-ID: {msg_id}
+Content-Type: text/plain; charset=utf-8
+{extra}
+
+Received, thank you.
+"""
+
 
 class InvoiceBatchCommon(MailCommon):
     """Data shared by the invoice batch tests.
@@ -125,8 +139,10 @@ class InvoiceBatchCommon(MailCommon):
         order.action_confirm()
         return order
 
-    def _batch_invoicing_wizard(self, orders, in_background, user=None):
-        """The sale invoicing wizard opened on the orders with a batch."""
+    def _batch_invoicing_wizard(
+        self, orders, in_background, user=None, create_batch=True
+    ):
+        """The sale invoicing wizard opened on the orders, as the launcher."""
         return (
             self.env["sale.advance.payment.inv"]
             .with_user(user or self.launcher)
@@ -138,7 +154,7 @@ class InvoiceBatchCommon(MailCommon):
             .create(
                 {
                     "advance_payment_method": "delivered",
-                    "invoice_batch_create": True,
+                    "invoice_batch_create": create_batch,
                     "in_background": in_background,
                 }
             )
