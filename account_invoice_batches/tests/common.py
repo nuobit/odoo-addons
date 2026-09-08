@@ -79,6 +79,14 @@ class InvoiceBatchCommon(MailCommon):
             }
         )
         cls.customer.invoice_batch_email_partner_id = cls.billing_contact
+        cls.customer_self = cls.env["res.partner"].create(
+            {
+                "name": "Customer Own Contact",
+                "email": "customer5@test.example.com",
+                "invoice_batch_sending_method": "email",
+            }
+        )
+        cls.customer_self.invoice_batch_email_partner_id = cls.customer_self
         cls.customer_no_contact = cls.env["res.partner"].create(
             {
                 "name": "Customer Without Billing Contact",

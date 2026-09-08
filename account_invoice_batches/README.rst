@@ -25,6 +25,17 @@ each company:
   the company among its allowed companies; without a valid user, no invoice
   can be generated from a batch nor e-mailed from one.
 
+Usage
+=====
+
+* The invoices generated from a batch are created, followed and e-mailed by
+  the invoice batch user of the company, so the customer replies reach its
+  mailbox and not the person who launched the batch.
+* When a batch invoice is validated, the customer follower Odoo adds is the
+  batch e-mail contact of the invoice when it differs from the partner: the
+  contact is the one who receives the e-mail. Invoices outside a batch keep
+  the native follower.
+
 Bug Tracker
 ===========
 

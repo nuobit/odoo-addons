@@ -56,3 +56,34 @@ class AccountMove(models.Model):
                 self.partner_id.invoice_batch_email_partner_id
             )
         return res
+
+    def _post(self, soft=True):
+        # the customer follower added at validation is, on a batch invoice,
+        # the batch e-mail contact: see message_subscribe
+        return super(
+            AccountMove, self.with_context(invoice_batch_swap_billing_follower=True)
+        )._post(soft=soft)
+
+    def message_subscribe(self, partner_ids=None, channel_ids=None, subtype_ids=None):
+        """Subscribe the batch e-mail contact instead of the partner at validation.
+
+        Core subscribes the partner of every posted move, one move at a time.
+        Under the flag set by ``_post``, and only for that exact call on a
+        batch invoice whose contact differs from the partner, the contact
+        takes the partner's place: it is the recipient of the batch e-mail, so
+        it is the one whose replies must reach the invoice followers. A partner
+        already subscribed by hand stays (core then asks for nobody), and every
+        other call keeps the native behaviour.
+        """
+        if (
+            self.env.context.get("invoice_batch_swap_billing_follower")
+            and len(self) == 1
+            and self.invoice_batch_id
+            and partner_ids == [self.partner_id.id]
+            and self.invoice_batch_email_partner_id
+            and self.invoice_batch_email_partner_id != self.partner_id
+        ):
+            partner_ids = [self.invoice_batch_email_partner_id.id]
+        return super().message_subscribe(
+            partner_ids=partner_ids, channel_ids=channel_ids, subtype_ids=subtype_ids
+        )
