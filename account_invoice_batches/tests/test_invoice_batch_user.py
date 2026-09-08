@@ -60,6 +60,13 @@ class TestInvoiceBatchUser(InvoiceBatchCommon):
         self.assertTrue(self.batch_user.share)
         self._assert_launch_blocked(in_background=True)
 
+    def test_batch_creation_defaults_to_the_company_configuration(self):
+        wizard = self.env["sale.advance.payment.inv"].with_user(self.launcher)
+        context = {"active_model": "sale.order", "active_ids": self.orders.ids}
+        self.assertTrue(wizard.with_context(**context).create({}).invoice_batch_create)
+        self.company.invoice_batch_user_id = False
+        self.assertFalse(wizard.with_context(**context).create({}).invoice_batch_create)
+
     def test_launch_without_invoice_batch_user_is_blocked(self):
         self.company.invoice_batch_user_id = False
         self._assert_launch_blocked(in_background=True)

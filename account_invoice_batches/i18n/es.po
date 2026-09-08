@@ -172,6 +172,15 @@ msgid "E-mail template"
 msgstr "Plantilla de e-mail"
 
 #. module: account_invoice_batches
+#: model:ir.model.fields,help:account_invoice_batches.field_sale_advance_payment_inv__invoice_batch_create
+msgid ""
+"Enabled by default when the current company has an invoice batch user; a "
+"batch cannot be created without one."
+msgstr ""
+"Activado por defecto cuando la compañía actual tiene usuario del lote de "
+"facturación; sin él no se puede crear un lote."
+
+#. module: account_invoice_batches
 #: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:0
 #: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:0
 #, python-format

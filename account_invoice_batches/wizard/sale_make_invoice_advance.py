@@ -10,7 +10,12 @@ from odoo.exceptions import UserError
 class SaleAdvancePaymentInv(models.TransientModel):
     _inherit = "sale.advance.payment.inv"
 
-    invoice_batch_create = fields.Boolean(string="Create invoice batch", default=True)
+    invoice_batch_create = fields.Boolean(
+        string="Create invoice batch",
+        default=lambda self: bool(self.env.company.invoice_batch_user_id),
+        help="Enabled by default when the current company has an invoice batch "
+        "user; a batch cannot be created without one.",
+    )
     in_background = fields.Boolean(string="In background", default=False)
 
     def _create_invoice(self, order, so_line, amount):
