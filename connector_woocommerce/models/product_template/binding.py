@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
@@ -41,13 +42,9 @@ class WooCommerceProductTemplate(models.Model):
     def export_product_tmpl_since(self, backend_record=None, since_date=None):
         domain = self._get_base_domain()
         if since_date:
-            domain = [
-                (
-                    "woocommerce_write_date",
-                    ">",
-                    fields.Datetime.to_string(since_date),
-                )
-            ]
+            domain.append(
+                ("woocommerce_write_date", ">", fields.Datetime.to_string(since_date))
+            )
         self.with_delay().export_batch(backend_record, domain=domain)
         return True
 
