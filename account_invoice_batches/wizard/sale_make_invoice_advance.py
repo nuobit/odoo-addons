@@ -37,7 +37,7 @@ class SaleAdvancePaymentInv(models.TransientModel):
         return invoice
 
     def _invoice_batch_as_batch_user(self, invoice_batch):
-        """This wizard run as the invoice batch user of the batch company.
+        """The wizard, run as the invoice batch user of the batch company.
 
         Only the batch company stays among the allowed companies: the ones the
         launcher had enabled would raise an access error for a user not allowed

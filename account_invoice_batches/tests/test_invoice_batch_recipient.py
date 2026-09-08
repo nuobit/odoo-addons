@@ -50,7 +50,7 @@ class TestInvoiceBatchRecipient(InvoiceBatchCommon):
         self.assertEqual(
             invoice.invoice_batch_email_recipient_id, self.batch_user.partner_id
         )
-        invoice.action_post()
+        invoice.with_user(self.launcher).action_post()
         with self.mock_mail_gateway(), trap_jobs() as trap:
             self._batch_process_wizard(
                 batch, invoice_batch_sending_pdf=False

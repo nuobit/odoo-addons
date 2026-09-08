@@ -131,9 +131,8 @@ class AccountInvoiceBatchProcess(models.TransientModel):
             "signedfacturae": self.invoice_batch_sending_signedfacturae,
             "unsignedfacturae": self.invoice_batch_sending_unsignedfacturae,
         }
-        return [
-            method for method, _label in BATCH_SENDING_METHODS if enabled.get(method)
-        ]
+        # a method without flag here fails loud (KeyError) instead of vanishing
+        return [method for method, _label in BATCH_SENDING_METHODS if enabled[method]]
 
     def _post_invoice_batch_launch_note(self, batch, invoices):
         """Note on the batch, as the launcher, counting the invoices per method.

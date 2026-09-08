@@ -31,7 +31,7 @@ class TestInvoiceBatchUser(InvoiceBatchCommon):
     def _posted_batch(self):
         """A batch of the three orders with its invoices posted, e-mails unsent."""
         batch = self._launch_batch(self.orders)
-        batch.invoice_ids.action_post()
+        batch.invoice_ids.with_user(self.launcher).action_post()
         self.assertEqual(len(batch.unsent_invoice_ids), 3)
         return batch
 

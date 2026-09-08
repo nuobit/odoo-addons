@@ -90,7 +90,7 @@ class TestInvoiceBatchJobs(InvoiceBatchCommon):
 
     def test_send_email_runs_as_the_batch_user(self):
         batch = self._launch_batch(self.orders)
-        batch.invoice_ids.action_post()
+        batch.invoice_ids.with_user(self.launcher).action_post()
         followers_before = {
             invoice: invoice.message_partner_ids for invoice in batch.invoice_ids
         }
@@ -121,7 +121,7 @@ class TestInvoiceBatchJobs(InvoiceBatchCommon):
 
     def test_customer_reply_notifies_the_batch_user_not_the_launcher(self):
         batch = self._launch_batch(self.orders)
-        batch.invoice_ids.action_post()
+        batch.invoice_ids.with_user(self.launcher).action_post()
         invoice = batch.invoice_ids.filtered(
             lambda inv: inv.partner_id == self.customer
         )

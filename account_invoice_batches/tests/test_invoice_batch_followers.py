@@ -16,9 +16,13 @@ class TestInvoiceBatchFollowers(InvoiceBatchCommon):
             + cls._create_order(cls.customer_no_contact)
         )
 
-    def _posted_batch_invoice(self, batch, partner):
+    def _batch_invoice(self, batch, partner):
         invoice = batch.invoice_ids.filtered(lambda inv: inv.partner_id == partner)
         self.assertEqual(len(invoice), 1)
+        return invoice
+
+    def _posted_batch_invoice(self, batch, partner):
+        invoice = self._batch_invoice(batch, partner)
         invoice.with_user(self.launcher).action_post()
         return invoice
 
@@ -41,10 +45,10 @@ class TestInvoiceBatchFollowers(InvoiceBatchCommon):
 
     def test_partner_subscribed_by_hand_stays_and_the_contact_is_not_added(self):
         batch = self._launch_batch(self.orders)
-        invoice = batch.invoice_ids.filtered(
-            lambda inv: inv.partner_id == self.customer
+        invoice = self._batch_invoice(batch, self.customer)
+        invoice.with_user(self.launcher).message_subscribe(
+            partner_ids=self.customer.ids
         )
-        invoice.message_subscribe(partner_ids=self.customer.ids)
         invoice.with_user(self.launcher).action_post()
         self.assertIn(self.customer, invoice.message_partner_ids)
         self.assertNotIn(self.billing_contact, invoice.message_partner_ids)
@@ -79,9 +83,9 @@ class TestInvoiceBatchFollowers(InvoiceBatchCommon):
 
     def test_subscribing_the_partner_outside_validation_is_native(self):
         batch = self._launch_batch(self.orders)
-        invoice = batch.invoice_ids.filtered(
-            lambda inv: inv.partner_id == self.customer
+        invoice = self._batch_invoice(batch, self.customer)
+        invoice.with_user(self.launcher).message_subscribe(
+            partner_ids=self.customer.ids
         )
-        invoice.message_subscribe(partner_ids=self.customer.ids)
         self.assertIn(self.customer, invoice.message_partner_ids)
         self.assertNotIn(self.billing_contact, invoice.message_partner_ids)

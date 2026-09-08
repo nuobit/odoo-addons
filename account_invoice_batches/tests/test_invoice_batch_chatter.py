@@ -28,7 +28,7 @@ class TestInvoiceBatchChatter(InvoiceBatchCommon):
 
     def test_processing_a_batch_posts_one_note_with_the_counts(self):
         batch = self._launch_batch(self.orders)
-        batch.invoice_ids.action_post()
+        batch.invoice_ids.with_user(self.launcher).action_post()
         with trap_jobs():
             self._batch_process_wizard(batch).process_invoices()
         note = self._launch_notes(batch)
@@ -41,7 +41,7 @@ class TestInvoiceBatchChatter(InvoiceBatchCommon):
         batch_email = self._launch_batch(self.orders[:2])
         batch_pdf = self._launch_batch(self.orders[2:])
         invoices = (batch_email + batch_pdf).invoice_ids
-        invoices.action_post()
+        invoices.with_user(self.launcher).action_post()
         with trap_jobs():
             self._batch_process_wizard(invoices).process_invoices()
         note_email = self._launch_notes(batch_email)
@@ -55,7 +55,7 @@ class TestInvoiceBatchChatter(InvoiceBatchCommon):
 
     def test_processing_with_no_method_enabled_posts_no_note(self):
         batch = self._launch_batch(self.orders)
-        batch.invoice_ids.action_post()
+        batch.invoice_ids.with_user(self.launcher).action_post()
         with trap_jobs() as trap:
             self._batch_process_wizard(
                 batch,

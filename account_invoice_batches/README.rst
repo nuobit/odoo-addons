@@ -23,7 +23,10 @@ each company:
   user (creator, follower, author of the sent messages), so the customer
   replies reach its mailbox. It needs the Billing group, an e-mail address and
   the company among its allowed companies; without a valid user, no invoice
-  can be generated from a batch nor e-mailed from one.
+  can be generated from a batch nor e-mailed from one. Processing a batch
+  with the e-mail method enabled needs the user of the batch company even
+  when none of its invoices is sent by e-mail; printing and factura-e alone
+  do not.
 
 Usage
 =====

@@ -72,7 +72,8 @@ class AccountMove(models.Model):
         batch invoice whose contact differs from the partner, the contact
         takes the partner's place: it is the recipient of the batch e-mail, so
         it is the one whose replies must reach the invoice followers. A partner
-        already subscribed by hand stays (core then asks for nobody), and every
+        already subscribed by hand stays (core then asks for nobody), an
+        archived contact is dropped by core like any other partner, and every
         other call keeps the native behaviour.
         """
         if (
