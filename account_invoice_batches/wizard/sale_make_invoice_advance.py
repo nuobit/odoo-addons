@@ -63,10 +63,22 @@ class SaleAdvancePaymentInv(models.TransientModel):
         if not self.in_background and not self.invoice_batch_create:
             return super(SaleAdvancePaymentInv, self).create_invoices()
 
+        sale_orders = self.env["sale.order"].browse(self._context.get("active_ids", []))
         invoice_batch = None
         if self.invoice_batch_create:
-            # the batch belongs to the current company: fail before creating
-            # it when that company has no valid invoice batch user
+            # the batch belongs to the current company and so must its orders:
+            # fail before creating it when they do not, or when that company
+            # has no valid invoice batch user
+            if not sale_orders:
+                raise UserError(_("There is no order to invoice."))
+            if sale_orders.company_id != self.env.company:
+                raise UserError(
+                    _(
+                        "The orders invoiced in a batch must belong to the "
+                        "current company %s.",
+                        self.env.company.display_name,
+                    )
+                )
             self.env.company._get_invoice_batch_user()
             invoice_batch = self.env["account.invoice.batch"].create(
                 {
@@ -75,9 +87,6 @@ class SaleAdvancePaymentInv(models.TransientModel):
             )
 
         if self.in_background:
-            sale_orders = self.env["sale.order"].browse(
-                self._context.get("active_ids", [])
-            )
             order_groups = {}
             for order in sale_orders:
                 group_key = order._get_sale_invoicing_group_key()

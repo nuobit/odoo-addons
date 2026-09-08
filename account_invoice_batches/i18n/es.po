@@ -450,8 +450,22 @@ msgstr ""
 #. module: account_invoice_batches
 #: code:addons/account_invoice_batches/wizard/sale_make_invoice_advance.py:0
 #, python-format
+msgid ""
+"The orders invoiced in a batch must belong to the current company %s."
+msgstr ""
+"Los pedidos facturados en un lote deben pertenecer a la compañía actual %s."
+
+#. module: account_invoice_batches
+#: code:addons/account_invoice_batches/wizard/sale_make_invoice_advance.py:0
+#, python-format
 msgid "There is no invoiceable line."
 msgstr "No hay ninguna línea facturable"
+
+#. module: account_invoice_batches
+#: code:addons/account_invoice_batches/wizard/sale_make_invoice_advance.py:0
+#, python-format
+msgid "There is no order to invoice."
+msgstr "No hay ningún pedido que facturar."
 
 #. module: account_invoice_batches
 #: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:0

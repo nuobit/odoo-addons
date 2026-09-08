@@ -82,6 +82,33 @@ class TestInvoiceBatchUser(InvoiceBatchCommon):
         )
         self._assert_launch_blocked(in_background=True)
 
+    def test_launch_with_orders_of_another_company_is_blocked(self):
+        self.launcher.write({"company_ids": [(4, self.company_2.id)]})
+        foreign_order = self.env["sale.order"].create(
+            {
+                "partner_id": self.customer.id,
+                "company_id": self.company_2.id,
+                "order_line": [
+                    (0, 0, {"product_id": self.product.id, "product_uom_qty": 1})
+                ],
+            }
+        )
+        batches_before = self.env["account.invoice.batch"].search([])
+        with trap_jobs() as trap, self.assertRaises(UserError) as error:
+            self._batch_invoicing_wizard(
+                self.orders + foreign_order, in_background=True
+            ).create_invoices()
+        self.assertIn(self.company.name, str(error.exception))
+        trap.assert_jobs_count(0)
+        self.assertEqual(self.env["account.invoice.batch"].search([]), batches_before)
+        self.assertFalse(self.orders.invoice_ids)
+
+    def test_launch_without_orders_is_blocked(self):
+        with self.assertRaises(UserError):
+            self._batch_invoicing_wizard(
+                self.env["sale.order"], in_background=True
+            ).create_invoices()
+
     def test_launch_in_background_queues_one_job_per_invoicing_group(self):
         with trap_jobs() as trap:
             batch = self._launch_batch(self.orders, in_background=True)
