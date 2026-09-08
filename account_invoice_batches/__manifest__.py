@@ -4,7 +4,7 @@
 
 {
     "name": "Invoice batches",
-    "version": "14.0.1.1.3",
+    "version": "14.0.1.2.0",
     "author": "NuoBiT Solutions, S.L., Eric Antones",
     "license": "AGPL-3",
     "category": "Accounting",

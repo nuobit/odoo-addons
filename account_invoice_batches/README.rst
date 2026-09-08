@@ -8,6 +8,20 @@ Invoice batches
 
 Group invoices to easy printing/emailing
 
+Configuration
+=============
+
+Go to *Invoicing > Configuration > Settings > Invoice batches* and set, for
+each company:
+
+* the default e-mail template of the batch invoices;
+* the invoice batch user: the internal user the batch jobs run as. The
+  invoices generated from a batch and the e-mails sent from it belong to that
+  user (creator, follower, author of the sent messages), so the customer
+  replies reach its mailbox. It needs the Billing group, an e-mail address and
+  the company among its allowed companies; without a valid user, no invoice
+  can be generated from a batch nor e-mailed from one.
+
 Bug Tracker
 ===========
 

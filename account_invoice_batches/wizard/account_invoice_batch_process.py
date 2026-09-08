@@ -81,12 +81,31 @@ class AccountInvoiceBatchProcess(models.TransientModel):
     def send_email(self, move_id):
         inv = self.env["account.move"].browse(move_id)
         if not inv.is_move_sent:
+            if inv.invoice_batch_id:
+                # a configuration withdrawn between the enqueue and the run
+                # fails loud here instead of running with another identity
+                inv.invoice_batch_id.company_id._get_invoice_batch_user()
             inv.with_context(lang=inv.partner_id.lang).message_post_with_template(
                 self.invoice_batch_sending_email_template_id.id,
                 message_type="comment",
                 composition_mode="mass_mail",
             )
             inv.is_move_sent = True
+
+    def _invoice_batch_user_required(self):
+        """Whether the processing needs the invoice batch user of the companies.
+
+        Only the e-mail job runs as that user: printing and factura-e keep the
+        launcher's identity, so a batch of a company without user can still be
+        printed or sent as factura-e.
+        """
+        self.ensure_one()
+        return bool(self.invoice_batch_sending_email)
+
+    def _invoice_batch_check_users(self, batches):
+        """Fail before enqueueing anything when a batch company has no valid user."""
+        for company in batches.mapped("company_id"):
+            company._get_invoice_batch_user()
 
     def prepare_invoices(self, invoices):
         self.ensure_one()
@@ -136,6 +155,8 @@ class AccountInvoiceBatchProcess(models.TransientModel):
         if model == "account.invoice.batch":
             if not active_objects.mapped("unsent_invoice_ids"):
                 raise UserError(_("There's no invoices to process"))
+            if self._invoice_batch_user_required():
+                self._invoice_batch_check_users(active_objects)
             for batch in active_objects:
                 invoices = batch.unsent_invoice_ids
                 invoices_pdf += self.prepare_invoices(invoices)
@@ -145,6 +166,8 @@ class AccountInvoiceBatchProcess(models.TransientModel):
             invoices = active_objects.filtered(
                 lambda x: x.invoice_batch_id and not x.is_move_sent
             )
+            if self._invoice_batch_user_required():
+                self._invoice_batch_check_users(invoices.mapped("invoice_batch_id"))
             invoices_pdf = self.prepare_invoices(invoices)
         else:
             raise UserError(_("Unexpected model '%s'" % model))

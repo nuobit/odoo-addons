@@ -39,6 +39,9 @@ class SaleAdvancePaymentInv(models.TransientModel):
     def create_invoice_group(self, order_group, invoice_batch=None):
         context = {"active_ids": order_group.mapped("id")}
         if invoice_batch:
+            # a configuration withdrawn between the enqueue and the run fails
+            # loud here instead of running with another identity
+            invoice_batch.company_id._get_invoice_batch_user()
             context.update(
                 {
                     "batch_id": invoice_batch.id,
@@ -53,6 +56,9 @@ class SaleAdvancePaymentInv(models.TransientModel):
 
         invoice_batch = None
         if self.invoice_batch_create:
+            # the batch belongs to the current company: fail before creating
+            # it when that company has no valid invoice batch user
+            self.env.company._get_invoice_batch_user()
             invoice_batch = self.env["account.invoice.batch"].create(
                 {
                     "date": fields.Datetime.now(),
