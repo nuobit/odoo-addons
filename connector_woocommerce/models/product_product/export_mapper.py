@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 from odoo import _
 from odoo.exceptions import ValidationError
@@ -25,12 +26,14 @@ class WooCommerceProductProductExportMapper(Component):
 
     @mapping
     def sale_price(self, record):
-        pricelist = self.backend_record.discount_pricelist_id
-        if pricelist:
-            return {
-                "sale_price": pricelist.price_get(record.id, 1)[pricelist.id],
-            }
-        return {"sale_price": None}
+        sale, date_from, date_to = self.backend_record._get_woocommerce_sale(
+            record, record.lst_price
+        )
+        return {
+            "sale_price": sale,
+            "date_on_sale_from_gmt": date_from,
+            "date_on_sale_to_gmt": date_to,
+        }
 
     @changed_by("default_code")
     @mapping

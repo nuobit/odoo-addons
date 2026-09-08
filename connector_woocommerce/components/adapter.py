@@ -28,10 +28,16 @@ class ConnectorWooCommerceAdapter(AbstractComponent):
         )
 
     def _prepare_product_price_conversion_mapper(self):
-        """Return product price converters for WooCommerce."""
+        """Return product price and sale-date converters for WooCommerce."""
         return {
             "/regular_price": lambda x: str(round(x, 10)) if x is not None else None,
-            "/sale_price": lambda x: str(round(x, 10)) if x is not None else None,
+            "/sale_price": lambda x: x if x in (None, "") else str(round(x, 10)),
+            "/date_on_sale_from_gmt": lambda x: (
+                x if x in (None, "") else x.strftime("%Y-%m-%dT%H:%M:%S")
+            ),
+            "/date_on_sale_to_gmt": lambda x: (
+                x if x in (None, "") else x.strftime("%Y-%m-%dT%H:%M:%S")
+            ),
         }
 
     def _format_product(self, data):
