@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 import logging
 
@@ -115,6 +116,19 @@ class WooCommerceBackend(models.Model):
         required=True,
         domain="[('usage', 'in', ['internal','view'])]",
     )
+
+    def _get_woocommerce_sale(self, variant, regular_price):
+        """Return a sale and its UTC window, or explicit clear/unchanged values."""
+        self.ensure_one()
+        pricelist = self.discount_pricelist_id
+        if not pricelist:
+            return None, None, None
+        if not variant:
+            return "", "", ""
+        price, rule = pricelist._get_woocommerce_sale_rule(variant, regular_price)
+        if rule:
+            return price, rule.date_start or "", rule.date_end or ""
+        return "", "", ""
 
     def export_product_tmpl_since(self):
         self.env.user.company_id = self.company_id

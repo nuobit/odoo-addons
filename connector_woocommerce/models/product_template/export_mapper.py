@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 from odoo import _
 from odoo.exceptions import ValidationError
@@ -109,15 +110,17 @@ class WooCommerceProductTemplateExportMapper(Component):
 
     @mapping
     def sale_price(self, record):
+        sale, date_from, date_to = None, None, None
         if not record.has_attributes:
-            pricelist = self.backend_record.discount_pricelist_id
-            if pricelist:
-                return {
-                    "sale_price": pricelist.price_get(record.product_variant_id.id, 1)[
-                        pricelist.id
-                    ],
-                }
-        return {"sale_price": None}
+            sale, date_from, date_to = self.backend_record._get_woocommerce_sale(
+                record.with_context(active_test=False).product_variant_id,
+                record.list_price,
+            )
+        return {
+            "sale_price": sale,
+            "date_on_sale_from_gmt": date_from,
+            "date_on_sale_to_gmt": date_to,
+        }
 
     def _get_product_description(self, record):
         description = record.with_context(
