@@ -29,6 +29,20 @@ class AccountMove(models.Model):
         string="Contact",
         tracking=True,
     )
+    invoice_batch_email_recipient_id = fields.Many2one(
+        comodel_name="res.partner",
+        compute="_compute_invoice_batch_email_recipient_id",
+        string="Batch e-mail recipient",
+        help="Recipient of the batch e-mail: the batch e-mail contact of the "
+        "invoice or, when it is empty, its partner.",
+    )
+
+    @api.depends("invoice_batch_email_partner_id", "partner_id")
+    def _compute_invoice_batch_email_recipient_id(self):
+        for move in self:
+            move.invoice_batch_email_recipient_id = (
+                move.invoice_batch_email_partner_id or move.partner_id
+            )
 
     @api.onchange("partner_id", "company_id")
     def _onchange_partner_id(self):

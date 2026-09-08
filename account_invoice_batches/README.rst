@@ -14,7 +14,10 @@ Configuration
 Go to *Invoicing > Configuration > Settings > Invoice batches* and set, for
 each company:
 
-* the default e-mail template of the batch invoices;
+* the default e-mail template of the batch invoices. Address it to the field
+  *Batch e-mail recipient* of the invoice
+  (``${object.invoice_batch_email_recipient_id.id}`` as recipients): the batch
+  e-mail contact of the invoice or, when it is empty, its partner;
 * the invoice batch user: the internal user the batch jobs run as. The
   invoices generated from a batch and the e-mails sent from it belong to that
   user (creator, follower, author of the sent messages), so the customer

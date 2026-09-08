@@ -96,12 +96,15 @@ class TestInvoiceBatchJobs(InvoiceBatchCommon):
             )
             self.assertEqual(invoice.message_partner_ids, followers_before[invoice])
             self.assertNotIn(self.launcher.partner_id, invoice.message_partner_ids)
-        invoice_with_contact = batch.invoice_ids.filtered(
-            lambda inv: inv.partner_id == self.customer
-        )
-        self.assertEqual(
-            self._sent_mail(invoice_with_contact).recipient_ids, self.billing_contact
-        )
+        expected_recipients = {
+            self.customer: self.billing_contact,
+            self.customer_no_contact: self.customer_no_contact,
+        }
+        for invoice in batch.invoice_ids:
+            self.assertEqual(
+                self._sent_mail(invoice).recipient_ids,
+                expected_recipients[invoice.partner_id],
+            )
 
     def test_customer_reply_notifies_the_batch_user_not_the_launcher(self):
         batch = self._launch_batch(self.orders)

@@ -42,6 +42,13 @@ msgid "All"
 msgstr "Todas"
 
 #. module: account_invoice_batches
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_bank_statement_line__invoice_batch_email_recipient_id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_move__invoice_batch_email_recipient_id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_payment__invoice_batch_email_recipient_id
+msgid "Batch e-mail recipient"
+msgstr "Destinatario del e-mail del lote"
+
+#. module: account_invoice_batches
 #: model_terms:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_process_view_form
 msgid "Cancel"
 msgstr "Cancelar"
@@ -343,6 +350,17 @@ msgstr "Procesar lote"
 #: model_terms:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_process_view_form
 msgid "Process invoices"
 msgstr "Procesar facturas"
+
+#. module: account_invoice_batches
+#: model:ir.model.fields,help:account_invoice_batches.field_account_bank_statement_line__invoice_batch_email_recipient_id
+#: model:ir.model.fields,help:account_invoice_batches.field_account_move__invoice_batch_email_recipient_id
+#: model:ir.model.fields,help:account_invoice_batches.field_account_payment__invoice_batch_email_recipient_id
+msgid ""
+"Recipient of the batch e-mail: the batch e-mail contact of the invoice or, "
+"when it is empty, its partner."
+msgstr ""
+"Destinatario del e-mail del lote: el contacto de e-mail del lote de la "
+"factura o, si está vacío, su cliente."
 
 #. module: account_invoice_batches
 #: model:ir.model,name:account_invoice_batches.model_sale_advance_payment_inv

@@ -93,6 +93,16 @@ class InvoiceBatchCommon(MailCommon):
                 "invoice_batch_sending_method": "pdf",
             }
         )
+        # cash customer whose batch e-mail goes to the billing mailbox itself:
+        # the contact is the partner of the invoice batch user
+        cls.customer_cash = cls.env["res.partner"].create(
+            {
+                "name": "Cash Customer",
+                "email": "customer4@test.example.com",
+                "invoice_batch_sending_method": "email",
+                "invoice_batch_email_partner_id": cls.batch_user.partner_id.id,
+            }
+        )
         cls.product = cls.env["product.product"].create(
             {
                 "name": "Batch Service",
@@ -108,7 +118,7 @@ class InvoiceBatchCommon(MailCommon):
                 "subject": "Invoice ${object.name}",
                 "body_html": "<p>Please find attached the invoice ${object.name}.</p>",
                 "email_from": '"Billing Service" <billing@test.example.com>',
-                "partner_to": "${object.invoice_batch_email_partner_id.id}",
+                "partner_to": "${object.invoice_batch_email_recipient_id.id}",
                 "auto_delete": False,
             }
         )
