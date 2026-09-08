@@ -1,6 +1,8 @@
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+from odoo.exceptions import UserError
+
 from odoo.addons.queue_job.tests.common import trap_jobs
 
 from .common import REPLY_TEMPLATE, InvoiceBatchCommon
@@ -74,6 +76,17 @@ class TestInvoiceBatchJobs(InvoiceBatchCommon):
         self.assertEqual(len(invoices), 2)
         self.assertFalse(invoices.mapped("invoice_batch_id"))
         self.assertEqual(invoices.mapped("create_uid"), self.launcher)
+
+    def test_send_email_job_requires_a_batch(self):
+        self._batch_invoicing_wizard(
+            self.orders, in_background=False, create_batch=False
+        ).create_invoices()
+        invoices = self.orders.invoice_ids
+        self.assertEqual(len(invoices), 2)
+        invoice = invoices[0]
+        with self.assertRaises(UserError):
+            self._batch_process_wizard(invoice).send_email(invoice.id)
+        self.assertFalse(invoice.is_move_sent)
 
     def test_send_email_runs_as_the_batch_user(self):
         batch = self._launch_batch(self.orders)

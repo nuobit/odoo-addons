@@ -84,20 +84,20 @@ class AccountInvoiceBatchProcess(models.TransientModel):
     def send_email(self, move_id):
         inv = self.env["account.move"].browse(move_id)
         if not inv.is_move_sent:
-            template_id = self.invoice_batch_sending_email_template_id.id
             batch = inv.invoice_batch_id
-            if batch:
-                # the e-mail belongs to the invoice batch user of the batch
-                # company: author of the message, mailbox of the replies. Only
-                # that company stays among the allowed ones, and a configuration
-                # withdrawn between the enqueue and the run fails loud here
-                # instead of running with another identity.
-                user = batch.company_id._get_invoice_batch_user()
-                inv = inv.with_user(user).with_context(
-                    allowed_company_ids=batch.company_id.ids
+            if not batch:
+                raise UserError(
+                    _("Invoice %s does not belong to a batch.", inv.display_name)
                 )
-            # an invoice outside a batch keeps the launcher's identity
-            inv.with_context(lang=inv.partner_id.lang).message_post_with_template(
+            # the e-mail belongs to the invoice batch user of the batch company
+            # (author of the message, mailbox of the replies); a configuration
+            # withdrawn between the enqueue and the run fails loud here
+            user = batch.company_id._get_invoice_batch_user()
+            template_id = self.invoice_batch_sending_email_template_id.id
+            inv = inv.with_user(user).with_context(
+                allowed_company_ids=batch.company_id.ids, lang=inv.partner_id.lang
+            )
+            inv.message_post_with_template(
                 template_id,
                 message_type="comment",
                 composition_mode="mass_mail",

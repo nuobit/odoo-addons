@@ -248,6 +248,12 @@ msgstr ""
 "buzón."
 
 #. module: account_invoice_batches
+#: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:0
+#, python-format
+msgid "Invoice %s does not belong to a batch."
+msgstr "La factura %s no pertenece a ningún lote."
+
+#. module: account_invoice_batches
 #: model:ir.model.fields,field_description:account_invoice_batches.field_res_partner__invoice_batch_email_partner_id
 #: model:ir.model.fields,field_description:account_invoice_batches.field_res_users__invoice_batch_email_partner_id
 msgid "Invoice Batch Contact"
