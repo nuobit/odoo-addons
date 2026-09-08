@@ -2,8 +2,8 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import _, fields, models
-from odoo.exceptions import UserError
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 
 class ResCompany(models.Model):
@@ -24,12 +24,26 @@ class ResCompany(models.Model):
         "messages, so the customer replies reach its mailbox.",
     )
 
+    @api.constrains("invoice_batch_user_id")
+    def _check_invoice_batch_user_id(self):
+        # the field domain only guides the widget: the invariant lives here
+        for company in self.filtered("invoice_batch_user_id.share"):
+            raise ValidationError(
+                _(
+                    "The invoice batch user %(user)s of company %(company)s must "
+                    "be an internal user, not a portal or public one.",
+                    user=company.invoice_batch_user_id.display_name,
+                    company=company.display_name,
+                )
+            )
+
     def _get_invoice_batch_user(self):
         """Return the user the invoice batch jobs of this company run as.
 
         Raise a UserError naming the company when no user is configured, the
-        user is archived, has no e-mail address or is not allowed on the
-        company, so nothing is queued or executed with a wrong identity.
+        user is archived, is not internal, has no e-mail address or is not
+        allowed on the company, so nothing is queued or executed with a wrong
+        identity.
         """
         self.ensure_one()
         user = self.invoice_batch_user_id
@@ -46,6 +60,16 @@ class ResCompany(models.Model):
                 _(
                     "The invoice batch user %(user)s of company %(company)s is "
                     "archived.",
+                    user=user.display_name,
+                    company=self.display_name,
+                )
+            )
+        if user.share:
+            # the groups can change after the user was set on the company
+            raise UserError(
+                _(
+                    "The invoice batch user %(user)s of company %(company)s is "
+                    "not an internal user.",
                     user=user.display_name,
                     company=self.display_name,
                 )

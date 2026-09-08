@@ -422,6 +422,26 @@ msgstr ""
 "archivado."
 
 #. module: account_invoice_batches
+#: code:addons/account_invoice_batches/models/res_company.py:0
+#, python-format
+msgid ""
+"The invoice batch user %(user)s of company %(company)s is not an internal "
+"user."
+msgstr ""
+"El usuario del lote de facturación %(user)s de la compañía %(company)s no es "
+"un usuario interno."
+
+#. module: account_invoice_batches
+#: code:addons/account_invoice_batches/models/res_company.py:0
+#, python-format
+msgid ""
+"The invoice batch user %(user)s of company %(company)s must be an internal "
+"user, not a portal or public one."
+msgstr ""
+"El usuario del lote de facturación %(user)s de la compañía %(company)s debe "
+"ser un usuario interno, no uno de portal o público."
+
+#. module: account_invoice_batches
 #: code:addons/account_invoice_batches/wizard/sale_make_invoice_advance.py:0
 #, python-format
 msgid "There is no invoiceable line."

@@ -1,7 +1,7 @@
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 from odoo.addons.queue_job.tests.common import trap_jobs
 
@@ -44,6 +44,21 @@ class TestInvoiceBatchUser(InvoiceBatchCommon):
         )
         settings.execute()
         self.assertEqual(self.company.invoice_batch_user_id, self.batch_user)
+
+    def test_settings_refuse_a_portal_user(self):
+        portal = self._create_portal_user()
+        with self.assertRaises(ValidationError):
+            self.env["res.config.settings"].with_user(self.user_admin).create(
+                {"invoice_batch_user_id": portal.id}
+            ).execute()
+        self.assertEqual(self.company.invoice_batch_user_id, self.batch_user)
+
+    def test_launch_with_user_turned_portal_is_blocked(self):
+        self.batch_user.write(
+            {"groups_id": [(6, 0, self.env.ref("base.group_portal").ids)]}
+        )
+        self.assertTrue(self.batch_user.share)
+        self._assert_launch_blocked(in_background=True)
 
     def test_launch_without_invoice_batch_user_is_blocked(self):
         self.company.invoice_batch_user_id = False
