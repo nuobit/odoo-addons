@@ -1,49 +1,102 @@
 # Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
+from odoo.osv import expression
 
 
 class PricelistItem(models.Model):
     _inherit = "product.pricelist.item"
 
-    def _update_woocommerce_write_date_by_pricelist(self, values):
-        product = values.get("product_id")
-        if product:
-            product = self.env["product.product"].browse(product).exists()
-        else:
-            product = values.get("product_tmpl_id")
-            if product:
-                product = self.env["product.template"].browse(product).exists()
-                product = product.with_context(active_test=False).product_variant_ids
-        if not product:
-            product = (
-                self.product_id
-                or self.product_tmpl_id.with_context(
-                    active_test=False
-                ).product_variant_ids
-            )
+    def _woocommerce_get_affected_products(self):
+        templates = self.env["product.template"].with_context(active_test=False)
+        variants = self.env["product.product"].with_context(active_test=False)
+        discount_pricelists = (
+            self.env["woocommerce.backend"]
+            .with_context(active_test=False)
+            .search([("discount_pricelist_id", "in", self.pricelist_id.ids)])
+            .discount_pricelist_id
+        )
+        rules = self.filtered(lambda item: item.pricelist_id in discount_pricelists)
+        if not rules:
+            return templates, variants
 
-        if product:
-            if product.woocommerce_bind_ids:
-                product.woocommerce_write_date = fields.Datetime.now()
+        template_domains = []
+        variant_domains = []
+        for rule in rules:
+            if rule.applied_on == "0_product_variant":
+                template_domains.append(
+                    [("id", "in", rule.product_id.product_tmpl_id.ids)]
+                )
+                variant_domains.append([("id", "in", rule.product_id.ids)])
+            elif rule.applied_on == "1_product":
+                template_domains.append([("id", "in", rule.product_tmpl_id.ids)])
+                variant_domains.append(
+                    [("product_tmpl_id", "in", rule.product_tmpl_id.ids)]
+                )
+            elif rule.applied_on == "2_product_category":
+                category_domain = [("categ_id", "child_of", rule.categ_id.ids)]
+                template_domains.append(category_domain)
+                variant_domains.append(category_domain)
+            else:
+                template_domains = [expression.TRUE_DOMAIN]
+                variant_domains = [expression.TRUE_DOMAIN]
+                break
+
+        bound_domain = [("woocommerce_bind_ids", "!=", False)]
+        return (
+            templates.search(
+                expression.AND([bound_domain, expression.OR(template_domains)])
+            ),
+            variants.search(
+                expression.AND([bound_domain, expression.OR(variant_domains)])
+            ),
+        )
+
+    def _woocommerce_touch(self, templates, variants):
+        now = fields.Datetime.now()
+        templates.woocommerce_write_date = now
+        variants.woocommerce_write_date = now
 
     def _dependent_field_product_woocommerce_write_date(self):
-        return {"product_id", "product_tmpl_id", "fixed_price", "applied_on"}
+        return {
+            "product_id",
+            "product_tmpl_id",
+            "categ_id",
+            "applied_on",
+            "pricelist_id",
+            "compute_price",
+            "fixed_price",
+            "percent_price",
+            "price_discount",
+            "price_surcharge",
+            "price_round",
+            "price_min_margin",
+            "price_max_margin",
+            "base",
+            "base_pricelist_id",
+            "min_quantity",
+            "date_start",
+            "date_end",
+            "active",
+        }
 
     @api.model_create_multi
     def create(self, vals_list):
-        for values in vals_list:
-            if self._dependent_field_product_woocommerce_write_date() & values.keys():
-                self._update_woocommerce_write_date_by_pricelist(values)
-        return super(PricelistItem, self).create(vals_list)
+        records = super().create(vals_list)
+        records._woocommerce_touch(*records._woocommerce_get_affected_products())
+        return records
 
     def write(self, values):
-        if self._dependent_field_product_woocommerce_write_date() & values.keys():
-            self._update_woocommerce_write_date_by_pricelist(values)
-        return super(PricelistItem, self).write(values)
+        if not self._dependent_field_product_woocommerce_write_date() & values.keys():
+            return super().write(values)
+        templates, variants = self._woocommerce_get_affected_products()
+        result = super().write(values)
+        new_templates, new_variants = self._woocommerce_get_affected_products()
+        self._woocommerce_touch(templates | new_templates, variants | new_variants)
+        return result
 
     def unlink(self):
-        for rec in self:
-            rec._update_woocommerce_write_date_by_pricelist({})
-        return super(PricelistItem, self).unlink()
+        self._woocommerce_touch(*self._woocommerce_get_affected_products())
+        return super().unlink()
