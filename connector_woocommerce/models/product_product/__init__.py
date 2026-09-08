@@ -5,3 +5,4 @@ from . import export_mapper
 from . import exporter
 from . import product
 from . import product_pricelist_item
+from . import product_pricelist
