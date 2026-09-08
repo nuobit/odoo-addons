@@ -49,6 +49,12 @@ msgid "Batch e-mail recipient"
 msgstr "Destinatario del e-mail del lote"
 
 #. module: account_invoice_batches
+#: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:0
+#, python-format
+msgid "Batch processing launched: %s"
+msgstr "Procesamiento del lote lanzado: %s"
+
+#. module: account_invoice_batches
 #: model_terms:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_process_view_form
 msgid "Cancel"
 msgstr "Cancelar"

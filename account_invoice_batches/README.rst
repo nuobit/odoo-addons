@@ -35,6 +35,8 @@ Usage
   batch e-mail contact of the invoice when it differs from the partner: the
   contact is the one who receives the e-mail. Invoices outside a batch keep
   the native follower.
+* The batch has a chatter: whoever creates it follows it, and each processing
+  leaves a note with the number of invoices launched per sending method.
 
 Bug Tracker
 ===========

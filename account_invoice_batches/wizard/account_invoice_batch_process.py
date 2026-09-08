@@ -4,9 +4,12 @@
 
 import base64
 import logging
+from collections import Counter
 
 from odoo import _, fields, models
 from odoo.exceptions import UserError
+
+from ..models.common import BATCH_SENDING_METHODS
 
 _logger = logging.getLogger(__name__)
 
@@ -116,6 +119,45 @@ class AccountInvoiceBatchProcess(models.TransientModel):
         for company in batches.mapped("company_id"):
             company._get_invoice_batch_user()
 
+    def _get_invoice_batch_enabled_sending_methods(self):
+        """Sending methods enabled on this wizard, in BATCH_SENDING_METHODS order.
+
+        Extend it together with BATCH_SENDING_METHODS to add a method.
+        """
+        self.ensure_one()
+        enabled = {
+            "pdf": self.invoice_batch_sending_pdf,
+            "email": self.invoice_batch_sending_email,
+            "signedfacturae": self.invoice_batch_sending_signedfacturae,
+            "unsignedfacturae": self.invoice_batch_sending_unsignedfacturae,
+        }
+        return [
+            method for method, _label in BATCH_SENDING_METHODS if enabled.get(method)
+        ]
+
+    def _post_invoice_batch_launch_note(self, batch, invoices):
+        """Note on the batch, as the launcher, counting the invoices per method.
+
+        Only the invoices to be sent with an enabled method are counted; when
+        there is none, nothing was launched and no note is posted.
+        """
+        labels = dict(
+            self.env["account.move"]
+            ._fields["invoice_batch_sending_method"]
+            ._description_selection(self.env)
+        )
+        counted = Counter(invoices.mapped("invoice_batch_sending_method"))
+        counts = [
+            "%d %s" % (counted[method], labels[method])
+            for method in self._get_invoice_batch_enabled_sending_methods()
+            if counted[method]
+        ]
+        if counts:
+            batch.message_post(
+                body=_("Batch processing launched: %s", ", ".join(counts)),
+                subtype_xmlid="mail.mt_note",
+            )
+
     def prepare_invoices(self, invoices):
         self.ensure_one()
 
@@ -169,6 +211,7 @@ class AccountInvoiceBatchProcess(models.TransientModel):
             for batch in active_objects:
                 invoices = batch.unsent_invoice_ids
                 invoices_pdf += self.prepare_invoices(invoices)
+                self._post_invoice_batch_launch_note(batch, invoices)
         elif model == "account.move":
             if not active_objects:
                 raise UserError(_("There's no invoices to process"))
@@ -178,6 +221,11 @@ class AccountInvoiceBatchProcess(models.TransientModel):
             if self._invoice_batch_user_required():
                 self._invoice_batch_check_users(invoices.mapped("invoice_batch_id"))
             invoices_pdf = self.prepare_invoices(invoices)
+            for batch in invoices.mapped("invoice_batch_id"):
+                self._post_invoice_batch_launch_note(
+                    batch,
+                    invoices.filtered_domain([("invoice_batch_id", "=", batch.id)]),
+                )
         else:
             raise UserError(_("Unexpected model '%s'" % model))
 
