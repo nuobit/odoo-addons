@@ -113,14 +113,16 @@ class WooCommerceProductTemplateExportMapper(Component):
     @mapping
     def sale_price(self, record):
         if not record.has_attributes:
-            sale, date_from, date_to = self.backend_record._get_woocommerce_sale(
+            sale = self.backend_record._get_woocommerce_sale(
                 record.with_context(active_test=False).product_variant_id,
                 record.list_price,
             )
+            # "" clears the sale on WooCommerce; omitting the keys would leave
+            # the previous sale in place.
             return {
-                "sale_price": sale,
-                "date_on_sale_from_gmt": date_from,
-                "date_on_sale_to_gmt": date_to,
+                "sale_price": sale if sale is not None else "",
+                "date_on_sale_from_gmt": "",
+                "date_on_sale_to_gmt": "",
             }
         # Same as `price`: no key, so WooCommerce leaves the parent untouched.
         return {}

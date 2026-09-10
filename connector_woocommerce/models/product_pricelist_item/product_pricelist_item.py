@@ -12,11 +12,13 @@ class PricelistItem(models.Model):
     def _woocommerce_get_affected_products(self):
         templates = self.env["product.template"].with_context(active_test=False)
         variants = self.env["product.product"].with_context(active_test=False)
+        if not self:
+            return templates, variants
         discount_pricelists = (
             self.env["woocommerce.backend"]
             .with_context(active_test=False)
-            .search([("discount_pricelist_id", "in", self.pricelist_id.ids)])
-            .discount_pricelist_id
+            .search([("discount_pricelist_id", "!=", False)])
+            .discount_pricelist_id._get_woocommerce_pricelist_dependencies()
         )
         rules = self.filtered(lambda item: item.pricelist_id in discount_pricelists)
         if not rules:

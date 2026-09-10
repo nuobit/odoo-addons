@@ -168,6 +168,35 @@ class TestProductPricelistItem(WooCommerceCase):
         self.assert_untouched(self.templates)
         self.assert_untouched(self.templates.product_variant_ids)
 
+    def test_editing_or_removing_base_list_rules_marks_dependent_products(self):
+        base_rule = self._create_rule(pricelist=self.other_pricelist)
+        self._create_rule(
+            compute_price="formula",
+            base="pricelist",
+            base_pricelist_id=self.other_pricelist.id,
+        )
+        self._next_change()
+        base_rule.fixed_price = 70.0
+        self.assert_touched(self.template)
+        self._next_change()
+        base_rule.unlink()
+        self.assert_touched(self.template)
+        self.assert_untouched(self.unbound_template | self.second_template)
+
+    def test_archiving_and_restoring_base_pricelist_marks_dependent_products(self):
+        self._create_rule(pricelist=self.other_pricelist)
+        self._create_rule(
+            compute_price="formula",
+            base="pricelist",
+            base_pricelist_id=self.other_pricelist.id,
+        )
+        self._next_change()
+        self.other_pricelist.action_archive()
+        self.assert_touched(self.template)
+        self._next_change()
+        self.other_pricelist.action_unarchive()
+        self.assert_touched(self.template)
+
     def test_changing_scope_marks_previous_and_new_targets(self):
         rule = self._create_rule()
         self._next_change()

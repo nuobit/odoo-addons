@@ -118,35 +118,64 @@ class WooCommerceBackend(models.Model):
     )
 
     def _get_woocommerce_sale(self, variant, regular_price):
-        """Return a sale and its UTC window, or explicit clear/unchanged values."""
+        """Return the current discounted price, or None when no sale qualifies."""
         self.ensure_one()
         pricelist = self.discount_pricelist_id
-        if not pricelist:
-            return None, None, None
-        if not variant:
-            return "", "", ""
+        if not pricelist or not variant:
+            return None
         price, rule = pricelist._get_woocommerce_sale_rule(variant, regular_price)
         if rule:
-            return price, rule.date_start or "", rule.date_end or ""
-        return "", "", ""
+            return price
+        return None
+
+    def write(self, values):
+        result = super().write(values)
+        if "discount_pricelist_id" in values:
+            domain = [("backend_id", "in", self.ids)]
+            templates = (
+                self.env["woocommerce.product.template"]
+                .with_context(active_test=False)
+                .search(domain)
+                .odoo_id
+            )
+            variants = (
+                self.env["woocommerce.product.product"]
+                .with_context(active_test=False)
+                .search(domain)
+                .odoo_id
+            )
+            self.env["product.pricelist.item"]._woocommerce_touch(templates, variants)
+        return result
 
     def export_product_tmpl_since(self):
         self.env.user.company_id = self.company_id
         for rec in self:
             since_date = fields.Datetime.from_string(rec.export_product_tmpl_since_date)
-            rec.export_product_tmpl_since_date = fields.Datetime.now()
+            until_date = fields.Datetime.now()
+            rules = rec.discount_pricelist_id._get_woocommerce_transition_rules(
+                since_date, until_date
+            )
+            templates, _variants = rules._woocommerce_get_affected_products()
+            templates.woocommerce_write_date = until_date
             self.env["woocommerce.product.template"].export_product_tmpl_since(
                 backend_record=rec, since_date=since_date
             )
+            rec.export_product_tmpl_since_date = until_date
 
     def export_products_since(self):
         self.env.user.company_id = self.company_id
         for rec in self:
             since_date = fields.Datetime.from_string(rec.export_products_since_date)
-            rec.export_products_since_date = fields.Datetime.now()
+            until_date = fields.Datetime.now()
+            rules = rec.discount_pricelist_id._get_woocommerce_transition_rules(
+                since_date, until_date
+            )
+            _templates, variants = rules._woocommerce_get_affected_products()
+            variants.woocommerce_write_date = until_date
             self.env["woocommerce.product.product"].export_products_since(
                 backend_record=rec, since_date=since_date
             )
+            rec.export_products_since_date = until_date
 
     def export_sale_orders_since(self):
         self.env.user.company_id = self.company_id
