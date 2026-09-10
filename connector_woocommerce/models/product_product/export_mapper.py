@@ -26,13 +26,11 @@ class WooCommerceProductProductExportMapper(Component):
 
     @mapping
     def sale_price(self, record):
-        sale, date_from, date_to = self.backend_record._get_woocommerce_sale(
-            record, record.lst_price
-        )
+        sale = self.backend_record._get_woocommerce_sale(record, record.lst_price)
         return {
-            "sale_price": sale,
-            "date_on_sale_from_gmt": date_from,
-            "date_on_sale_to_gmt": date_to,
+            "sale_price": sale if sale is not None else "",
+            "date_on_sale_from_gmt": "",
+            "date_on_sale_to_gmt": "",
         }
 
     @changed_by("default_code")
