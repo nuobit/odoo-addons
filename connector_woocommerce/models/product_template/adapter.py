@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 from odoo import _
 from odoo.exceptions import ValidationError
@@ -28,11 +29,11 @@ class WooCommerceProductTemplateAdapter(Component):
         return res[0]
 
     def create(self, data):  # pylint: disable=W8106
-        self._prepare_data(data)
+        self._format_data(data)
         return self._exec("post", "products", data=data)
 
     def write(self, external_id, data):  # pylint: disable=W8106
-        self._prepare_data(data)
+        self._format_data(data)
         url_l = ["products", str(external_id[0])]
         res = self._exec("put", "/".join(url_l), data=data)
         return res
@@ -94,7 +95,7 @@ class WooCommerceProductTemplateAdapter(Component):
                 sku = sku[0]
         return sku
 
-    def _prepare_data(self, data):
+    def _format_data(self, data):
         self._format_product_template(data)
         meta_data = self.prepare_meta_data(data)
         if meta_data:
