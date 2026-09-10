@@ -80,12 +80,5 @@ class WooCommerceProductProductAdapter(Component):
     def _get_search_fields(self):
         return super()._get_search_fields() + ["sku", "parent"]
 
-    def _format_product_product(self, data):
-        conv_mapper = {
-            "/regular_price": lambda x: str(round(x, 10)) if x is not None else None,
-            "/sale_price": lambda x: str(round(x, 10)) if x is not None else None,
-        }
-        self._convert_format(data, conv_mapper)
-
     def _format_data(self, data):
-        self._format_product_product(data)
+        self._format_product(data)

@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from woocommerce import API as API
@@ -25,6 +26,17 @@ class ConnectorWooCommerceAdapter(AbstractComponent):
             verify_ssl=self.backend_record.verify_ssl,
             timeout=30,
         )
+
+    def _prepare_product_price_conversion_mapper(self):
+        """Return product price converters for WooCommerce."""
+        return {
+            "/regular_price": lambda x: str(round(x, 10)) if x is not None else None,
+            "/sale_price": lambda x: str(round(x, 10)) if x is not None else None,
+        }
+
+    def _format_product(self, data):
+        conv_mapper = self._prepare_product_price_conversion_mapper()
+        self._convert_format(data, conv_mapper)
 
     def prepare_meta_data(self, data):
         meta_data = []
