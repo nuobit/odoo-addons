@@ -43,7 +43,7 @@ class WooCommerceProductTemplate(models.Model):
         domain = self._get_base_domain()
         if since_date:
             domain.append(
-                ("woocommerce_write_date", ">", fields.Datetime.to_string(since_date))
+                ("woocommerce_write_date", ">=", fields.Datetime.to_string(since_date))
             )
         self.with_delay().export_batch(backend_record, domain=domain)
         return True
