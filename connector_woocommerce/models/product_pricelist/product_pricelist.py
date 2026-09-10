@@ -8,7 +8,7 @@ class Pricelist(models.Model):
     _inherit = "product.pricelist"
 
     def _get_woocommerce_sale_rule(self, variant, regular_price):
-        """Select the current or next discounted price and rule for one unit.
+        """Select the currently applicable discounted price and rule for one unit.
 
         Return (None, an empty rule recordset) when no offer qualifies.
         """
@@ -20,32 +20,43 @@ class Pricelist(models.Model):
         if rule_id and price < regular_price:
             return price, rule_model.browse(rule_id)
 
-        future_rules = rule_model.search(
+        return None, rule_model
+
+    def _get_woocommerce_pricelist_dependencies(self):
+        """Return these lists and every base list they can consult."""
+        pricelists = self.with_context(active_test=False)
+        pending = pricelists
+        while pending:
+            dependencies = pending.item_ids.filtered(
+                lambda item: item.base == "pricelist"
+            ).base_pricelist_id
+            pending = dependencies - pricelists
+            pricelists |= pending
+        return pricelists
+
+    def _get_woocommerce_transition_rules(self, since_date, until_date):
+        """Find validity boundaries crossed since the previous export launch."""
+        rules = self.env["product.pricelist.item"]
+        if not self or not since_date:
+            return rules
+        # Odoo includes both endpoints: start applies at equality, end expires after it.
+        return rules.search(
             [
-                ("pricelist_id", "=", self.id),
-                ("active", "=", True),
-                ("date_start", ">", now),
+                (
+                    "pricelist_id",
+                    "in",
+                    self._get_woocommerce_pricelist_dependencies().ids,
+                ),
                 ("min_quantity", "<=", 1),
                 "|",
-                ("product_tmpl_id", "=", False),
-                ("product_tmpl_id", "=", variant.product_tmpl_id.id),
-                "|",
-                ("product_id", "=", False),
-                ("product_id", "=", variant.id),
-                "|",
-                ("categ_id", "=", False),
-                ("categ_id", "parent_of", variant.categ_id.id),
-            ],
-            order="date_start, id",
+                "&",
+                ("date_start", ">", since_date),
+                ("date_start", "<=", until_date),
+                "&",
+                ("date_end", ">=", since_date),
+                ("date_end", "<", until_date),
+            ]
         )
-        for candidate in future_rules:
-            # Let the pricelist resolve precedence, percentages and formulas.
-            price, rule_id = self.get_product_price_rule(
-                variant, 1, False, date=candidate.date_start
-            )
-            if rule_id and price < regular_price:
-                return price, rule_model.browse(rule_id)
-        return None, rule_model
 
     def write(self, values):
         if "active" not in values:

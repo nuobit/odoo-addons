@@ -5,6 +5,9 @@ from datetime import datetime, timedelta
 
 from freezegun import freeze_time
 
+from odoo import _
+from odoo.exceptions import UserError
+
 from .common import WooCommerceCase
 
 
@@ -90,6 +93,131 @@ class TestExportSince(WooCommerceCase):
             domain, [["woocommerce_enabled", "=", True], ["has_attributes", "=", False]]
         )
 
+    def test_start_marks_product_without_any_rule_edit(self):
+        rule = self._create_rule(date_start="2030-01-01 12:10:00")
+        original_rule_write_date = rule.write_date
+        self._start_incremental_exports()
+        self.clock.move_to("2030-01-01 12:10:00")
+        self._assert_selected(
+            "woocommerce.product.template",
+            self.backend.export_product_tmpl_since,
+            self.template,
+        )
+        self.assert_touched(self.template)
+        self.assert_untouched(self.second_template)
+        self.assertEqual(rule.write_date, original_rule_write_date)
+
+    def test_end_is_detected_after_equality_not_before(self):
+        self._create_rule(date_end="2030-01-01 12:10:00")
+        self._start_incremental_exports()
+        self.clock.move_to("2030-01-01 12:10:00")
+        self._assert_selected(
+            "woocommerce.product.template",
+            self.backend.export_product_tmpl_since,
+            self.env["product.template"],
+        )
+        self.assert_untouched(self.template)
+        self.clock.tick(timedelta(seconds=1))
+        self._assert_selected(
+            "woocommerce.product.template",
+            self.backend.export_product_tmpl_since,
+            self.template,
+        )
+        self.assert_touched(self.template)
+
+    def test_missed_start_and_end_are_recovered_after_downtime(self):
+        self._create_rule(
+            date_start="2030-01-02 00:00:00", date_end="2030-01-03 00:00:00"
+        )
+        self._start_incremental_exports()
+        self.clock.move_to("2030-01-05 00:00:00")
+        self._assert_selected(
+            "woocommerce.product.template",
+            self.backend.export_product_tmpl_since,
+            self.template,
+        )
+
+    def test_unrelated_future_and_bulk_rules_do_not_mark_products(self):
+        self._create_rule(
+            pricelist=self.other_pricelist, date_start="2030-01-02 00:00:00"
+        )
+        self._create_rule(date_start="2030-01-04 00:00:00")
+        self._create_rule(min_quantity=10, date_start="2030-01-02 00:00:00")
+        self._start_incremental_exports()
+        self.clock.move_to("2030-01-03 00:00:00")
+        self._assert_selected(
+            "woocommerce.product.template",
+            self.backend.export_product_tmpl_since,
+            self.env["product.template"],
+        )
+        self.assert_untouched(self.template | self.second_template)
+
+    def test_variant_and_template_streams_cover_their_own_boundaries(self):
+        variants = self.variable_template.product_variant_ids.sorted("id")
+        archived_variant = variants[0]
+        archived_variant.action_archive()
+        self._create_rule(
+            product_tmpl_id=self.variable_template.id, date_start="2030-01-02 00:00:00"
+        )
+        self._create_rule(date_start="2030-01-02 00:00:00")
+        self._start_incremental_exports()
+        self.clock.move_to("2030-01-02 00:00:00")
+        self._assert_selected(
+            "woocommerce.product.template",
+            self.backend.export_product_tmpl_since,
+            self.template,
+        )
+        self.assert_untouched(variants)
+        self._assert_selected(
+            "woocommerce.product.product",
+            self.backend.export_products_since,
+            variants,
+        )
+        self.assert_touched(variants)
+
+    def test_nested_base_pricelist_boundary_marks_product(self):
+        third_list = self.env["product.pricelist"].create({"name": "Nested base list"})
+        self._create_rule(pricelist=third_list, date_end="2030-01-02 00:00:00")
+        for pricelist, base_list in (
+            (self.discount_pricelist, self.other_pricelist),
+            (self.other_pricelist, third_list),
+        ):
+            self._create_rule(
+                pricelist=pricelist,
+                compute_price="formula",
+                base="pricelist",
+                base_pricelist_id=base_list.id,
+            )
+        self._start_incremental_exports()
+        self.clock.move_to("2030-01-03 00:00:00")
+        self._assert_selected(
+            "woocommerce.product.template",
+            self.backend.export_product_tmpl_since,
+            self.template,
+        )
+
+    def test_failed_transaction_preserves_boundaries_for_retry(self):
+        self._create_rule(date_start="2030-01-02 00:00:00")
+        self._start_incremental_exports()
+        previous_cursor = self.backend.export_product_tmpl_since_date
+        previous_jobs = self.env["queue.job"].search([])
+        self.clock.move_to("2030-01-02 00:00:00")
+        with self.assertRaises(UserError), self.cr.savepoint():
+            self._assert_selected(
+                "woocommerce.product.template",
+                self.backend.export_product_tmpl_since,
+                self.template,
+            )
+            raise UserError(_("Abort this export transaction"))
+        self.assertEqual(self.backend.export_product_tmpl_since_date, previous_cursor)
+        self.assertEqual(self.env["queue.job"].search([]), previous_jobs)
+        self.assert_untouched(self.template)
+        self._assert_selected(
+            "woocommerce.product.template",
+            self.backend.export_product_tmpl_since,
+            self.template,
+        )
+
     def test_edit_in_same_second_as_previous_export_is_selected(self):
         rule = self._create_rule()
         self._start_incremental_exports()
@@ -104,3 +232,19 @@ class TestExportSince(WooCommerceCase):
             self.backend.export_product_tmpl_since,
             self.template,
         )
+
+    def test_changing_or_removing_backend_pricelist_marks_bound_products(self):
+        self._start_incremental_exports()
+        for pricelist in (self.other_pricelist, self.env["product.pricelist"]):
+            self.clock.tick(timedelta(seconds=1))
+            self.backend.discount_pricelist_id = pricelist
+            self._assert_selected(
+                "woocommerce.product.template",
+                self.backend.export_product_tmpl_since,
+                self.template | self.second_template,
+            )
+            self._assert_selected(
+                "woocommerce.product.product",
+                self.backend.export_products_since,
+                self.variable_template.product_variant_ids,
+            )
