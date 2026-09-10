@@ -54,10 +54,10 @@ class PricelistItem(models.Model):
             ),
         )
 
-    def _woocommerce_touch(self, templates, variants):
+    def _woocommerce_touch(self, *recordsets):
         now = fields.Datetime.now()
-        templates.woocommerce_write_date = now
-        variants.woocommerce_write_date = now
+        for records in recordsets:
+            records.woocommerce_write_date = now
 
     def _dependent_field_product_woocommerce_write_date(self):
         return {
