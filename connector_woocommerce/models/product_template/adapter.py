@@ -77,13 +77,6 @@ class WooCommerceProductTemplateAdapter(Component):
     def _get_search_fields(self):
         return super()._get_search_fields() + ["sku"]
 
-    def _format_product_template(self, data):
-        conv_mapper = {
-            "/regular_price": lambda x: str(round(x, 10)) if x is not None else None,
-            "/sale_price": lambda x: str(round(x, 10)) if x is not None else None,
-        }
-        self._convert_format(data, conv_mapper)
-
     # TODO: do we really need this
     def _normalize_simple_sku(self, sku):
         if isinstance(sku, list):
@@ -96,7 +89,7 @@ class WooCommerceProductTemplateAdapter(Component):
         return sku
 
     def _format_data(self, data):
-        self._format_product_template(data)
+        self._format_product(data)
         meta_data = self.prepare_meta_data(data)
         if meta_data:
             data["meta_data"] = meta_data
