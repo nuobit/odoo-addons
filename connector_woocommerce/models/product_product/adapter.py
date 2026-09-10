@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 from odoo import _
 from odoo.exceptions import ValidationError
@@ -31,7 +32,7 @@ class WooCommerceProductProductAdapter(Component):
         return res[0]
 
     def create(self, data):  # pylint: disable=W8106
-        self._prepare_data(data)
+        self._format_data(data)
         url_l = ["products"]
         parent = data.pop("parent_id")
         url_l.append("%s/variations" % parent)
@@ -40,7 +41,7 @@ class WooCommerceProductProductAdapter(Component):
         return res
 
     def write(self, external_id, data):  # pylint: disable=W8106
-        self._prepare_data(data)
+        self._format_data(data)
         return self._exec(
             "put",
             "products/%s/variations/%s" % tuple(external_id),
@@ -86,5 +87,5 @@ class WooCommerceProductProductAdapter(Component):
         }
         self._convert_format(data, conv_mapper)
 
-    def _prepare_data(self, data):
+    def _format_data(self, data):
         self._format_product_product(data)
