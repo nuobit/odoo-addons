@@ -24,27 +24,63 @@ class TestWooCommerceSale(WooCommerceCase, SavepointComponentCase):
         freezer.start()
         self.addCleanup(freezer.stop)
 
+    def _export_payload(self, model_name, product, external_id):
+        with self.backend.work_on(model_name) as work:
+            mapper = work.component(usage="export.mapper")
+            # The exporter maps the actual product, not its binding.
+            data = mapper.map_record(product).values()
+            adapter = work.component(usage="backend.adapter")
+            # Stop only at the external API boundary; run real formatting.
+            with patch.object(type(adapter), "_exec", return_value={}) as call:
+                adapter.write(external_id, data)
+            call.assert_called_once()
+            args, kwargs = call.call_args
+            self.assertEqual(args[0], "put")
+            return kwargs["data"]
+
     def _assert_sale_payload(self, price, start="", end=""):
         for model_name, product, external_id in (
             ("woocommerce.product.template", self.template, [1001]),
             ("woocommerce.product.product", self.variant, [1001, 2001]),
         ):
             with self.subTest(model=model_name):
-                with self.backend.work_on(model_name) as work:
-                    mapper = work.component(usage="export.mapper")
-                    # The exporter maps the actual product, not its binding.
-                    data = mapper.map_record(product).values()
-                    adapter = work.component(usage="backend.adapter")
-                    # Stop only at the external API boundary; run real formatting.
-                    with patch.object(type(adapter), "_exec", return_value={}) as call:
-                        adapter.write(external_id, data)
-                    call.assert_called_once()
-                    args, kwargs = call.call_args
-                    self.assertEqual(args[0], "put")
-                    payload = kwargs["data"]
-                    self.assertEqual(payload["sale_price"], price)
-                    self.assertEqual(payload["date_on_sale_from_gmt"], start)
-                    self.assertEqual(payload["date_on_sale_to_gmt"], end)
+                payload = self._export_payload(model_name, product, external_id)
+                self.assertEqual(payload["sale_price"], price)
+                self.assertEqual(payload["date_on_sale_from_gmt"], start)
+                self.assertEqual(payload["date_on_sale_to_gmt"], end)
+
+    def _create_variable_template(self):
+        attribute = self.env["product.attribute"].create({"name": "Size"})
+        values = self.env["product.attribute.value"].create(
+            [
+                {"name": "Small", "attribute_id": attribute.id},
+                {"name": "Large", "attribute_id": attribute.id},
+            ]
+        )
+        self.env["woocommerce.product.attribute"].create(
+            {
+                "odoo_id": attribute.id,
+                "backend_id": self.backend.id,
+                "woocommerce_idattribute": 3001,
+            }
+        )
+        template = self._create_template("Variable product", 1003)
+        template.write(
+            {
+                "taxes_id": [(5, 0, 0)],
+                "attribute_line_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "attribute_id": attribute.id,
+                            "value_ids": [(6, 0, values.ids)],
+                        },
+                    ),
+                ],
+            }
+        )
+        return template
 
     def test_current_sale_exports_utc_dates(self):
         self._create_rule(
@@ -88,6 +124,20 @@ class TestWooCommerceSale(WooCommerceCase, SavepointComponentCase):
     def test_zero_price_is_exported_as_a_sale(self):
         self._create_rule(fixed_price=0.0)
         self._assert_sale_payload("0.0")
+
+    def test_variable_product_sends_no_price_keys(self):
+        # The parent's prices live on its variants: sending no key at all is
+        # what leaves them untouched on WooCommerce.
+        payload = self._export_payload(
+            "woocommerce.product.template", self._create_variable_template(), [1003]
+        )
+        for key in (
+            "regular_price",
+            "sale_price",
+            "date_on_sale_from_gmt",
+            "date_on_sale_to_gmt",
+        ):
+            self.assertNotIn(key, payload)
 
     def test_future_lookup_skips_non_discounts_and_quantity_rules(self):
         self._create_rule(fixed_price=120.0, date_start="2030-01-02 00:00:00")

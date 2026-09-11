@@ -106,21 +106,24 @@ class WooCommerceProductTemplateExportMapper(Component):
             return {
                 "regular_price": record.list_price,
             }
-        return {"regular_price": None}
+        # A variable product takes its prices from its variants: sending no key
+        # at all is what leaves the parent's price untouched on WooCommerce.
+        return {}
 
     @mapping
     def sale_price(self, record):
-        sale, date_from, date_to = None, None, None
         if not record.has_attributes:
             sale, date_from, date_to = self.backend_record._get_woocommerce_sale(
                 record.with_context(active_test=False).product_variant_id,
                 record.list_price,
             )
-        return {
-            "sale_price": sale,
-            "date_on_sale_from_gmt": date_from,
-            "date_on_sale_to_gmt": date_to,
-        }
+            return {
+                "sale_price": sale,
+                "date_on_sale_from_gmt": date_from,
+                "date_on_sale_to_gmt": date_to,
+            }
+        # Same as `price`: no key, so WooCommerce leaves the parent untouched.
+        return {}
 
     def _get_product_description(self, record):
         description = record.with_context(
