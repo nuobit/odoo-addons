@@ -7,17 +7,18 @@ from odoo import fields, models
 class Pricelist(models.Model):
     _inherit = "product.pricelist"
 
-    def _get_woocommerce_sale_rule(self, variant, regular_price):
-        """Select the currently applicable discounted price and rule for one unit.
+    def _get_woocommerce_sale_rule(self, variant):
+        """Select the currently applicable price and rule for one unit.
 
-        Return (None, an empty rule recordset) when no offer qualifies.
+        The price is sent as is: whether it is an offer is WooCommerce's call.
+        Return (None, an empty rule recordset) when no rule applies.
         """
         self.ensure_one()
         variant.ensure_one()
         now = fields.Datetime.now()
         price, rule_id = self.get_product_price_rule(variant, 1, False, date=now)
         rule_model = self.env["product.pricelist.item"]
-        if rule_id and price < regular_price:
+        if rule_id:
             return price, rule_model.browse(rule_id)
 
         return None, rule_model

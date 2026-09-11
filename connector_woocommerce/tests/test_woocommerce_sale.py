@@ -127,12 +127,13 @@ class TestWooCommerceSale(WooCommerceCase, SavepointComponentCase):
         self.backend.discount_pricelist_id = False
         self._assert_sale_payload("")
 
-    def test_price_at_or_above_regular_clears_sale(self):
+    def test_price_at_or_above_regular_is_exported_as_is(self):
+        # Whether a rule price is an offer is WooCommerce's decision, not ours.
         rule = self._create_rule(fixed_price=100.0)
-        for price in (100.0, 120.0):
+        for price, exported in ((100.0, "100.0"), (120.0, "120.0")):
             with self.subTest(price=price):
                 rule.fixed_price = price
-                self._assert_sale_payload("")
+                self._assert_sale_payload(exported)
 
     def test_zero_price_is_exported_as_a_sale(self):
         self._create_rule(fixed_price=0.0)
@@ -145,7 +146,7 @@ class TestWooCommerceSale(WooCommerceCase, SavepointComponentCase):
     def test_zero_list_price_is_exported_as_no_price(self):
         self._create_rule()
         self.template.list_price = 0.0
-        self._assert_price_payload("", "")
+        self._assert_price_payload("", "80.0")
 
     def test_negative_prices_are_exported_as_is(self):
         # Neither end rejects a negative price: a wrong sign is corrected in
