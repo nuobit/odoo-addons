@@ -29,10 +29,12 @@ class ConnectorWooCommerceAdapter(AbstractComponent):
 
     def _prepare_product_price_conversion_mapper(self):
         """Return product price converters for WooCommerce."""
-        return {
-            "/regular_price": lambda x: str(round(x, 10)) if x is not None else None,
-            "/sale_price": lambda x: x if x in (None, "") else str(round(x, 10)),
-        }
+
+        def to_text(price):
+            # "" is "no price" and travels as is; a number is sent as text.
+            return price if price == "" else str(round(price, 10))
+
+        return {"/regular_price": to_text, "/sale_price": to_text}
 
     def _format_product(self, data):
         conv_mapper = self._prepare_product_price_conversion_mapper()
