@@ -27,6 +27,12 @@ class TestWooCommerceSale(WooCommerceCase, SavepointComponentCase):
         self.clock = freezer.start()
         self.addCleanup(freezer.stop)
 
+    def _product_exports(self):
+        return (
+            ("woocommerce.product.template", self.template, [1001]),
+            ("woocommerce.product.product", self.variant, [1001, 2001]),
+        )
+
     def _export_payload(self, model_name, product, external_id):
         with self.backend.work_on(model_name) as work:
             mapper = work.component(usage="export.mapper")
@@ -42,15 +48,19 @@ class TestWooCommerceSale(WooCommerceCase, SavepointComponentCase):
             return kwargs["data"]
 
     def _assert_sale_payload(self, price):
-        for model_name, product, external_id in (
-            ("woocommerce.product.template", self.template, [1001]),
-            ("woocommerce.product.product", self.variant, [1001, 2001]),
-        ):
+        for model_name, product, external_id in self._product_exports():
             with self.subTest(model=model_name):
                 payload = self._export_payload(model_name, product, external_id)
                 self.assertEqual(payload["sale_price"], price)
                 self.assertEqual(payload["date_on_sale_from_gmt"], "")
                 self.assertEqual(payload["date_on_sale_to_gmt"], "")
+
+    def _assert_price_payload(self, regular, sale):
+        for model_name, product, external_id in self._product_exports():
+            with self.subTest(model=model_name):
+                payload = self._export_payload(model_name, product, external_id)
+                self.assertEqual(payload["regular_price"], regular)
+                self.assertEqual(payload["sale_price"], sale)
 
     def _create_variable_template(self):
         attribute = self.env["product.attribute"].create({"name": "Size"})
@@ -127,6 +137,22 @@ class TestWooCommerceSale(WooCommerceCase, SavepointComponentCase):
     def test_zero_price_is_exported_as_a_sale(self):
         self._create_rule(fixed_price=0.0)
         self._assert_sale_payload("0.0")
+
+    def test_list_price_is_exported_as_text(self):
+        self._create_rule()
+        self._assert_price_payload("100.0", "80.0")
+
+    def test_zero_list_price_is_exported_as_no_price(self):
+        self._create_rule()
+        self.template.list_price = 0.0
+        self._assert_price_payload("", "")
+
+    def test_negative_prices_are_exported_as_is(self):
+        # Neither end rejects a negative price: a wrong sign is corrected in
+        # Odoo and re-synchronized, never filtered here.
+        self._create_rule(fixed_price=-10.0)
+        self.template.list_price = -5.0
+        self._assert_price_payload("-5.0", "-10.0")
 
     def test_variable_product_sends_no_price_keys(self):
         # The parent's prices live on its variants: sending no key at all is

@@ -103,8 +103,9 @@ class WooCommerceProductTemplateExportMapper(Component):
             # On WooCommerce regular price is the usually price.
             # sales price is the price with discount.
             # On odoo we don't have this functionality per product
+            # 0 is "no price" on Odoo; "" is "no price" on WooCommerce.
             return {
-                "regular_price": record.list_price,
+                "regular_price": record.list_price or "",
             }
         # A variable product takes its prices from its variants: sending no key
         # at all is what leaves the parent's price untouched on WooCommerce.
@@ -118,7 +119,8 @@ class WooCommerceProductTemplateExportMapper(Component):
                 record.list_price,
             )
             # "" clears the sale on WooCommerce; omitting the keys would leave
-            # the previous sale in place.
+            # the previous sale in place. Unlike the list price, a 0 sale is a
+            # real offer: None is what means "no offer".
             return {
                 "sale_price": sale if sale is not None else "",
                 "date_on_sale_from_gmt": "",
