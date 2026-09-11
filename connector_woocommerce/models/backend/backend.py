@@ -117,13 +117,13 @@ class WooCommerceBackend(models.Model):
         domain="[('usage', 'in', ['internal','view'])]",
     )
 
-    def _get_woocommerce_sale(self, variant, regular_price):
-        """Return the current discounted price, or None when no sale qualifies."""
+    def _get_woocommerce_sale(self, variant):
+        """Return the current discount pricelist price, or None when no rule applies."""
         self.ensure_one()
         pricelist = self.discount_pricelist_id
         if not pricelist or not variant:
             return None
-        price, rule = pricelist._get_woocommerce_sale_rule(variant, regular_price)
+        price, rule = pricelist._get_woocommerce_sale_rule(variant)
         if rule:
             return price
         return None

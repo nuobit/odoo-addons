@@ -115,8 +115,7 @@ class WooCommerceProductTemplateExportMapper(Component):
     def sale_price(self, record):
         if not record.has_attributes:
             sale = self.backend_record._get_woocommerce_sale(
-                record.with_context(active_test=False).product_variant_id,
-                record.list_price,
+                record.with_context(active_test=False).product_variant_id
             )
             # "" clears the sale on WooCommerce; omitting the keys would leave
             # the previous sale in place. Unlike the list price, a 0 sale is a
