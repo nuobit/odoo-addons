@@ -28,13 +28,15 @@ class ConnectorWooCommerceAdapter(AbstractComponent):
         )
 
     def _prepare_product_price_conversion_mapper(self):
-        """Return product price converters for WooCommerce."""
-
-        def to_text(price):
-            # "" is "no price" and travels as is; a number is sent as text.
-            return price if price == "" else str(round(price, 10))
-
-        return {"/regular_price": to_text, "/sale_price": to_text}
+        """Return the product price and sale date converters for WooCommerce."""
+        # A number is sent as text. None is "no value" in Odoo, and WooCommerce
+        # clears a field with "": that is what a None becomes here.
+        return {
+            "/regular_price": lambda x: str(round(x, 10)) if x is not None else "",
+            "/sale_price": lambda x: str(round(x, 10)) if x is not None else "",
+            "/date_on_sale_from_gmt": lambda x: x if x is not None else "",
+            "/date_on_sale_to_gmt": lambda x: x if x is not None else "",
+        }
 
     def _format_product(self, data):
         conv_mapper = self._prepare_product_price_conversion_mapper()
