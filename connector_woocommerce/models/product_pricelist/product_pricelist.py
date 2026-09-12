@@ -76,5 +76,5 @@ class Pricelist(models.Model):
         discount_rules = rules._woocommerce_get_discount_pricelist_rules()
         variants = discount_rules._woocommerce_get_affected_variants()
         result = super().write(values)
-        rules._woocommerce_touch(variants)
+        variants._woocommerce_touch()
         return result
