@@ -9,11 +9,13 @@ from odoo.osv import expression
 class PricelistItem(models.Model):
     _inherit = "product.pricelist.item"
 
-    def _woocommerce_get_affected_products(self):
-        templates = self.env["product.template"].with_context(active_test=False)
+    def _woocommerce_get_affected_variants(self):
+        """Variants whose discount these rules can change, bound to WooCommerce
+        directly or through their template: a simple product is its one variant.
+        """
         variants = self.env["product.product"].with_context(active_test=False)
         if not self:
-            return templates, variants
+            return variants
         discount_pricelists = (
             self.env["woocommerce.backend"]
             .with_context(active_test=False)
@@ -22,44 +24,35 @@ class PricelistItem(models.Model):
         )
         rules = self.filtered(lambda item: item.pricelist_id in discount_pricelists)
         if not rules:
-            return templates, variants
+            return variants
 
-        template_domains = []
-        variant_domains = []
+        domains = []
         for rule in rules:
             if rule.applied_on == "0_product_variant":
-                template_domains.append(
-                    [("id", "in", rule.product_id.product_tmpl_id.ids)]
-                )
-                variant_domains.append([("id", "in", rule.product_id.ids)])
+                domains.append([("id", "in", rule.product_id.ids)])
             elif rule.applied_on == "1_product":
-                template_domains.append([("id", "in", rule.product_tmpl_id.ids)])
-                variant_domains.append(
-                    [("product_tmpl_id", "in", rule.product_tmpl_id.ids)]
-                )
+                domains.append([("product_tmpl_id", "in", rule.product_tmpl_id.ids)])
             elif rule.applied_on == "2_product_category":
-                category_domain = [("categ_id", "child_of", rule.categ_id.ids)]
-                template_domains.append(category_domain)
-                variant_domains.append(category_domain)
+                domains.append([("categ_id", "child_of", rule.categ_id.ids)])
             else:
-                template_domains = [expression.TRUE_DOMAIN]
-                variant_domains = [expression.TRUE_DOMAIN]
+                domains = [expression.TRUE_DOMAIN]
                 break
 
-        bound_domain = [("woocommerce_bind_ids", "!=", False)]
-        return (
-            templates.search(
-                expression.AND([bound_domain, expression.OR(template_domains)])
-            ),
-            variants.search(
-                expression.AND([bound_domain, expression.OR(variant_domains)])
-            ),
-        )
+        bound_domain = [
+            "|",
+            ("woocommerce_bind_ids", "!=", False),
+            ("product_tmpl_id.woocommerce_bind_ids", "!=", False),
+        ]
+        return variants.search(expression.AND([bound_domain, expression.OR(domains)]))
 
-    def _woocommerce_touch(self, *recordsets):
+    def _woocommerce_touch(self, variants):
+        """Mark the variants and their templates for export. Which side WooCommerce
+        receives, a simple template or the variants of a variable one, is decided
+        by the export batch domains, not here.
+        """
         now = fields.Datetime.now()
-        for records in recordsets:
-            records.woocommerce_write_date = now
+        variants.woocommerce_write_date = now
+        variants.product_tmpl_id.woocommerce_write_date = now
 
     def _dependent_field_product_woocommerce_write_date(self):
         return {
@@ -87,18 +80,17 @@ class PricelistItem(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         records = super().create(vals_list)
-        records._woocommerce_touch(*records._woocommerce_get_affected_products())
+        records._woocommerce_touch(records._woocommerce_get_affected_variants())
         return records
 
     def write(self, values):
         if not self._dependent_field_product_woocommerce_write_date() & values.keys():
             return super().write(values)
-        templates, variants = self._woocommerce_get_affected_products()
+        variants = self._woocommerce_get_affected_variants()
         result = super().write(values)
-        new_templates, new_variants = self._woocommerce_get_affected_products()
-        self._woocommerce_touch(templates | new_templates, variants | new_variants)
+        self._woocommerce_touch(variants | self._woocommerce_get_affected_variants())
         return result
 
     def unlink(self):
-        self._woocommerce_touch(*self._woocommerce_get_affected_products())
+        self._woocommerce_touch(self._woocommerce_get_affected_variants())
         return super().unlink()

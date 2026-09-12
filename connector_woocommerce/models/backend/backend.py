@@ -131,20 +131,22 @@ class WooCommerceBackend(models.Model):
     def write(self, values):
         result = super().write(values)
         if "discount_pricelist_id" in values:
-            domain = [("backend_id", "in", self.ids)]
-            templates = (
-                self.env["woocommerce.product.template"]
-                .with_context(active_test=False)
-                .search(domain)
-                .odoo_id
-            )
             variants = (
-                self.env["woocommerce.product.product"]
+                self.env["product.product"]
                 .with_context(active_test=False)
-                .search(domain)
-                .odoo_id
+                .search(
+                    [
+                        "|",
+                        ("woocommerce_bind_ids.backend_id", "in", self.ids),
+                        (
+                            "product_tmpl_id.woocommerce_bind_ids.backend_id",
+                            "in",
+                            self.ids,
+                        ),
+                    ]
+                )
             )
-            self.env["product.pricelist.item"]._woocommerce_touch(templates, variants)
+            self.env["product.pricelist.item"]._woocommerce_touch(variants)
         return result
 
     def _touch_woocommerce_transition_products(
@@ -161,9 +163,9 @@ class WooCommerceBackend(models.Model):
         rules = self.discount_pricelist_id._get_woocommerce_transition_rules(
             since_date, until_date
         )
-        templates, variants = rules._woocommerce_get_affected_products()
+        variants = rules._woocommerce_get_affected_variants()
         if model_name == "product.template":
-            affected = templates
+            affected = variants.product_tmpl_id
         elif model_name == "product.product":
             affected = variants
         else:

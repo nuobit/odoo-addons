@@ -61,10 +61,10 @@ class TestProductPricelistItem(WooCommerceCase):
         self._remember_write_dates(self.templates)
         self.clock.tick(timedelta(seconds=1))
 
-    def test_create_marks_simple_template_without_variant_binding(self):
+    def test_create_marks_simple_template_and_its_variant(self):
         self._create_rule()
         self.assert_touched(self.template)
-        self.assert_untouched(self.template.product_variant_ids)
+        self.assert_touched(self.template.product_variant_ids)
         self.assert_untouched(self.unbound_template | self.second_template)
 
     def test_price_and_validity_edits_mark_template(self):
@@ -113,6 +113,15 @@ class TestProductPricelistItem(WooCommerceCase):
         self.assert_touched(self.variable_template)
         self.assert_untouched(self.template)
 
+    def test_variant_rule_on_simple_product_marks_its_template(self):
+        variant = self.template.product_variant_id
+        self._create_rule(
+            applied_on="0_product_variant", product_tmpl_id=False, product_id=variant.id
+        )
+        self.assert_touched(self.template)
+        self.assert_touched(variant)
+        self.assert_untouched(self.unbound_template | self.second_template)
+
     def test_moving_pricelist_marks_leaving_and_entering_discount_list(self):
         rule = self._create_rule()
         self._next_change()
@@ -138,10 +147,11 @@ class TestProductPricelistItem(WooCommerceCase):
             product_tmpl_id=False,
             categ_id=self.category.id,
         )
-        self.assert_touched(self.templates - self.unbound_template)
-        self.assert_touched(self.variable_template.product_variant_ids)
+        bound_templates = self.templates - self.unbound_template
+        self.assert_touched(bound_templates)
+        self.assert_touched(bound_templates.product_variant_ids)
         self.assert_untouched(self.unbound_template)
-        self.assert_untouched(self.template.product_variant_ids)
+        self.assert_untouched(self.unbound_template.product_variant_ids)
 
     def test_moving_category_marks_previous_and_new_subtrees(self):
         other_category = self.env["product.category"].create({"name": "Other category"})
@@ -158,10 +168,11 @@ class TestProductPricelistItem(WooCommerceCase):
 
     def test_global_rule_marks_all_bound_templates_and_variants(self):
         self._create_rule(applied_on="3_global", product_tmpl_id=False)
-        self.assert_touched(self.templates - self.unbound_template)
-        self.assert_touched(self.variable_template.product_variant_ids)
+        bound_templates = self.templates - self.unbound_template
+        self.assert_touched(bound_templates)
+        self.assert_touched(bound_templates.product_variant_ids)
         self.assert_untouched(self.unbound_template)
-        self.assert_untouched(self.template.product_variant_ids)
+        self.assert_untouched(self.unbound_template.product_variant_ids)
 
     def test_rule_on_another_pricelist_does_not_mark_products(self):
         self._create_rule(pricelist=self.other_pricelist)
