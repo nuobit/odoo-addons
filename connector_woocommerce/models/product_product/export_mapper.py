@@ -27,7 +27,8 @@ class WooCommerceProductProductExportMapper(Component):
 
     @mapping
     def sale_price(self, record):
-        sale = self.backend_record._get_woocommerce_sale(record)
+        pricelist = self.backend_record.discount_pricelist_id
+        sale = pricelist._get_woocommerce_sale_price(record)
         # Unlike the list price, a 0 sale is a real offer: None means "no offer".
         return {
             "sale_price": sale,

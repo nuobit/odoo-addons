@@ -114,7 +114,8 @@ class WooCommerceProductTemplateExportMapper(Component):
     @mapping
     def sale_price(self, record):
         if not record.has_attributes:
-            sale = self.backend_record._get_woocommerce_sale(
+            pricelist = self.backend_record.discount_pricelist_id
+            sale = pricelist._get_woocommerce_sale_price(
                 record.with_context(active_test=False).product_variant_id
             )
             # The keys travel even with no value: "no offer" must clear the sale
