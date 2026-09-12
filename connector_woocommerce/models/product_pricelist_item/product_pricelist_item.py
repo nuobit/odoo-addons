@@ -2,7 +2,7 @@
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, models
+from odoo import api, models
 from odoo.osv import expression
 
 
@@ -53,15 +53,6 @@ class PricelistItem(models.Model):
         ]
         return variants.search(expression.AND([bound_domain, expression.OR(domains)]))
 
-    def _woocommerce_touch(self, variants):
-        """Mark the variants and their templates for export. Which side WooCommerce
-        receives, a simple template or the variants of a variable one, is decided
-        by the export batch domains, not here.
-        """
-        now = fields.Datetime.now()
-        variants.woocommerce_write_date = now
-        variants.product_tmpl_id.woocommerce_write_date = now
-
     def _dependent_field_product_woocommerce_write_date(self):
         return {
             "product_id",
@@ -89,7 +80,7 @@ class PricelistItem(models.Model):
     def create(self, vals_list):
         records = super().create(vals_list)
         rules = records._woocommerce_get_discount_pricelist_rules()
-        records._woocommerce_touch(rules._woocommerce_get_affected_variants())
+        rules._woocommerce_get_affected_variants()._woocommerce_touch()
         return records
 
     def write(self, values):
@@ -99,10 +90,11 @@ class PricelistItem(models.Model):
         variants = rules._woocommerce_get_affected_variants()
         result = super().write(values)
         rules = self._woocommerce_get_discount_pricelist_rules()
-        self._woocommerce_touch(variants | rules._woocommerce_get_affected_variants())
+        variants |= rules._woocommerce_get_affected_variants()
+        variants._woocommerce_touch()
         return result
 
     def unlink(self):
         rules = self._woocommerce_get_discount_pricelist_rules()
-        self._woocommerce_touch(rules._woocommerce_get_affected_variants())
+        rules._woocommerce_get_affected_variants()._woocommerce_touch()
         return super().unlink()

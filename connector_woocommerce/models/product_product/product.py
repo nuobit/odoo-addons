@@ -45,6 +45,15 @@ class ProductProduct(models.Model):
             ):
                 rec.woocommerce_write_date = fields.Datetime.now()
 
+    def _woocommerce_touch(self):
+        """Mark these variants and their templates for export. Which side
+        WooCommerce receives, a simple template or the variants of a variable
+        one, is decided by the export batch domains, not here.
+        """
+        now = fields.Datetime.now()
+        self.woocommerce_write_date = now
+        self.product_tmpl_id.woocommerce_write_date = now
+
     # Auxiliar fields for images and documents
     product_variant_image_attachment_ids = fields.Many2many(
         comodel_name="connector.woocommerce.product.attachment",
