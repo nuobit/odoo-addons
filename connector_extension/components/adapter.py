@@ -229,8 +229,6 @@ class ConnectorExtensionAdapterCRUD(AbstractComponent):
                                 v2[new_value] = v1
                             v = elem[k] = v2
                     self._convert_format(v, mapper, current_path)
-                elif v is None:
-                    pass
                 else:
                     if current_path in mapper:
                         elem[k] = mapper[current_path](v)
