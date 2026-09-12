@@ -149,23 +149,14 @@ class WooCommerceBackend(models.Model):
             self.env["product.pricelist.item"]._woocommerce_touch(variants)
         return result
 
-    def _get_woocommerce_transition_variants(self, since_date, until_date):
-        """Variants whose discount rule starts or ends between the two dates. A
-        rule crossing one of its dates fires no event: the launcher that owns the
-        window asks for them and marks the side it exports.
-        """
-        self.ensure_one()
-        rules = self.discount_pricelist_id._get_woocommerce_transition_rules(
-            since_date, until_date
-        )
-        return rules._woocommerce_get_affected_variants()
-
     def export_product_tmpl_since(self):
         self.env.user.company_id = self.company_id
         for rec in self:
             since_date = fields.Datetime.from_string(rec.export_product_tmpl_since_date)
             until_date = fields.Datetime.now()
-            variants = rec._get_woocommerce_transition_variants(since_date, until_date)
+            variants = rec.discount_pricelist_id._get_woocommerce_transition_variants(
+                since_date, until_date
+            )
             variants.product_tmpl_id.woocommerce_write_date = until_date
             self.env["woocommerce.product.template"].export_product_tmpl_since(
                 backend_record=rec, since_date=since_date
@@ -177,7 +168,9 @@ class WooCommerceBackend(models.Model):
         for rec in self:
             since_date = fields.Datetime.from_string(rec.export_products_since_date)
             until_date = fields.Datetime.now()
-            variants = rec._get_woocommerce_transition_variants(since_date, until_date)
+            variants = rec.discount_pricelist_id._get_woocommerce_transition_variants(
+                since_date, until_date
+            )
             variants.woocommerce_write_date = until_date
             self.env["woocommerce.product.product"].export_products_since(
                 backend_record=rec, since_date=since_date

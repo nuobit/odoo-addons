@@ -59,6 +59,14 @@ class Pricelist(models.Model):
             ]
         )
 
+    def _get_woocommerce_transition_variants(self, since_date, until_date):
+        """Variants whose discount rule starts or ends between the two dates. A
+        rule crossing one of its dates fires no event: the launcher that owns the
+        window asks for them and marks the side it exports.
+        """
+        rules = self._get_woocommerce_transition_rules(since_date, until_date)
+        return rules._woocommerce_get_affected_variants()
+
     def write(self, values):
         if "active" not in values:
             return super().write(values)
