@@ -9,9 +9,7 @@
         <field name="name">WooCommerce - Export Product Template</field>
         <field name="model_id" ref="model_woocommerce_backend" />
         <field name="active" eval="False" />
-        <!-- Mandatory to define a explicit user on record from the frontend,
-             DON'T USE admin (base.user_root) -->
-        <!--field name="user_id" ref="<not base.user_root>"/-->
+        <field name="user_id" ref="base.user_root" />
         <field name="interval_number">15</field>
         <field name="interval_type">minutes</field>
         <field name="numbercall">-1</field>
@@ -24,9 +22,7 @@
         <field name="name">WooCommerce - Export Product Product</field>
         <field name="model_id" ref="model_woocommerce_backend" />
         <field name="active" eval="False" />
-        <!-- Mandatory to define a explicit user on record from the frontend,
-             DON'T USE admin (base.user_root) -->
-        <!--field name="user_id" ref="<not base.user_root>"/-->
+        <field name="user_id" ref="base.user_root" />
         <field name="interval_number">15</field>
         <field name="interval_type">minutes</field>
         <field name="numbercall">-1</field>
@@ -43,9 +39,7 @@
         <field name="name">WooCommerce - Export Sale Orders</field>
         <field name="model_id" ref="model_woocommerce_backend" />
         <field name="active" eval="False" />
-        <!-- Mandatory to define a explicit user on record from the frontend,
-             DON'T USE admin (base.user_root) -->
-        <!--field name="user_id" ref="<not base.user_root>"/-->
+        <field name="user_id" ref="base.user_root" />
         <field name="interval_number">5</field>
         <field name="interval_type">minutes</field>
         <field name="numbercall">-1</field>
@@ -62,9 +56,7 @@
         <field name="name">WooCommerce - Import Sale Orders</field>
         <field name="model_id" ref="model_woocommerce_backend" />
         <field name="active" eval="False" />
-        <!-- Mandatory to define a explicit user on record from the frontend,
-             DON'T USE admin (base.user_root) -->
-        <!--field name="user_id" ref="<not base.user_root>"/-->
+        <field name="user_id" ref="base.user_root" />
         <field name="interval_number">5</field>
         <field name="interval_type">minutes</field>
         <field name="numbercall">-1</field>
@@ -81,9 +73,7 @@
         <field name="name">WooCommerce - Export Product Public Category</field>
         <field name="model_id" ref="model_woocommerce_backend" />
         <field name="active" eval="False" />
-        <!-- Mandatory to define a explicit user on record from the frontend,
-             DON'T USE admin (base.user_root) -->
-        <!--field name="user_id" ref="<not base.user_root>"/-->
+        <field name="user_id" ref="base.user_root" />
         <field name="interval_number">1</field>
         <field name="interval_type">hours</field>
         <field name="numbercall">-1</field>
@@ -100,9 +90,7 @@
         <field name="name">WooCommerce - Export Product Attribute</field>
         <field name="model_id" ref="model_woocommerce_backend" />
         <field name="active" eval="False" />
-        <!-- Mandatory to define a explicit user on record from the frontend,
-             DON'T USE admin (base.user_root) -->
-        <!--field name="user_id" ref="<not base.user_root>"/-->
+        <field name="user_id" ref="base.user_root" />
         <field name="interval_number">1</field>
         <field name="interval_type">hours</field>
         <field name="numbercall">-1</field>
@@ -119,9 +107,7 @@
         <field name="name">WooCommerce - Export Product Product Attribute Value</field>
         <field name="model_id" ref="model_woocommerce_backend" />
         <field name="active" eval="False" />
-        <!-- Mandatory to define a explicit user on record from the frontend,
-             DON'T USE admin (base.user_root) -->
-        <!--field name="user_id" ref="<not base.user_root>"/-->
+        <field name="user_id" ref="base.user_root" />
         <field name="interval_number">1</field>
         <field name="interval_type">hours</field>
         <field name="numbercall">-1</field>
@@ -137,9 +123,7 @@
         <field name="name">WooCommerce - Export Product Attachment</field>
         <field name="model_id" ref="model_woocommerce_backend" />
         <field name="active" eval="False" />
-        <!-- Mandatory to define a explicit user on record from the frontend,
-             DON'T USE admin (base.user_root) -->
-        <!--field name="user_id" ref="<not base.user_root>"/-->
+        <field name="user_id" ref="base.user_root" />
         <field name="interval_number">1</field>
         <field name="interval_type">hours</field>
         <field name="numbercall">-1</field>
