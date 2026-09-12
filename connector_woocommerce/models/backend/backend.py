@@ -135,7 +135,7 @@ class WooCommerceBackend(models.Model):
                     ]
                 )
             )
-            self.env["product.pricelist.item"]._woocommerce_touch(variants)
+            variants._woocommerce_touch()
         return result
 
     def export_product_tmpl_since(self):
