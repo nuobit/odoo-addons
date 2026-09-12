@@ -55,15 +55,15 @@ class TestExportSince(WooCommerceCase):
             self.template | self.second_template | self.variable_template
         )
 
-    def _assert_selected(self, model_name, action, expected):
+    def _selected_by(self, model_name, action, model):
         job = self._new_export_batch_job(model_name, action)
-        selected = (
-            self.env[expected._name]
-            .with_context(active_test=False)
-            .search(job.kwargs["domain"])
+        return (
+            self.env[model].with_context(active_test=False).search(job.kwargs["domain"])
         )
+
+    def _assert_selected(self, model_name, action, expected):
+        selected = self._selected_by(model_name, action, expected._name)
         self.assertEqual(selected.sorted("id"), expected.sorted("id"))
-        return job
 
     def _new_export_batch_job(self, model_name, run):
         job_model = self.env["queue.job"]
@@ -247,4 +247,43 @@ class TestExportSince(WooCommerceCase):
                 "woocommerce.product.product",
                 self.backend.export_products_since,
                 self.variable_template.product_variant_ids,
+            )
+
+    def test_without_since_date_everything_is_exported_and_nothing_is_marked(self):
+        self._create_rule(date_start="2030-01-01 12:10:00")
+        self._remember_write_dates(
+            self.template | self.second_template | self.variable_template
+        )
+        self.clock.move_to("2030-01-01 12:10:00")
+        simple_templates = self.template | self.second_template | self.unbound_template
+        variants = self.variable_template.product_variant_ids
+        self.assertFalse(self.backend.export_product_tmpl_since_date)
+        self.assertFalse(self.backend.export_products_since_date)
+        templates = self._selected_by(
+            "woocommerce.product.template",
+            self.backend.export_product_tmpl_since,
+            "product.template",
+        )
+        self.assertTrue(simple_templates <= templates)
+        self.assertNotIn(self.variable_template, templates)
+        products = self._selected_by(
+            "woocommerce.product.product",
+            self.backend.export_products_since,
+            "product.product",
+        )
+        self.assertTrue(variants <= products)
+        self.assertFalse(simple_templates.product_variant_ids & products)
+        self.assert_untouched(self.template | self.second_template)
+        self.assert_untouched(variants)
+        self.assertEqual(
+            self.backend.export_product_tmpl_since_date, datetime(2030, 1, 1, 12, 10)
+        )
+        self.assertEqual(
+            self.backend.export_products_since_date, datetime(2030, 1, 1, 12, 10)
+        )
+
+    def test_transition_window_needs_a_start_date(self):
+        with self.assertRaises(ValueError):
+            self.discount_pricelist._get_woocommerce_transition_rules(
+                False, datetime(2030, 1, 1, 12, 10)
             )

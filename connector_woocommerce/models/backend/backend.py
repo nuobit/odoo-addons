@@ -143,10 +143,13 @@ class WooCommerceBackend(models.Model):
         for rec in self:
             since_date = fields.Datetime.from_string(rec.export_product_tmpl_since_date)
             until_date = fields.Datetime.now()
-            variants = rec.discount_pricelist_id._get_woocommerce_transition_variants(
-                since_date, until_date
-            )
-            variants.product_tmpl_id.woocommerce_write_date = until_date
+            # Without a cursor the batch exports everything: nothing to mark.
+            if since_date:
+                pricelist = rec.discount_pricelist_id
+                variants = pricelist._get_woocommerce_transition_variants(
+                    since_date, until_date
+                )
+                variants.product_tmpl_id.woocommerce_write_date = until_date
             self.env["woocommerce.product.template"].export_product_tmpl_since(
                 backend_record=rec, since_date=since_date
             )
@@ -157,10 +160,13 @@ class WooCommerceBackend(models.Model):
         for rec in self:
             since_date = fields.Datetime.from_string(rec.export_products_since_date)
             until_date = fields.Datetime.now()
-            variants = rec.discount_pricelist_id._get_woocommerce_transition_variants(
-                since_date, until_date
-            )
-            variants.woocommerce_write_date = until_date
+            # Without a cursor the batch exports everything: nothing to mark.
+            if since_date:
+                pricelist = rec.discount_pricelist_id
+                variants = pricelist._get_woocommerce_transition_variants(
+                    since_date, until_date
+                )
+                variants.woocommerce_write_date = until_date
             self.env["woocommerce.product.product"].export_products_since(
                 backend_record=rec, since_date=since_date
             )
