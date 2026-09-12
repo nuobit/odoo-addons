@@ -68,7 +68,7 @@ class Pricelist(models.Model):
             .with_context(active_test=False)
             .search([("pricelist_id", "in", self.ids)])
         )
-        templates, variants = rules._woocommerce_get_affected_products()
+        variants = rules._woocommerce_get_affected_variants()
         result = super().write(values)
-        rules._woocommerce_touch(templates, variants)
+        rules._woocommerce_touch(variants)
         return result
