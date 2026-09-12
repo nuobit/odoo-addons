@@ -1,10 +1,10 @@
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-from odoo.tests import SavepointCase
+from odoo.addons.component.tests.common import SavepointComponentCase
 
 
-class WooCommerceCase(SavepointCase):
+class WooCommerceCase(SavepointComponentCase):
     """Backend, discount pricelist and bound products without any HTTP call."""
 
     @classmethod
