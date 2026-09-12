@@ -257,3 +257,14 @@ class TestProductPricelistItem(WooCommerceCase):
         rules.write({"fixed_price": 50.0})
         rules.unlink()
         self.assert_untouched(self.templates)
+
+    def test_unknown_scope_is_an_error(self):
+        rule = self._create_rule()
+        # The ORM refuses a value outside the selection; the schema does not.
+        self.env.cr.execute(
+            "UPDATE product_pricelist_item SET applied_on = %s WHERE id = %s",
+            ("9_unknown", rule.id),
+        )
+        rule.invalidate_cache(["applied_on"], rule.ids)
+        with self.assertRaises(ValueError):
+            rule._woocommerce_get_affected_variants()

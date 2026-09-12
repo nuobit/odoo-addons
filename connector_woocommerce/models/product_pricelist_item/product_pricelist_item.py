@@ -37,9 +37,14 @@ class PricelistItem(models.Model):
                 domains.append([("product_tmpl_id", "in", rule.product_tmpl_id.ids)])
             elif rule.applied_on == "2_product_category":
                 domains.append([("categ_id", "child_of", rule.categ_id.ids)])
-            else:
+            elif rule.applied_on == "3_global":
                 domains = [expression.TRUE_DOMAIN]
                 break
+            else:
+                raise ValueError(
+                    "Pricelist rule %s applies on %s; expected a variant, product, "
+                    "category or global scope." % (rule.id, rule.applied_on)
+                )
 
         bound_domain = [
             "|",
