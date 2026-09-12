@@ -149,42 +149,25 @@ class WooCommerceBackend(models.Model):
             self.env["product.pricelist.item"]._woocommerce_touch(variants)
         return result
 
-    def _touch_woocommerce_transition_products(
-        self, binding_model, since_date, until_date
-    ):
-        """Mark the products bound through `binding_model` whose discount rule
-        starts or ends between the two dates, so the export since `since_date`
-        takes them: a rule crossing one of its dates fires no event, the launcher
-        that owns the window has to ask for them.
+    def _get_woocommerce_transition_variants(self, since_date, until_date):
+        """Variants whose discount rule starts or ends between the two dates. A
+        rule crossing one of its dates fires no event: the launcher that owns the
+        window asks for them and marks the side it exports.
         """
         self.ensure_one()
-        with self.work_on(binding_model._name) as work:
-            model_name = work.component(usage="binder").unwrap_model()
         rules = self.discount_pricelist_id._get_woocommerce_transition_rules(
             since_date, until_date
         )
-        variants = rules._woocommerce_get_affected_variants()
-        if model_name == "product.template":
-            affected = variants.product_tmpl_id
-        elif model_name == "product.product":
-            affected = variants
-        else:
-            raise ValueError(
-                "Unsupported binding model %s: expected a product binding."
-                % binding_model._name
-            )
-        affected.woocommerce_write_date = until_date
+        return rules._woocommerce_get_affected_variants()
 
     def export_product_tmpl_since(self):
         self.env.user.company_id = self.company_id
         for rec in self:
             since_date = fields.Datetime.from_string(rec.export_product_tmpl_since_date)
             until_date = fields.Datetime.now()
-            binding_model = self.env["woocommerce.product.template"]
-            rec._touch_woocommerce_transition_products(
-                binding_model, since_date, until_date
-            )
-            binding_model.export_product_tmpl_since(
+            variants = rec._get_woocommerce_transition_variants(since_date, until_date)
+            variants.product_tmpl_id.woocommerce_write_date = until_date
+            self.env["woocommerce.product.template"].export_product_tmpl_since(
                 backend_record=rec, since_date=since_date
             )
             rec.export_product_tmpl_since_date = until_date
@@ -194,11 +177,9 @@ class WooCommerceBackend(models.Model):
         for rec in self:
             since_date = fields.Datetime.from_string(rec.export_products_since_date)
             until_date = fields.Datetime.now()
-            binding_model = self.env["woocommerce.product.product"]
-            rec._touch_woocommerce_transition_products(
-                binding_model, since_date, until_date
-            )
-            binding_model.export_products_since(
+            variants = rec._get_woocommerce_transition_variants(since_date, until_date)
+            variants.woocommerce_write_date = until_date
+            self.env["woocommerce.product.product"].export_products_since(
                 backend_record=rec, since_date=since_date
             )
             rec.export_products_since_date = until_date
