@@ -33,9 +33,11 @@ class Pricelist(models.Model):
         return pricelists
 
     def _get_woocommerce_transition_rules(self, since_date, until_date):
-        """Find validity boundaries crossed since the previous export launch."""
+        """Rules whose validity starts or ends between the two dates."""
+        if not since_date:
+            raise ValueError("A transition window needs a start date.")
         rules = self.env["product.pricelist.item"]
-        if not self or not since_date:
+        if not self:
             return rules
         # Odoo includes both endpoints: start applies at equality, end expires after it.
         return rules.search(
