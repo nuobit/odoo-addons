@@ -8,12 +8,10 @@ from freezegun import freeze_time
 from odoo import _
 from odoo.exceptions import UserError
 
-from odoo.addons.component.tests.common import SavepointComponentCase
-
 from .common import WooCommerceCase
 
 
-class TestExportSince(WooCommerceCase, SavepointComponentCase):
+class TestExportSince(WooCommerceCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()

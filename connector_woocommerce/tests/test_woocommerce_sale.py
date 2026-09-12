@@ -6,14 +6,13 @@ from unittest.mock import patch
 
 from freezegun import freeze_time
 
-from odoo.addons.component.tests.common import SavepointComponentCase
 from odoo.addons.queue_job.exception import RetryableJobError
 from odoo.addons.queue_job.job import Job
 
 from .common import WooCommerceCase
 
 
-class TestWooCommerceSale(WooCommerceCase, SavepointComponentCase):
+class TestWooCommerceSale(WooCommerceCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
