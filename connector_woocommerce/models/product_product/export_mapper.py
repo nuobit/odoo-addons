@@ -20,9 +20,9 @@ class WooCommerceProductProductExportMapper(Component):
         # On WooCommerce regular price is the usually price.
         # sales price is the price with discount.
         # On odoo we don't have this functionality per product
-        # 0 is "no price" on Odoo; "" is "no price" on WooCommerce.
+        # 0 is "no price" on Odoo: it travels as None, "no value".
         return {
-            "regular_price": record.lst_price or "",
+            "regular_price": record.lst_price or None,
         }
 
     @mapping
@@ -30,9 +30,9 @@ class WooCommerceProductProductExportMapper(Component):
         sale = self.backend_record._get_woocommerce_sale(record)
         # Unlike the list price, a 0 sale is a real offer: None means "no offer".
         return {
-            "sale_price": sale if sale is not None else "",
-            "date_on_sale_from_gmt": "",
-            "date_on_sale_to_gmt": "",
+            "sale_price": sale,
+            "date_on_sale_from_gmt": None,
+            "date_on_sale_to_gmt": None,
         }
 
     @changed_by("default_code")
