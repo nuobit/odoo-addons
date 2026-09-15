@@ -1,0 +1,2 @@
+odoo-test-helper
+odoo-addon-l10n_es_extension@git+https://github.com/nuobit/odoo-addons.git@refs/pull/769/head#subdirectory=l10n_es_extension
