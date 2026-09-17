@@ -76,9 +76,9 @@ class WooCommerceCase(TransactionComponentCase):
         variants = template.with_context(active_test=False).product_variant_ids
         for records in (template, variants):
             for record in records:
-                cls._write_dates[
-                    record._name, record.id
-                ] = record.woocommerce_write_date
+                cls._write_dates[record._name, record.id] = (
+                    record.woocommerce_write_date
+                )
 
     def _create_rule(self, pricelist=None, **values):
         vals = {
