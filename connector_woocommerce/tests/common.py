@@ -54,7 +54,7 @@ class BlankHtmlMigrationMixin:
         self.assertEqual(selected.sorted("id"), expected.sorted("id"))
 
 
-class WooCommerceCase(SavepointComponentCase):
+class WooCommerceCase(TransactionComponentCase):
     """Backend, discount pricelist and bound products without any HTTP call."""
 
     @classmethod

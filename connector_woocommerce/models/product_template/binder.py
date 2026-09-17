@@ -33,7 +33,7 @@ class WooCommerceProductTemplateBinder(Component):
         # its variations instead.
         if not relation.has_attributes:
             return super()._get_external_record_alt_fallback(relation, id_values)
-        adapter = self.component(usage="backend.adapter")
+        adapter = self.component(usage="adapter")
         variants = relation.with_context(active_test=False).product_variant_ids
         for binding in variants.woocommerce_bind_ids.filtered(
             lambda x: x.backend_id == self.backend_record
@@ -41,7 +41,7 @@ class WooCommerceProductTemplateBinder(Component):
             if binding.woocommerce_idparent:
                 return adapter.read(binding.woocommerce_idparent)
         variation_adapter = self.component(
-            usage="backend.adapter", model_name="woocommerce.product.product"
+            usage="adapter", model_name="woocommerce.product.product"
         )
         for sku in variants.filtered("default_code").mapped("default_code"):
             for variation in variation_adapter.search_read([("sku", "=", sku)]):
