@@ -1,6 +1,7 @@
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+from contextlib import nullcontext
 from datetime import timedelta
 from unittest.mock import patch
 
@@ -25,6 +26,13 @@ class TestWooCommerceSale(WooCommerceCase):
         freezer = freeze_time("2030-01-01 12:00:00")
         self.clock = freezer.start()
         self.addCleanup(freezer.stop)
+        # A job function that allows commits runs in a cursor of its own,
+        # which cannot see the records of this transaction.
+        no_temporary_env = patch.object(
+            Job, "in_temporary_env", lambda job: nullcontext()
+        )
+        no_temporary_env.start()
+        self.addCleanup(no_temporary_env.stop)
 
     def _product_exports(self):
         return (
