@@ -265,6 +265,6 @@ class TestProductPricelistItem(WooCommerceCase):
             "UPDATE product_pricelist_item SET applied_on = %s WHERE id = %s",
             ("9_unknown", rule.id),
         )
-        rule.invalidate_cache(["applied_on"], rule.ids)
+        rule.invalidate_recordset(["applied_on"])
         with self.assertRaises(ValueError):
             rule._woocommerce_get_affected_variants()

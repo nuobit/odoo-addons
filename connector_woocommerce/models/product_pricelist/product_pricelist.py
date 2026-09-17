@@ -17,7 +17,7 @@ class Pricelist(models.Model):
         self.ensure_one()
         variant.ensure_one()
         now = fields.Datetime.now()
-        price, rule_id = self.get_product_price_rule(variant, 1, False, date=now)
+        price, rule_id = self._get_product_price_rule(variant, 1, date=now)
         return price if rule_id else None
 
     def _get_woocommerce_pricelist_dependencies(self):

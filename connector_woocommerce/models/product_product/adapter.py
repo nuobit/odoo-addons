@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 from odoo import _
 from odoo.exceptions import ValidationError
@@ -42,6 +43,7 @@ class WooCommerceProductProductAdapter(Component):
 
     def write(self, external_id, data):  # pylint: disable=W8106
         self._format_data(data)
+        external_id_values = self.binder_for().id2dict(external_id, in_field=False)
         return self._exec(
             "put",
             f"products/{external_id_values['parent_id']}"
