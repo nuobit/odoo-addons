@@ -219,7 +219,7 @@ class TestWooCommerceSale(WooCommerceCase):
         self.backend.export_product_tmpl_since_date = "2030-01-01 12:00:00"
         job = self._queue_incremental_template_export()
         with self.backend.work_on("woocommerce.product.template") as work:
-            adapter = work.component(usage="backend.adapter")
+            adapter = work.component(usage="adapter")
             with patch.object(type(adapter), "_exec", return_value={}) as call:
                 call.side_effect = RetryableJobError("Temporary HTTP failure")
                 with self.assertRaises(RetryableJobError):
@@ -238,7 +238,7 @@ class TestWooCommerceSale(WooCommerceCase):
         self.backend.export_product_tmpl_since_date = "2030-01-01 12:00:00"
         rule = self._create_rule()
         with self.backend.work_on("woocommerce.product.template") as work:
-            adapter = work.component(usage="backend.adapter")
+            adapter = work.component(usage="adapter")
             with patch.object(type(adapter), "_exec", return_value={}) as call:
                 for change, expected_price in (
                     (None, "80.0"),
