@@ -42,8 +42,8 @@ class PricelistItem(models.Model):
                 break
             else:
                 raise ValueError(
-                    "Pricelist rule %s applies on %s; expected a variant, product, "
-                    "category or global scope." % (rule.id, rule.applied_on)
+                    f"Pricelist rule {rule.id} applies on {rule.applied_on}; expected "
+                    "a variant, product, category or global scope."
                 )
 
         bound_domain = [
