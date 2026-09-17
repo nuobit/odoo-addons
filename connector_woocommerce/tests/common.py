@@ -223,7 +223,7 @@ class WooCommerceCase(TransactionComponentCase):
             self.assertNotEqual(
                 record.woocommerce_write_date,
                 self._write_dates[record._name, record.id],
-                "%s should have been marked for export" % record.display_name,
+                f"{record.display_name} should have been marked for export",
             )
 
     def assert_untouched(self, records):
@@ -231,7 +231,7 @@ class WooCommerceCase(TransactionComponentCase):
             self.assertEqual(
                 record.woocommerce_write_date,
                 self._write_dates[record._name, record.id],
-                "%s should not have been marked for export" % record.display_name,
+                f"{record.display_name} should not have been marked for export",
             )
 
     def _new_job(self, model_name, method_name, run):
