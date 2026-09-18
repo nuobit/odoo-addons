@@ -3,6 +3,18 @@
      Copyright 2025 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
 <odoo noupdate="1">
+    <!--
+        allow_commit: queue_job 18.0 forbids commits inside a job unless its
+        job function allows them, and the connector_extension binder commits
+        right after creating a binding, in bind_export and bind_import, so
+        the binding survives a later failure of the job. Every job function
+        whose method reaches one of them needs it: every export_record, which
+        binds through the record exporter, and the sale order import_record,
+        which binds through the importer. The batch jobs only enqueue, so
+        they never commit.
+        Requires queue_job 18.0.3.1.4 or later, which rebinds the job
+        arguments to the temporary cursor opened by allow_commit.
+    -->
     <!--   Export Product product -->
     <record
         id="woocommerce_product_product_export_batch_job_function"
