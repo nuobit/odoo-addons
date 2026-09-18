@@ -56,7 +56,7 @@ class WooCommerceProductTemplateExportMapper(Component):
         if any(
             [
                 record.inventory_availability == "never",
-                record.type in ("consu", "service"),
+                not record.is_storable,
                 record.has_attributes,
             ]
         ):
@@ -85,7 +85,7 @@ class WooCommerceProductTemplateExportMapper(Component):
                     "stock_quantity": int(qty),
                     "stock_status": "instock"
                     if record.product_variant_id.qty_available > 0
-                    or record.type in ("consu", "service")
+                    or not record.is_storable
                     else "outofstock",
                 }
             else:

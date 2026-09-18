@@ -66,10 +66,7 @@ class WooCommerceProductProductExportMapper(Component):
 
     @mapping
     def stock(self, record):
-        if (
-            record.type in ("consu", "service")
-            or record.variant_inventory_availability == "never"
-        ):
+        if not record.is_storable or record.variant_inventory_availability == "never":
             stock = {"manage_stock": False, "stock_status": "instock"}
         # modificar el type
         elif record.variant_inventory_availability == "always":
