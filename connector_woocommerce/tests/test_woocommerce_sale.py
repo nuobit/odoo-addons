@@ -245,7 +245,7 @@ class TestWooCommerceSale(WooCommerceCase):
 
     def test_validity_end_is_inclusive_and_then_clears_the_sale(self):
         self._create_rule(
-            date_start="2030-01-01 12:00:00", date_end="2030-01-01 12:00:00"
+            date_start="2030-01-01 11:00:00", date_end="2030-01-01 12:00:00"
         )
         self._assert_sale_payload("80.0")
         with freeze_time("2030-01-01 12:00:01"):
