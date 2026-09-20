@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)-->
 <odoo noupdate="1">
     <record
@@ -55,6 +56,18 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)-->
             ref="connector_sage.model_sage_payroll_sage_labour_agreement"
         />
         <field name="method">import_labour_agreements_since</field>
+        <field name="channel_id" ref="connector_sage.channel_sage" />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+    <record
+        id="sage_binding_import_payslip_processes_since_job_function"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_sage.model_sage_payroll_sage_payslip_process"
+        />
+        <field name="method">import_payslip_processes_since</field>
         <field name="channel_id" ref="connector_sage.channel_sage" />
         <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
     </record>
