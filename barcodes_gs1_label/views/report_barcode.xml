@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
-     Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     Copyright 2025-2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
      Copyright 2025 NuoBiT Solutions SL - Bijaya Kumal <bkumal@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
@@ -66,7 +66,9 @@
 
     <!-- layout gs1datamatrix1 -->
     <template id="layout_gs1datamatrix1">
-        <div class="bgp-gs1-datamatrix">
+        <div
+            t-att-class="'bgp-gs1-datamatrix-landscape' if layout['label_landscape'] else 'bgp-gs1-datamatrix'"
+        >
             <div t-if="barcode_values" class="bgp-barcode">
                 <div class="bgp-barcode-img">
                     <img

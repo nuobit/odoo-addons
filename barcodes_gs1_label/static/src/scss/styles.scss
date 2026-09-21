@@ -83,6 +83,44 @@
     }
 }
 
+//// GS1 DATAMATRIX ON LANDSCAPE LABELS (barcode sized by the label height)
+.bgp-gs1-datamatrix-landscape {
+    margin-left: 3%;
+    margin-right: 1%;
+
+    .bgp-barcode {
+        height: 60%;
+
+        .bgp-barcode-img {
+            float: left;
+
+            .bgp-img {
+                height: 100%;
+            }
+        }
+
+        .bgp-barcode-text {
+            overflow: hidden;
+            font-size: small;
+            padding-left: 2%;
+
+            li {
+                overflow-wrap: break-word;
+                word-wrap: break-word;
+            }
+        }
+    }
+
+    .bgp-product {
+        height: 40%;
+        text-align: center;
+
+        .bgp-description div {
+            font-size: 50%;
+        }
+    }
+}
+
 //// GS1 CODE128
 .bgp-gs1-128 {
     .bgp-barcode {
@@ -119,6 +157,7 @@
 }
 
 //// GS1 CODE128/GS1 DATAMATRIX COMMON
+.bgp-gs1-datamatrix-landscape,
 .bgp-gs1-128 {
     height: 100%;
     padding-top: 3%;

@@ -240,6 +240,8 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
                 + self.start_col,
                 "label_widths": widths_px,
                 "label_heights": heights_px,
+                "label_landscape": self.label_config_id.format_id.label_width
+                > self.label_config_id.format_id.label_height,
                 "show_borders": self.show_borders,
                 "border_color": self.border_color,
             },
