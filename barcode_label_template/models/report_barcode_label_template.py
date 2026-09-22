@@ -34,7 +34,7 @@ class ReportBarcodeLabelTemplate(models.AbstractModel):
 
         fields_data = []
         for field in temp_config.configuration_field_ids:
-            field_name = field.field_id.name
+            field_name = field.field_id.sudo().name
             if lot.product_id.tracking == "lot":
                 if field_name == "ref":
                     field_name = "name"
@@ -60,7 +60,7 @@ class ReportBarcodeLabelTemplate(models.AbstractModel):
                             "This expression is not valid.\nExpression: %(expression)s"
                         )
                         % {
-                            "field": field.field_id.field_description,
+                            "field": field.field_id.sudo().field_description,
                             "target_field": field.target_field,
                             "error": error,
                             "expression": expression,
