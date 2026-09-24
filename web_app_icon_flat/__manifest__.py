@@ -1,4 +1,4 @@
-# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 Xplordoo SL - Eric Antones <eantones@xplordoo.com>
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
 
 {
@@ -6,7 +6,7 @@
     "summary": "Show Odoo's flat app icons of version 17 and later",
     "version": "16.0.1.0.0",
     "category": "Web",
-    "author": "NuoBiT Solutions SL",
+    "author": "NuoBiT Solutions SL, Xplordoo SL",
     "website": "https://github.com/nuobit/odoo-addons",
     "license": "LGPL-3",
     "depends": [
