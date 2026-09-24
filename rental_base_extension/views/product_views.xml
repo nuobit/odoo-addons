@@ -2,7 +2,7 @@
 <!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
 <odoo>
-    <!-- Hide 'Can be Rented' checkbox on service products -->
+    <!-- Hide 'Can be Rented' checkbox on non-storable products -->
     <record id="product_template_form_view" model="ir.ui.view">
         <field name="name">product.template.form.inherit.rental_base_extension</field>
         <field name="model">product.template</field>
@@ -13,7 +13,7 @@
                 position="attributes"
             >
                 <attribute name="attrs">
-                    {'invisible': [('type', '=', 'service')]}
+                    {'invisible': [('type', '!=', 'product')]}
                 </attribute>
             </xpath>
         </field>
@@ -56,7 +56,7 @@
                 <group
                     name="rental"
                     string="Rentals"
-                    attrs="{'invisible': [('type', '=', 'service')]}"
+                    attrs="{'invisible': [('type', '!=', 'product')]}"
                 >
                     <field name="rental_service_ids" nolabel="1" colspan="2" />
                     <button
@@ -108,13 +108,20 @@
                 <group
                     name="rental"
                     string="Rentals"
-                    attrs="{'invisible': ['|', ('type', '=', 'service'), ('product_variant_count', '&gt;', 1)]}"
+                    attrs="{'invisible': [('type', '!=', 'product')]}"
                 >
                     <field name="rental_service_tmpl_ids" nolabel="1" colspan="2" />
                     <button
                         type="action"
                         name="%(sale_rental.create_rental_product_action)d"
                         string="Create Rental Service"
+                        attrs="{'invisible': [('product_variant_count', '&gt;', 1)]}"
+                    />
+                    <button
+                        name="action_create_rental_services"
+                        type="object"
+                        string="Create Rental Services"
+                        attrs="{'invisible': [('product_variant_count', '&lt;=', 1)]}"
                     />
                 </group>
             </group>
