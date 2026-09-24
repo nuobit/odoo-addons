@@ -1,3 +1,3 @@
-* `NuoBiT <https://www.nuobit.com>`__:
+* `Xplordoo SL <https://www.xplordoo.com>`__:
 
-  * Eric Antones <eantones@nuobit.com>
+  * Eric Antones <eantones@xplordoo.com>
