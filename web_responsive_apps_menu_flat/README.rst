@@ -2,9 +2,9 @@
    :target: https://odoo-community.org/get-involved?utm_source=readme
    :alt: Odoo Community Association
 
-============================
-Web Responsive App Icon Flat
-============================
+=============================
+Web Responsive Apps Menu Flat
+=============================
 
 .. 
    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -21,15 +21,16 @@ Web Responsive App Icon Flat
     :target: http://www.gnu.org/licenses/lgpl-3.0-standalone.html
     :alt: License: LGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-nuobit%2Fodoo--addons-lightgray.png?logo=github
-    :target: https://github.com/nuobit/odoo-addons/tree/16.0/web_responsive_app_icon_flat
+    :target: https://github.com/nuobit/odoo-addons/tree/16.0/web_responsive_apps_menu_flat
     :alt: nuobit/odoo-addons
 
 |badge1| |badge2| |badge3|
 
-Glue module between ``web_app_icon_flat`` and ``web_responsive``: it gives
-the apps menu of ``web_responsive`` a light background, on which the flat app
-icons and the app names read well, as the apps menu of ``web_responsive``
-19.0 shows them. Uninstalling it brings the Odoo 16 look of the menu back.
+Gives the apps menu of ``web_responsive`` the look of the home menu of Odoo 17
+and later, on which the flat app icons of ``web_app_icon_flat`` and the app
+names read well: a light background, a white rounded tile under each icon and
+dark captions. It installs itself when both modules are installed;
+uninstalling it brings the Odoo 16 look of the menu back.
 
 **Table of contents**
 
@@ -42,7 +43,7 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues <https://github.com/nuobit/odoo-addons/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-`feedback <https://github.com/nuobit/odoo-addons/issues/new?body=module:%20web_responsive_app_icon_flat%0Aversion:%2016.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/nuobit/odoo-addons/issues/new?body=module:%20web_responsive_apps_menu_flat%0Aversion:%2016.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -64,6 +65,6 @@ Contributors
 Maintainers
 ~~~~~~~~~~~
 
-This module is part of the `nuobit/odoo-addons <https://github.com/nuobit/odoo-addons/tree/16.0/web_responsive_app_icon_flat>`_ project on GitHub.
+This module is part of the `nuobit/odoo-addons <https://github.com/nuobit/odoo-addons/tree/16.0/web_responsive_apps_menu_flat>`_ project on GitHub.
 
 You are welcome to contribute.
