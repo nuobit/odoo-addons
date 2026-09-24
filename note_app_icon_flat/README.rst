@@ -52,13 +52,14 @@ Authors
 ~~~~~~~
 
 * NuoBiT Solutions SL
+* Xplordoo SL
 
 Contributors
 ~~~~~~~~~~~~
 
-* `NuoBiT <https://www.nuobit.com>`__:
+* `Xplordoo SL <https://www.xplordoo.com>`__:
 
-  * Eric Antones <eantones@nuobit.com>
+  * Eric Antones <eantones@xplordoo.com>
 
 Maintainers
 ~~~~~~~~~~~
