@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl). -->
+<templates xml:space="preserve">
+    <t t-inherit="mail.ActivityMenuView" t-inherit-mode="extension">
+        <xpath
+            expr="//img[@src='/note/static/description/icon.svg']"
+            position="attributes"
+        >
+            <attribute name="src" />
+            <attribute name="t-att-src">activityMenuView.noteIconUrl</attribute>
+        </xpath>
+    </t>
+</templates>
