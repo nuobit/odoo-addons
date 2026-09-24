@@ -1,5 +1,5 @@
 /** @odoo-module **/
-/* Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+/* Copyright 2026 Xplordoo SL - Eric Antones <eantones@xplordoo.com>
    License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl). */
 
 import {session} from "@web/session";
