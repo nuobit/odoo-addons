@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl). -->
+<odoo>
+    <template id="layout" inherit_id="website.layout">
+        <xpath
+            expr="//a[hasclass('o_frontend_to_backend_edit_btn')]/img"
+            position="attributes"
+        >
+            <attribute
+                name="src"
+            >/web_app_icon_flat/static/img/website/icon.png</attribute>
+        </xpath>
+    </template>
+</odoo>
