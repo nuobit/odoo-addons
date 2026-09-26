@@ -16,6 +16,7 @@
     },
     "depends": [
         "account_payment_sale",
+        "base_image_webp",
         "connector_extension_woocommerce",
         "connector_wordpress",
         "sale_stock",
