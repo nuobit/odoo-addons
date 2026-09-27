@@ -25,3 +25,9 @@ class WordPressBinding(models.AbstractModel):
             "A binding already exists with the same External (odoo_id) ID.",
         ),
     ]
+
+    # JOB OPTIONS
+    def _get_default_job_max_retries(self):
+        # Explicitly choose 20 to match data/queue_job_function_data.xml,
+        # even though 20 is also the connector_extension default.
+        return 20
