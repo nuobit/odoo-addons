@@ -34,6 +34,59 @@ class ConnectorExtensionExternalBinding(models.AbstractModel):
             return external_ids[0]
         return external_ids
 
+    # JOB OPTIONS
+    def _get_default_job_max_retries(self):
+        # The connectors' retry patterns (queue.job.function) open their last
+        # delay stage at attempt 15: the queue_job default of 5 attempts fails
+        # a job before it ever reaches the later stages.
+        return 20
+
+    def with_delay(
+        self,
+        priority=None,
+        eta=None,
+        max_retries=None,
+        description=None,
+        channel=None,
+        identity_key=None,
+    ):
+        job_max_retries = (
+            max_retries
+            if max_retries is not None
+            else self._get_default_job_max_retries()
+        )
+        return super().with_delay(
+            priority=priority,
+            eta=eta,
+            max_retries=job_max_retries,
+            description=description,
+            channel=channel,
+            identity_key=identity_key,
+        )
+
+    def delayable(
+        self,
+        priority=None,
+        eta=None,
+        max_retries=None,
+        description=None,
+        channel=None,
+        identity_key=None,
+    ):
+        job_max_retries = (
+            max_retries
+            if max_retries is not None
+            else self._get_default_job_max_retries()
+        )
+        return super().delayable(
+            priority=priority,
+            eta=eta,
+            max_retries=job_max_retries,
+            description=description,
+            channel=channel,
+            identity_key=identity_key,
+        )
+
     # LAUNCHERS
     @api.model
     def import_data(self, backend_record, domain=None, delayed=True):
