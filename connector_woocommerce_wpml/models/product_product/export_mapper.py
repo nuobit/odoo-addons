@@ -6,7 +6,7 @@ from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import changed_by, mapping
-from odoo.addons.connector_extension.common import tools
+from odoo.addons.connector_woocommerce.common.tools import prepare_html
 
 
 class WooCommerceProductProductExportMapper(Component):
@@ -110,7 +110,6 @@ class WooCommerceProductProductExportMapper(Component):
                     return super().sku(record)
 
     def _get_product_description(self, record):
-        res = False
         odoo_lang = record._context.get("lang")
         if not odoo_lang:
             raise ValidationError(_("Language must be always set"))
@@ -120,8 +119,7 @@ class WooCommerceProductProductExportMapper(Component):
             # We don't need check backend_record lang
             # because record already has lang on context
             description = record.variant_public_description
-            if description:
-                res = tools.color_rgb2hex(description)
+            res = prepare_html(description)
         return res
 
     # @mapping
