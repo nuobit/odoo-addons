@@ -106,3 +106,12 @@ class WooCommerceCase(SavepointComponentCase):
                 self._write_dates[record._name, record.id],
                 "%s should not have been marked for export" % record.display_name,
             )
+
+    def _new_job(self, model_name, method_name, run):
+        job_model = self.env["queue.job"]
+        domain = [("model_name", "=", model_name), ("method_name", "=", method_name)]
+        before = job_model.search(domain)
+        run()
+        jobs = job_model.search(domain) - before
+        self.assertEqual(len(jobs), 1)
+        return jobs
