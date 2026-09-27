@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
+<odoo noupdate="1">
+    <record id="wordpress_export_batch" model="queue.job.channel">
+        <field name="name">wordpress_export_batch</field>
+        <field name="parent_id" ref="queue_job.channel_root" />
+    </record>
+    <record id="wordpress_export_record" model="queue.job.channel">
+        <field name="name">wordpress_export_record</field>
+        <field name="parent_id" ref="queue_job.channel_root" />
+    </record>
+</odoo>
