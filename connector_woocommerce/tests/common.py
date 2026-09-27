@@ -1,7 +1,70 @@
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+from datetime import timedelta
+from unittest.mock import patch
+
+from freezegun import freeze_time
+
+from odoo.modules.graph import Graph
+from odoo.modules.migration import MigrationManager
+from odoo.modules.module import load_information_from_description_file
+
 from odoo.addons.component.tests.common import SavepointComponentCase
+
+# What the HTML editor leaves in a field nobody typed in, a real text with a
+# colour the export converts, and that text as WooCommerce receives it.
+PLACEHOLDER = "<p><br></p>"
+TEXT = '<p style="color: rgb(255, 0, 0);">Real text</p>'
+TEXT_HEX = '<p style="color: #FF0000;">Real text</p>'
+
+
+class BlankHtmlMigrationMixin:
+    """Run the real migration and inspect the jobs of the two export buttons."""
+
+    def setUp(self):
+        super().setUp()
+        freezer = freeze_time("2030-01-01 12:00:00")
+        self.clock = freezer.start()
+        self.addCleanup(freezer.stop)
+
+    def _start_incremental_exports(self):
+        self.env["product.template"].flush()
+        self.env["product.product"].flush()
+        self.clock.tick(timedelta(seconds=1))
+        self.backend.export_product_tmpl_since()
+        self.backend.export_products_since()
+        self.clock.tick(timedelta(seconds=1))
+
+    def _run_migration(self, module, target_version, installed_version):
+        graph = Graph()
+        module_info = load_information_from_description_file(module)
+        package = graph.add_node(module, {**module_info, "version": target_version})
+        graph.update_from_db(self.env.cr)
+        # Describe an upgrade even when this suite runs during a fresh install.
+        # Change only the graph node, not the installed module record: the real
+        # manager skips nodes that retain the "to install" state.
+        package.installed_version = installed_version
+        package.state = "to upgrade"
+        package.update = True
+        MigrationManager(self.env.cr, graph).migrate_module(package, "post")
+
+    def _assert_export_selection(self, binding_model, action, expected):
+        jobs = self.env["queue.job"]
+        domain = [
+            ("model_name", "=", binding_model),
+            ("method_name", "=", "export_batch"),
+        ]
+        before = jobs.search(domain)
+        action()
+        created = jobs.search(domain) - before
+        self.assertEqual(len(created), 1)
+        selected = (
+            self.env[expected._name]
+            .with_context(active_test=False)
+            .search(created.kwargs["domain"])
+        )
+        self.assertEqual(selected.sorted("id"), expected.sorted("id"))
 
 
 class WooCommerceCase(SavepointComponentCase):
@@ -11,7 +74,7 @@ class WooCommerceCase(SavepointComponentCase):
     def setUpClass(cls):
         super().setUpClass()
         cls._write_dates = {}
-        lang = cls.env.ref("base.lang_en")
+        cls.langs = cls._setup_languages()
         cls.discount_pricelist = cls.env["product.pricelist"].create(
             {"name": "WooCommerce discount pricelist"}
         )
@@ -24,8 +87,8 @@ class WooCommerceCase(SavepointComponentCase):
                 "url": "http://127.0.0.1:1",
                 "consumer_key": "ck_test",
                 "consumer_secret": "cs_test",
-                "lang_ids": [(6, 0, lang.ids)],
-                "language_id": lang.id,
+                "lang_ids": [(6, 0, cls.langs.ids)],
+                "language_id": cls.langs[0].id,
                 "client_order_ref_prefix": "WC",
                 "stock_location_ids": [
                     (6, 0, cls.env.ref("stock.stock_location_stock").ids)
@@ -40,6 +103,11 @@ class WooCommerceCase(SavepointComponentCase):
         cls.unbound_template = cls._create_template("WooCommerce unbound product")
 
     @classmethod
+    def _setup_languages(cls):
+        """The export languages of the backend, the default one first."""
+        return cls.env.ref("base.lang_en")
+
+    @classmethod
     def _create_template(cls, name, woocommerce_idproduct=None, list_price=100.0):
         template = cls.env["product.template"].create(
             {
@@ -51,25 +119,84 @@ class WooCommerceCase(SavepointComponentCase):
         )
         if woocommerce_idproduct:
             cls.env["woocommerce.product.template"].create(
-                {
-                    "odoo_id": template.id,
-                    "backend_id": cls.backend.id,
-                    "woocommerce_idproduct": woocommerce_idproduct,
-                }
+                cls._template_binding_values(template, woocommerce_idproduct)
             )
         cls._remember_write_dates(template)
         return template
 
     @classmethod
+    def _template_binding_values(cls, template, woocommerce_idproduct):
+        return {
+            "odoo_id": template.id,
+            "backend_id": cls.backend.id,
+            "woocommerce_idproduct": woocommerce_idproduct,
+        }
+
+    @classmethod
     def _bind_variant(cls, variant, woocommerce_idproduct):
         return cls.env["woocommerce.product.product"].create(
+            cls._variant_binding_values(variant, woocommerce_idproduct)
+        )
+
+    @classmethod
+    def _variant_binding_values(cls, variant, woocommerce_idproduct):
+        return {
+            "odoo_id": variant.id,
+            "backend_id": cls.backend.id,
+            "woocommerce_idproduct": woocommerce_idproduct,
+            "woocommerce_idparent": woocommerce_idproduct + 1,
+        }
+
+    def _create_variable_template(self):
+        attribute = self.env["product.attribute"].create({"name": "Size"})
+        values = self.env["product.attribute.value"].create(
+            [
+                {"name": "Small", "attribute_id": attribute.id},
+                {"name": "Large", "attribute_id": attribute.id},
+            ]
+        )
+        self.env["woocommerce.product.attribute"].create(
             {
-                "odoo_id": variant.id,
-                "backend_id": cls.backend.id,
-                "woocommerce_idproduct": woocommerce_idproduct,
-                "woocommerce_idparent": woocommerce_idproduct + 1,
+                "odoo_id": attribute.id,
+                "backend_id": self.backend.id,
+                "woocommerce_idattribute": 3001,
             }
         )
+        template = self._create_template("Variable product", 1003)
+        template.write(
+            {
+                "taxes_id": [(5, 0, 0)],
+                "attribute_line_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "attribute_id": attribute.id,
+                            "value_ids": [(6, 0, values.ids)],
+                        },
+                    ),
+                ],
+            }
+        )
+        return template
+
+    def _mapped_values(self, model_name, product):
+        with self.backend.work_on(model_name) as work:
+            mapper = work.component(usage="export.mapper")
+            # The exporter maps the actual product, not its binding.
+            return mapper.map_record(product).values()
+
+    def _export_payload(self, model_name, product, external_id):
+        data = self._mapped_values(model_name, product)
+        with self.backend.work_on(model_name) as work:
+            adapter = work.component(usage="backend.adapter")
+            # Stop only at the external API boundary; run real formatting.
+            with patch.object(type(adapter), "_exec", return_value={}) as call:
+                adapter.write(external_id, data)
+            call.assert_called_once()
+            args, kwargs = call.call_args
+            self.assertEqual(args[0], "put")
+            return kwargs["data"]
 
     @classmethod
     def _remember_write_dates(cls, template):

@@ -38,8 +38,21 @@ class ConnectorWooCommerceAdapter(AbstractComponent):
             "/date_on_sale_to_gmt": lambda x: x if x is not None else "",
         }
 
+    def _prepare_product_html_conversion_mapper(self):
+        """Return the product HTML text converters for WooCommerce."""
+        # None is "no value" in Odoo. The REST controllers only touch a text
+        # they receive (isset): null leaves the previous text in place, and ""
+        # clears it. Clearing is what "no value" means here.
+        return {
+            "/description": lambda x: x if x is not None else "",
+            "/short_description": lambda x: x if x is not None else "",
+        }
+
     def _format_product(self, data):
-        conv_mapper = self._prepare_product_price_conversion_mapper()
+        conv_mapper = {
+            **self._prepare_product_price_conversion_mapper(),
+            **self._prepare_product_html_conversion_mapper(),
+        }
         self._convert_format(data, conv_mapper)
 
     def prepare_meta_data(self, data):
