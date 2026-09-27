@@ -10,7 +10,6 @@
     "website": "https://github.com/nuobit/odoo-addons",
     "license": "AGPL-3",
     "depends": [
-        "l10n_es",
         "l10n_es_account_capital_asset",
     ],
     "data": [

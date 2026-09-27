@@ -1,0 +1,10 @@
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="l10n_es_aeat_mod349.aeat_349_map_line_A" model="aeat.349.map.line">
+        <field
+            name="tax_tmpl_ids"
+            eval="[(4, ref('l10n_es_extension.account_tax_template_p_iva0_sp_in'))]"
+        />
+    </record>
+</odoo>
