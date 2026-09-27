@@ -6,7 +6,8 @@ from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import changed_by, mapping
-from odoo.addons.connector_extension.common import tools
+
+from ...common.tools import prepare_html
 
 
 class WooCommerceProductProductExportMapper(Component):
@@ -101,18 +102,19 @@ class WooCommerceProductProductExportMapper(Component):
         return stock
 
     def _get_product_description(self, record):
-        description = record.with_context(
-            lang=self.backend_record.language_id.code
-        ).variant_public_description
-        if not description:
-            return False
-        return tools.color_rgb2hex(description)
+        return prepare_html(
+            record.with_context(
+                lang=self.backend_record.language_id.code
+            ).variant_public_description
+        )
 
     @mapping
     def description(self, record):
+        # None when nothing remains: it clears the description on WooCommerce
+        # (the adapter spells it).
         description = []
         product_description = self._get_product_description(record)
-        if product_description:
+        if product_description is not None:
             description.append(product_description)
         if record.document_ids:
             document_description = self._prepare_document_description(

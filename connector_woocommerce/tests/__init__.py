@@ -4,3 +4,6 @@ from . import test_product_pricelist_item
 from . import test_woocommerce_sale
 from . import test_queue_job_defaults
 from . import test_queue_job_functions
+from . import test_html_tools
+from . import test_export_mapper_html
+from . import test_reexport_blank_html

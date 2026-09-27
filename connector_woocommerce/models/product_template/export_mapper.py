@@ -6,7 +6,8 @@ from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import changed_by, mapping
-from odoo.addons.connector_extension.common import tools
+
+from ...common.tools import prepare_html
 
 
 class WooCommerceProductTemplateExportMapper(Component):
@@ -131,32 +132,28 @@ class WooCommerceProductTemplateExportMapper(Component):
         return {}
 
     def _get_product_description(self, record):
-        description = record.with_context(
-            lang=self.backend_record.language_id.code
-        ).public_description
-        if not description:
-            return False
-        return tools.color_rgb2hex(description)
+        return prepare_html(
+            record.with_context(
+                lang=self.backend_record.language_id.code
+            ).public_description
+        )
 
     def _get_product_variant_description(self, record):
-        description = record.product_variant_id.with_context(
-            lang=self.backend_record.language_id.code
-        ).variant_public_description
-        if not description:
-            return False
-        return tools.color_rgb2hex(description)
+        return prepare_html(
+            record.product_variant_id.with_context(
+                lang=self.backend_record.language_id.code
+            ).variant_public_description
+        )
 
     @mapping
     def description(self, record):
-        description = False
-        if record.public_description:
-            description = self._get_product_description(record)
-        elif (
-            len(record.product_variant_ids) == 1
-            and record.product_variant_id.variant_public_description
-        ):
+        # The key travels even with no value: None is what clears the
+        # description on WooCommerce (the adapter spells it).
+        description = self._get_product_description(record)
+        if description is None and len(record.product_variant_ids) == 1:
+            # A product with a single variant may describe it on the variant.
             description = self._get_product_variant_description(record)
-        return {"description": description if description else ""}
+        return {"description": description}
 
     def _get_short_description(self, record):
         return record.with_context(

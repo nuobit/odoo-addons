@@ -32,20 +32,6 @@ class TestWooCommerceSale(WooCommerceCase):
             ("woocommerce.product.product", self.variant, [1001, 2001]),
         )
 
-    def _export_payload(self, model_name, product, external_id):
-        with self.backend.work_on(model_name) as work:
-            mapper = work.component(usage="export.mapper")
-            # The exporter maps the actual product, not its binding.
-            data = mapper.map_record(product).values()
-            adapter = work.component(usage="backend.adapter")
-            # Stop only at the external API boundary; run real formatting.
-            with patch.object(type(adapter), "_exec", return_value={}) as call:
-                adapter.write(external_id, data)
-            call.assert_called_once()
-            args, kwargs = call.call_args
-            self.assertEqual(args[0], "put")
-            return kwargs["data"]
-
     def _assert_sale_payload(self, price):
         for model_name, product, external_id in self._product_exports():
             with self.subTest(model=model_name):
@@ -60,39 +46,6 @@ class TestWooCommerceSale(WooCommerceCase):
                 payload = self._export_payload(model_name, product, external_id)
                 self.assertEqual(payload["regular_price"], regular)
                 self.assertEqual(payload["sale_price"], sale)
-
-    def _create_variable_template(self):
-        attribute = self.env["product.attribute"].create({"name": "Size"})
-        values = self.env["product.attribute.value"].create(
-            [
-                {"name": "Small", "attribute_id": attribute.id},
-                {"name": "Large", "attribute_id": attribute.id},
-            ]
-        )
-        self.env["woocommerce.product.attribute"].create(
-            {
-                "odoo_id": attribute.id,
-                "backend_id": self.backend.id,
-                "woocommerce_idattribute": 3001,
-            }
-        )
-        template = self._create_template("Variable product", 1003)
-        template.write(
-            {
-                "taxes_id": [(5, 0, 0)],
-                "attribute_line_ids": [
-                    (
-                        0,
-                        0,
-                        {
-                            "attribute_id": attribute.id,
-                            "value_ids": [(6, 0, values.ids)],
-                        },
-                    ),
-                ],
-            }
-        )
-        return template
 
     def test_current_sale_keeps_woocommerce_dates_empty(self):
         self._create_rule(
