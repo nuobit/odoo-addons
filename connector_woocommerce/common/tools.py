@@ -5,8 +5,53 @@ import datetime
 import hashlib
 import unicodedata
 
+from lxml import html
+
 from odoo import _
 from odoo.exceptions import ValidationError
+
+from odoo.addons.connector_extension.common.tools import color_rgb2hex
+
+# Elements the HTML editor leaves around nothing to show. A value made only of
+# these, with no text, is blank; any other element (an image, a table, a rule,
+# an embed...) is content whatever its text: never a loss of content.
+BLANK_HTML_TAGS = frozenset(
+    {
+        "p",
+        "div",
+        "span",
+        "br",
+        "b",
+        "strong",
+        "i",
+        "em",
+        "u",
+        "s",
+        "strike",
+        "font",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "ul",
+        "ol",
+        "li",
+        "blockquote",
+        "pre",
+        "code",
+        "sub",
+        "sup",
+        "small",
+        "mark",
+        "a",
+        "section",
+        "article",
+        "header",
+        "footer",
+    }
+)
 
 
 def list2hash(_list):
@@ -119,3 +164,38 @@ def slugify(value):
         .lower()
         .replace(" ", "")
     )
+
+
+def is_blank_html(value):
+    """Whether an HTML value has nothing to show.
+
+    ``value`` is what an Odoo Text field edited with the HTML widget holds:
+    ``False`` when empty, else the markup as typed (the editor writes
+    ``<p><br></p>`` for an untouched field). Blank means no text once
+    whitespace is collapsed (no-break spaces included; the parser decodes
+    the entities) and every element in ``BLANK_HTML_TAGS``; attributes are
+    ignored. lxml's HTML parser recovers from malformed markup, so stray
+    characters are text, and text is content.
+    """
+    if not value:
+        # An empty Odoo Text field holds False; "" and None are the same
+        # absence in the callers' hands. This is the one place deciding it.
+        blank = True
+    else:
+        root = html.fragment_fromstring(value, create_parent="div")
+        text = "".join(root.itertext())
+        blank = not text.strip() and all(
+            isinstance(element.tag, str) and element.tag in BLANK_HTML_TAGS
+            for element in root.iter()
+        )
+    return blank
+
+
+def prepare_html(value):
+    """The HTML value the connectors export for an HTML-edited field.
+
+    ``None`` when the value is missing or blank (``is_blank_html``): the
+    adapter represents the absence on the wire. Otherwise the value
+    with its ``rgb()`` colours converted to hex, as WooCommerce expects.
+    """
+    return color_rgb2hex(value) if not is_blank_html(value) else None
