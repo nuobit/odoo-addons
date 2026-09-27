@@ -4,7 +4,7 @@
 
 {
     "name": "Connector WordPress",
-    "version": "14.0.0.1.1",
+    "version": "14.0.0.2.0",
     "author": "NuoBiT Solutions, S.L.",
     "license": "AGPL-3",
     "category": "Connector",
@@ -20,6 +20,8 @@
         "tools_mimetypes_extension",
     ],
     "data": [
+        "data/queue_job_channel_data.xml",
+        "data/queue_job_function_data.xml",
         "security/connector_wordpress.xml",
         "security/ir.model.access.csv",
         "views/ir_attachment_views.xml",

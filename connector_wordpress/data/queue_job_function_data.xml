@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
+<odoo noupdate="1">
+
+    <!-- Export Attachment -->
+    <record
+        id="wordpress_ir_attachment_export_batch_job_function"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_wordpress.model_wordpress_ir_attachment"
+        />
+        <field name="method">export_batch</field>
+        <field name="channel_id" ref="connector_wordpress.wordpress_export_batch" />
+        <field
+            name="retry_pattern"
+            eval="{1: (5, 15), 5: (20, 40), 10: (45, 75), 15: (240, 360)}"
+        />
+    </record>
+
+    <record
+        id="wordpress_ir_attachment_export_record_job_function"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="connector_wordpress.model_wordpress_ir_attachment"
+        />
+        <field name="method">export_record</field>
+        <field name="channel_id" ref="connector_wordpress.wordpress_export_record" />
+        <field
+            name="retry_pattern"
+            eval="{1: (5, 15), 5: (20, 40), 10: (45, 75), 15: (240, 360)}"
+        />
+    </record>
+</odoo>
