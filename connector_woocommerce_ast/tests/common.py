@@ -51,3 +51,17 @@ class WooCommerceAstCase(WooCommerceOrderCase):
         order = super()._create_order(quantities)
         order.carrier_id = self.carrier
         return order
+
+    def _carrier_reports(self, pickings, delivery_state):
+        """The carrier reports ``delivery_state`` for each of ``pickings`` when
+        their tracking is updated. A fixed carrier has no tracking of its own,
+        so the test gives it one."""
+        with patch.object(
+            type(self.env["delivery.carrier"]),
+            "fixed_tracking_state_update",
+            create=True,
+            side_effect=lambda picking: picking.write(
+                {"delivery_state": delivery_state}
+            ),
+        ):
+            pickings.tracking_state_update()
