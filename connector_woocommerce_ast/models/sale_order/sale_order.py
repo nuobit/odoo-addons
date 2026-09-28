@@ -61,7 +61,7 @@ class SaleOrder(models.Model):
                 )
             ):
                 woocommerce_order_state = "partial_shipped"
-            elif all(s == "delivered" for s in picking_states):
+            elif all(s in ("delivered", "cancel") for s in picking_states):
                 woocommerce_order_state = "delivered"
         return woocommerce_order_state
 
