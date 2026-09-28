@@ -3,7 +3,6 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
-from odoo.tools import float_compare
 
 
 class SaleOrder(models.Model):
@@ -39,30 +38,11 @@ class SaleOrder(models.Model):
             if any(s in ("done", "delivered") for s in picking_states):
                 woocommerce_order_state = "partial_shipped"
         elif woocommerce_order_state == "done":
-            precision = self.env["decimal.precision"].precision_get(
-                "Product Unit of Measure"
-            )
-            if not all(
-                float_compare(
-                    line.qty_delivered,
-                    line.product_uom_qty
-                    - sum(
-                        m.product_uom_qty for m in line.move_ids if m.state == "cancel"
-                    ),
-                    precision_digits=precision,
-                )
-                >= 0
-                for line in self.order_line.filtered(
-                    lambda x: x.product_id.product_tmpl_id.service_policy
-                    != "ordered_timesheet"
-                )
-            ):
-                woocommerce_order_state = "partial_shipped"
-            elif all(s in ("delivered", "cancel") for s in picking_states):
+            if all(s in ("delivered", "cancel") for s in picking_states):
                 woocommerce_order_state = "delivered"
         return woocommerce_order_state
 
-    @api.depends("picking_ids.delivery_state", "order_line.move_ids.state")
+    @api.depends("picking_ids.delivery_state")
     def _compute_woocommerce_order_state(self):
         super()._compute_woocommerce_order_state()
 
