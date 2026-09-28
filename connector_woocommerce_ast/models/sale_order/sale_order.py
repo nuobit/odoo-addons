@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
@@ -64,3 +65,11 @@ class SaleOrder(models.Model):
     @api.depends("picking_ids.delivery_state", "order_line.move_ids.state")
     def _compute_woocommerce_order_state(self):
         super()._compute_woocommerce_order_state()
+
+    def _get_woocommerce_tracking_picking(self):
+        """The picking whose carrier gives the export delay and the tracking:
+        the last done one with a carrier, if any."""
+        self.ensure_one()
+        return self.picking_ids.filtered(
+            lambda p: p.state == "done" and p.carrier_id
+        ).sorted(key=lambda p: p.id)[-1:]

@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import logging
 
@@ -19,9 +20,7 @@ class WooCommerceBackend(models.Model):
 
     def _get_export_eta(self, record):
         self.ensure_one()
-        picking = record.picking_ids.filtered(
-            lambda p: p.state == "done" and p.carrier_id
-        ).sorted(key=lambda p: p.id)[-1:]
+        picking = record._get_woocommerce_tracking_picking()
         if picking:
             carrier = self.carrier_provider_ids.filtered(
                 lambda x: x.delivery_type == picking.carrier_id.delivery_type
