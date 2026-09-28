@@ -36,19 +36,6 @@ class BlankHtmlMigrationMixin:
         self.backend.export_products_since()
         self.clock.tick(timedelta(seconds=1))
 
-    def _run_migration(self, module, target_version, installed_version):
-        graph = Graph()
-        module_info = load_information_from_description_file(module)
-        package = graph.add_node(module, {**module_info, "version": target_version})
-        graph.update_from_db(self.env.cr)
-        # Describe an upgrade even when this suite runs during a fresh install.
-        # Change only the graph node, not the installed module record: the real
-        # manager skips nodes that retain the "to install" state.
-        package.installed_version = installed_version
-        package.state = "to upgrade"
-        package.update = True
-        MigrationManager(self.env.cr, graph).migrate_module(package, "post")
-
     def _assert_export_selection(self, binding_model, action, expected):
         jobs = self.env["queue.job"]
         domain = [
@@ -197,6 +184,19 @@ class WooCommerceCase(SavepointComponentCase):
             args, kwargs = call.call_args
             self.assertEqual(args[0], "put")
             return kwargs["data"]
+
+    def _run_migration(self, module, target_version, installed_version):
+        graph = Graph()
+        module_info = load_information_from_description_file(module)
+        package = graph.add_node(module, {**module_info, "version": target_version})
+        graph.update_from_db(self.env.cr)
+        # Describe an upgrade even when this suite runs during a fresh install.
+        # Change only the graph node, not the installed module record: the real
+        # manager skips nodes that retain the "to install" state.
+        package.installed_version = installed_version
+        package.state = "to upgrade"
+        package.update = True
+        MigrationManager(self.env.cr, graph).migrate_module(package, "post")
 
     @classmethod
     def _remember_write_dates(cls, template):
