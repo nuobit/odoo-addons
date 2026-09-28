@@ -182,8 +182,8 @@ class WooCommerceProductTemplateExportMapper(Component):
         for category in record.public_categ_ids:
             values = binder.get_external_dict_ids(category)
             categories.append({"id": values["id"]})
-        if categories:
-            return {"categories": categories}
+        # An empty list clears categories already assigned in WooCommerce.
+        return {"categories": categories}
 
     def _get_value_ids(self, attribute_line):
         return attribute_line.product_template_value_ids.with_context(
