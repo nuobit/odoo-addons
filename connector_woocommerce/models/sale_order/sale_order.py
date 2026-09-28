@@ -58,12 +58,20 @@ class SaleOrder(models.Model):
         default=0,
     )
 
+    def _get_woocommerce_shipments(self):
+        """The transfers that take the order to the customer: returns and
+        internal steps are not shipments."""
+        self.ensure_one()
+        return self.picking_ids.filtered(
+            lambda p: p.location_dest_id.usage == "customer"
+        )
+
     def _get_woocommerce_order_state(self, picking_states):
         self.ensure_one()
         if not picking_states or "processing" in picking_states:
             woocommerce_order_state = "processing"
         else:
-            if "done" not in self.picking_ids.mapped("state"):
+            if "done" not in self._get_woocommerce_shipments().mapped("state"):
                 woocommerce_order_state = "cancel"
             else:
                 woocommerce_order_state = "done"
@@ -77,6 +85,7 @@ class SaleOrder(models.Model):
         "woocommerce_bind_ids",
         "picking_ids.woocommerce_stock_picking_state",
         "picking_ids.state",
+        "picking_ids.location_dest_id.usage",
     )
     def _compute_woocommerce_order_state(self):
         woocommerce_orders = self._filter_woocommerce_orders()
@@ -84,9 +93,10 @@ class SaleOrder(models.Model):
         non_woocommerce_orders.woocommerce_order_state = False
         non_woocommerce_orders.done_picking_count = 0
         for rec in woocommerce_orders:
-            picking_states = rec.picking_ids.mapped("woocommerce_stock_picking_state")
+            shipments = rec._get_woocommerce_shipments()
+            picking_states = shipments.mapped("woocommerce_stock_picking_state")
             woocommerce_order_state = rec._get_woocommerce_order_state(picking_states)
-            new_count = len(rec.picking_ids.filtered(lambda p: p.state == "done"))
+            new_count = len(shipments.filtered(lambda p: p.state == "done"))
             if (
                 woocommerce_order_state != rec.woocommerce_order_state
                 or new_count != rec.done_picking_count
