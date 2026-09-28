@@ -80,8 +80,6 @@ class SaleOrder(models.Model):
     @api.depends(
         "is_woocommerce",
         "state",
-        "order_line.qty_delivered",
-        "order_line.product_uom_qty",
         "woocommerce_bind_ids",
         "picking_ids.woocommerce_stock_picking_state",
         "picking_ids.state",
