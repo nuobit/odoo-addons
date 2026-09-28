@@ -36,10 +36,7 @@ class SaleOrder(models.Model):
         self.ensure_one()
         woocommerce_order_state = super()._get_woocommerce_order_state(picking_states)
         if woocommerce_order_state == "processing":
-            if any(
-                s in ("done", "delivered")
-                for s in self.picking_ids.mapped("woocommerce_stock_picking_state")
-            ):
+            if any(s in ("done", "delivered") for s in picking_states):
                 woocommerce_order_state = "partial_shipped"
         elif woocommerce_order_state == "done":
             precision = self.env["decimal.precision"].precision_get(

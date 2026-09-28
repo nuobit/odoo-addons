@@ -128,3 +128,25 @@ class TestSaleOrderDelivery(WooCommerceAstCase):
         self.assertEqual(order.woocommerce_order_state, "partial_shipped")
         backorder_2.action_cancel()
         self.assertEqual(order.woocommerce_order_state, "delivered")
+
+    def test_done_pick_of_a_two_step_delivery_is_processing(self):
+        order = self._create_order({self.product_1: 1})
+        order.warehouse_id.delivery_steps = "pick_ship"
+        order.action_confirm()
+        pick = order.picking_ids.filtered(
+            lambda p: p.picking_type_id == order.warehouse_id.pick_type_id
+        )
+        self._validate(pick)
+        self.assertEqual(pick.state, "done")
+        self.assertEqual(order.woocommerce_order_state, "processing")
+
+    def test_done_ship_of_a_two_step_delivery_is_done(self):
+        order = self._create_order({self.product_1: 1})
+        order.warehouse_id.delivery_steps = "pick_ship"
+        order.action_confirm()
+        pick = order.picking_ids.filtered(
+            lambda p: p.picking_type_id == order.warehouse_id.pick_type_id
+        )
+        self._validate(pick)
+        self._validate(order.picking_ids - pick)
+        self.assertEqual(order.woocommerce_order_state, "done")
