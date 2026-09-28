@@ -38,3 +38,17 @@ class TestExport(WooCommerceAstCase):
                 }
             ],
         )
+
+    def test_return_updating_quantities_queues_no_export(self):
+        order = self._create_order({self.product_1: 1})
+        self._bind_order(order, 3001)
+        order.action_confirm()
+        delivery = order.picking_ids
+        self._validate(delivery)
+        return_picking = self._create_return(delivery)
+        jobs = self._new_jobs(
+            "woocommerce.sale.order",
+            "export_batch",
+            lambda: self._validate(return_picking),
+        )
+        self.assertFalse(jobs)
