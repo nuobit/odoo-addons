@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="woocommerce_backend_view_form" model="ir.ui.view">
@@ -284,6 +285,7 @@
                                     <field name="client_order_ref_prefix" />
                                     <field name="language_id" />
                                     <field name="use_main_product_image" />
+                                    <field name="use_main_product_variant_image" />
                                 </group>
                                 <group>
                                     <field name="verify_ssl" />

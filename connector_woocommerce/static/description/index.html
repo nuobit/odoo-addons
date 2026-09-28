@@ -379,17 +379,57 @@ ul.auto-toc {
 <p><strong>Table of contents</strong></p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><a class="reference internal" href="#bug-tracker" id="toc-entry-1">Bug Tracker</a></li>
-<li><a class="reference internal" href="#credits" id="toc-entry-2">Credits</a><ul>
-<li><a class="reference internal" href="#authors" id="toc-entry-3">Authors</a></li>
-<li><a class="reference internal" href="#contributors" id="toc-entry-4">Contributors</a></li>
-<li><a class="reference internal" href="#maintainers" id="toc-entry-5">Maintainers</a></li>
+<li><a class="reference internal" href="#installation" id="toc-entry-1">Installation</a></li>
+<li><a class="reference internal" href="#usage" id="toc-entry-2">Usage</a><ul>
+<li><a class="reference internal" href="#product-images" id="toc-entry-3">Product images</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bug-tracker" id="toc-entry-4">Bug Tracker</a></li>
+<li><a class="reference internal" href="#credits" id="toc-entry-5">Credits</a><ul>
+<li><a class="reference internal" href="#authors" id="toc-entry-6">Authors</a></li>
+<li><a class="reference internal" href="#contributors" id="toc-entry-7">Contributors</a></li>
+<li><a class="reference internal" href="#maintainers" id="toc-entry-8">Maintainers</a></li>
 </ul>
 </li>
 </ul>
 </div>
+<div class="section" id="installation">
+<h2><a class="toc-backref" href="#toc-entry-1">Installation</a></h2>
+<p>Requires WooCommerce 11.1 or later. Upgrade the store before upgrading this
+module from a version that exports only one image per variation.</p>
+<p>The connector uses WooCommerce’s native variation galleries. No additional
+variation-image plugin is required.</p>
+</div>
+<div class="section" id="usage">
+<h2><a class="toc-backref" href="#toc-entry-2">Usage</a></h2>
+<div class="section" id="product-images">
+<h3><a class="toc-backref" href="#toc-entry-3">Product images</a></h3>
+<p>The backend has two independent settings: <strong>Template Main Image</strong> controls
+the template’s image list; <strong>Variant Main Image</strong> controls each variant’s
+own list. Both settings offer the same choices:</p>
+<ul class="simple">
+<li><strong>Don’t use main image</strong>: export only the extra images.</li>
+<li><strong>Use main image as first image</strong>: put the main image before the extra images.</li>
+<li><strong>Use main image as last image</strong>: put the main image after the extra images.</li>
+</ul>
+<p>Extra images retain their sequence order. Template and variant images are not
+combined into a shared list.</p>
+<p>For example, select <strong>Don’t use main image</strong> for the template and <strong>Use main
+image as first image</strong> for variants to retain the template’s extra-image
+gallery while showing each selected variant’s main photo first. When the
+main photo is the only image, both First and Last export it.</p>
+<p>When upgrading an existing backend, both settings retain the previous shared
+choice. Newly created backends default to First for both settings.</p>
+<p>For each variant, the first selected image becomes its featured image and the
+remaining images become its variation gallery. WooCommerce can display that
+gallery when the shopper selects the variant. A variant with no selected
+images has no own image or gallery and uses WooCommerce’s parent fallback.</p>
+<p>Export the product again after changing its images or either setting. The export also clears
+previous gallery assignments when there are no remaining additional images.</p>
+</div>
+</div>
 <div class="section" id="bug-tracker">
-<h2><a class="toc-backref" href="#toc-entry-1">Bug Tracker</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-4">Bug Tracker</a></h2>
 <p>Bugs are tracked on <a class="reference external" href="https://github.com/NuoBiT/odoo-addons/issues">GitHub Issues</a>.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
@@ -397,16 +437,16 @@ If you spotted it first, help us to smash it by providing a detailed and welcome
 <p>Do not contact contributors directly about support or help with technical issues.</p>
 </div>
 <div class="section" id="credits">
-<h2><a class="toc-backref" href="#toc-entry-2">Credits</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-5">Credits</a></h2>
 <div class="section" id="authors">
-<h3><a class="toc-backref" href="#toc-entry-3">Authors</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-6">Authors</a></h3>
 <ul class="simple">
 <li>NuoBiT Solutions</li>
 <li>S.L.</li>
 </ul>
 </div>
 <div class="section" id="contributors">
-<h3><a class="toc-backref" href="#toc-entry-4">Contributors</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-7">Contributors</a></h3>
 <ul class="simple">
 <li><a class="reference external" href="https://www.nuobit.com">NuoBiT</a>:<ul>
 <li>Kilian Niubo &lt;<a class="reference external" href="mailto:kniubo&#64;nuobit.com">kniubo&#64;nuobit.com</a>&gt;</li>
@@ -416,7 +456,7 @@ If you spotted it first, help us to smash it by providing a detailed and welcome
 </ul>
 </div>
 <div class="section" id="maintainers">
-<h3><a class="toc-backref" href="#toc-entry-5">Maintainers</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-8">Maintainers</a></h3>
 <p>This module is part of the <a class="reference external" href="https://github.com/NuoBiT/odoo-addons/tree/14.0/connector_woocommerce">NuoBiT/odoo-addons</a> project on GitHub.</p>
 <p>You are welcome to contribute.</p>
 </div>
