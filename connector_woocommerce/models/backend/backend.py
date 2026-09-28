@@ -8,6 +8,12 @@ from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
+MAIN_IMAGE_SELECTION = [
+    ("no", "Don't use main image"),
+    ("first", "Use main image as first image"),
+    ("last", "Use main image as last image"),
+]
+
 
 class WooCommerceBackend(models.Model):
     _name = "woocommerce.backend"
@@ -78,12 +84,16 @@ class WooCommerceBackend(models.Model):
         comodel_name="wordpress.backend",
     )
     use_main_product_image = fields.Selection(
-        selection=[
-            ("no", "Don't use main image"),
-            ("first", "Use main image as first image"),
-            ("last", "Use main image as last image"),
-        ],
+        selection=MAIN_IMAGE_SELECTION,
+        string="Template Main Image",
         default="first",
+        help="Include or exclude the template's main image in its image list.",
+    )
+    use_main_product_variant_image = fields.Selection(
+        selection=MAIN_IMAGE_SELECTION,
+        string="Variant Main Image",
+        default="first",
+        help="Include or exclude each variant's main image in its own image list.",
     )
     export_product_tmpl_since_date = fields.Datetime(
         string="Export Product Templates Since",
