@@ -133,6 +133,45 @@ class TestSaleOrderDelivery(WooCommerceOrderCase):
         self.assertEqual(order.woocommerce_order_state, "cancel")
         self.assertEqual(order.done_picking_count, 0)
 
+    def test_return_left_open_keeps_the_order_done(self):
+        order = self._create_order({self.product_1: 1, self.product_2: 1})
+        order.action_confirm()
+        delivery = order.picking_ids
+        self._validate(delivery)
+        self._create_return(delivery)
+        self.assertEqual(order.woocommerce_order_state, "done")
+        self.assertEqual(order.done_picking_count, 1)
+
+    def test_partial_return_left_open_keeps_the_order_done(self):
+        order = self._create_order({self.product_1: 1, self.product_2: 1})
+        order.action_confirm()
+        delivery = order.picking_ids
+        self._validate(delivery)
+        self._create_return(delivery, {self.product_1: 1})
+        self.assertEqual(order.woocommerce_order_state, "done")
+        self.assertEqual(order.done_picking_count, 1)
+
+    def test_return_validated_without_updating_quantities_keeps_the_order_done(self):
+        order = self._create_order({self.product_1: 1, self.product_2: 1})
+        order.action_confirm()
+        delivery = order.picking_ids
+        self._validate(delivery)
+        return_picking = self._create_return(delivery, to_refund=False)
+        self._validate(return_picking)
+        self.assertEqual(order.order_line.mapped("qty_delivered"), [1.0, 1.0])
+        self.assertEqual(order.woocommerce_order_state, "done")
+        self.assertEqual(order.done_picking_count, 1)
+
+    def test_return_cancelled_keeps_the_order_done(self):
+        order = self._create_order({self.product_1: 1, self.product_2: 1})
+        order.action_confirm()
+        delivery = order.picking_ids
+        self._validate(delivery)
+        return_picking = self._create_return(delivery)
+        return_picking.action_cancel()
+        self.assertEqual(order.woocommerce_order_state, "done")
+        self.assertEqual(order.done_picking_count, 1)
+
     def test_done_delivery_queues_the_export_of_the_bound_order(self):
         order = self._create_order({self.product_1: 1})
         self._bind_order(order, 3001)
@@ -145,3 +184,58 @@ class TestSaleOrderDelivery(WooCommerceOrderCase):
         )
         self.assertEqual(order.woocommerce_order_state, "done")
         self.assertEqual(self.env["sale.order"].search(job.kwargs["domain"]), order)
+
+    def test_return_queues_no_export(self):
+        order = self._create_order({self.product_1: 1})
+        self._bind_order(order, 3001)
+        order.action_confirm()
+        delivery = order.picking_ids
+        self._validate(delivery)
+        jobs = self._new_jobs(
+            "woocommerce.sale.order",
+            "export_batch",
+            lambda: self._create_return(delivery, to_refund=False),
+        )
+        self.assertFalse(jobs)
+        return_picking = order.picking_ids - delivery
+        jobs = self._new_jobs(
+            "woocommerce.sale.order",
+            "export_batch",
+            lambda: self._validate(return_picking),
+        )
+        self.assertFalse(jobs)
+
+    def test_second_done_shipment_queues_an_export(self):
+        order = self._create_order(
+            {self.product_1: 1, self.product_2: 1, self.product_3: 1}
+        )
+        self._bind_order(order, 3001)
+        order.action_confirm()
+        delivery = order.picking_ids
+        self._validate(delivery, {self.product_1: 1})
+        backorder_1 = order.picking_ids - delivery
+        self._new_job(
+            "woocommerce.sale.order",
+            "export_batch",
+            lambda: self._validate(backorder_1, {self.product_2: 1}),
+        )
+        self.assertEqual(order.done_picking_count, 2)
+
+    def test_validated_return_with_a_pending_backorder_queues_no_export(self):
+        order = self._create_order(
+            {self.product_1: 1, self.product_2: 1, self.product_3: 1}
+        )
+        self._bind_order(order, 3001)
+        order.action_confirm()
+        delivery = order.picking_ids
+        self._validate(delivery, {self.product_1: 1})
+        backorder_1 = order.picking_ids - delivery
+        self._validate(backorder_1, {self.product_2: 1})
+        return_picking = self._create_return(delivery)
+        jobs = self._new_jobs(
+            "woocommerce.sale.order",
+            "export_batch",
+            lambda: self._validate(return_picking),
+        )
+        self.assertFalse(jobs)
+        self.assertEqual(order.done_picking_count, 2)

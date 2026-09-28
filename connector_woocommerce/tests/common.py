@@ -235,7 +235,8 @@ class WooCommerceCase(SavepointComponentCase):
                 "%s should not have been marked for export" % record.display_name,
             )
 
-    def _new_job(self, model_name, method_name, run):
+    def _new_jobs(self, model_name, method_name, run):
+        """The ``method_name`` jobs of ``model_name`` that ``run`` queues."""
         job_model = self.env["queue.job"]
         domain = [("model_name", "=", model_name), ("method_name", "=", method_name)]
         # A request flushes when it ends, and the computations it runs then may
@@ -244,7 +245,10 @@ class WooCommerceCase(SavepointComponentCase):
         before = job_model.search(domain)
         run()
         self.env["base"].flush()
-        jobs = job_model.search(domain) - before
+        return job_model.search(domain) - before
+
+    def _new_job(self, model_name, method_name, run):
+        jobs = self._new_jobs(model_name, method_name, run)
         self.assertEqual(len(jobs), 1)
         return jobs
 
@@ -312,3 +316,21 @@ class WooCommerceOrderCase(WooCommerceCase):
                 wizard.process()
             else:
                 wizard.process_cancel_backorder()
+
+    def _create_return(self, picking, quantities=None, to_refund=True):
+        """Return ``picking`` as the user does with the return wizard: the
+        ``quantities`` by product, everything by default, and ``to_refund`` as
+        the «Update quantities on SO/PO» answer. The return is left open."""
+        wizard = Form(
+            self.env["stock.return.picking"].with_context(
+                active_ids=picking.ids,
+                active_id=picking.id,
+                active_model="stock.picking",
+            )
+        ).save()
+        for line in wizard.product_return_moves:
+            if quantities is not None:
+                line.quantity = quantities.get(line.product_id, 0.0)
+            line.to_refund = to_refund
+        action = wizard.create_returns()
+        return self.env["stock.picking"].browse(action["res_id"])
