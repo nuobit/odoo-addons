@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _
@@ -23,9 +24,7 @@ class WooCommerceSaleOrderExportMapper(Component):
     @mapping
     def shipment_tracking(self, record):
         tracking = {}
-        picking = record.picking_ids.filtered(
-            lambda p: p.state == "done" and p.carrier_id
-        ).sorted(key=lambda p: p.id,)[-1:]
+        picking = record._get_woocommerce_tracking_picking()
         if picking:
             carrier = self.backend_record.carrier_provider_ids.filtered(
                 lambda x: picking.carrier_id.delivery_type == x.delivery_type
