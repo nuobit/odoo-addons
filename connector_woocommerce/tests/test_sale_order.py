@@ -3,6 +3,8 @@
 
 from odoo.tests import SavepointCase
 
+from .common import WooCommerceOrderCase
+
 
 class TestSaleOrder(SavepointCase):
     @classmethod
@@ -97,3 +99,49 @@ class TestSaleOrder(SavepointCase):
             )
         )
         self.assertEqual(len(order.order_line), 1)
+
+
+class TestSaleOrderDelivery(WooCommerceOrderCase):
+    def test_one_product_shipped_in_one_delivery_is_done(self):
+        order = self._create_order({self.product_1: 1})
+        order.action_confirm()
+        self.assertEqual(order.woocommerce_order_state, "processing")
+        self._validate(order.picking_ids)
+        self.assertEqual(order.woocommerce_order_state, "done")
+        self.assertEqual(order.done_picking_count, 1)
+
+    def test_two_products_shipped_in_one_delivery_are_done(self):
+        order = self._create_order({self.product_1: 1, self.product_2: 1})
+        order.action_confirm()
+        self.assertEqual(order.woocommerce_order_state, "processing")
+        self._validate(order.picking_ids)
+        self.assertEqual(order.woocommerce_order_state, "done")
+        self.assertEqual(order.done_picking_count, 1)
+
+    def test_product_not_shipped_without_backorder_is_done(self):
+        order = self._create_order({self.product_1: 1, self.product_2: 1})
+        order.action_confirm()
+        self._validate(order.picking_ids, {self.product_1: 1}, backorder=False)
+        self.assertEqual(order.woocommerce_order_state, "done")
+        self.assertEqual(order.done_picking_count, 1)
+
+    def test_order_cancelled_before_shipping_is_cancel(self):
+        order = self._create_order({self.product_1: 1})
+        order.action_confirm()
+        self.assertEqual(order.woocommerce_order_state, "processing")
+        order.action_cancel()
+        self.assertEqual(order.woocommerce_order_state, "cancel")
+        self.assertEqual(order.done_picking_count, 0)
+
+    def test_done_delivery_queues_the_export_of_the_bound_order(self):
+        order = self._create_order({self.product_1: 1})
+        self._bind_order(order, 3001)
+        order.action_confirm()
+        self.assertEqual(order.woocommerce_order_state, "processing")
+        job = self._new_job(
+            "woocommerce.sale.order",
+            "export_batch",
+            lambda: self._validate(order.picking_ids),
+        )
+        self.assertEqual(order.woocommerce_order_state, "done")
+        self.assertEqual(self.env["sale.order"].search(job.kwargs["domain"]), order)

@@ -9,6 +9,7 @@ from freezegun import freeze_time
 from odoo.modules.graph import Graph
 from odoo.modules.migration import MigrationManager
 from odoo.modules.module import load_information_from_description_file
+from odoo.tests import Form
 
 from odoo.addons.component.tests.common import SavepointComponentCase
 
@@ -237,8 +238,77 @@ class WooCommerceCase(SavepointComponentCase):
     def _new_job(self, model_name, method_name, run):
         job_model = self.env["queue.job"]
         domain = [("model_name", "=", model_name), ("method_name", "=", method_name)]
+        # A request flushes when it ends, and the computations it runs then may
+        # queue jobs: flushing on both sides counts the jobs of ``run`` alone.
+        self.env["base"].flush()
         before = job_model.search(domain)
         run()
+        self.env["base"].flush()
         jobs = job_model.search(domain) - before
         self.assertEqual(len(jobs), 1)
         return jobs
+
+
+class WooCommerceOrderCase(WooCommerceCase):
+    """Shop orders of storable products, taken through the delivery flow."""
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.partner = cls.env["res.partner"].create({"name": "WooCommerce customer"})
+        cls.product_1 = cls._create_storable_product("WooCommerce product 1")
+        cls.product_2 = cls._create_storable_product("WooCommerce product 2")
+        cls.product_3 = cls._create_storable_product("WooCommerce product 3")
+
+    @classmethod
+    def _create_storable_product(cls, name):
+        product = cls.env["product.product"].create({"name": name, "type": "product"})
+        cls.env["stock.quant"]._update_available_quantity(
+            product, cls.env.ref("stock.stock_location_stock"), 100.0
+        )
+        return product
+
+    def _create_order(self, quantities):
+        """A shop order as the import creates it, with ``quantities`` by product."""
+        return self.env["sale.order"].create(
+            {
+                "partner_id": self.partner.id,
+                "is_woocommerce": True,
+                "order_line": [
+                    (0, 0, {"product_id": product.id, "product_uom_qty": quantity})
+                    for product, quantity in quantities.items()
+                ],
+            }
+        )
+
+    def _bind_order(self, order, woocommerce_idsaleorder):
+        return self.env["woocommerce.sale.order"].create(
+            {
+                "odoo_id": order.id,
+                "backend_id": self.backend.id,
+                "woocommerce_idsaleorder": woocommerce_idsaleorder,
+                "woocommerce_status": "processing",
+            }
+        )
+
+    def _validate(self, picking, quantities=None, backorder=True):
+        """Validate ``picking`` as the user does: the done ``quantities`` by
+        product, everything by default, and ``backorder`` as the answer to the
+        backorder question when something is left."""
+        picking.action_assign()
+        for move in picking.move_lines:
+            move.quantity_done = (
+                quantities.get(move.product_id, 0.0)
+                if quantities is not None
+                else move.product_uom_qty
+            )
+        action = picking.button_validate()
+        if action is not True:
+            self.assertEqual(action["res_model"], "stock.backorder.confirmation")
+            wizard = Form(
+                self.env[action["res_model"]].with_context(action["context"])
+            ).save()
+            if backorder:
+                wizard.process()
+            else:
+                wizard.process_cancel_backorder()
