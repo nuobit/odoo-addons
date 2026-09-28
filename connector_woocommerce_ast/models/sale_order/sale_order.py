@@ -47,9 +47,11 @@ class SaleOrder(models.Model):
         super()._compute_woocommerce_order_state()
 
     def _get_woocommerce_tracking_picking(self):
-        """The picking whose carrier gives the export delay and the tracking:
+        """The shipment whose carrier gives the export delay and the tracking:
         the last done one with a carrier, if any."""
         self.ensure_one()
-        return self.picking_ids.filtered(
-            lambda p: p.state == "done" and p.carrier_id
-        ).sorted(key=lambda p: p.id)[-1:]
+        return (
+            self._get_woocommerce_shipments()
+            .filtered(lambda p: p.state == "done" and p.carrier_id)
+            .sorted(key=lambda p: p.id)[-1:]
+        )
