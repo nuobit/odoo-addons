@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import Component
@@ -66,21 +67,19 @@ class WooCommerceProductProductExporter(Component):
         #         "woocommerce.product.attribute",
         #     )
         product_image_attachments = relation.with_context(
-            include_main_product_image=self.backend_record.use_main_product_image
+            include_main_product_image=self.backend_record.use_main_product_variant_image
         ).product_variant_image_attachment_ids
-        if (
-            product_image_attachments
-            and len(relation.product_tmpl_id.product_variant_ids) > 1
-        ):
+        if product_image_attachments and relation.product_tmpl_id.has_attributes:
             if self.backend_record.wordpress_backend_id:
                 with self.backend_record.wordpress_backend_id.work_on(
                     "wordpress.ir.attachment"
                 ) as work:
                     exporter = work.component(self._usage)
-                    exporter._export_dependency(
-                        product_image_attachments[0].attachment_id,
-                        "wordpress.ir.attachment",
-                    )
+                    for image_attachment in product_image_attachments:
+                        exporter._export_dependency(
+                            image_attachment.attachment_id,
+                            "wordpress.ir.attachment",
+                        )
         if relation.product_document_attachment_ids:
             if self.backend_record.wordpress_backend_id:
                 with self.backend_record.wordpress_backend_id.work_on(

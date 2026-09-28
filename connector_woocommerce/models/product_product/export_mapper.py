@@ -132,29 +132,30 @@ class WooCommerceProductProductExportMapper(Component):
 
     @mapping
     def image(self, record):
-        # WooCommerce only allows one image per variant product
         product_image_attachments = record.with_context(
-            include_main_product_image=self.backend_record.use_main_product_image
+            include_main_product_image=self.backend_record.use_main_product_variant_image
         ).product_variant_image_attachment_ids
-        if product_image_attachments and self.backend_record.wordpress_backend_id:
-            with self.backend_record.wordpress_backend_id.work_on(
-                "wordpress.ir.attachment"
-            ) as work:
+        wordpress_backend = self.backend_record.wordpress_backend_id
+        if product_image_attachments and wordpress_backend:
+            with wordpress_backend.work_on("wordpress.ir.attachment") as work:
                 binder = work.component(usage="binder")
-                image = product_image_attachments[0].attachment_id
-                values = binder.get_external_dict_ids(image, check_external_id=False)
-                if (
-                    self.backend_record.wordpress_backend_id.test_database
-                    and not values
-                ):
+                images = [
+                    binder.get_external_dict_ids(
+                        image.attachment_id,
+                        check_external_id=not wordpress_backend.test_database,
+                    )
+                    for image in product_image_attachments
+                ]
+                if wordpress_backend.test_database and not all(images):
                     return None
                 return {
                     "image": {
-                        "id": values["id"],
-                    }
+                        "id": images[0]["id"],
+                    },
+                    "gallery_image_ids": [image["id"] for image in images[1:]],
                 }
         else:
-            return {"image": {}}
+            return {"image": {}, "gallery_image_ids": []}
 
     @mapping
     def attributes(self, record):

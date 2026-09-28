@@ -7,4 +7,6 @@ from . import test_queue_job_functions
 from . import test_html_tools
 from . import test_export_mapper_html
 from . import test_export_mapper_categories
+from . import test_export_mapper_images
+from . import test_image_policy_migration
 from . import test_reexport_blank_html

@@ -1336,8 +1336,9 @@ msgstr ""
 
 #. module: connector_woocommerce
 #: model:ir.model.fields.selection,name:connector_woocommerce.selection__woocommerce_backend__use_main_product_image__no
+#: model:ir.model.fields.selection,name:connector_woocommerce.selection__woocommerce_backend__use_main_product_variant_image__no
 msgid "Don't use main image"
-msgstr ""
+msgstr "No utilitzis la imatge principal"
 
 #. module: connector_woocommerce
 #: model:ir.model.fields.selection,name:connector_woocommerce.selection__sale_order__woocommerce_order_state__done
@@ -4934,8 +4935,23 @@ msgstr ""
 
 #. module: connector_woocommerce
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_backend__use_main_product_image
-msgid "Use Main Product Image"
-msgstr ""
+msgid "Template Main Image"
+msgstr "Imatge principal de la plantilla"
+
+#. module: connector_woocommerce
+#: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_backend__use_main_product_variant_image
+msgid "Variant Main Image"
+msgstr "Imatge principal de la variant"
+
+#. module: connector_woocommerce
+#: model:ir.model.fields,help:connector_woocommerce.field_woocommerce_backend__use_main_product_image
+msgid "Include or exclude the template's main image in its image list."
+msgstr "Inclou o exclou la imatge principal de la plantilla de la seva llista d'imatges."
+
+#. module: connector_woocommerce
+#: model:ir.model.fields,help:connector_woocommerce.field_woocommerce_backend__use_main_product_variant_image
+msgid "Include or exclude each variant's main image in its own image list."
+msgstr "Inclou o exclou la imatge principal de cada variant de la seva pròpia llista d'imatges."
 
 #. module: connector_woocommerce
 #: model:ir.model.fields,help:connector_woocommerce.field_woocommerce_res_partner__barcode
@@ -4944,13 +4960,15 @@ msgstr ""
 
 #. module: connector_woocommerce
 #: model:ir.model.fields.selection,name:connector_woocommerce.selection__woocommerce_backend__use_main_product_image__first
+#: model:ir.model.fields.selection,name:connector_woocommerce.selection__woocommerce_backend__use_main_product_variant_image__first
 msgid "Use main image as first image"
-msgstr ""
+msgstr "Utilitza la imatge principal com a primera"
 
 #. module: connector_woocommerce
 #: model:ir.model.fields.selection,name:connector_woocommerce.selection__woocommerce_backend__use_main_product_image__last
+#: model:ir.model.fields.selection,name:connector_woocommerce.selection__woocommerce_backend__use_main_product_variant_image__last
 msgid "Use main image as last image"
-msgstr ""
+msgstr "Utilitza la imatge principal com a última"
 
 #. module: connector_woocommerce
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_product_attribute__is_used_on_products
