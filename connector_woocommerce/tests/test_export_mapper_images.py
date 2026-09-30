@@ -52,15 +52,14 @@ class TestExportMapperImages(WooCommerceCase):
                 "odoo_id": attachment.id,
                 "backend_id": self.media_backend.id,
                 "wordpress_idattachment": external_id,
-                "wordpress_source_url": "https://shop.example.test/image-%s.png"
-                % external_id,
+                "wordpress_source_url": f"https://shop.example.test/image-{external_id}.png",
             }
         )
 
     def _create_extra_image(self, external_id, sequence, color):
         image = self.env["product.image"].create(
             {
-                "name": "Extra image %s" % external_id,
+                "name": f"Extra image {external_id}",
                 "product_variant_id": self.variant.id,
                 "sequence": sequence,
                 "image_1920": self._image_data(color),
@@ -295,11 +294,12 @@ class TestExportMapperImages(WooCommerceCase):
             {"id": 202, "source_url": "https://shop.example.test/green.png"},
             {"id": 203, "source_url": "https://shop.example.test/blue.png"},
         ]
-        with patch.object(
-            type(media_adapter), "_exec", side_effect=responses
-        ) as upload, patch.object(
-            ConnectorExtensionWooCommerceAdapterCRUD, "_exec", return_value={}
-        ) as woo:
+        with (
+            patch.object(type(media_adapter), "_exec", side_effect=responses) as upload,
+            patch.object(
+                ConnectorExtensionWooCommerceAdapterCRUD, "_exec", return_value={}
+            ) as woo,
+        ):
             binding.resync_export()
 
         self.assertEqual(upload.call_count, 3)
