@@ -288,7 +288,7 @@ class TestExportMapperImages(WooCommerceCase):
             }
         )
         with self.media_backend.work_on("wordpress.ir.attachment") as work:
-            media_adapter = work.component(usage="backend.adapter")
+            media_adapter = work.component(usage="adapter")
         responses = [
             {"id": 201, "source_url": "https://shop.example.test/red.png"},
             {"id": 202, "source_url": "https://shop.example.test/green.png"},

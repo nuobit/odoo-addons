@@ -81,7 +81,7 @@ class TestQueueJobFunctions(WooCommerceCase):
             + [range(240, 361)] * 5
         )
         with self.backend.work_on("woocommerce.product.template") as work:
-            adapter = work.component(usage="backend.adapter")
+            adapter = work.component(usage="adapter")
             with patch.object(type(adapter), "_exec", return_value={}) as call:
                 call.side_effect = RetryableJobError("Temporary HTTP failure")
                 for attempt, wait in enumerate(waits, start=1):

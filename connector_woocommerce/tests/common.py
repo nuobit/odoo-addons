@@ -1,6 +1,7 @@
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+from contextlib import nullcontext
 from datetime import timedelta
 from unittest.mock import patch
 
@@ -10,7 +11,8 @@ from odoo.modules.graph import Graph
 from odoo.modules.migration import MigrationManager
 from odoo.modules.module import load_information_from_description_file
 
-from odoo.addons.component.tests.common import SavepointComponentCase
+from odoo.addons.component.tests.common import TransactionComponentCase
+from odoo.addons.queue_job.job import Job
 
 # What the HTML editor leaves in a field nobody typed in, a real text with a
 # colour the export converts, and that text as WooCommerce receives it.
@@ -186,7 +188,7 @@ class WooCommerceCase(TransactionComponentCase):
     def _export_payload(self, model_name, product, external_id):
         data = self._mapped_values(model_name, product)
         with self.backend.work_on(model_name) as work:
-            adapter = work.component(usage="backend.adapter")
+            adapter = work.component(usage="adapter")
             # Stop only at the external API boundary; run real formatting.
             with patch.object(type(adapter), "_exec", return_value={}) as call:
                 adapter.write(external_id, data)
