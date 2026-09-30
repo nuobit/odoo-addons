@@ -2,14 +2,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from contextlib import nullcontext
-from datetime import timedelta
 from unittest.mock import patch
-
-from freezegun import freeze_time
-
-from odoo.modules.graph import Graph
-from odoo.modules.migration import MigrationManager
-from odoo.modules.module import load_information_from_description_file
 
 from odoo.addons.component.tests.common import TransactionComponentCase
 from odoo.addons.queue_job.job import Job
@@ -19,41 +12,6 @@ from odoo.addons.queue_job.job import Job
 PLACEHOLDER = "<p><br></p>"
 TEXT = '<p style="color: rgb(255, 0, 0);">Real text</p>'
 TEXT_HEX = '<p style="color: #FF0000;">Real text</p>'
-
-
-class BlankHtmlMigrationMixin:
-    """Run the real migration and inspect the jobs of the two export buttons."""
-
-    def setUp(self):
-        super().setUp()
-        freezer = freeze_time("2030-01-01 12:00:00")
-        self.clock = freezer.start()
-        self.addCleanup(freezer.stop)
-
-    def _start_incremental_exports(self):
-        self.env["product.template"].flush()
-        self.env["product.product"].flush()
-        self.clock.tick(timedelta(seconds=1))
-        self.backend.export_product_tmpl_since()
-        self.backend.export_products_since()
-        self.clock.tick(timedelta(seconds=1))
-
-    def _assert_export_selection(self, binding_model, action, expected):
-        jobs = self.env["queue.job"]
-        domain = [
-            ("model_name", "=", binding_model),
-            ("method_name", "=", "export_batch"),
-        ]
-        before = jobs.search(domain)
-        action()
-        created = jobs.search(domain) - before
-        self.assertEqual(len(created), 1)
-        selected = (
-            self.env[expected._name]
-            .with_context(active_test=False)
-            .search(created.kwargs["domain"])
-        )
-        self.assertEqual(selected.sorted("id"), expected.sorted("id"))
 
 
 class WooCommerceCase(TransactionComponentCase):
@@ -196,19 +154,6 @@ class WooCommerceCase(TransactionComponentCase):
             args, kwargs = call.call_args
             self.assertEqual(args[0], "put")
             return kwargs["data"]
-
-    def _run_migration(self, module, target_version, installed_version):
-        graph = Graph()
-        module_info = load_information_from_description_file(module)
-        package = graph.add_node(module, {**module_info, "version": target_version})
-        graph.update_from_db(self.env.cr)
-        # Describe an upgrade even when this suite runs during a fresh install.
-        # Change only the graph node, not the installed module record: the real
-        # manager skips nodes that retain the "to install" state.
-        package.installed_version = installed_version
-        package.state = "to upgrade"
-        package.update = True
-        MigrationManager(self.env.cr, graph).migrate_module(package, "post")
 
     @classmethod
     def _remember_write_dates(cls, template):
