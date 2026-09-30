@@ -89,6 +89,16 @@ class WooCommerceCase(TransactionComponentCase):
         cls.template = cls._create_template("WooCommerce bound product", 1001)
         cls.unbound_template = cls._create_template("WooCommerce unbound product")
 
+    def setUp(self):
+        super().setUp()
+        # A job function that allows commits runs in a cursor of its own,
+        # which cannot see the records of this transaction.
+        no_temporary_env = patch.object(
+            Job, "in_temporary_env", lambda job: nullcontext()
+        )
+        no_temporary_env.start()
+        self.addCleanup(no_temporary_env.stop)
+
     @classmethod
     def _setup_languages(cls):
         """The export languages of the backend, the default one first."""
