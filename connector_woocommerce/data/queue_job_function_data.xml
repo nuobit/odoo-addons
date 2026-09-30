@@ -49,6 +49,7 @@
             name="retry_pattern"
             eval="{1: (5, 15), 5: (20, 40), 10: (45, 75), 15: (240, 360)}"
         />
+        <field name="allow_commit" eval="True" />
     </record>
 
     <!-- Export Product Template -->
@@ -85,6 +86,7 @@
             name="retry_pattern"
             eval="{1: (5, 15), 5: (20, 40), 10: (45, 75), 15: (240, 360)}"
         />
+        <field name="allow_commit" eval="True" />
     </record>
 
     <!--   Export Product Public Category-->
@@ -121,6 +123,7 @@
             name="retry_pattern"
             eval="{1: (5, 15), 5: (20, 40), 10: (45, 75), 15: (240, 360)}"
         />
+        <field name="allow_commit" eval="True" />
     </record>
 
     <!--   Export Product Attribute-->
@@ -157,6 +160,7 @@
             name="retry_pattern"
             eval="{1: (5, 15), 5: (20, 40), 10: (45, 75), 15: (240, 360)}"
         />
+        <field name="allow_commit" eval="True" />
     </record>
 
     <!--   Export Product Attribute Value-->
@@ -193,6 +197,7 @@
             name="retry_pattern"
             eval="{1: (5, 15), 5: (20, 40), 10: (45, 75), 15: (240, 360)}"
         />
+        <field name="allow_commit" eval="True" />
     </record>
 
     <!--    Export Sale Order-->
@@ -229,6 +234,7 @@
             name="retry_pattern"
             eval="{1: (5, 15), 5: (20, 40), 10: (45, 75), 15: (240, 360)}"
         />
+        <field name="allow_commit" eval="True" />
     </record>
 
     <!--    Import Sale Order   -->
@@ -275,5 +281,6 @@
             name="retry_pattern"
             eval="{1: (5, 15), 5: (20, 40), 10: (45, 75), 15: (240, 360)}"
         />
+        <field name="allow_commit" eval="True" />
     </record>
 </odoo>
