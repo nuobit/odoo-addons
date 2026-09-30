@@ -57,5 +57,5 @@ class WooCommerceProductProductBinder(Component):
         template_binding = template_binder.wrap_record(relation.product_tmpl_id)
         if not template_binding:
             return None
-        adapter = self.component(usage="backend.adapter")
+        adapter = self.component(usage="adapter")
         return adapter.read([template_binding.woocommerce_idproduct, translation_id])

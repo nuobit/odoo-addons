@@ -4,8 +4,8 @@
 
 {
     "name": "Connector WooCommerce WMPL",
-    "version": "14.0.0.1.4",
-    "author": "NuoBiT Solutions, S.L.",
+    "version": "18.0.1.0.0",
+    "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
     "category": "Connector",
     "website": "https://github.com/NuoBiT/odoo-addons",

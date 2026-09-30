@@ -42,7 +42,7 @@ class WooCommerceProductWPMLMixinBinder(AbstractComponent):
         )
 
     def _wpml_read_translation(self, relation, record, translation_id):
-        adapter = self.component(usage="backend.adapter")
+        adapter = self.component(usage="adapter")
         return adapter.read(translation_id)
 
     def _wpml_redirect_record_lang(self, relation, record):
@@ -67,6 +67,6 @@ class WooCommerceProductWPMLMixinBinder(AbstractComponent):
             # master language binding instead.
             master_binding = self.wpml_get_master_binding(relation)
             if master_binding:
-                adapter = self.component(usage="backend.adapter")
+                adapter = self.component(usage="adapter")
                 record = adapter.read(self.dict2id(master_binding, in_field=True))
         return record or {}
