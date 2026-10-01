@@ -2,7 +2,16 @@
 <!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
 <odoo noupdate="1">
-
+    <!--
+        allow_commit: queue_job 18.0 forbids commits inside a job unless its
+        job function allows them, and the connector_extension binder commits
+        right after creating a binding, in bind_export, so the binding
+        survives a later failure of the job. export_record binds through the
+        record exporter and needs it. export_batch only enqueues, so it never
+        commits.
+        Requires queue_job 18.0.3.1.4 or later, which rebinds the job
+        arguments to the temporary cursor opened by allow_commit.
+    -->
     <!-- Export Attachment -->
     <record
         id="wordpress_ir_attachment_export_batch_job_function"
@@ -34,5 +43,6 @@
             name="retry_pattern"
             eval="{1: (5, 15), 5: (20, 40), 10: (45, 75), 15: (240, 360)}"
         />
+        <field name="allow_commit" eval="True" />
     </record>
 </odoo>

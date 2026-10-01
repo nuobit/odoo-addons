@@ -1,10 +1,10 @@
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-from odoo.addons.component.tests.common import SavepointComponentCase
+from odoo.addons.component.tests.common import TransactionComponentCase
 
 
-class WordPressCase(SavepointComponentCase):
+class WordPressCase(TransactionComponentCase):
     """Backend and an attachment without any HTTP call."""
 
     @classmethod
