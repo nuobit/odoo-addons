@@ -1,0 +1,201 @@
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+
+from contextlib import nullcontext
+from unittest.mock import patch
+
+from odoo.addons.component.tests.common import TransactionComponentCase
+from odoo.addons.queue_job.job import Job
+
+# What the HTML editor leaves in a field nobody typed in, a real text with a
+# colour the export converts, and that text as WooCommerce receives it.
+PLACEHOLDER = "<p><br></p>"
+TEXT = '<p style="color: rgb(255, 0, 0);">Real text</p>'
+TEXT_HEX = '<p style="color: #FF0000;">Real text</p>'
+
+
+class WooCommerceCase(TransactionComponentCase):
+    """Backend, discount pricelist and bound products without any HTTP call."""
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls._write_dates = {}
+        cls.langs = cls._setup_languages()
+        cls.discount_pricelist = cls.env["product.pricelist"].create(
+            {"name": "WooCommerce discount pricelist"}
+        )
+        cls.other_pricelist = cls.env["product.pricelist"].create(
+            {"name": "Other pricelist"}
+        )
+        cls.backend = cls.env["woocommerce.backend"].create(
+            {
+                "name": "WooCommerce test backend",
+                "url": "http://127.0.0.1:1",
+                "consumer_key": "ck_test",
+                "consumer_secret": "cs_test",
+                "lang_ids": [(6, 0, cls.langs.ids)],
+                "language_id": cls.langs[0].id,
+                "client_order_ref_prefix": "WC",
+                "stock_location_ids": [
+                    (6, 0, cls.env.ref("stock.stock_location_stock").ids)
+                ],
+                "discount_pricelist_id": cls.discount_pricelist.id,
+            }
+        )
+        cls.category = cls.env["product.category"].create(
+            {"name": "WooCommerce test category"}
+        )
+        cls.template = cls._create_template("WooCommerce bound product", 1001)
+        cls.unbound_template = cls._create_template("WooCommerce unbound product")
+
+    def setUp(self):
+        super().setUp()
+        # A job function that allows commits runs in a cursor of its own,
+        # which cannot see the records of this transaction.
+        no_temporary_env = patch.object(
+            Job, "in_temporary_env", lambda job: nullcontext()
+        )
+        no_temporary_env.start()
+        self.addCleanup(no_temporary_env.stop)
+
+    @classmethod
+    def _setup_languages(cls):
+        """The export languages of the backend, the default one first."""
+        return cls.env.ref("base.lang_en")
+
+    @classmethod
+    def _create_template(cls, name, woocommerce_idproduct=None, list_price=100.0):
+        template = cls.env["product.template"].create(
+            {
+                "name": name,
+                "list_price": list_price,
+                "categ_id": cls.category.id,
+                "woocommerce_enabled": True,
+            }
+        )
+        if woocommerce_idproduct:
+            cls.env["woocommerce.product.template"].create(
+                cls._template_binding_values(template, woocommerce_idproduct)
+            )
+        cls._remember_write_dates(template)
+        return template
+
+    @classmethod
+    def _template_binding_values(cls, template, woocommerce_idproduct):
+        return {
+            "odoo_id": template.id,
+            "backend_id": cls.backend.id,
+            "woocommerce_idproduct": woocommerce_idproduct,
+        }
+
+    @classmethod
+    def _bind_variant(cls, variant, woocommerce_idproduct):
+        return cls.env["woocommerce.product.product"].create(
+            cls._variant_binding_values(variant, woocommerce_idproduct)
+        )
+
+    @classmethod
+    def _variant_binding_values(cls, variant, woocommerce_idproduct):
+        return {
+            "odoo_id": variant.id,
+            "backend_id": cls.backend.id,
+            "woocommerce_idproduct": woocommerce_idproduct,
+            "woocommerce_idparent": woocommerce_idproduct + 1,
+        }
+
+    def _create_variable_template(self):
+        attribute = self.env["product.attribute"].create({"name": "Size"})
+        values = self.env["product.attribute.value"].create(
+            [
+                {"name": "Small", "attribute_id": attribute.id},
+                {"name": "Large", "attribute_id": attribute.id},
+            ]
+        )
+        self.env["woocommerce.product.attribute"].create(
+            {
+                "odoo_id": attribute.id,
+                "backend_id": self.backend.id,
+                "woocommerce_idattribute": 3001,
+            }
+        )
+        template = self._create_template("Variable product", 1003)
+        template.write(
+            {
+                "taxes_id": [(5, 0, 0)],
+                "attribute_line_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "attribute_id": attribute.id,
+                            "value_ids": [(6, 0, values.ids)],
+                        },
+                    ),
+                ],
+            }
+        )
+        return template
+
+    def _mapped_values(self, model_name, product):
+        with self.backend.work_on(model_name) as work:
+            mapper = work.component(usage="export.mapper")
+            # The exporter maps the actual product, not its binding.
+            return mapper.map_record(product).values()
+
+    def _export_payload(self, model_name, product, external_id):
+        data = self._mapped_values(model_name, product)
+        with self.backend.work_on(model_name) as work:
+            adapter = work.component(usage="adapter")
+            # Stop only at the external API boundary; run real formatting.
+            with patch.object(type(adapter), "_exec", return_value={}) as call:
+                adapter.write(external_id, data)
+            call.assert_called_once()
+            args, kwargs = call.call_args
+            self.assertEqual(args[0], "put")
+            return kwargs["data"]
+
+    @classmethod
+    def _remember_write_dates(cls, template):
+        variants = template.with_context(active_test=False).product_variant_ids
+        for records in (template, variants):
+            for record in records:
+                cls._write_dates[record._name, record.id] = (
+                    record.woocommerce_write_date
+                )
+
+    def _create_rule(self, pricelist=None, **values):
+        vals = {
+            "pricelist_id": (pricelist or self.discount_pricelist).id,
+            "applied_on": "1_product",
+            "product_tmpl_id": self.template.id,
+            "compute_price": "fixed",
+            "fixed_price": 80.0,
+        }
+        vals.update(values)
+        return self.env["product.pricelist.item"].create(vals)
+
+    def assert_touched(self, records):
+        for record in records:
+            self.assertNotEqual(
+                record.woocommerce_write_date,
+                self._write_dates[record._name, record.id],
+                f"{record.display_name} should have been marked for export",
+            )
+
+    def assert_untouched(self, records):
+        for record in records:
+            self.assertEqual(
+                record.woocommerce_write_date,
+                self._write_dates[record._name, record.id],
+                f"{record.display_name} should not have been marked for export",
+            )
+
+    def _new_job(self, model_name, method_name, run):
+        job_model = self.env["queue.job"]
+        domain = [("model_name", "=", model_name), ("method_name", "=", method_name)]
+        before = job_model.search(domain)
+        run()
+        jobs = job_model.search(domain) - before
+        self.assertEqual(len(jobs), 1)
+        return jobs
