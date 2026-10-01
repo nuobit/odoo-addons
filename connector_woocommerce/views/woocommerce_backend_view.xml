@@ -49,6 +49,7 @@
                             />
                             <field
                                 name="consumer_key"
+                                password="True"
                                 attrs="{'readonly': [('state', '!=', 'draft')]}"
                             />
                         </group>
@@ -315,8 +316,6 @@
             <tree>
                 <field name="name" />
                 <field name="url" />
-                <field name="consumer_key" />
-                <field name="consumer_secret" />
                 <field name="version" />
             </tree>
         </field>
