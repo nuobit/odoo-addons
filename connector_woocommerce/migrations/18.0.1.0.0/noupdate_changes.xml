@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record
+        id="woocommerce_product_product_export_record_job_function"
+        model="queue.job.function"
+    >
+        <field name="allow_commit" eval="True" />
+    </record>
+    <record
+        id="woocommerce_product_template_export_record_job_function"
+        model="queue.job.function"
+    >
+        <field name="allow_commit" eval="True" />
+    </record>
+    <record
+        id="woocommerce_product_public_category_export_record_job_function"
+        model="queue.job.function"
+    >
+        <field name="allow_commit" eval="True" />
+    </record>
+    <record
+        id="woocommerce_product_attribute_export_record_job_function"
+        model="queue.job.function"
+    >
+        <field name="allow_commit" eval="True" />
+    </record>
+    <record
+        id="woocommerce_product_attribute_value_export_record_job_function"
+        model="queue.job.function"
+    >
+        <field name="allow_commit" eval="True" />
+    </record>
+    <record
+        id="woocommerce_sale_order_export_record_job_function"
+        model="queue.job.function"
+    >
+        <field name="allow_commit" eval="True" />
+    </record>
+    <record id="woocommerce_sale_order_import_record" model="queue.job.function">
+        <field name="allow_commit" eval="True" />
+    </record>
+</odoo>
