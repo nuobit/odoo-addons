@@ -218,6 +218,7 @@
             name="retry_pattern"
             eval="{1: (5, 15), 5: (20, 40), 10: (45, 75), 15: (240, 360)}"
         />
+        <field name="allow_commit" eval="True" />
     </record>
 
     <record
@@ -234,7 +235,6 @@
             name="retry_pattern"
             eval="{1: (5, 15), 5: (20, 40), 10: (45, 75), 15: (240, 360)}"
         />
-        <field name="allow_commit" eval="True" />
     </record>
 
     <!--    Import Sale Order   -->
