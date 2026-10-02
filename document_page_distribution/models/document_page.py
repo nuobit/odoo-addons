@@ -197,8 +197,10 @@ class DocumentPage(models.Model):
                 email_from=email_from or None,
                 message_type="notification",
                 partner_ids=partners.ids,
+                email_layout_xmlid="mail.mail_notification_borders",
+                record_name=self.display_name,
             )
-            self._notify_record_by_email(
+            self.with_context(lang=lang)._notify_record_by_email(
                 message,
                 {
                     "partners": self._distribution_recipients_data(recs),
