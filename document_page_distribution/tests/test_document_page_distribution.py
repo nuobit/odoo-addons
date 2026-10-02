@@ -2,8 +2,12 @@
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+from freezegun import freeze_time
+from psycopg2 import IntegrityError
+
 from odoo.exceptions import AccessError, UserError
 from odoo.tests.common import SavepointCase
+from odoo.tools import mute_logger
 
 
 class TestDocumentPageDistribution(SavepointCase):
@@ -189,6 +193,48 @@ class TestDocumentPageDistribution(SavepointCase):
             Recipient.with_user(outsider).browse(recipient_ids).read(["email"])
         self.assertTrue(Recipient.with_user(insider).search(domain))
         self.assertTrue(Send.with_user(insider).search(domain))
+
+    def test_document_with_log_cannot_be_deleted(self):
+        with freeze_time("2026-01-10 09:00:00"):
+            self._distribute(only_partners=self.reader_es.partner_id)
+            self._process_mail_queue()
+        # the notification goes first, as Odoo deletes it after some time: in the
+        # single transaction of a test PostgreSQL would stop on it, before the log
+        with freeze_time("2026-12-31 09:00:00"):
+            self.env["mail.notification"]._gc_notifications(max_age_days=180)
+        with self.assertRaises(IntegrityError) as error, mute_logger("odoo.sql_db"):
+            with self.cr.savepoint():
+                self.page.with_user(self.manager).unlink()
+        self.assertEqual(
+            error.exception.diag.constraint_name,
+            "document_page_history_recipient_history_id_fkey",
+        )
+        self.assertTrue(self.page.exists())
+
+    def test_version_with_log_cannot_be_deleted(self):
+        self._distribute(only_partners=self.reader_es.partner_id)
+        with self.assertRaises(IntegrityError) as error, mute_logger("odoo.sql_db"):
+            with self.cr.savepoint():
+                self.page.history_head.unlink()
+        self.assertEqual(
+            error.exception.diag.constraint_name,
+            "document_page_history_recipient_history_id_fkey",
+        )
+        self.assertTrue(self.page.history_head.exists())
+
+    def test_recipient_with_sends_cannot_be_deleted(self):
+        self._distribute(only_partners=self.reader_es.partner_id)
+        es_rec = self._recipients().filtered(
+            lambda r: r.partner_id == self.reader_es.partner_id
+        )
+        with self.assertRaises(IntegrityError) as error, mute_logger("odoo.sql_db"):
+            with self.cr.savepoint():
+                es_rec.unlink()
+        self.assertEqual(
+            error.exception.diag.constraint_name,
+            "document_page_history_recipient_send_recipient_id_fkey",
+        )
+        self.assertTrue(es_rec.exists())
 
     # ------------------------------------------------------------------
     # sending

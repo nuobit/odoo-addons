@@ -14,9 +14,9 @@ class DocumentPageHistoryRecipientSend(models.Model):
     _order = "sent_date desc, id desc"
 
     recipient_id = fields.Many2one(
-        "document.page.history.recipient",
+        comodel_name="document.page.history.recipient",
         required=True,
-        ondelete="cascade",
+        ondelete="restrict",
         index=True,
     )
     history_id = fields.Many2one(

@@ -1,4 +1,5 @@
 # Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from odoo import _, api, fields, models
@@ -37,9 +38,9 @@ class DocumentPageHistoryRecipient(models.Model):
     _rec_name = "partner_id"
 
     history_id = fields.Many2one(
-        "document.page.history",
+        comodel_name="document.page.history",
         required=True,
-        ondelete="cascade",
+        ondelete="restrict",
         index=True,
     )
     document_page_id = fields.Many2one(
