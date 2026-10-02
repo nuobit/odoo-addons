@@ -32,4 +32,5 @@ archived documents included, from a shell::
 Each orphan attachment gets its ``res_id`` set to the page whose current body
 references it, and every file of a page that its current body references is kept
 with the page. Attachments that no longer appear in any page body (files removed
-or replaced) are intentionally left untouched.
+or replaced) are intentionally left untouched. The pass reads the content stored
+in each page: a link that another module rewrote there is not recognised.

@@ -488,12 +488,25 @@ odoo-bin shell -c &lt;odoo.conf&gt; -d &lt;database&gt;
 <p>Each orphan attachment gets its <tt class="docutils literal">res_id</tt> set to the page whose current body
 references it, and every file of a page that its current body references is kept
 with the page. Attachments that no longer appear in any page body (files removed
-or replaced) are intentionally left untouched.</p>
+or replaced) are intentionally left untouched. The pass reads the content stored
+in each page: a link that another module rewrote there is not recognised.</p>
 </div>
 <div class="section" id="known-issues-roadmap">
 <h2><a class="toc-backref" href="#toc-entry-3">Known issues / Roadmap</a></h2>
 <ul class="simple">
-<li>Scanned PDFs (image-only) yield no extractable text and are not matched.</li>
+<li>Scanned PDFs (images only) and other PDFs without extractable text yield no
+indexed text, so their content is not matched.</li>
+<li>Copy-protected PDFs are indexed like any other PDF: <tt class="docutils literal">pdfminer.six</tt> ignores
+their copy protection, so the search finds the words of such a file.</li>
+<li>The search is meant for internal users; access to the documents from the
+portal is out of scope.</li>
+<li>Files embedded in a document before this module is installed are kept with
+the document only once its content is saved again, or after the
+post-migration linking of the usage section; a file that belongs to no record
+is anchored by the save of its uploader or of a system administrator. Both
+recognise <tt class="docutils literal"><span class="pre">/web/content/&lt;id&gt;</span></tt> and <tt class="docutils literal"><span class="pre">/web/image/&lt;id&gt;</span></tt> links only: a file
+whose link another module rewrote in the stored content, such as a
+download-tracking link, is not kept.</li>
 <li>A file of another document linked in the content, such as an image copied
 from another document or a file of the document this one was duplicated
 from, is not kept by this document: it belongs to the other document, goes
