@@ -170,7 +170,7 @@ msgid "Bounce"
 msgstr "Rebotado"
 
 #. module: document_page_distribution
-#: model_terms:ir.ui.view,arch_db:document_page_distribution.document_page_distribute_form
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.document_page_distribute_view_form
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -260,7 +260,7 @@ msgstr "Distribuir"
 
 #. module: document_page_distribution
 #: code:addons/document_page_distribution/models/document_page.py:0
-#: model_terms:ir.ui.view,arch_db:document_page_distribution.document_page_distribute_form
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.document_page_distribute_view_form
 #, python-format
 msgid "Distribute Document"
 msgstr "Distribuir documento"
@@ -478,8 +478,8 @@ msgstr "Destinatarios"
 
 #. module: document_page_distribution
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute_line__selected
-#: model_terms:ir.ui.view,arch_db:document_page_distribution.document_page_distribute_form
-#: model_terms:ir.ui.view,arch_db:document_page_distribution.document_page_history_recipient_send_form
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.document_page_distribute_view_form
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.document_page_history_recipient_send_view_form
 msgid "Send"
 msgstr "Enviar"
 
@@ -553,7 +553,7 @@ msgstr ""
 "distribuir."
 
 #. module: document_page_distribution
-#: model_terms:ir.ui.view,arch_db:document_page_distribution.document_page_distribute_form
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.document_page_distribute_view_form
 msgid ""
 "The current version of the document will be distributed to the\n"
 "                    selected recipients. The email content comes from the chosen\n"
