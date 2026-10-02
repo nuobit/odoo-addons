@@ -16,6 +16,7 @@ class TestDocumentPageDistribution(SavepointCase):
         super().setUpClass()
         cls.company = cls.env.company
         cls.internal = cls.env.ref("base.group_user")
+        cls.doc_user = cls.env.ref("knowledge.group_document_user")
         cls.group_manager = cls.env.ref("document_page.group_document_manager")
         cls.group_a = cls.env["res.groups"].create({"name": "DPD Group A"})
         cls.group_b = cls.env["res.groups"].create({"name": "DPD Group B"})
@@ -40,7 +41,9 @@ class TestDocumentPageDistribution(SavepointCase):
                 "login": "dpd_es",
                 "email": "es@example.com",
                 "lang": "es_ES",
-                "groups_id": [(6, 0, [cls.internal.id, cls.group_a.id])],
+                "groups_id": [
+                    (6, 0, [cls.internal.id, cls.doc_user.id, cls.group_a.id])
+                ],
             }
         )
         cls.reader_ca = Users.create(
@@ -49,7 +52,9 @@ class TestDocumentPageDistribution(SavepointCase):
                 "login": "dpd_ca",
                 "email": "ca@example.com",
                 "lang": "ca_ES",
-                "groups_id": [(6, 0, [cls.internal.id, cls.group_a.id])],
+                "groups_id": [
+                    (6, 0, [cls.internal.id, cls.doc_user.id, cls.group_a.id])
+                ],
             }
         )
         cls.reader_b = Users.create(
@@ -57,7 +62,9 @@ class TestDocumentPageDistribution(SavepointCase):
                 "name": "Reader B",
                 "login": "dpd_b",
                 "email": "b@example.com",
-                "groups_id": [(6, 0, [cls.internal.id, cls.group_b.id])],
+                "groups_id": [
+                    (6, 0, [cls.internal.id, cls.doc_user.id, cls.group_b.id])
+                ],
             }
         )
         cls.user_no_email = Users.create(
@@ -65,6 +72,17 @@ class TestDocumentPageDistribution(SavepointCase):
                 "name": "No Email",
                 "login": "dpd_noemail",
                 "email": False,
+                "groups_id": [
+                    (6, 0, [cls.internal.id, cls.doc_user.id, cls.group_a.id])
+                ],
+            }
+        )
+        # in the Security group of the document, without access to Knowledge
+        cls.user_no_access = Users.create(
+            {
+                "name": "No Access",
+                "login": "dpd_noaccess",
+                "email": "noaccess@example.com",
                 "groups_id": [(6, 0, [cls.internal.id, cls.group_a.id])],
             }
         )
@@ -74,7 +92,9 @@ class TestDocumentPageDistribution(SavepointCase):
                 "login": "dpd_inactive",
                 "email": "inactive@example.com",
                 "active": False,
-                "groups_id": [(6, 0, [cls.internal.id, cls.group_a.id])],
+                "groups_id": [
+                    (6, 0, [cls.internal.id, cls.doc_user.id, cls.group_a.id])
+                ],
             }
         )
         cls.page = cls.env["document.page"].create(
@@ -132,6 +152,7 @@ class TestDocumentPageDistribution(SavepointCase):
         self.assertIn(self.reader_es, users)
         self.assertIn(self.reader_ca, users)
         self.assertIn(self.user_no_email, users)  # in coverage, sent later as no_email
+        self.assertIn(self.user_no_access, users)  # in coverage, listed as no_access
         self.assertNotIn(self.reader_b, users)  # other group
         self.assertNotIn(self.user_inactive, users)  # archived
 
@@ -144,6 +165,17 @@ class TestDocumentPageDistribution(SavepointCase):
         self.company.document_page_distribution_template_id = False
         with self.assertRaises(UserError):
             self.page.with_user(self.manager).action_distribute()
+
+    def test_readers_can_read_the_document(self):
+        self.assertTrue(self.page._distribution_user_has_access(self.reader_es))
+        self.assertTrue(self.page._distribution_user_has_access(self.user_no_email))
+        self.assertTrue(self.page._distribution_user_has_access(self.manager))
+
+    def test_user_without_knowledge_access_cannot_read_the_document(self):
+        self.assertFalse(self.page._distribution_user_has_access(self.user_no_access))
+
+    def test_user_outside_the_document_groups_cannot_read_the_document(self):
+        self.assertFalse(self.page._distribution_user_has_access(self.reader_b))
 
     # ------------------------------------------------------------------
     # permissions
@@ -166,14 +198,15 @@ class TestDocumentPageDistribution(SavepointCase):
         # user not sharing the document groups cannot read it through RPC
         self._distribute(only_partners=self.reader_es.partner_id)
         recipient_ids = self._recipients().ids
-        doc_user = self.env.ref("knowledge.group_document_user")
         Users = self.env["res.users"].with_context(no_reset_password=True)
         outsider = Users.create(
             {
                 "name": "Outsider",
                 "login": "dpd_outsider",
                 "email": "outsider@example.com",
-                "groups_id": [(6, 0, [self.internal.id, doc_user.id, self.group_b.id])],
+                "groups_id": [
+                    (6, 0, [self.internal.id, self.doc_user.id, self.group_b.id])
+                ],
             }
         )
         insider = Users.create(
@@ -181,7 +214,9 @@ class TestDocumentPageDistribution(SavepointCase):
                 "name": "Insider",
                 "login": "dpd_insider",
                 "email": "insider@example.com",
-                "groups_id": [(6, 0, [self.internal.id, doc_user.id, self.group_a.id])],
+                "groups_id": [
+                    (6, 0, [self.internal.id, self.doc_user.id, self.group_a.id])
+                ],
             }
         )
         Recipient = self.env["document.page.history.recipient"]
@@ -315,6 +350,65 @@ class TestDocumentPageDistribution(SavepointCase):
         self.assertEqual(es_rec.state, "queued")
         self._process_mail_queue()
         self.assertEqual(es_rec.state, "sent")
+
+    def test_user_without_access_is_listed_and_not_emailed(self):
+        self._distribute()
+        no_access_rec = self._recipients().filtered(
+            lambda r: r.partner_id == self.user_no_access.partner_id
+        )
+        self.assertEqual(no_access_rec.state, "no_access")
+        self.assertFalse(no_access_rec.send_ids)
+        self.assertFalse(
+            self.env["mail.notification"].search(
+                [
+                    ("mail_message_id.model", "=", "document.page"),
+                    ("mail_message_id.res_id", "=", self.page.id),
+                    ("res_partner_id", "=", self.user_no_access.partner_id.id),
+                ]
+            )
+        )
+
+    def test_no_access_comes_before_no_email(self):
+        self.user_no_access.email = False
+        self._distribute()
+        no_access_rec = self._recipients().filtered(
+            lambda r: r.partner_id == self.user_no_access.partner_id
+        )
+        self.assertEqual(no_access_rec.state, "no_access")
+
+    def test_line_without_access_is_not_selected(self):
+        wizard = self._open_wizard()
+        no_access_line = wizard.line_ids.filtered(
+            lambda line: line.partner_id == self.user_no_access.partner_id
+        )
+        self.assertEqual(no_access_line.current_state, "no_access")
+        self.assertFalse(no_access_line.sendable)
+        self.assertFalse(no_access_line.selected)
+
+    def test_line_without_access_selected_by_force_is_not_emailed(self):
+        wizard = self._open_wizard()
+        no_access_line = wizard.line_ids.filtered(
+            lambda line: line.partner_id == self.user_no_access.partner_id
+        )
+        # the form does not let the user do it: written as an RPC call would
+        no_access_line.write({"sendable": True, "selected": True})
+        wizard.action_confirm()
+        no_access_rec = self._recipients().filtered(
+            lambda r: r.partner_id == self.user_no_access.partner_id
+        )
+        self.assertEqual(no_access_rec.state, "no_access")
+        self.assertFalse(no_access_rec.send_ids)
+
+    def test_line_shows_the_state_the_confirm_will_store(self):
+        self._distribute(only_partners=self.reader_es.partner_id)
+        self.user_no_email.email = "noemail@example.com"
+        wizard = self._open_wizard()
+        line = wizard.line_ids.filtered(
+            lambda line: line.partner_id == self.user_no_email.partner_id
+        )
+        self.assertEqual(line.current_state, "pending")
+        self.assertTrue(line.sendable)
+        self.assertTrue(line.selected)
 
     def test_inbox_user_still_receives_email(self):
         self.reader_es.notification_type = "inbox"

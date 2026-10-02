@@ -14,6 +14,7 @@ NOTIFICATION_STATE_MAP = {
 
 STATE_SELECTION = [
     ("pending", "Pending"),
+    ("no_access", "No access"),
     ("no_email", "No email"),
     ("queued", "Queued"),
     ("sent", "Sent"),
@@ -58,6 +59,9 @@ class DocumentPageHistoryRecipient(models.Model):
     partner_id = fields.Many2one("res.partner", required=True, index=True)
     user_id = fields.Many2one("res.users", required=True, index=True)
     email = fields.Char()
+    has_access = fields.Boolean(
+        help="The user could read the document when the distribution was confirmed.",
+    )
     send_ids = fields.One2many(
         "document.page.history.recipient.send",
         "recipient_id",
@@ -83,6 +87,7 @@ class DocumentPageHistoryRecipient(models.Model):
 
     @api.depends(
         "email",
+        "has_access",
         "send_ids.sent_date",
         "send_ids.email",
         "send_ids.notification_status",
@@ -99,10 +104,24 @@ class DocumentPageHistoryRecipient(models.Model):
             status = last.notification_status if last else False
             if status:
                 rec.state = NOTIFICATION_STATE_MAP.get(status, "queued")
-            elif not rec.email:
-                rec.state = "no_email"
             else:
-                rec.state = "pending"
+                rec.state = rec._get_state_without_sends(rec.has_access, rec.email)
+
+    @api.model
+    def _get_state_without_sends(self, has_access, email):
+        """State of a user in scope who has not been sent the version."""
+        if has_access:
+            if email:
+                state = "pending"
+            else:
+                state = "no_email"
+        else:
+            state = "no_access"
+        return state
+
+    @api.model
+    def _is_sendable(self, has_access, email):
+        return self._get_state_without_sends(has_access, email) == "pending"
 
     def action_open_sends(self):
         self.ensure_one()

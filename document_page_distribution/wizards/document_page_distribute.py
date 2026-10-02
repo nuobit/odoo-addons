@@ -1,4 +1,5 @@
 # Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from odoo import _, api, fields, models
@@ -46,12 +47,14 @@ class DocumentPageDistribute(models.TransientModel):
             raise UserError(_("This document has no current version to distribute."))
         template = page._get_distribution_template()
         users = page._get_distribution_coverage_users()
+        Recipient = self.env["document.page.history.recipient"]
         existing = {r.partner_id.id: r for r in history.recipient_ids}
         lines = []
         for user in users:
             partner = user.partner_id
-            recipient = existing.get(partner.id)
-            sendable = bool(partner.email)
+            recipient = existing.get(partner.id, Recipient)
+            has_access = page._distribution_user_has_access(user)
+            sendable = Recipient._is_sendable(has_access, partner.email)
             lines.append(
                 (
                     0,
@@ -61,8 +64,10 @@ class DocumentPageDistribute(models.TransientModel):
                         "user_id": user.id,
                         "email": partner.email,
                         "current_state": recipient.state
-                        if recipient
-                        else ("pending" if sendable else "no_email"),
+                        if recipient.send_ids
+                        else Recipient._get_state_without_sends(
+                            has_access, partner.email
+                        ),
                         "sendable": sendable,
                         "selected": sendable and self._preselect(recipient),
                     },

@@ -71,6 +71,18 @@ class DocumentPage(models.Model):
                 result |= user
         return result
 
+    def _distribution_user_has_access(self, user):
+        """Whether ``user`` can read the document, as Odoo decides it for that
+        user: the access rights and the record rules of the document."""
+        self.ensure_one()
+        # without the companies selected by the user who distributes, the
+        # rules are evaluated with the companies of ``user``
+        page = self.with_user(user).with_context(allowed_company_ids=[])
+        return bool(
+            page.check_access_rights("read", raise_exception=False)
+            and page._filter_access_rules("read")
+        )
+
     def _get_distribution_template(self):
         self.ensure_one()
         company = self.company_id or self.env.company
@@ -110,7 +122,11 @@ class DocumentPage(models.Model):
         recipients = Recipient.browse()
         for user in users:
             partner = user.partner_id
-            vals = {"email": partner.email, "user_id": user.id}
+            vals = {
+                "email": partner.email,
+                "user_id": user.id,
+                "has_access": self._distribution_user_has_access(user),
+            }
             rec = existing.get(partner.id)
             # no user can write the distribution log: the module writes it
             # for the manager who confirms the distribution
@@ -143,7 +159,7 @@ class DocumentPage(models.Model):
         self._check_distribution_manager()
         Send = self.env["document.page.history.recipient.send"]
         Recipient = self.env["document.page.history.recipient"]
-        sendable = recipients.filtered(lambda r: r.email)
+        sendable = recipients.filtered(lambda r: r._is_sendable(r.has_access, r.email))
         lang_groups = {}
         for rec in sendable:
             lang = rec.user_id.lang or "en_US"
