@@ -4,8 +4,7 @@
 
 from lxml import html as lxml_html
 
-from odoo import _, api, fields, models
-from odoo.exceptions import ValidationError
+from odoo import api, fields, models
 
 WEB_CONTENT_PREFIX = "/web/content/"
 TRACKING_ROUTE = "/document_page_distribution_download_log/download"
@@ -98,8 +97,7 @@ class DocumentPageHistory(models.Model):
         ``/web/content/42?download=true``, the slugged
         ``/web/content/42-name.pdf`` and ``/web/content/ir.attachment/42/datas``,
         plus already-tracked controller links. Inline images
-        (``/web/image/...``) are not matched. URL parsing only, no regex; the
-        PDF restriction is applied separately in :meth:`_is_trackable_pdf`.
+        (``/web/image/...``) are not matched. URL parsing only, no regex.
         """
         path = (href or "").split("?", 1)[0]
         if path.startswith(TRACKING_ROUTE + "/"):
@@ -114,51 +112,36 @@ class DocumentPageHistory(models.Model):
             return self._leading_int(rest.split("/", 1)[0])
         return False
 
-    def _is_trackable_pdf(self, attachment_id):
-        if not attachment_id:
-            return False
-        attachment = self.env["ir.attachment"].sudo().browse(attachment_id)
-        return attachment.exists() and attachment.mimetype == "application/pdf"
-
     def _tracked_attachment_ids(self, content):
+        """Ids of the attachments the anchors of ``content`` link to."""
         if not content or "<a" not in content:
             return set()
         fragment = lxml_html.fragment_fromstring(content, create_parent="div")
-        ids = set()
-        for anchor in fragment.findall(".//a"):
-            attachment_id = self._download_link_attachment_id(anchor.get("href"))
-            if self._is_trackable_pdf(attachment_id):
-                ids.add(attachment_id)
-        return ids
+        linked_ids = {
+            self._download_link_attachment_id(anchor.get("href"))
+            for anchor in fragment.findall(".//a")
+        }
+        linked_ids.discard(False)
+        return set(self.env["ir.attachment"].sudo().browse(linked_ids).exists().ids)
 
     def _rewrite_download_links(self, content):
         self.ensure_one()
-        if not content or "<a" not in content:
+        tracked_ids = self._tracked_attachment_ids(content)
+        if not tracked_ids:
             return content
         fragment = lxml_html.fragment_fromstring(content, create_parent="div")
-        trackable = [
-            anchor
-            for anchor in fragment.findall(".//a")
-            if self._is_trackable_pdf(
-                self._download_link_attachment_id(anchor.get("href"))
-            )
-        ]
-        if len(trackable) > 1:
-            raise ValidationError(
-                _(
-                    "A document version can contain at most one downloadable "
-                    "document link."
-                )
-            )
-        if not trackable:
+        rewritten = False
+        for anchor in fragment.findall(".//a"):
+            href = anchor.get("href") or ""
+            attachment_id = self._download_link_attachment_id(href)
+            if attachment_id not in tracked_ids:
+                continue
+            tracking_url = "%s/%s/%s" % (TRACKING_ROUTE, self.id, attachment_id)
+            if href.split("?", 1)[0] != tracking_url:
+                anchor.set("href", tracking_url)
+                rewritten = True
+        if not rewritten:
             return content
-        anchor = trackable[0]
-        href = anchor.get("href") or ""
-        attachment_id = self._download_link_attachment_id(href)
-        expected = "%s/%s/%s" % (TRACKING_ROUTE, self.id, attachment_id)
-        if href.split("?", 1)[0] == expected:
-            return content
-        anchor.set("href", expected)
         # serialize text + children only: create_parent wrapped the content
         # in an artificial <div> that must not be saved into the document
         return (fragment.text or "") + "".join(

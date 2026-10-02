@@ -8,7 +8,7 @@ from datetime import datetime
 from freezegun import freeze_time
 from psycopg2 import IntegrityError
 
-from odoo.exceptions import AccessError, ValidationError
+from odoo.exceptions import AccessError
 from odoo.tests.common import SavepointCase
 from odoo.tools import mute_logger
 
@@ -91,16 +91,49 @@ class TestDocumentPageDistributionDownloadLog(SavepointCase):
         self.assertIn(route, self.head.content)
         self.assertNotIn('"/web/content/%s"' % self.attachment.id, self.head.content)
 
-    def test_more_than_one_document_link_is_rejected(self):
-        with self.assertRaises(ValidationError):
-            self.env["document.page"].create(
-                {
-                    "name": "Two links",
-                    "type": "content",
-                    "groups_id": [(6, 0, [self.group.id])],
-                    "content": self._doc_link(self.attachment.id, count=2),
-                }
-            )
+    def test_file_linked_twice_is_rewritten_twice(self):
+        page = self.env["document.page"].create(
+            {
+                "name": "Same file twice",
+                "type": "content",
+                "groups_id": [(6, 0, [self.group.id])],
+                "content": self._doc_link(self.attachment.id, count=2),
+            }
+        )
+        head = page.history_head
+        route = "/document_page_distribution_download_log/download/%s/%s" % (
+            head.id,
+            self.attachment.id,
+        )
+        self.assertEqual(head.content.count(route), 2)
+        self.assertNotIn("/web/content/", head.content)
+
+    def test_every_file_of_a_version_is_tracked(self):
+        notes = self.env["ir.attachment"].create(
+            {
+                "name": "notes.txt",
+                "datas": base64.b64encode(b"just text").decode(),
+            }
+        )
+        page = self.env["document.page"].create(
+            {
+                "name": "Procedure and annex",
+                "type": "content",
+                "groups_id": [(6, 0, [self.group.id])],
+                "content": '<p><a href="/web/content/%s">pdf</a>'
+                '<a href="/web/content/%s">txt</a></p>'
+                % (self.attachment.id, notes.id),
+            }
+        )
+        head = page.history_head
+        route = "/document_page_distribution_download_log/download/%s/%s"
+        self.assertIn(route % (head.id, self.attachment.id), head.content)
+        self.assertIn(route % (head.id, notes.id), head.content)
+        self.assertNotIn("/web/content/", head.content)
+        self.assertEqual(
+            head._tracked_attachment_ids(head.content),
+            {self.attachment.id, notes.id},
+        )
 
     def test_rewriting_is_idempotent(self):
         self.assertEqual(
@@ -470,54 +503,6 @@ class TestDocumentPageDistributionDownloadLog(SavepointCase):
             self.attachment.id,
         )
         self.assertIn(route, head.content)
-
-    def test_non_pdf_link_is_not_tracked(self):
-        notes = self.env["ir.attachment"].create(
-            {
-                "name": "notes.txt",
-                "datas": base64.b64encode(b"just text").decode(),
-            }
-        )
-        self.assertNotEqual(notes.mimetype, "application/pdf")
-        page = self.env["document.page"].create(
-            {
-                "name": "Non-PDF link",
-                "type": "content",
-                "groups_id": [(6, 0, [self.group.id])],
-                "content": '<p><a href="/web/content/%s">notes</a></p>' % notes.id,
-            }
-        )
-        head = page.history_head
-        # left untouched: not rewritten, not tracked
-        self.assertIn('/web/content/%s"' % notes.id, head.content)
-        self.assertNotIn("/document_page_distribution_download_log/", head.content)
-        self.assertFalse(head._tracked_attachment_ids(head.content))
-
-    def test_non_pdf_link_does_not_trip_single_document_rule(self):
-        # one PDF + one non-PDF must save fine: only the PDF is a document
-        notes = self.env["ir.attachment"].create(
-            {
-                "name": "annex.txt",
-                "datas": base64.b64encode(b"annex text").decode(),
-            }
-        )
-        page = self.env["document.page"].create(
-            {
-                "name": "PDF plus non-PDF",
-                "type": "content",
-                "groups_id": [(6, 0, [self.group.id])],
-                "content": '<p><a href="/web/content/%s">pdf</a>'
-                '<a href="/web/content/%s">txt</a></p>'
-                % (self.attachment.id, notes.id),
-            }
-        )
-        head = page.history_head
-        route = "/document_page_distribution_download_log/download/%s/%s" % (
-            head.id,
-            self.attachment.id,
-        )
-        self.assertIn(route, head.content)  # the PDF is tracked
-        self.assertIn('/web/content/%s"' % notes.id, head.content)  # the txt is not
 
     def test_opening_page_does_not_log_download(self):
         # merely reading the page/version content must not create evidence;
