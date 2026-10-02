@@ -31,6 +31,9 @@ NOTIFICATION_STATUS_SELECTION = [
     ("canceled", "Canceled"),
 ]
 
+# states of a recipient whose last send is on its way or has been delivered
+SENT_STATES = ("queued", "sent")
+
 
 class DocumentPageHistoryRecipient(models.Model):
 

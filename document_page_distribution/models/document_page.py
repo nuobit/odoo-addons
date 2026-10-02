@@ -18,6 +18,12 @@ class DocumentPage(models.Model):
     current_distribution_count = fields.Integer(
         compute="_compute_current_distribution_count",
     )
+    current_distribution_sent_count = fields.Integer(
+        related="history_head.distribution_sent_count",
+    )
+    current_distribution_summary = fields.Char(
+        related="history_head.distribution_summary",
+    )
 
     @api.depends("current_recipient_ids")
     def _compute_current_distribution_count(self):

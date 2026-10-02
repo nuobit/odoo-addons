@@ -453,6 +453,38 @@ class TestDocumentPageDistribution(SavepointCase):
         self.assertIn("docs@example.com", message.email_from)
 
     # ------------------------------------------------------------------
+    # counts
+    # ------------------------------------------------------------------
+    def test_summary_counts_the_recipients_sent_to(self):
+        self._distribute(
+            only_partners=self.reader_es.partner_id | self.reader_ca.partner_id
+        )
+        history = self.page.history_head
+        self.assertEqual(history.distribution_count, 5)
+        self.assertEqual(history.distribution_sent_count, 2)
+        self.assertEqual(history.distribution_summary, "2/5")
+        self.assertEqual(self.page.current_distribution_sent_count, 2)
+        self.assertEqual(self.page.current_distribution_summary, "2/5")
+
+    def test_summary_does_not_count_a_bounced_send(self):
+        self._distribute(
+            only_partners=self.reader_es.partner_id | self.reader_ca.partner_id
+        )
+        es_rec = self._recipients().filtered(
+            lambda r: r.partner_id == self.reader_es.partner_id
+        )
+        es_rec.send_ids.mail_notification_id.notification_status = "bounce"
+        history = self.page.history_head
+        self.assertEqual(history.distribution_sent_count, 1)
+        self.assertEqual(history.distribution_summary, "1/5")
+
+    def test_version_never_distributed_has_no_summary(self):
+        history = self.page.history_head
+        self.assertEqual(history.distribution_count, 0)
+        self.assertEqual(history.distribution_sent_count, 0)
+        self.assertFalse(history.distribution_summary)
+
+    # ------------------------------------------------------------------
     # redistribution & preselection
     # ------------------------------------------------------------------
     def test_redistribute_new_send_same_recipient_no_new_version(self):

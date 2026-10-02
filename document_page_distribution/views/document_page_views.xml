@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
 <odoo>
     <record id="view_wiki_form_distribution" model="ir.ui.view">
@@ -18,6 +19,12 @@
                     />
                 </header>
             </xpath>
+            <xpath
+                expr="//field[@name='history_ids']/tree/field[@name='create_uid']"
+                position="after"
+            >
+                <field name="distribution_summary" string="Distribution" />
+            </xpath>
             <xpath expr="//notebook" position="inside">
                 <page
                     name="distribution"
@@ -25,10 +32,19 @@
                     groups="knowledge.group_document_user"
                 >
                     <field name="current_distribution_count" invisible="1" />
+                    <field name="current_distribution_sent_count" invisible="1" />
                     <p
                         class="text-muted"
-                        attrs="{'invisible': [('current_distribution_count', '!=', 0)]}"
+                        attrs="{'invisible': [('current_distribution_sent_count', '!=', 0)]}"
                     >The current version has not been distributed yet.</p>
+                    <group
+                        attrs="{'invisible': [('current_distribution_count', '=', 0)]}"
+                    >
+                        <field
+                            name="current_distribution_summary"
+                            string="Distribution"
+                        />
+                    </group>
                     <field
                         name="current_recipient_ids"
                         attrs="{'invisible': [('current_distribution_count', '=', 0)]}"
@@ -36,6 +52,7 @@
                         <tree>
                             <field name="user_id" />
                             <field name="email" />
+                            <field name="state" />
                             <field name="last_successful_sent_date" />
                             <field name="sent_count" />
                             <button
