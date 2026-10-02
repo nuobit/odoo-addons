@@ -89,7 +89,7 @@ class DocumentPageHistoryRecipient(models.Model):
     )
     def _compute_send_info(self):
         for rec in self:
-            real_sends = rec.send_ids.filtered("sent_date").sorted("sent_date")
+            real_sends = rec.send_ids.sorted("sent_date")
             rec.sent_count = len(real_sends)
             last = real_sends[-1:]
             last_ok = real_sends.filtered(lambda s: s.notification_status == "sent")[
