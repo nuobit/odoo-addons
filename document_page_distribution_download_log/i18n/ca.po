@@ -17,14 +17,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: document_page_distribution_download_log
-#: code:addons/document_page_distribution_download_log/models/document_page_history.py:0
-#, python-format
-msgid "A document version can contain at most one downloadable document link."
-msgstr ""
-"Una versió del document pot contenir com a màxim un enllaç de document "
-"descarregable."
-
-#. module: document_page_distribution_download_log
 #: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__attachment_id
 msgid "Attachment"
 msgstr "Adjunt"
