@@ -43,5 +43,3 @@ class DocumentPageHistoryRecipientDownload(models.Model):
     user_id = fields.Many2one("res.users")
     attachment_id = fields.Many2one("ir.attachment", ondelete="set null")
     download_date = fields.Datetime()
-    ip_address = fields.Char(string="IP Address")
-    user_agent = fields.Char()

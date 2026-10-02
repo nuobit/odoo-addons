@@ -1,4 +1,5 @@
 # Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from werkzeug.exceptions import NotFound
@@ -48,13 +49,5 @@ class DocumentPageDistributionDownloadLogController(http.Controller):
             attachment.check("read")
         except AccessError:
             raise NotFound() from None
-        http_request = request.httprequest
-        history._log_recipient_download(
-            attachment_id,
-            user=request.env.user,
-            ip_address=http_request.remote_addr,
-            user_agent=http_request.user_agent.string
-            if http_request.user_agent
-            else False,
-        )
+        history._log_recipient_download(attachment_id, user=request.env.user)
         return redirect("/web/content/%s?download=true" % attachment_id, code=303)

@@ -1,4 +1,5 @@
 # Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from lxml import html as lxml_html
@@ -140,9 +141,7 @@ class DocumentPageHistory(models.Model):
         self.ensure_one()
         return attachment_id in self._tracked_attachment_ids(self.content or "")
 
-    def _log_recipient_download(
-        self, attachment_id, user=None, ip_address=None, user_agent=None
-    ):
+    def _log_recipient_download(self, attachment_id, user=None):
         self.ensure_one()
         user = user or self.env.user
         download_model = self.env["document.page.history.recipient.download"]
@@ -162,7 +161,5 @@ class DocumentPageHistory(models.Model):
                 "user_id": user.id,
                 "attachment_id": attachment_id,
                 "download_date": fields.Datetime.now(),
-                "ip_address": ip_address,
-                "user_agent": user_agent,
             }
         )
