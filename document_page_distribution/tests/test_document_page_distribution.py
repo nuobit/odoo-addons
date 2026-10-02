@@ -10,7 +10,6 @@ class TestDocumentPageDistribution(SavepointCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.env = cls.env(context=dict(cls.env.context, mail_notify_force_send=False))
         cls.company = cls.env.company
         cls.internal = cls.env.ref("base.group_user")
         cls.group_manager = cls.env.ref("document_page.group_document_manager")
@@ -114,6 +113,12 @@ class TestDocumentPageDistribution(SavepointCase):
     def _recipients(self):
         return self.page.history_head.recipient_ids
 
+    def _process_mail_queue(self):
+        # what the mail queue of Odoo does with the emails of the document
+        self.env["mail.mail"].search(
+            [("model", "=", "document.page"), ("res_id", "=", self.page.id)]
+        ).send()
+
     # ------------------------------------------------------------------
     # coverage
     # ------------------------------------------------------------------
@@ -211,6 +216,19 @@ class TestDocumentPageDistribution(SavepointCase):
         self.assertEqual(notif.notification_type, "email")
         self.assertEqual(es_rec.state, "queued")  # ready -> queued
         self.assertEqual(es_rec.send_ids.sent_by_id, self.manager)
+
+    def test_emails_leave_through_the_mail_queue(self):
+        self._distribute(only_partners=self.reader_es.partner_id)
+        es_rec = self._recipients().filtered(
+            lambda r: r.partner_id == self.reader_es.partner_id
+        )
+        mails = self.env["mail.mail"].search(
+            [("model", "=", "document.page"), ("res_id", "=", self.page.id)]
+        )
+        self.assertEqual(mails.mapped("state"), ["outgoing"])
+        self.assertEqual(es_rec.state, "queued")
+        self._process_mail_queue()
+        self.assertEqual(es_rec.state, "sent")
 
     def test_inbox_user_still_receives_email(self):
         self.reader_es.notification_type = "inbox"
