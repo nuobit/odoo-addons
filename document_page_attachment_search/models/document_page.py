@@ -1,4 +1,5 @@
 # Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 import base64
@@ -16,12 +17,12 @@ ATTACHMENT_URL_RE = re.compile(r"/web/(?:content|image)/(\d+)")
 class DocumentPage(models.Model):
     _inherit = "document.page"
 
-    def _linked_attachment_ids(self):
-        self.ensure_one()
-        if not self.content:
+    @api.model
+    def _linked_attachment_ids(self, content):
+        if not content:
             return set()
         try:
-            tree = html.fragment_fromstring(self.content, create_parent=True)
+            tree = html.fragment_fromstring(content, create_parent=True)
         except (etree.ParserError, ValueError):
             return set()
         linked_ids = set()
@@ -46,30 +47,37 @@ class DocumentPage(models.Model):
             return domain
         return expression.OR([domain, [("id", "in", page_ids)]])
 
-    def _anchor_orphan_attachments(self):
-        Attachment = self.env["ir.attachment"]
+    def _anchor_content_attachments(self, content):
+        """Anchor to each page the files that ``content``, the content being
+        saved, links and that belong to no record yet.
+        """
+        linked = (
+            self.env["ir.attachment"]
+            .browse(sorted(self._linked_attachment_ids(content)))
+            .exists()
+            .filtered(lambda a: a.res_model == "document.page")
+        )
         for page in self:
-            linked = page._linked_attachment_ids()
-            if not linked:
-                continue
-            orphans = (
-                Attachment.browse(sorted(linked))
-                .exists()
-                .filtered(lambda a: a.res_model == "document.page" and not a.res_id)
-            )
+            orphans = linked.filtered(lambda a: not a.res_id)
             if orphans:
                 orphans.write({"res_id": page.id})
+
+    def _anchor_stored_content_attachments(self):
+        for page in self:
+            page._anchor_content_attachments(page.content)
 
     @api.model_create_multi
     def create(self, vals_list):
         pages = super().create(vals_list)
-        pages._anchor_orphan_attachments()
+        for page, vals in zip(pages, vals_list):
+            if "content" in vals:
+                page._anchor_content_attachments(vals["content"])
         return pages
 
     def write(self, vals):
         res = super().write(vals)
         if "content" in vals:
-            self._anchor_orphan_attachments()
+            self._anchor_content_attachments(vals["content"])
         return res
 
     def reindex_attachment_content(self, batch_size=500, only_missing=True):

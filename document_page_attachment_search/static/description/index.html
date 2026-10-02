@@ -476,7 +476,7 @@ automatically, but to relink the ones already in the database in a single pass,
 from a shell:</p>
 <pre class="literal-block">
 odoo-bin shell -c &lt;odoo.conf&gt; -d &lt;database&gt;
-&gt;&gt;&gt; env[&quot;document.page&quot;].search([])._anchor_orphan_attachments()
+&gt;&gt;&gt; env[&quot;document.page&quot;].search([])._anchor_stored_content_attachments()
 &gt;&gt;&gt; env.cr.commit()
 </pre>
 <p>Each orphan attachment gets its <tt class="docutils literal">res_id</tt> set to the page whose current body
