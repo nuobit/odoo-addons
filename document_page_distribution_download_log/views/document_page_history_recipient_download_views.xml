@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="document_page_history_recipient_download_view_tree" model="ir.ui.view">
+        <field name="name">document.page.history.recipient.download.view.tree</field>
+        <field name="model">document.page.history.recipient.download</field>
+        <field name="arch" type="xml">
+            <tree export_xlsx="false" default_order="download_date, id">
+                <field name="download_date" />
+                <field name="user_id" />
+                <field name="attachment_id" />
+                <field name="ip_address" optional="hide" />
+            </tree>
+        </field>
+    </record>
+    <record id="document_page_history_recipient_download_view_form" model="ir.ui.view">
+        <field name="name">document.page.history.recipient.download.view.form</field>
+        <field name="model">document.page.history.recipient.download</field>
+        <field name="arch" type="xml">
+            <form string="Download">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="download_date" />
+                            <field name="user_id" />
+                            <field name="attachment_id" />
+                        </group>
+                        <group>
+                            <field name="ip_address" />
+                            <field name="user_agent" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

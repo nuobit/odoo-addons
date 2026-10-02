@@ -20,7 +20,9 @@ msgstr ""
 #: code:addons/document_page_distribution_download_log/models/document_page_history.py:0
 #, python-format
 msgid "A document version can contain at most one downloadable document link."
-msgstr "Una versión del documento puede contener como máximo un enlace de documento descargable."
+msgstr ""
+"Una versión del documento puede contener como máximo un enlace de documento "
+"descargable."
 
 #. module: document_page_distribution_download_log
 #: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__attachment_id
@@ -65,7 +67,7 @@ msgid "Document Page History"
 msgstr "Historial de página de documento"
 
 #. module: document_page_distribution_download_log
-#: model_terms:ir.ui.view,arch_db:document_page_distribution_download_log.document_page_history_recipient_download_form
+#: model_terms:ir.ui.view,arch_db:document_page_distribution_download_log.document_page_history_recipient_download_view_form
 msgid "Download"
 msgstr "Descarga"
 

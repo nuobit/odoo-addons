@@ -1,4 +1,5 @@
 # Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 {
@@ -16,6 +17,8 @@
     "data": [
         "security/ir.model.access.csv",
         "security/document_page_distribution_download_log_security.xml",
-        "views/document_page_history_recipient_views.xml",
+        "views/document_page_history_recipient_download_views.xml",
+        "views/document_page_history_views.xml",
+        "views/document_page_views.xml",
     ],
 }
