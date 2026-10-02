@@ -426,6 +426,7 @@ msgstr "Destinatario"
 
 #. module: document_page_distribution
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute__line_ids
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history__distribution_count
 msgid "Recipients"
 msgstr "Destinatarios"
 
@@ -445,6 +446,7 @@ msgstr "Enviable"
 #: code:addons/document_page_distribution/models/document_page_history_recipient.py:0
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__send_ids
 #: model_terms:ir.ui.view,arch_db:document_page_distribution.view_wiki_form_distribution
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.view_wiki_history_form_distribution
 #, python-format
 msgid "Sends"
 msgstr "Envíos"
@@ -484,11 +486,6 @@ msgstr "Plantilla"
 #: model_terms:ir.ui.view,arch_db:document_page_distribution.view_wiki_form_distribution
 msgid "The current version has not been distributed yet."
 msgstr "La versión actual aún no se ha distribuido."
-
-#. module: document_page_distribution
-#: model_terms:ir.ui.view,arch_db:document_page_distribution.view_wiki_history_form_distribution
-msgid "This version has not been distributed."
-msgstr "Esta versión no se ha distribuido."
 
 #. module: document_page_distribution
 #: code:addons/document_page_distribution/wizards/document_page_distribute.py:0
@@ -554,6 +551,11 @@ msgid ""
 msgstr ""
 "Este documento no tiene ningún grupo definido en Seguridad. No se puede "
 "calcular la cobertura de distribución."
+
+#. module: document_page_distribution
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.view_wiki_history_form_distribution
+msgid "This version has not been distributed."
+msgstr "Esta versión no se ha distribuido."
 
 #. module: document_page_distribution
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute_line__user_id
