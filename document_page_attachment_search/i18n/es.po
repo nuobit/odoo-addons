@@ -28,6 +28,11 @@ msgid "Display Name"
 msgstr ""
 
 #. module: document_page_attachment_search
+#: model_terms:ir.ui.view,arch_db:document_page_attachment_search.view_wiki_filter
+msgid "Document"
+msgstr "Documento"
+
+#. module: document_page_attachment_search
 #: model:ir.model,name:document_page_attachment_search.model_document_page
 msgid "Document Page"
 msgstr ""

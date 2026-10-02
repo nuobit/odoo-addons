@@ -8,10 +8,12 @@
         <field name="model">document.page</field>
         <field name="inherit_id" ref="document_page.view_wiki_filter" />
         <field name="arch" type="xml">
-            <field name="draft_summary" position="attributes">
-                <attribute
-                    name="filter_domain"
-                >['|', ('draft_summary', 'ilike', self), ('content', 'ilike', self)]</attribute>
+            <field name="draft_summary" position="before">
+                <field
+                    name="name"
+                    string="Document"
+                    filter_domain="['|', '|', ('name', 'ilike', self), ('draft_summary', 'ilike', self), ('content', 'ilike', self)]"
+                />
             </field>
         </field>
     </record>
