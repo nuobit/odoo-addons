@@ -22,12 +22,14 @@ Post-migration linking:
 Pages imported in bulk may have body-embedded files left with ``res_id=0`` (for
 example, files embedded before the page was first saved). New edits anchor them
 automatically, but to relink the ones already in the database in a single pass,
-from a shell::
+archived documents included, from a shell::
 
     odoo-bin shell -c <odoo.conf> -d <database>
-    >>> env["document.page"].search([])._anchor_stored_content_attachments()
+    >>> pages = env["document.page"].with_context(active_test=False).search([])
+    >>> pages._anchor_stored_content_attachments()
     >>> env.cr.commit()
 
 Each orphan attachment gets its ``res_id`` set to the page whose current body
-references it. Attachments that no longer appear in any page body (files removed
+references it, and every file of a page that its current body references is kept
+with the page. Attachments that no longer appear in any page body (files removed
 or replaced) are intentionally left untouched.

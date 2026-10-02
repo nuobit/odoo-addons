@@ -60,9 +60,11 @@ Behavior:
   uploaded them. A file embedded before the page's first save (``res_id=0``)
   therefore becomes searchable when its uploader saves the page, with no manual
   step.
-* A file still linked to an existing ``document.page`` (via ``res_model`` /
-  ``res_id``) cannot be deleted. This avoids leaving a dead ``/web/content`` link
-  in the page body and keeps the content search consistent.
+* A file of the document saved in its content is kept with the versions of the
+  document, also after a later version takes it out of the content: while the
+  document exists, only a system administrator can delete it, attach it to
+  another record or change its content. The image of the page and the files
+  attached through the chatter can be deleted as usual.
 
 Scope:
 
@@ -131,20 +133,29 @@ Post-migration linking:
 Pages imported in bulk may have body-embedded files left with ``res_id=0`` (for
 example, files embedded before the page was first saved). New edits anchor them
 automatically, but to relink the ones already in the database in a single pass,
-from a shell::
+archived documents included, from a shell::
 
     odoo-bin shell -c <odoo.conf> -d <database>
-    >>> env["document.page"].search([])._anchor_stored_content_attachments()
+    >>> pages = env["document.page"].with_context(active_test=False).search([])
+    >>> pages._anchor_stored_content_attachments()
     >>> env.cr.commit()
 
 Each orphan attachment gets its ``res_id`` set to the page whose current body
-references it. Attachments that no longer appear in any page body (files removed
+references it, and every file of a page that its current body references is kept
+with the page. Attachments that no longer appear in any page body (files removed
 or replaced) are intentionally left untouched.
 
 Known issues / Roadmap
 ======================
 
 * Scanned PDFs (image-only) yield no extractable text and are not matched.
+* A file of another document linked in the content, such as an image copied
+  from another document or a file of the document this one was duplicated
+  from, is not kept by this document: it belongs to the other document, goes
+  when that document is deleted, and leaves a broken link here.
+* The text of the versions stays editable through the API by a document editor,
+  as the access rights of the ``document_page`` module allow: this module keeps
+  the files of the content, not the text that links them.
 
 Bug Tracker
 ===========

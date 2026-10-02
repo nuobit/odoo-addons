@@ -50,14 +50,17 @@ class DocumentPage(models.Model):
     def _anchor_content_attachments(self, content):
         """Anchor to each page the files that ``content``, the content being
         saved, links: the current user's uploads that belong to no record yet
-        (any upload for a system administrator).
+        (any upload for a system administrator). Every file of the page that
+        ``content`` links and that is not marked yet is then marked as a file
+        of its content, which only a system administrator can delete, attach
+        to another record or change while the page exists.
         """
         linked = (
             self.env["ir.attachment"]
             .sudo()
             .browse(sorted(self._linked_attachment_ids(content)))
             .exists()
-            .filtered(lambda a: a.res_model == "document.page")
+            .filtered(lambda a: a.res_model == "document.page" and not a.res_field)
         )
         for page in self:
             orphans = linked.filtered(
@@ -66,6 +69,11 @@ class DocumentPage(models.Model):
             )
             if orphans:
                 orphans.with_env(self.env).write({"res_id": page.id})
+            content_files = linked.filtered_domain(
+                [("res_id", "=", page.id), ("document_page_content_file", "=", False)]
+            )
+            if content_files:
+                content_files.sudo().write({"document_page_content_file": True})
 
     def _anchor_stored_content_attachments(self):
         for page in self:
