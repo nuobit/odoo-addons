@@ -472,6 +472,30 @@ class TestDocumentPageDistribution(SavepointCase):
         self.assertIn(self.page.name, message.body)
         self.assertIn("Initial release", message.body)
 
+    def test_message_says_the_version_has_been_distributed(self):
+        self._distribute(only_partners=self.manager.partner_id)
+        message = self.page.message_ids.filtered(
+            lambda m: m.message_type == "notification"
+        )[:1]
+        self.assertEqual(
+            message.subject, "Document distribution: Test Procedure (current version)"
+        )
+        self.assertIn(
+            "The current version of the document <strong>Test Procedure</strong> "
+            "has been distributed to you.",
+            " ".join(message.body.split()),
+        )
+
+    def test_email_has_one_frame_and_one_button(self):
+        self._distribute(only_partners=self.manager.partner_id)
+        mail = self.env["mail.mail"].search(
+            [("model", "=", "document.page"), ("res_id", "=", self.page.id)]
+        )
+        self.assertEqual(mail.body_html.count("Test Procedure"), 2)
+        self.assertEqual(mail.body_html.count("Open the document page"), 1)
+        self.assertNotIn("View Document Page", mail.body_html)
+        self.assertNotIn("Internal communication", mail.body_html)
+
     def test_message_email_from_uses_template(self):
         self.company.email = "docs@example.com"
         self._distribute(only_partners=self.reader_es.partner_id)
