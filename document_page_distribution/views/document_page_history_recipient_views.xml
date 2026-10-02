@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
 <odoo>
     <record id="document_page_history_recipient_send_tree" model="ir.ui.view">
@@ -16,7 +17,7 @@
                 <field name="email" />
                 <field name="template_id" />
                 <field name="notification_status" />
-                <field name="sent_by" />
+                <field name="sent_by_id" />
             </tree>
         </field>
     </record>
@@ -29,7 +30,7 @@
                     <group>
                         <group>
                             <field name="sent_date" />
-                            <field name="sent_by" />
+                            <field name="sent_by_id" />
                             <field name="email" />
                             <field name="template_id" />
                         </group>

@@ -1,4 +1,5 @@
 # Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from odoo import fields, models
@@ -37,7 +38,7 @@ class DocumentPageHistoryRecipientSend(models.Model):
         index=True,
     )
     sent_date = fields.Datetime()
-    sent_by = fields.Many2one("res.users")
+    sent_by_id = fields.Many2one(comodel_name="res.users")
     email = fields.Char()
     template_id = fields.Many2one("mail.template")
     mail_message_id = fields.Many2one("mail.message", ondelete="set null")

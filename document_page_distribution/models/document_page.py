@@ -1,4 +1,5 @@
 # Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from odoo import _, api, fields, models
@@ -186,7 +187,7 @@ class DocumentPage(models.Model):
                     {
                         "recipient_id": rec.id,
                         "sent_date": now,
-                        "sent_by": self.env.user.id,
+                        "sent_by_id": self.env.user.id,
                         "email": rec.email,
                         "template_id": template.id,
                         "mail_message_id": message.id,
