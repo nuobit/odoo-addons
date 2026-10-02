@@ -67,13 +67,11 @@ Scope:
 * Any file attached to the page is searchable, whether embedded in the body or
   attached through the chatter. The match relies on the native ``res_model`` /
   ``res_id`` link that Odoo maintains, not on parsing the page HTML, so it is
-  unaffected by modules that rewrite the body links (e.g.
-  ``document_page_distribution_download_log``).
+  unaffected by modules that rewrite the links of the body.
 * A file uploaded into a page that has not been saved yet gets ``res_id=0``; it
   becomes searchable once the page is saved (the save anchors it, see above) or
-  after the post-migration linking of the usage section. A file removed or
-  replaced in the body is intentionally not re-anchored, so the page stops
-  matching it.
+  after the post-migration linking of the usage section. An anchored file stays
+  searchable until it is deleted, also when the body no longer links it.
 
 **Table of contents**
 
