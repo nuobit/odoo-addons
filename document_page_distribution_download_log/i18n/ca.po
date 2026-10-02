@@ -20,7 +20,9 @@ msgstr ""
 #: code:addons/document_page_distribution_download_log/models/document_page_history.py:0
 #, python-format
 msgid "A document version can contain at most one downloadable document link."
-msgstr "Una versió del document pot contenir com a màxim un enllaç de document descarregable."
+msgstr ""
+"Una versió del document pot contenir com a màxim un enllaç de document "
+"descarregable."
 
 #. module: document_page_distribution_download_log
 #: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__attachment_id
@@ -65,7 +67,7 @@ msgid "Document Page History"
 msgstr "Historial de pàgina de document"
 
 #. module: document_page_distribution_download_log
-#: model_terms:ir.ui.view,arch_db:document_page_distribution_download_log.document_page_history_recipient_download_form
+#: model_terms:ir.ui.view,arch_db:document_page_distribution_download_log.document_page_history_recipient_download_view_form
 msgid "Download"
 msgstr "Descàrrega"
 
@@ -118,7 +120,8 @@ msgstr "Adreça IP"
 #. module: document_page_distribution_download_log
 #: model:ir.model.fields,help:document_page_distribution_download_log.field_document_page_history_recipient_download__company_id
 msgid "If set, page is accessible only from this company"
-msgstr "Si es configura, només es pot accedir a la pàgina des d'aquesta empresa"
+msgstr ""
+"Si es configura, només es pot accedir a la pàgina des d'aquesta empresa"
 
 #. module: document_page_distribution_download_log
 #: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient__last_download_date
