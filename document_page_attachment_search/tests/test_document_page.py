@@ -1,8 +1,10 @@
 # Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 import base64
 
+from odoo import api
 from odoo.tests.common import TransactionCase, tagged
 
 
@@ -168,6 +170,30 @@ class TestDocumentPageAttachmentSearch(TransactionCase):
         self.assertEqual(orphan.res_id, page.id)
         self.assertIn(page, self._search_content("ANCHORWRITE"))
 
+    def test_create_several_pages_anchors_the_uploads_of_each(self):
+        # Image links: a module that tracks the download links of a version
+        # anchors a linked file itself, which would hide this anchoring.
+        first = self._orphan("first.txt", b"the file says FIRSTPAGEWORD")
+        second = self._orphan("second.txt", b"the file says SECONDPAGEWORD")
+        first_page, second_page = self.DocumentPage.create(
+            [
+                {
+                    "name": "Page Anchor First",
+                    "type": "content",
+                    "parent_id": self.category.id,
+                    "content": '<p><img src="/web/image/%d"/></p>' % first.id,
+                },
+                {
+                    "name": "Page Anchor Second",
+                    "type": "content",
+                    "parent_id": self.category.id,
+                    "content": '<p><img src="/web/image/%d"/></p>' % second.id,
+                },
+            ]
+        )
+        self.assertEqual(first.res_id, first_page.id)
+        self.assertEqual(second.res_id, second_page.id)
+
     def test_anchor_does_not_steal_attachment_of_another_page(self):
         owned = self._attach(self.page_html, "owned.txt", b"the file says OWNEDWORD")
         self.DocumentPage.create(
@@ -179,6 +205,32 @@ class TestDocumentPageAttachmentSearch(TransactionCase):
             }
         )
         self.assertEqual(owned.res_id, self.page_html.id)
+
+    def test_anchor_reads_the_content_being_saved(self):
+        History = type(self.env["document.page.history"])
+        create = History.create
+
+        @api.model_create_multi
+        def create_rewriting_links(history_model, vals_list):
+            histories = create(history_model, vals_list)
+            for history in histories:
+                history.content = history.content.replace(
+                    "/web/image/", "/rewritten/image/"
+                )
+            return histories
+
+        self.patch(History, "create", create_rewriting_links)
+        orphan = self._orphan("rewritten.txt", b"the file says REWRITTENWORD")
+        page = self.DocumentPage.create(
+            {
+                "name": "Page Anchor Rewritten",
+                "type": "content",
+                "parent_id": self.category.id,
+                "content": '<p><img src="/web/image/%d"/></p>' % orphan.id,
+            }
+        )
+        self.assertNotIn("/web/image/", page.history_head.content)
+        self.assertEqual(orphan.res_id, page.id)
 
     def test_reindex_indexes_missing_content(self):
         page = self.DocumentPage.create(

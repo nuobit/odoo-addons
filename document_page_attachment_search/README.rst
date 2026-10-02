@@ -122,7 +122,7 @@ automatically, but to relink the ones already in the database in a single pass,
 from a shell::
 
     odoo-bin shell -c <odoo.conf> -d <database>
-    >>> env["document.page"].search([])._anchor_orphan_attachments()
+    >>> env["document.page"].search([])._anchor_stored_content_attachments()
     >>> env.cr.commit()
 
 Each orphan attachment gets its ``res_id`` set to the page whose current body
