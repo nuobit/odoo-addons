@@ -20,17 +20,13 @@ class DocumentPageDistributionDownloadLogController(http.Controller):
         methods=["GET"],
     )
     def download_version(self, history_id, attachment_id, access_token=None, **kwargs):
-        # resolve-then-authorize: sudo only resolves the version; the access
-        # gate is the page read check below, run as the requesting user.
-        # Missing and forbidden both answer 404 so the route does not reveal
-        # whether a version exists.
-        history = (
-            request.env["document.page.history"].sudo().browse(history_id).exists()
-        )
+        # a version that does not exist and a version the user cannot read
+        # both answer 404, so the route does not say whether a version exists
+        history = request.env["document.page.history"].browse(history_id).exists()
         if not history:
             raise NotFound()
-        page = request.env["document.page"].browse(history.page_id.id)
         try:
+            page = history.page_id
             page.check_access_rights("read")
             page.check_access_rule("read")
         except AccessError:
