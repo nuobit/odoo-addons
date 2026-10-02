@@ -4,8 +4,11 @@
 
 import base64
 
+from lxml import etree
+
 from odoo import api
 from odoo.tests.common import TransactionCase, tagged
+from odoo.tools.safe_eval import safe_eval
 
 
 @tagged("post_install", "-at_install")
@@ -132,6 +135,69 @@ class TestDocumentPageAttachmentSearch(TransactionCase):
         self._attach(page, "second.txt", b"second file says MULTIWORDB")
         self.assertIn(page, self._search_content("MULTIWORDA"))
         self.assertIn(page, self._search_content("MULTIWORDB"))
+
+    def test_search_view_starts_with_the_document_field(self):
+        view = self.env.ref("document_page.view_wiki_filter")
+        arch = self.DocumentPage.fields_view_get(view_id=view.id, view_type="search")[
+            "arch"
+        ]
+        field = etree.fromstring(arch).xpath("//field")[0]
+        self.assertEqual(field.get("name"), "name")
+        self.assertEqual(field.get("string"), "Document")
+        self.assertEqual(
+            field.get("filter_domain"),
+            "['|', '|', ('name', 'ilike', self), "
+            "('draft_summary', 'ilike', self), ('content', 'ilike', self)]",
+        )
+
+    def test_document_search_matches_title_summary_content_and_files(self):
+        view = self.env.ref("document_page.view_wiki_filter")
+        arch = self.DocumentPage.fields_view_get(view_id=view.id, view_type="search")[
+            "arch"
+        ]
+        filter_domain = etree.fromstring(arch).xpath("//field")[0].get("filter_domain")
+        page_title = self.DocumentPage.create(
+            {
+                "name": "Page DOCUMENTWORD",
+                "type": "content",
+                "parent_id": self.category.id,
+                "content": "<p>nothing relevant here</p>",
+            }
+        )
+        page_summary = self.DocumentPage.create(
+            {
+                "name": "Page Summary",
+                "type": "content",
+                "parent_id": self.category.id,
+                "content": "<p>nothing relevant here</p>",
+                "draft_summary": "adds DOCUMENTWORD",
+            }
+        )
+        page_content = self.DocumentPage.create(
+            {
+                "name": "Page Content",
+                "type": "content",
+                "parent_id": self.category.id,
+                "content": "<p>the body says DOCUMENTWORD</p>",
+            }
+        )
+        page_file = self.DocumentPage.create(
+            {
+                "name": "Page File",
+                "type": "content",
+                "parent_id": self.category.id,
+                "content": "<p>nothing relevant here</p>",
+            }
+        )
+        self._attach(page_file, "file.txt", b"the file says DOCUMENTWORD")
+        result = self.DocumentPage.search(
+            safe_eval(filter_domain, {"self": "DOCUMENTWORD"})
+        )
+        self.assertIn(page_title, result)
+        self.assertIn(page_summary, result)
+        self.assertIn(page_content, result)
+        self.assertIn(page_file, result)
+        self.assertNotIn(self.page_empty, result)
 
     def _orphan(self, name, raw):
         return self.Attachment.create(
