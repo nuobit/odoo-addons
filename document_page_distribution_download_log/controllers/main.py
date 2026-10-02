@@ -49,5 +49,5 @@ class DocumentPageDistributionDownloadLogController(http.Controller):
             attachment.check("read")
         except AccessError:
             raise NotFound() from None
-        history._log_recipient_download(attachment_id, user=request.env.user)
+        history._log_recipient_download(attachment_id)
         return redirect("/web/content/%s?download=true" % attachment_id, code=303)

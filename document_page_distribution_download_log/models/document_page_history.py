@@ -4,7 +4,7 @@
 
 from lxml import html as lxml_html
 
-from odoo import _, api, fields, models
+from odoo import _, api, models
 from odoo.exceptions import ValidationError
 
 WEB_CONTENT_PREFIX = "/web/content/"
@@ -141,25 +141,18 @@ class DocumentPageHistory(models.Model):
         self.ensure_one()
         return attachment_id in self._tracked_attachment_ids(self.content or "")
 
-    def _log_recipient_download(self, attachment_id, user=None):
+    def _log_recipient_download(self, attachment_id):
         self.ensure_one()
-        user = user or self.env.user
-        download_model = self.env["document.page.history.recipient.download"]
-        partner = user.partner_id
-        recipient = self.env["document.page.history.recipient"].search(
-            [("history_id", "=", self.id), ("partner_id", "=", partner.id)],
-            limit=1,
-        )
-        if not recipient:
-            return download_model
-        # sudo on create only: the download log is read-only at ACL level
-        # (1,0,0,0) -- rows are audit evidence, never user-writable -- so the
-        # system appends them on the user's behalf.
-        return download_model.sudo().create(
-            {
-                "recipient_id": recipient.id,
-                "user_id": user.id,
-                "attachment_id": attachment_id,
-                "download_date": fields.Datetime.now(),
-            }
+        # no user can write the download log: the module writes the row for
+        # the user who opens the file
+        return (
+            self.env["document.page.history.recipient.download"]
+            .sudo()
+            .create(
+                {
+                    "history_id": self.id,
+                    "user_id": self.env.user.id,
+                    "attachment_id": attachment_id,
+                }
+            )
         )

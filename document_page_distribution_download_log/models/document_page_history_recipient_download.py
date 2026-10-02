@@ -1,45 +1,61 @@
 # Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class DocumentPageHistoryRecipientDownload(models.Model):
-    """Real download evidence of a (version, partner) recipient line.
+    """Evidence that a user opened a file of a version of a document.
 
-    A row only exists when a covered recipient actually accessed/downloaded the
-    PDF of the version. It is always imputed to the version (``history_id``) the
-    link belonged to, never to the page's current head.
+    A row is written for every click on a tracked link, whoever clicks. It
+    belongs to the version the link was saved in, never to the current version
+    of the document.
     """
 
     _name = "document.page.history.recipient.download"
     _description = "Document Page Distribution Download"
     _order = "download_date desc, id desc"
 
-    recipient_id = fields.Many2one(
-        "document.page.history.recipient",
+    history_id = fields.Many2one(
+        comodel_name="document.page.history",
         required=True,
         ondelete="cascade",
         index=True,
     )
-    history_id = fields.Many2one(
-        "document.page.history",
-        related="recipient_id.history_id",
+    user_id = fields.Many2one(
+        comodel_name="res.users",
+        required=True,
+        index=True,
+    )
+    # the recipient line of the version for the user, when there is one
+    recipient_id = fields.Many2one(
+        comodel_name="document.page.history.recipient",
+        compute="_compute_recipient_id",
         store=True,
+        ondelete="set null",
         index=True,
     )
     document_page_id = fields.Many2one(
-        "document.page",
-        related="recipient_id.document_page_id",
+        comodel_name="document.page",
+        related="history_id.page_id",
         store=True,
         index=True,
     )
     company_id = fields.Many2one(
-        "res.company",
-        related="recipient_id.company_id",
+        comodel_name="res.company",
+        related="history_id.company_id",
         store=True,
         index=True,
     )
-    user_id = fields.Many2one("res.users")
     attachment_id = fields.Many2one("ir.attachment", ondelete="set null")
-    download_date = fields.Datetime()
+    download_date = fields.Datetime(required=True, default=fields.Datetime.now)
+
+    @api.depends("history_id.recipient_ids.partner_id", "user_id.partner_id")
+    def _compute_recipient_id(self):
+        for download in self:
+            # a version has one recipient per partner at most
+            # (constraint history_partner_uniq of the recipients)
+            download.recipient_id = download.history_id.recipient_ids.filtered(
+                lambda recipient: recipient.partner_id == download.user_id.partner_id
+            )
