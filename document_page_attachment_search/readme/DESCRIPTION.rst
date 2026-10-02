@@ -32,9 +32,11 @@ Behavior:
   uploaded them. A file embedded before the page's first save (``res_id=0``)
   therefore becomes searchable when its uploader saves the page, with no manual
   step.
-* A file still linked to an existing ``document.page`` (via ``res_model`` /
-  ``res_id``) cannot be deleted. This avoids leaving a dead ``/web/content`` link
-  in the page body and keeps the content search consistent.
+* A file of the document saved in its content is kept with the versions of the
+  document, also after a later version takes it out of the content: while the
+  document exists, only a system administrator can delete it, attach it to
+  another record or change its content. The image of the page and the files
+  attached through the chatter can be deleted as usual.
 
 Scope:
 
