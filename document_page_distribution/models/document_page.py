@@ -166,6 +166,14 @@ class DocumentPage(models.Model):
         Send = self.env["document.page.history.recipient.send"]
         Recipient = self.env["document.page.history.recipient"]
         sendable = recipients.filtered(lambda r: r._is_sendable(r.has_access, r.email))
+        if not sendable:
+            raise UserError(
+                _(
+                    "There is no recipient to send the document to. Select at "
+                    "least one recipient with access to the document and an "
+                    "email address."
+                )
+            )
         lang_groups = {}
         for rec in sendable:
             lang = rec.user_id.lang or "en_US"

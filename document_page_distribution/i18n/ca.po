@@ -597,6 +597,16 @@ msgstr ""
 
 #. module: document_page_distribution
 #: code:addons/document_page_distribution/models/document_page.py:0
+#, python-format
+msgid ""
+"There is no recipient to send the document to. Select at least one recipient"
+" with access to the document and an email address."
+msgstr ""
+"No hi ha cap destinatari a qui enviar el document. Selecciona almenys un "
+"destinatari amb accés al document i adreça de correu electrònic."
+
+#. module: document_page_distribution
+#: code:addons/document_page_distribution/models/document_page.py:0
 #: code:addons/document_page_distribution/wizards/document_page_distribute.py:0
 #: code:addons/document_page_distribution/wizards/document_page_distribute.py:0
 #, python-format

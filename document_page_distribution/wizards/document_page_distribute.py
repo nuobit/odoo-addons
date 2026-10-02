@@ -103,8 +103,7 @@ class DocumentPageDistribute(models.TransientModel):
             lambda line: line.selected and line.sendable
         ).mapped("partner_id")
         to_send = recipients.filtered(lambda r: r.partner_id in selected_partners)
-        if to_send:
-            page._distribute_send(history, to_send, self.template_id)
+        page._distribute_send(history, to_send, self.template_id)
         return {"type": "ir.actions.act_window_close"}
 
 
