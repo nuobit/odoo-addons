@@ -49,18 +49,23 @@ class DocumentPage(models.Model):
 
     def _anchor_content_attachments(self, content):
         """Anchor to each page the files that ``content``, the content being
-        saved, links and that belong to no record yet.
+        saved, links: the current user's uploads that belong to no record yet
+        (any upload for a system administrator).
         """
         linked = (
             self.env["ir.attachment"]
+            .sudo()
             .browse(sorted(self._linked_attachment_ids(content)))
             .exists()
             .filtered(lambda a: a.res_model == "document.page")
         )
         for page in self:
-            orphans = linked.filtered(lambda a: not a.res_id)
+            orphans = linked.filtered(
+                lambda a: not a.res_id
+                and (self.env.is_system() or a.create_uid.id == self.env.uid)
+            )
             if orphans:
-                orphans.write({"res_id": page.id})
+                orphans.with_env(self.env).write({"res_id": page.id})
 
     def _anchor_stored_content_attachments(self):
         for page in self:
