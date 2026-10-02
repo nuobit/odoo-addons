@@ -81,14 +81,26 @@ Scope:
 Installation
 ============
 
-* ``attachment_indexation`` must be installed (declared as a dependency).
-* ``pdfminer.six`` must be installed in Odoo's Python environment (declared as an
-  external dependency, so the module will not install without it) and Odoo must
-  be restarted after installing it; otherwise PDFs attached to a page remain
-  unindexed and cannot be matched.
-* Attachments uploaded before installing ``attachment_indexation`` /
-  ``pdfminer.six`` are not retroactively indexed; use the post-migration
-  reindexing of the usage section to index them.
+This module needs the ``pdfminer.six`` Python package in Odoo's Python
+environment to extract the text of PDF files::
+
+    pip install pdfminer.six
+
+It is tested with release 20251107, which needs Python 3.9 or later; on an
+older Python, pip installs the newest release that supports it.
+
+Restart Odoo after installing it. The manifest declares the dependency by the
+name the package is imported with, ``pdfminer``: Odoo refuses to install the
+module when that name cannot be imported.
+
+Do not install the package named ``pdfminer``: it is the original, abandoned
+project, and Odoo extracts no text from PDF files with it. It writes into the
+same ``pdfminer`` folder as ``pdfminer.six``, so if it is installed, uninstall
+it and then reinstall ``pdfminer.six`` with ``pip install --force-reinstall``.
+
+``attachment_indexation`` is installed with this module. Files uploaded before
+``attachment_indexation`` or ``pdfminer.six`` was installed are not indexed
+retroactively: see the post-migration reindexing of the usage section.
 
 Usage
 =====
