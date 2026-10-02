@@ -480,6 +480,16 @@ class TestDocumentPageDistribution(SavepointCase):
         )[:1]
         self.assertIn("docs@example.com", message.email_from)
 
+    def test_message_email_from_without_document_company(self):
+        self.company.email = "docs@example.com"
+        self.page.company_id = False
+        self._distribute(only_partners=self.reader_es.partner_id)
+        message = self.page.message_ids.filtered(
+            lambda m: m.message_type == "notification"
+        )[:1]
+        self.assertIn(self.company.name, message.email_from)
+        self.assertIn("docs@example.com", message.email_from)
+
     # ------------------------------------------------------------------
     # counts
     # ------------------------------------------------------------------

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
 <odoo noupdate="1">
     <record id="mail_template_document_page_distribution" model="mail.template">
@@ -10,7 +11,7 @@
         >New document version available: ${object.name} (${object.draft_name or 'latest version'})</field>
         <field
             name="email_from"
-        >"${object.company_id.name | safe}" &lt;${(object.company_id.email or user.email) | safe}&gt;</field>
+        >"${(object.company_id or user.company_id).name | safe}" &lt;${((object.company_id or user.company_id).email or user.email) | safe}&gt;</field>
         <field name="body_html" type="html">
             <table
                 border="0"
