@@ -2,9 +2,7 @@
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-from odoo import fields, models
-
-from .document_page_history_recipient import NOTIFICATION_STATUS_SELECTION
+from odoo import api, fields, models
 
 
 class DocumentPageHistoryRecipientSend(models.Model):
@@ -44,7 +42,24 @@ class DocumentPageHistoryRecipientSend(models.Model):
     mail_message_id = fields.Many2one("mail.message", ondelete="set null")
     mail_notification_id = fields.Many2one("mail.notification", ondelete="set null")
     notification_status = fields.Selection(
-        NOTIFICATION_STATUS_SELECTION,
-        related="mail_notification_id.notification_status",
+        selection="_selection_notification_status",
+        string="Delivery Status",
+        compute="_compute_notification_status",
         store=True,
     )
+
+    @api.depends("mail_notification_id.notification_status")
+    def _compute_notification_status(self):
+        for send in self:
+            if send.mail_notification_id:
+                send.notification_status = send.mail_notification_id.notification_status
+            else:
+                # Odoo deletes the notification of a delivered email some time
+                # after the send: the send keeps the last status it stored
+                send.notification_status = send.notification_status
+
+    @api.model
+    def _selection_notification_status(self):
+        return self.env["mail.notification"].fields_get(["notification_status"])[
+            "notification_status"
+        ]["selection"]

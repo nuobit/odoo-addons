@@ -2,6 +2,8 @@
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+from datetime import datetime
+
 from freezegun import freeze_time
 from psycopg2 import IntegrityError
 
@@ -351,6 +353,25 @@ class TestDocumentPageDistribution(SavepointCase):
         self._process_mail_queue()
         self.assertEqual(es_rec.state, "sent")
 
+    def test_sent_status_survives_notification_garbage_collection(self):
+        with freeze_time("2026-01-10 09:00:00"):
+            self._distribute(only_partners=self.reader_es.partner_id)
+            self._process_mail_queue()
+        es_rec = self._recipients().filtered(
+            lambda r: r.partner_id == self.reader_es.partner_id
+        )
+        self.assertEqual(es_rec.state, "sent")
+        self.assertEqual(es_rec.last_successful_sent_date, datetime(2026, 1, 10, 9, 0))
+        self.assertEqual(self.page.history_head.distribution_summary, "1/5")
+        # Odoo deletes the notifications of delivered emails after some time
+        with freeze_time("2026-12-31 09:00:00"):
+            self.env["mail.notification"]._gc_notifications(max_age_days=180)
+        self.env["base"].flush()
+        self.assertFalse(es_rec.send_ids.mail_notification_id)
+        self.assertEqual(es_rec.state, "sent")
+        self.assertEqual(es_rec.last_successful_sent_date, datetime(2026, 1, 10, 9, 0))
+        self.assertEqual(self.page.history_head.distribution_summary, "1/5")
+
     def test_user_without_access_is_listed_and_not_emailed(self):
         self._distribute()
         no_access_rec = self._recipients().filtered(
@@ -602,7 +623,6 @@ class TestDocumentPageDistribution(SavepointCase):
             ("canceled", "canceled"),
         ):
             notif.notification_status = status
-            es_rec.invalidate_cache()
             self.assertEqual(es_rec.state, expected)
             wizard = self._open_wizard()
             es_line = wizard.line_ids.filtered(
@@ -640,7 +660,6 @@ class TestDocumentPageDistribution(SavepointCase):
         notif = es_rec.send_ids.mail_notification_id
         self.assertTrue(notif)
         notif.notification_status = "bounce"
-        es_rec.invalidate_cache()
         self.assertEqual(es_rec.state, "bounce")
 
     def test_cancel_wizard_creates_no_records(self):
