@@ -20,12 +20,13 @@ class DocumentPageHistoryRecipientDownload(models.Model):
     history_id = fields.Many2one(
         comodel_name="document.page.history",
         required=True,
-        ondelete="cascade",
+        ondelete="restrict",
         index=True,
     )
     user_id = fields.Many2one(
         comodel_name="res.users",
         required=True,
+        ondelete="restrict",
         index=True,
     )
     # the recipient line of the version for the user, when there is one

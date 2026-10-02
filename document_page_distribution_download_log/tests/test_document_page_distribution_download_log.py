@@ -6,9 +6,11 @@ import base64
 from datetime import datetime
 
 from freezegun import freeze_time
+from psycopg2 import IntegrityError
 
 from odoo.exceptions import AccessError, ValidationError
 from odoo.tests.common import SavepointCase
+from odoo.tools import mute_logger
 
 
 class TestDocumentPageDistributionDownloadLog(SavepointCase):
@@ -206,6 +208,84 @@ class TestDocumentPageDistributionDownloadLog(SavepointCase):
         self.assertEqual(head.distribution_count, 0)
         self.assertEqual(head.download_recipient_count, 0)
         self.assertFalse(head.download_summary)
+
+    def test_version_with_downloads_cannot_be_deleted(self):
+        # a version without recipients, so that only the download holds it
+        page = self.env["document.page"].create(
+            {
+                "name": "Never distributed",
+                "type": "content",
+                "groups_id": [(6, 0, [self.group.id])],
+                "content": self._doc_link(self.attachment.id),
+            }
+        )
+        head = page.history_head
+        head.with_user(self.alice)._log_recipient_download(self.attachment.id)
+        with self.assertRaises(IntegrityError) as error, mute_logger("odoo.sql_db"):
+            with self.cr.savepoint():
+                head.unlink()
+        self.assertEqual(
+            error.exception.diag.constraint_name,
+            "document_page_history_recipient_download_history_id_fkey",
+        )
+        self.assertTrue(head.exists())
+
+    def test_document_with_downloads_cannot_be_deleted(self):
+        page = self.env["document.page"].create(
+            {
+                "name": "Never distributed",
+                "type": "content",
+                "groups_id": [(6, 0, [self.group.id])],
+                "content": self._doc_link(self.attachment.id),
+            }
+        )
+        page.history_head.with_user(self.alice)._log_recipient_download(
+            self.attachment.id
+        )
+        with self.assertRaises(IntegrityError) as error, mute_logger("odoo.sql_db"):
+            with self.cr.savepoint():
+                page.unlink()
+        self.assertEqual(
+            error.exception.diag.constraint_name,
+            "document_page_history_recipient_download_history_id_fkey",
+        )
+        self.assertTrue(page.exists())
+
+    def test_no_user_can_change_the_download_log(self):
+        manager = (
+            self.env["res.users"]
+            .with_context(no_reset_password=True)
+            .create(
+                {
+                    "name": "Manager",
+                    "login": "manager_dpddl",
+                    "groups_id": [
+                        (
+                            6,
+                            0,
+                            [self.env.ref("document_page.group_document_manager").id],
+                        )
+                    ],
+                }
+            )
+        )
+        download = (
+            self.head.with_user(self.alice)
+            ._log_recipient_download(self.attachment.id)
+            .with_user(manager)
+        )
+        with self.assertRaises(AccessError):
+            download.write({"attachment_id": False})
+        with self.assertRaises(AccessError):
+            download.unlink()
+        with self.assertRaises(AccessError):
+            download.create(
+                {
+                    "history_id": self.head.id,
+                    "user_id": manager.id,
+                    "attachment_id": self.attachment.id,
+                }
+            )
 
     def test_attachment_must_belong_to_version(self):
         self.assertTrue(self.head._download_attachment_is_tracked(self.attachment.id))
