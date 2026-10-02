@@ -345,6 +345,11 @@ msgid "Error"
 msgstr "Error"
 
 #. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__has_access
+msgid "Has Access"
+msgstr "Tiene acceso"
+
+#. module: document_page_distribution
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__history_id
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__history_id
 msgid "History"
@@ -419,6 +424,12 @@ msgid ""
 msgstr ""
 "Nueva versión documental disponible: ${object.name} (${object.draft_name or "
 "'última versión'})"
+
+#. module: document_page_distribution
+#: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_distribute_line__current_state__no_access
+#: model:ir.model.fields.selection,name:document_page_distribution.selection__document_page_history_recipient__state__no_access
+msgid "No access"
+msgstr "Sin acceso"
 
 #. module: document_page_distribution
 #: code:addons/document_page_distribution/models/document_page.py:0
@@ -562,6 +573,12 @@ msgstr ""
 "La versión actual del documento se distribuirá a los destinatarios "
 "seleccionados. El contenido del correo proviene de la plantilla elegida y no"
 " se puede editar aquí."
+
+#. module: document_page_distribution
+#: model:ir.model.fields,help:document_page_distribution.field_document_page_history_recipient__has_access
+msgid "The user could read the document when the distribution was confirmed."
+msgstr ""
+"El usuario podía leer el documento cuando se confirmó la distribución."
 
 #. module: document_page_distribution
 #: code:addons/document_page_distribution/models/document_page.py:0
