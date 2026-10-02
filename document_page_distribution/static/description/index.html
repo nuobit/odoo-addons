@@ -375,26 +375,36 @@ ul.auto-toc {
 !! source digest: sha256:b2636594720d71b12d900c6aeb28a31cb1e5ca41906a03054b7fd18495ddce1d
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 <p><a class="reference external image-reference" href="https://odoo-community.org/page/development-status"><img alt="Beta" src="https://img.shields.io/badge/maturity-Beta-yellow.png" /></a> <a class="reference external image-reference" href="http://www.gnu.org/licenses/agpl-3.0-standalone.html"><img alt="License: AGPL-3" src="https://img.shields.io/badge/license-AGPL--3-blue.png" /></a> <a class="reference external image-reference" href="https://github.com/NuoBiT/odoo-addons/tree/14.0/document_page_distribution"><img alt="NuoBiT/odoo-addons" src="https://img.shields.io/badge/github-NuoBiT%2Fodoo--addons-lightgray.png?logo=github" /></a></p>
-<p>This module adds a <em>Distribute</em> action on document pages. When a document
-manager distributes a page, its current version is emailed to every
-user that has read access to the document according to its configured security
-groups, and an auditable distribution log is kept (who distributed which
-version, when, and to whom).</p>
+<p>This module adds a <em>Distribute</em> action on document pages. A document manager
+sends the current version of a document by email to its readers, and the module
+keeps a distribution log per version: who distributed it, when, to whom, and
+the delivery status of the email of every recipient.</p>
+<p>In this module, distributed means notified by email, with the delivery status
+of every recipient.</p>
+<p>The users in scope of a distribution are the active internal users that belong
+to any of the groups set in the <em>Security</em> tab of the document and, when the
+document has a company, to that company. Every user in scope gets a line in
+the log of the version. The email goes only to the users that can read the
+document and have an email address; the others stay in the log with the state
+<em>No access</em> or <em>No email</em>.</p>
 <p>The distributed version is the document’s current version. If the document has
 no current version yet, distribution is blocked. When <em>Document Page Approval</em>
 is installed, the current version is the latest approved one, so only approved
 content is distributed.</p>
 <p>Distributing the same version again resends the email as a reminder without
 creating a new document version.</p>
+<p>No user can edit or delete the log. A document with a log cannot be deleted,
+only archived, and a version with a log cannot be deleted.</p>
 <p><strong>Table of contents</strong></p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
 <li><a class="reference internal" href="#usage" id="toc-entry-1">Usage</a></li>
-<li><a class="reference internal" href="#bug-tracker" id="toc-entry-2">Bug Tracker</a></li>
-<li><a class="reference internal" href="#credits" id="toc-entry-3">Credits</a><ul>
-<li><a class="reference internal" href="#authors" id="toc-entry-4">Authors</a></li>
-<li><a class="reference internal" href="#contributors" id="toc-entry-5">Contributors</a></li>
-<li><a class="reference internal" href="#maintainers" id="toc-entry-6">Maintainers</a></li>
+<li><a class="reference internal" href="#known-issues-roadmap" id="toc-entry-2">Known issues / Roadmap</a></li>
+<li><a class="reference internal" href="#bug-tracker" id="toc-entry-3">Bug Tracker</a></li>
+<li><a class="reference internal" href="#credits" id="toc-entry-4">Credits</a><ul>
+<li><a class="reference internal" href="#authors" id="toc-entry-5">Authors</a></li>
+<li><a class="reference internal" href="#contributors" id="toc-entry-6">Contributors</a></li>
+<li><a class="reference internal" href="#maintainers" id="toc-entry-7">Maintainers</a></li>
 </ul>
 </li>
 </ul>
@@ -404,18 +414,49 @@ creating a new document version.</p>
 <ol class="arabic simple">
 <li>Open a document page as a document manager.</li>
 <li>In the <em>Security</em> tab, set the groups that may read the document.</li>
-<li>Press <em>Distribute</em> in the form header. The current version is emailed to the
-users of those groups who have read access to the document and a valid
-email address.</li>
-<li>Each distribution is logged as a note in the document’s chatter, and the
-per-recipient delivery status (queued, sent, bounced, error, …) is tracked
-in the <em>Distribution</em> tab of the document.</li>
+<li>Press <em>Distribute</em> in the form header. The wizard lists the users in scope
+with their state. A user that cannot read the document or has no email
+address cannot be selected.</li>
+<li>Select the recipients and press <em>Send</em>. The emails leave with the next run
+of the mail queue of Odoo; until then the state of the recipient is
+<em>Queued</em>.</li>
+<li>Each distribution is logged as a note in the document’s chatter. The
+<em>Distribution</em> tab of the document lists the recipients of the current
+version with their state (queued, sent, bounced, error, …). Above the
+list, <em>Distribution</em> says how many of them the version has been sent to,
+as a fraction: <em>3/10</em> means 3 of 10. The form of every version keeps the
+same information, and the list of versions shows it in the column
+<em>Distribution</em>.</li>
 </ol>
-<p>Pressing <em>Distribute</em> again on the same version resends the email to the same
-recipients as a reminder; it does not create a new document version.</p>
+<p>Pressing <em>Distribute</em> again on the same version resends the email to the
+selected recipients as a reminder; it does not create a new document version.
+The recipients whose last email is queued or sent are not selected by default.</p>
+</div>
+<div class="section" id="known-issues-roadmap">
+<h2><a class="toc-backref" href="#toc-entry-2">Known issues / Roadmap</a></h2>
+<ul class="simple">
+<li>The log says that an email was delivered to a recipient, not that the
+recipient read or accepted the document: the module records no read or
+acceptance evidence.</li>
+<li>Every recipient receives an email, also the users whose notification
+preference is to handle the notifications inside Odoo: the log relies on the
+delivery status of an email.</li>
+<li>A document without groups in its <em>Security</em> tab cannot be distributed: the
+users in scope are taken from those groups.</li>
+<li>A user without a language receives the email in English.</li>
+<li>The users in scope are computed again when the wizard is confirmed. A user
+added to a group while the wizard is open gets a line in the log without
+having been shown in the wizard, and a user removed from the groups in the
+meantime is not sent the email, even if selected.</li>
+<li>The behaviour with <em>Document Page Approval</em> installed is not covered by the
+tests of this module.</li>
+<li>Odoo deletes the notification of a delivered email some time after the send.
+From then on the send keeps its last delivery status: a later bounce of that
+email no longer reaches the log.</li>
+</ul>
 </div>
 <div class="section" id="bug-tracker">
-<h2><a class="toc-backref" href="#toc-entry-2">Bug Tracker</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-3">Bug Tracker</a></h2>
 <p>Bugs are tracked on <a class="reference external" href="https://github.com/NuoBiT/odoo-addons/issues">GitHub Issues</a>.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
@@ -423,16 +464,16 @@ If you spotted it first, help us to smash it by providing a detailed and welcome
 <p>Do not contact contributors directly about support or help with technical issues.</p>
 </div>
 <div class="section" id="credits">
-<h2><a class="toc-backref" href="#toc-entry-3">Credits</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-4">Credits</a></h2>
 <div class="section" id="authors">
-<h3><a class="toc-backref" href="#toc-entry-4">Authors</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-5">Authors</a></h3>
 <ul class="simple">
 <li>NuoBiT Solutions</li>
 <li>S.L.</li>
 </ul>
 </div>
 <div class="section" id="contributors">
-<h3><a class="toc-backref" href="#toc-entry-5">Contributors</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-6">Contributors</a></h3>
 <ul>
 <li><p class="first"><a class="reference external" href="https://www.nuobit.com">NuoBiT</a>:</p>
 <blockquote>
@@ -444,7 +485,7 @@ If you spotted it first, help us to smash it by providing a detailed and welcome
 </ul>
 </div>
 <div class="section" id="maintainers">
-<h3><a class="toc-backref" href="#toc-entry-6">Maintainers</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-7">Maintainers</a></h3>
 <p>This module is part of the <a class="reference external" href="https://github.com/NuoBiT/odoo-addons/tree/14.0/document_page_distribution">NuoBiT/odoo-addons</a> project on GitHub.</p>
 <p>You are welcome to contribute.</p>
 </div>

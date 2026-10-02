@@ -26,11 +26,20 @@ Document Page Distribution
 
 |badge1| |badge2| |badge3|
 
-This module adds a *Distribute* action on document pages. When a document
-manager distributes a page, its current version is emailed to every
-user that has read access to the document according to its configured security
-groups, and an auditable distribution log is kept (who distributed which
-version, when, and to whom).
+This module adds a *Distribute* action on document pages. A document manager
+sends the current version of a document by email to its readers, and the module
+keeps a distribution log per version: who distributed it, when, to whom, and
+the delivery status of the email of every recipient.
+
+In this module, distributed means notified by email, with the delivery status
+of every recipient.
+
+The users in scope of a distribution are the active internal users that belong
+to any of the groups set in the *Security* tab of the document and, when the
+document has a company, to that company. Every user in scope gets a line in
+the log of the version. The email goes only to the users that can read the
+document and have an email address; the others stay in the log with the state
+*No access* or *No email*.
 
 The distributed version is the document's current version. If the document has
 no current version yet, distribution is blocked. When *Document Page Approval*
@@ -39,6 +48,9 @@ content is distributed.
 
 Distributing the same version again resends the email as a reminder without
 creating a new document version.
+
+No user can edit or delete the log. A document with a log cannot be deleted,
+only archived, and a version with a log cannot be deleted.
 
 **Table of contents**
 
@@ -50,15 +62,45 @@ Usage
 
 #. Open a document page as a document manager.
 #. In the *Security* tab, set the groups that may read the document.
-#. Press *Distribute* in the form header. The current version is emailed to the
-   users of those groups who have read access to the document and a valid
-   email address.
-#. Each distribution is logged as a note in the document's chatter, and the
-   per-recipient delivery status (queued, sent, bounced, error, ...) is tracked
-   in the *Distribution* tab of the document.
+#. Press *Distribute* in the form header. The wizard lists the users in scope
+   with their state. A user that cannot read the document or has no email
+   address cannot be selected.
+#. Select the recipients and press *Send*. The emails leave with the next run
+   of the mail queue of Odoo; until then the state of the recipient is
+   *Queued*.
+#. Each distribution is logged as a note in the document's chatter. The
+   *Distribution* tab of the document lists the recipients of the current
+   version with their state (queued, sent, bounced, error, ...). Above the
+   list, *Distribution* says how many of them the version has been sent to,
+   as a fraction: *3/10* means 3 of 10. The form of every version keeps the
+   same information, and the list of versions shows it in the column
+   *Distribution*.
 
-Pressing *Distribute* again on the same version resends the email to the same
-recipients as a reminder; it does not create a new document version.
+Pressing *Distribute* again on the same version resends the email to the
+selected recipients as a reminder; it does not create a new document version.
+The recipients whose last email is queued or sent are not selected by default.
+
+Known issues / Roadmap
+======================
+
+* The log says that an email was delivered to a recipient, not that the
+  recipient read or accepted the document: the module records no read or
+  acceptance evidence.
+* Every recipient receives an email, also the users whose notification
+  preference is to handle the notifications inside Odoo: the log relies on the
+  delivery status of an email.
+* A document without groups in its *Security* tab cannot be distributed: the
+  users in scope are taken from those groups.
+* A user without a language receives the email in English.
+* The users in scope are computed again when the wizard is confirmed. A user
+  added to a group while the wizard is open gets a line in the log without
+  having been shown in the wizard, and a user removed from the groups in the
+  meantime is not sent the email, even if selected.
+* The behaviour with *Document Page Approval* installed is not covered by the
+  tests of this module.
+* Odoo deletes the notification of a delivered email some time after the send.
+  From then on the send keeps its last delivery status: a later bounce of that
+  email no longer reaches the log.
 
 Bug Tracker
 ===========
