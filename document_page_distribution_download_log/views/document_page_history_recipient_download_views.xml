@@ -11,7 +11,6 @@
                 <field name="download_date" />
                 <field name="user_id" />
                 <field name="attachment_id" />
-                <field name="ip_address" optional="hide" />
             </tree>
         </field>
     </record>
@@ -26,10 +25,6 @@
                             <field name="download_date" />
                             <field name="user_id" />
                             <field name="attachment_id" />
-                        </group>
-                        <group>
-                            <field name="ip_address" />
-                            <field name="user_agent" />
                         </group>
                     </group>
                 </sheet>

@@ -113,11 +113,6 @@ msgid "ID"
 msgstr "ID"
 
 #. module: document_page_distribution_download_log
-#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__ip_address
-msgid "IP Address"
-msgstr "Adreça IP"
-
-#. module: document_page_distribution_download_log
 #: model:ir.model.fields,help:document_page_distribution_download_log.field_document_page_history_recipient_download__company_id
 msgid "If set, page is accessible only from this company"
 msgstr ""
@@ -159,8 +154,3 @@ msgstr "Destinatari"
 #: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__user_id
 msgid "User"
 msgstr "Usuari"
-
-#. module: document_page_distribution_download_log
-#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__user_agent
-msgid "User Agent"
-msgstr "Agent d'usuari"
