@@ -504,7 +504,7 @@ msgid "Sent"
 msgstr "Enviat"
 
 #. module: document_page_distribution
-#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__sent_by
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__sent_by_id
 msgid "Sent By"
 msgstr "Enviat per"
 

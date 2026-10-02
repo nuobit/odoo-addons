@@ -1,4 +1,5 @@
 # Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from odoo.exceptions import AccessError, UserError
@@ -209,6 +210,7 @@ class TestDocumentPageDistribution(SavepointCase):
         notif = es_rec.send_ids.mail_notification_id
         self.assertEqual(notif.notification_type, "email")
         self.assertEqual(es_rec.state, "queued")  # ready -> queued
+        self.assertEqual(es_rec.send_ids.sent_by_id, self.manager)
 
     def test_inbox_user_still_receives_email(self):
         self.reader_es.notification_type = "inbox"
