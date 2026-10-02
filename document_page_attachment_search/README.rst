@@ -139,12 +139,25 @@ archived documents included, from a shell::
 Each orphan attachment gets its ``res_id`` set to the page whose current body
 references it, and every file of a page that its current body references is kept
 with the page. Attachments that no longer appear in any page body (files removed
-or replaced) are intentionally left untouched.
+or replaced) are intentionally left untouched. The pass reads the content stored
+in each page: a link that another module rewrote there is not recognised.
 
 Known issues / Roadmap
 ======================
 
-* Scanned PDFs (image-only) yield no extractable text and are not matched.
+* Scanned PDFs (images only) and other PDFs without extractable text yield no
+  indexed text, so their content is not matched.
+* Copy-protected PDFs are indexed like any other PDF: ``pdfminer.six`` ignores
+  their copy protection, so the search finds the words of such a file.
+* The search is meant for internal users; access to the documents from the
+  portal is out of scope.
+* Files embedded in a document before this module is installed are kept with
+  the document only once its content is saved again, or after the
+  post-migration linking of the usage section; a file that belongs to no record
+  is anchored by the save of its uploader or of a system administrator. Both
+  recognise ``/web/content/<id>`` and ``/web/image/<id>`` links only: a file
+  whose link another module rewrote in the stored content, such as a
+  download-tracking link, is not kept.
 * A file of another document linked in the content, such as an image copied
   from another document or a file of the document this one was duplicated
   from, is not kept by this document: it belongs to the other document, goes
