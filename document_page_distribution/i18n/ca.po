@@ -242,6 +242,11 @@ msgstr ""
 "document d'aquesta empresa."
 
 #. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__notification_status
+msgid "Delivery Status"
+msgstr "Estat de lliurament"
+
+#. module: document_page_distribution
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page__display_name
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute__display_name
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute_line__display_name
@@ -549,11 +554,6 @@ msgid "State"
 msgstr "Estat"
 
 #. module: document_page_distribution
-#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__notification_status
-msgid "Status"
-msgstr "Estat"
-
-#. module: document_page_distribution
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__template_id
 msgid "Template"
 msgstr "Plantilla"
@@ -588,6 +588,16 @@ msgstr ""
 "La versió actual del document es distribuirà als destinataris seleccionats. "
 "El contingut del correu prové de la plantilla triada i no es pot editar "
 "aquí."
+
+#. module: document_page_distribution
+#: code:addons/document_page_distribution/models/document_page_history_recipient.py:0
+#, python-format
+msgid ""
+"The distribution log does not know the delivery status '%(status)s' of the "
+"send to %(email)s. Please contact your administrator."
+msgstr ""
+"El registre de distribució no coneix l'estat de lliurament '%(status)s' de "
+"l'enviament a %(email)s. Contacta amb l'administrador."
 
 #. module: document_page_distribution
 #: model:ir.model.fields,help:document_page_distribution.field_document_page_history_recipient__has_access

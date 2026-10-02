@@ -242,6 +242,11 @@ msgstr ""
 "documento de esta compañía."
 
 #. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__notification_status
+msgid "Delivery Status"
+msgstr "Estado de entrega"
+
+#. module: document_page_distribution
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page__display_name
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute__display_name
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute_line__display_name
@@ -548,11 +553,6 @@ msgid "State"
 msgstr "Estado"
 
 #. module: document_page_distribution
-#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__notification_status
-msgid "Status"
-msgstr "Estado"
-
-#. module: document_page_distribution
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__template_id
 msgid "Template"
 msgstr "Plantilla"
@@ -587,6 +587,16 @@ msgstr ""
 "La versión actual del documento se distribuirá a los destinatarios "
 "seleccionados. El contenido del correo proviene de la plantilla elegida y no"
 " se puede editar aquí."
+
+#. module: document_page_distribution
+#: code:addons/document_page_distribution/models/document_page_history_recipient.py:0
+#, python-format
+msgid ""
+"The distribution log does not know the delivery status '%(status)s' of the "
+"send to %(email)s. Please contact your administrator."
+msgstr ""
+"El registro de distribución no conoce el estado de entrega '%(status)s' del "
+"envío a %(email)s. Contacta con el administrador."
 
 #. module: document_page_distribution
 #: model:ir.model.fields,help:document_page_distribution.field_document_page_history_recipient__has_access

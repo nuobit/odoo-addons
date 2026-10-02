@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 NOTIFICATION_STATE_MAP = {
     "ready": "queued",
@@ -20,14 +21,6 @@ STATE_SELECTION = [
     ("sent", "Sent"),
     ("error", "Error"),
     ("bounce", "Bounce"),
-    ("canceled", "Canceled"),
-]
-
-NOTIFICATION_STATUS_SELECTION = [
-    ("ready", "Ready to Send"),
-    ("sent", "Sent"),
-    ("bounce", "Bounced"),
-    ("exception", "Exception"),
     ("canceled", "Canceled"),
 ]
 
@@ -104,11 +97,26 @@ class DocumentPageHistoryRecipient(models.Model):
                 -1:
             ]
             rec.last_successful_sent_date = last_ok.sent_date if last_ok else False
-            status = last.notification_status if last else False
-            if status:
-                rec.state = NOTIFICATION_STATE_MAP.get(status, "queued")
+            if last:
+                rec.state = rec._get_state_of_send(last)
             else:
                 rec.state = rec._get_state_without_sends(rec.has_access, rec.email)
+
+    @api.model
+    def _get_state_of_send(self, send):
+        """State of a recipient whose last send is ``send``."""
+        status = send.notification_status
+        if status not in NOTIFICATION_STATE_MAP:
+            raise UserError(
+                _(
+                    "The distribution log does not know the delivery status "
+                    "'%(status)s' of the send to %(email)s. Please contact your "
+                    "administrator.",
+                    status=status,
+                    email=send.email,
+                )
+            )
+        return NOTIFICATION_STATE_MAP[status]
 
     @api.model
     def _get_state_without_sends(self, has_access, email):
