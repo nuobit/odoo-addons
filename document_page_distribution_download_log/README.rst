@@ -26,41 +26,31 @@ Document Page Distribution Download Log
 
 |badge1| |badge2| |badge3|
 
-This module records **per-recipient download evidence** for distributed
-document page versions. It is the download-log counterpart of
-``document_page_distribution``: while that module owns the person + version
-coverage (``document.page.history.recipient``), this module logs each real
-access/download of a version's PDF by a covered recipient, and exposes the
-download coverage as quality-audit evidence.
+This module records who opened the files of a distributed document: it is the
+download log of *Document Page Distribution*. That module sends a version of a
+document to its readers and keeps the log of the sends; this one keeps, for
+every version, the evidence that a reader opened a file linked in its content.
 
-For every ``(version, recipient)`` coverage line it adds a download summary
-(downloaded, first/last download date, download count) and a detail of every
-real access. A download is only ever recorded against an **existing** recipient
-line of the same version and person; this module never creates coverage nor
-invents recipients (that remains the responsibility of
-``document_page_distribution``).
+When a version of a document is saved, every link of its content that points to
+an attachment is rewritten to an address of this module that carries the
+version and the file. Opening that address checks that the user can read the
+document, records the download and serves the file as Odoo does.
 
-**How it works**
+A download is recorded for every user who opens a file, whether or not the
+version was distributed to that user. When the user is a recipient of the
+version, the recipient line shows the downloads: whether the user downloaded,
+how many times, the first and the last date. Every version says in *Downloads*
+how many of its recipients downloaded at least one of its files: *3/10* means 3
+of 10.
 
-* Saving a document page stores its content as a new version
-  (``document.page.history``); the page itself always shows the head version.
-* Each time a version's content is saved, the single document link in it is
-  rewritten from the raw ``/web/content/<attachment>`` form to a version-aware
-  download route that carries the version id.
-* Opening that link checks the user's read access to the page, records the
-  download against the recipient's coverage line of that exact version, and
-  redirects to the standard ``/web/content`` file download.
+No user can create, edit or delete a download record. A version or a document
+with recorded downloads cannot be deleted, only archived. A download record
+says that a user opened the address of a file; the log cannot know whether the
+file arrived or was read.
 
-**Audit contract**
-
-The download log is **append-only**. Evidence rows are written only by the
-system, through the download controller, on the recipient's behalf; the access
-rights are **read-only for every role, the Document Manager included**
-(``perm_read`` only). No user can create, edit or delete a download record, so
-the trail cannot be tampered with — which is the point of a compliance log.
-Visibility follows the document's own Security groups: a user sees the download
-evidence of the documents they are allowed to read, and a Document Manager sees
-all of it.
+Visibility follows the security groups of the document: a user sees the
+downloads of the documents they can read, and a document manager sees all of
+them.
 
 **Table of contents**
 
@@ -70,44 +60,42 @@ all of it.
 Usage
 =====
 
-.. important::
+#. Install this module on top of *Document Page Distribution*.
+#. Edit a document page and insert the files of the document in its content
+   with the editor, as links. Every link to a file is tracked, whatever the
+   type of the file and however many links there are; images and links to
+   other sites are not.
+#. On save, each link to a file is rewritten to a download address of this
+   module that carries the version and the file.
+#. When a user opens the link, the download is recorded against that exact
+   version and the file is served. Opening it again adds a new record; the
+   first and the last date of the user are kept. The link of an old version is
+   always recorded against that old version.
+#. In the *Distribution* tab of the document and in the form of every version,
+   each recipient shows whether they downloaded the version, with a button that
+   opens the detail (date, user, file) next to the sends. The form of every
+   version, the list of versions and the *History* tab of the document say in
+   *Downloads*, next to *Distribution*, how many recipients downloaded: *3/10*
+   means 3 of 10.
 
-   Install this module **before** the controlled document versions you want to
-   track are authored. The version-aware download link is written into a
-   version's content the moment that content is **saved with this module
-   installed**. A version whose content was saved *before* the install keeps its
-   raw ``/web/content`` link and is therefore **not tracked** until its next
-   revision.
+Known issues / Roadmap
+======================
 
-#. Install this module on top of *Document Page Distribution*: it adds the
-   download evidence on top of the person + version coverage.
-#. Make sure your controlled documents have a Security group and have been
-   distributed at least once (which creates the coverage lines).
-#. Edit a document page and insert a single document link (one file) in its
-   content. Saving content with more than one document link is rejected.
-   Insert the file with the page editor, which binds it to the page: a file
-   the recipient cannot read (e.g. uploaded outside the editor and bound to
-   nothing) answers 404 and no download evidence is recorded.
-#. On save, the document link is rewritten to a controlled, version-aware
-   download URL.
-#. When a covered recipient opens the link, the access is logged against their
-   coverage line for that exact version. Opening it again adds a new evidence
-   row and updates the last download date, keeping the first one. Opening the
-   link of an old version is always imputed to that old version.
-#. If a user with read access but without a coverage line opens the link, the
-   file is served but no evidence is recorded (coverage stays owned by the
-   distribution module).
-#. In the *Distribution* tab of the document, each recipient row shows whether
-   they downloaded the current version, with a button opening the full download
-   detail (date, user, file), next to the send detail.
-
-.. note::
-
-   Uninstalling this module does **not** restore the original ``/web/content``
-   links in versions saved while it was installed: their stored content keeps
-   the rewritten tracking links, which stop working once the module (and its
-   download route) is gone. Re-insert the document link manually on the next
-   revision if you uninstall.
+* A version saved before the module was installed keeps its original links and
+  is not tracked until its content is saved again.
+* Uninstalling the module does not restore the original links of the versions
+  saved while it was installed: their content keeps the addresses of the
+  module, which stop working with it. The links have to be inserted again.
+* The address of the file itself (``/web/content``, the one the module
+  redirects to) serves the file without any record.
+* A download record says that a user opened the address of a file, not that
+  the file arrived or was read.
+* A download of a user who is not a recipient of the version is recorded and
+  shown in no list of the module; it counts as soon as the version is
+  distributed to that user.
+* Every version differs from the previous one by the addresses of its links,
+  which carry the version: the comparison of two versions always shows the
+  lines of the links as changed.
 
 Bug Tracker
 ===========
