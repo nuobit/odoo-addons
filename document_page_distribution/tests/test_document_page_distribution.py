@@ -194,6 +194,34 @@ class TestDocumentPageDistribution(SavepointCase):
         self.assertTrue(Recipient.with_user(insider).search(domain))
         self.assertTrue(Send.with_user(insider).search(domain))
 
+    def test_manager_cannot_change_the_log(self):
+        self._distribute(only_partners=self.reader_es.partner_id)
+        es_rec = (
+            self._recipients()
+            .filtered(lambda r: r.partner_id == self.reader_es.partner_id)
+            .with_user(self.manager)
+        )
+        with self.assertRaises(AccessError):
+            es_rec.write({"email": "other@example.com"})
+        with self.assertRaises(AccessError):
+            es_rec.unlink()
+        with self.assertRaises(AccessError):
+            self.env["document.page.history.recipient"].with_user(self.manager).create(
+                {
+                    "history_id": self.page.history_head.id,
+                    "partner_id": self.reader_b.partner_id.id,
+                    "user_id": self.reader_b.id,
+                }
+            )
+        with self.assertRaises(AccessError):
+            es_rec.send_ids.write({"email": "other@example.com"})
+        with self.assertRaises(AccessError):
+            es_rec.send_ids.unlink()
+        with self.assertRaises(AccessError):
+            self.env["document.page.history.recipient.send"].with_user(
+                self.manager
+            ).create({"recipient_id": es_rec.id, "sent_date": "2026-01-10 09:00:00"})
+
     def test_document_with_log_cannot_be_deleted(self):
         with freeze_time("2026-01-10 09:00:00"):
             self._distribute(only_partners=self.reader_es.partner_id)
