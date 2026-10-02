@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
 <odoo>
-    <record id="view_wiki_filter_content_default" model="ir.ui.view">
-        <field name="name">document.page.search.content.default</field>
+    <record id="view_wiki_filter" model="ir.ui.view">
+        <field name="name">document.page.search.inherit.attachment.search</field>
         <field name="model">document.page</field>
         <field name="inherit_id" ref="document_page.view_wiki_filter" />
         <field name="arch" type="xml">
