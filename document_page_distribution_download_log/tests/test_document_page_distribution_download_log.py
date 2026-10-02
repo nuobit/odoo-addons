@@ -135,6 +135,23 @@ class TestDocumentPageDistributionDownloadLog(SavepointCase):
             {self.attachment.id, notes.id},
         )
 
+    def test_link_keeps_its_access_token(self):
+        page = self.env["document.page"].create(
+            {
+                "name": "Link with token",
+                "type": "content",
+                "groups_id": [(6, 0, [self.group.id])],
+                "content": '<p><a href="/web/content/%s?access_token=abc'
+                '&amp;unique=123&amp;download=true">f</a></p>' % self.attachment.id,
+            }
+        )
+        head = page.history_head
+        self.assertIn(
+            '"/document_page_distribution_download_log/download/%s/%s'
+            '?access_token=abc"' % (head.id, self.attachment.id),
+            head.content,
+        )
+
     def test_rewriting_is_idempotent(self):
         self.assertEqual(
             self.head.content,

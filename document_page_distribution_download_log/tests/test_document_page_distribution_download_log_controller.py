@@ -97,6 +97,27 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
         self.assertEqual(download.attachment_id, self.attachment)
         self.assertFalse(download.recipient_id)
 
+    def test_link_with_access_token_serves_a_file_the_reader_cannot_read(self):
+        # a file bound to nothing: only its access token opens it to a reader
+        self.attachment.write({"res_model": False, "res_id": False})
+        access_token = self.attachment.generate_access_token()[0]
+        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        response = self.url_open("%s?access_token=%s" % (self.url, access_token))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, b"%PDF-1.4 test")
+        self.assertEqual(
+            self.download_model.search_count([("user_id", "=", self.alice.id)]), 1
+        )
+
+    def test_link_with_wrong_access_token_returns_404(self):
+        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        before = self.download_model.search_count([])
+        response = self.url_open(
+            "%s?access_token=wrong" % self.url, allow_redirects=False
+        )
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(self.download_model.search_count([]), before)
+
     def test_attachment_of_another_version_returns_404(self):
         other_attachment = self.env["ir.attachment"].create(
             {
@@ -203,5 +224,26 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
         self.authenticate("stranger_dpddl_http", "stranger_dpddl_http")
         before = self.download_model.search_count([])
         response = self.url_open(self.url, allow_redirects=False)
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(self.download_model.search_count([]), before)
+
+    def test_user_without_document_access_is_blocked_even_with_a_token(self):
+        # the token of the file does not open a document the user cannot read
+        access_token = self.attachment.generate_access_token()[0]
+        self.env["res.users"].with_context(
+            no_reset_password=True, install_filename="test"
+        ).create(
+            {
+                "name": "Stranger",
+                "login": "stranger_dpddl_test",
+                "password": "stranger_dpddl_test",
+                "groups_id": [(6, 0, [self.doc_user.id])],
+            }
+        )
+        self.authenticate("stranger_dpddl_test", "stranger_dpddl_test")
+        before = self.download_model.search_count([])
+        response = self.url_open(
+            "%s?access_token=%s" % (self.url, access_token), allow_redirects=False
+        )
         self.assertEqual(response.status_code, 404)
         self.assertEqual(self.download_model.search_count([]), before)

@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from lxml import html as lxml_html
+from werkzeug.urls import url_encode, url_parse
 
 from odoo import api, fields, models
 
@@ -124,6 +125,16 @@ class DocumentPageHistory(models.Model):
         linked_ids.discard(False)
         return set(self.env["ir.attachment"].sudo().browse(linked_ids).exists().ids)
 
+    def _get_tracking_url(self, attachment_id, href):
+        """Address of the tracking route for the link ``href`` to the
+        attachment, with the access token of the link when it has one."""
+        self.ensure_one()
+        url = "%s/%s/%s" % (TRACKING_ROUTE, self.id, attachment_id)
+        access_token = url_parse(href).decode_query().get("access_token")
+        if access_token:
+            url = "%s?%s" % (url, url_encode({"access_token": access_token}))
+        return url
+
     def _rewrite_download_links(self, content):
         self.ensure_one()
         tracked_ids = self._tracked_attachment_ids(content)
@@ -136,8 +147,8 @@ class DocumentPageHistory(models.Model):
             attachment_id = self._download_link_attachment_id(href)
             if attachment_id not in tracked_ids:
                 continue
-            tracking_url = "%s/%s/%s" % (TRACKING_ROUTE, self.id, attachment_id)
-            if href.split("?", 1)[0] != tracking_url:
+            tracking_url = self._get_tracking_url(attachment_id, href)
+            if href != tracking_url:
                 anchor.set("href", tracking_url)
                 rewritten = True
         if not rewritten:
