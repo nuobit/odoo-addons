@@ -112,10 +112,12 @@ class DocumentPage(models.Model):
             partner = user.partner_id
             vals = {"email": partner.email, "user_id": user.id}
             rec = existing.get(partner.id)
+            # no user can write the distribution log: the module writes it
+            # for the manager who confirms the distribution
             if rec:
-                rec.write(vals)
+                rec.sudo().write(vals)
             else:
-                rec = Recipient.create(
+                rec = Recipient.sudo().create(
                     dict(vals, history_id=history.id, partner_id=partner.id)
                 )
             recipients |= rec
@@ -183,7 +185,9 @@ class DocumentPage(models.Model):
             notif_by_partner = {n.res_partner_id.id: n for n in notifications}
             for rec in recs:
                 notif = notif_by_partner.get(rec.partner_id.id)
-                Send.create(
+                # no user can write the distribution log: the module writes
+                # it for the manager who confirms the distribution
+                Send.sudo().create(
                     {
                         "recipient_id": rec.id,
                         "sent_date": now,
