@@ -1,35 +1,25 @@
-This module records **per-recipient download evidence** for distributed
-document page versions. It is the download-log counterpart of
-``document_page_distribution``: while that module owns the person + version
-coverage (``document.page.history.recipient``), this module logs each real
-access/download of a version's PDF by a covered recipient, and exposes the
-download coverage as quality-audit evidence.
+This module records who opened the files of a distributed document: it is the
+download log of *Document Page Distribution*. That module sends a version of a
+document to its readers and keeps the log of the sends; this one keeps, for
+every version, the evidence that a reader opened a file linked in its content.
 
-For every ``(version, recipient)`` coverage line it adds a download summary
-(downloaded, first/last download date, download count) and a detail of every
-real access. A download is only ever recorded against an **existing** recipient
-line of the same version and person; this module never creates coverage nor
-invents recipients (that remains the responsibility of
-``document_page_distribution``).
+When a version of a document is saved, every link of its content that points to
+an attachment is rewritten to an address of this module that carries the
+version and the file. Opening that address checks that the user can read the
+document, records the download and serves the file as Odoo does.
 
-**How it works**
+A download is recorded for every user who opens a file, whether or not the
+version was distributed to that user. When the user is a recipient of the
+version, the recipient line shows the downloads: whether the user downloaded,
+how many times, the first and the last date. Every version says in *Downloads*
+how many of its recipients downloaded at least one of its files: *3/10* means 3
+of 10.
 
-* Saving a document page stores its content as a new version
-  (``document.page.history``); the page itself always shows the head version.
-* Each time a version's content is saved, the single document link in it is
-  rewritten from the raw ``/web/content/<attachment>`` form to a version-aware
-  download route that carries the version id.
-* Opening that link checks the user's read access to the page, records the
-  download against the recipient's coverage line of that exact version, and
-  redirects to the standard ``/web/content`` file download.
+No user can create, edit or delete a download record. A version or a document
+with recorded downloads cannot be deleted, only archived. A download record
+says that a user opened the address of a file; the log cannot know whether the
+file arrived or was read.
 
-**Audit contract**
-
-The download log is **append-only**. Evidence rows are written only by the
-system, through the download controller, on the recipient's behalf; the access
-rights are **read-only for every role, the Document Manager included**
-(``perm_read`` only). No user can create, edit or delete a download record, so
-the trail cannot be tampered with — which is the point of a compliance log.
-Visibility follows the document's own Security groups: a user sees the download
-evidence of the documents they are allowed to read, and a Document Manager sees
-all of it.
+Visibility follows the security groups of the document: a user sees the
+downloads of the documents they can read, and a document manager sees all of
+them.
