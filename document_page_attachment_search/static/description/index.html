@@ -437,16 +437,23 @@ searchable until it is deleted, also when the body no longer links it.</li>
 </div>
 <div class="section" id="installation">
 <h2><a class="toc-backref" href="#toc-entry-1">Installation</a></h2>
-<ul class="simple">
-<li><tt class="docutils literal">attachment_indexation</tt> must be installed (declared as a dependency).</li>
-<li><tt class="docutils literal">pdfminer.six</tt> must be installed in Odoo’s Python environment (declared as an
-external dependency, so the module will not install without it) and Odoo must
-be restarted after installing it; otherwise PDFs attached to a page remain
-unindexed and cannot be matched.</li>
-<li>Attachments uploaded before installing <tt class="docutils literal">attachment_indexation</tt> /
-<tt class="docutils literal">pdfminer.six</tt> are not retroactively indexed; use the post-migration
-reindexing of the usage section to index them.</li>
-</ul>
+<p>This module needs the <tt class="docutils literal">pdfminer.six</tt> Python package in Odoo’s Python
+environment to extract the text of PDF files:</p>
+<pre class="literal-block">
+pip install pdfminer.six
+</pre>
+<p>It is tested with release 20251107, which needs Python 3.9 or later; on an
+older Python, pip installs the newest release that supports it.</p>
+<p>Restart Odoo after installing it. The manifest declares the dependency by the
+name the package is imported with, <tt class="docutils literal">pdfminer</tt>: Odoo refuses to install the
+module when that name cannot be imported.</p>
+<p>Do not install the package named <tt class="docutils literal">pdfminer</tt>: it is the original, abandoned
+project, and Odoo extracts no text from PDF files with it. It writes into the
+same <tt class="docutils literal">pdfminer</tt> folder as <tt class="docutils literal">pdfminer.six</tt>, so if it is installed, uninstall
+it and then reinstall <tt class="docutils literal">pdfminer.six</tt> with <tt class="docutils literal">pip install <span class="pre">--force-reinstall</span></tt>.</p>
+<p><tt class="docutils literal">attachment_indexation</tt> is installed with this module. Files uploaded before
+<tt class="docutils literal">attachment_indexation</tt> or <tt class="docutils literal">pdfminer.six</tt> was installed are not indexed
+retroactively: see the post-migration reindexing of the usage section.</p>
 </div>
 <div class="section" id="usage">
 <h2><a class="toc-backref" href="#toc-entry-2">Usage</a></h2>
