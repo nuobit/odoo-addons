@@ -206,6 +206,103 @@ class TestDocumentPageAttachmentSearch(TransactionCase):
         )
         self.assertEqual(owned.res_id, self.page_html.id)
 
+    def test_anchor_only_the_uploads_of_the_user_who_saves(self):
+        groups = [
+            (
+                6,
+                0,
+                [
+                    self.env.ref("base.group_user").id,
+                    self.env.ref("document_page.group_document_editor").id,
+                ],
+            )
+        ]
+        uploader = self.env["res.users"].create(
+            {"name": "Uploader", "login": "uploader_anchor_test", "groups_id": groups}
+        )
+        colleague = self.env["res.users"].create(
+            {"name": "Colleague", "login": "colleague_anchor_test", "groups_id": groups}
+        )
+        upload = self.Attachment.with_user(uploader).create(
+            {
+                "name": "photo.txt",
+                "res_model": "document.page",
+                "res_id": 0,
+                "datas": base64.b64encode(b"the file says COLLEAGUEWORD"),
+                "mimetype": "text/plain",
+            }
+        )
+        page = self.DocumentPage.create(
+            {
+                "name": "Page Anchor Users",
+                "type": "content",
+                "parent_id": self.category.id,
+            }
+        )
+        page.with_user(colleague).write(
+            {"content": '<p><img src="/web/image/%d"/></p>' % upload.id}
+        )
+        self.assertEqual(upload.res_id, 0)
+        page.with_user(uploader).write(
+            {"content": '<p>Photo</p><p><img src="/web/image/%d"/></p>' % upload.id}
+        )
+        self.assertEqual(upload.res_id, page.id)
+
+    def test_administrator_anchors_the_uploads_of_others(self):
+        uploader = self.env["res.users"].create(
+            {
+                "name": "Uploader",
+                "login": "uploader_administrator_test",
+                "groups_id": [
+                    (
+                        6,
+                        0,
+                        [
+                            self.env.ref("base.group_user").id,
+                            self.env.ref("document_page.group_document_editor").id,
+                        ],
+                    )
+                ],
+            }
+        )
+        administrator = self.env["res.users"].create(
+            {
+                "name": "Administrator",
+                "login": "administrator_anchor_test",
+                "groups_id": [
+                    (
+                        6,
+                        0,
+                        [
+                            self.env.ref("base.group_user").id,
+                            self.env.ref("base.group_system").id,
+                            self.env.ref("document_page.group_document_editor").id,
+                        ],
+                    )
+                ],
+            }
+        )
+        upload = self.Attachment.with_user(uploader).create(
+            {
+                "name": "diagram.txt",
+                "res_model": "document.page",
+                "res_id": 0,
+                "datas": base64.b64encode(b"the file says ADMINISTRATORWORD"),
+                "mimetype": "text/plain",
+            }
+        )
+        page = self.DocumentPage.create(
+            {
+                "name": "Page Anchor Administrator",
+                "type": "content",
+                "parent_id": self.category.id,
+            }
+        )
+        page.with_user(administrator).write(
+            {"content": '<p><img src="/web/image/%d"/></p>' % upload.id}
+        )
+        self.assertEqual(upload.res_id, page.id)
+
     def test_anchor_reads_the_content_being_saved(self):
         History = type(self.env["document.page.history"])
         create = History.create

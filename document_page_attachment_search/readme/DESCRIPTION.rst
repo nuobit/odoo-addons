@@ -25,11 +25,13 @@ Behavior:
   field's ``filter_domain`` (``position="attributes"``) to also search the page
   content; no search fields are moved, added or removed, and the OCA search box
   stays the single entry point.
-* When a page is created or its content is saved, any file embedded in the body
-  (``/web/content/<id>`` or ``/web/image/<id>``) that is not yet linked to a
-  record is anchored to that page (its ``res_id`` is set). A file embedded before
-  the page's first save (``res_id=0``) therefore becomes searchable on the next
-  save, with no manual step.
+* When a page is created or its content is saved, the files embedded in the body
+  (``/web/content/<id>`` or ``/web/image/<id>``) that are not yet linked to a
+  record and were uploaded by the user who saves are anchored to that page (their
+  ``res_id`` is set); the save of a system administrator anchors them whoever
+  uploaded them. A file embedded before the page's first save (``res_id=0``)
+  therefore becomes searchable when its uploader saves the page, with no manual
+  step.
 * A file still linked to an existing ``document.page`` (via ``res_model`` /
   ``res_id``) cannot be deleted. This avoids leaving a dead ``/web/content`` link
   in the page body and keeps the content search consistent.
