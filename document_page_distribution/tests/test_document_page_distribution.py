@@ -264,6 +264,18 @@ class TestDocumentPageDistribution(SavepointCase):
         )
         self.assertTrue(es_rec.exists())
 
+    def test_send_without_date_cannot_be_created(self):
+        self._distribute(only_partners=self.reader_es.partner_id)
+        es_rec = self._recipients().filtered(
+            lambda r: r.partner_id == self.reader_es.partner_id
+        )
+        with self.assertRaises(IntegrityError) as error, mute_logger("odoo.sql_db"):
+            with self.cr.savepoint():
+                self.env["document.page.history.recipient.send"].create(
+                    {"recipient_id": es_rec.id}
+                )
+        self.assertEqual(error.exception.diag.column_name, "sent_date")
+
     # ------------------------------------------------------------------
     # sending
     # ------------------------------------------------------------------

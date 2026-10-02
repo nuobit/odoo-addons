@@ -37,7 +37,7 @@ class DocumentPageHistoryRecipientSend(models.Model):
         store=True,
         index=True,
     )
-    sent_date = fields.Datetime()
+    sent_date = fields.Datetime(required=True)
     sent_by_id = fields.Many2one(comodel_name="res.users")
     email = fields.Char()
     template_id = fields.Many2one("mail.template")

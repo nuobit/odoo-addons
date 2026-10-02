@@ -7,12 +7,7 @@
         <field name="name">document.page.history.recipient.send.view.tree</field>
         <field name="model">document.page.history.recipient.send</field>
         <field name="arch" type="xml">
-            <tree
-                create="false"
-                import="false"
-                export_xlsx="false"
-                default_order="sent_date, id"
-            >
+            <tree create="false" import="false" export_xlsx="false">
                 <field name="sent_date" />
                 <field name="email" />
                 <field name="template_id" />
