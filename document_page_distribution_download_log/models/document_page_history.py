@@ -160,7 +160,6 @@ class DocumentPageHistory(models.Model):
             {
                 "recipient_id": recipient.id,
                 "user_id": user.id,
-                "partner_id": partner.id,
                 "attachment_id": attachment_id,
                 "download_date": fields.Datetime.now(),
                 "ip_address": ip_address,

@@ -150,11 +150,6 @@ msgid "Page"
 msgstr "Página"
 
 #. module: document_page_distribution_download_log
-#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__partner_id
-msgid "Partner"
-msgstr "Contacto"
-
-#. module: document_page_distribution_download_log
 #: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__recipient_id
 msgid "Recipient"
 msgstr "Destinatario"
