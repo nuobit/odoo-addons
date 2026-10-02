@@ -75,6 +75,12 @@ class TestDocumentPageDistributionDownloadLog(SavepointCase):
             )
         )
 
+    def _distribute(self, history):
+        # the rows a distribution writes: one recipient per user in scope
+        self.page._ensure_distribution_recipients(
+            history, self.page._get_distribution_coverage_users()
+        )
+
     def test_link_is_rewritten_with_history_id(self):
         route = "/document_page_distribution_download_log/download/%s/%s" % (
             self.head.id,
@@ -147,6 +153,17 @@ class TestDocumentPageDistributionDownloadLog(SavepointCase):
         self.assertEqual(download.attachment_id, self.attachment)
         self.assertFalse(download.recipient_id)
 
+    def test_download_made_before_the_distribution_counts_after_it(self):
+        bob = self._new_reader("Bob")
+        download = self.head.with_user(bob)._log_recipient_download(self.attachment.id)
+        self._distribute(self.head)
+        recipient = self._recipient(self.head, bob)
+        self.assertEqual(len(recipient), 1)
+        self.assertEqual(download.recipient_id, recipient)
+        self.assertTrue(recipient.downloaded)
+        self.assertEqual(recipient.download_count, 1)
+        self.assertEqual(self.head.download_summary, "1/2")
+
     def test_download_outlives_its_recipient(self):
         recipient = self._recipient(self.head, self.alice)
         download = self.head.with_user(self.alice)._log_recipient_download(
@@ -158,6 +175,37 @@ class TestDocumentPageDistributionDownloadLog(SavepointCase):
         self.assertFalse(download.recipient_id)
         self.assertEqual(download.history_id, self.head)
         self.assertEqual(download.user_id, self.alice)
+
+    def test_summary_counts_the_recipients_who_downloaded(self):
+        self._new_reader("Bob")
+        self._distribute(self.head)
+        self.head.with_user(self.alice)._log_recipient_download(self.attachment.id)
+        self.head.with_user(self.alice)._log_recipient_download(self.attachment.id)
+        self.assertEqual(self.head.distribution_count, 2)
+        self.assertEqual(self.head.download_recipient_count, 1)
+        self.assertEqual(self.head.download_summary, "1/2")
+
+    def test_summary_does_not_count_a_user_who_is_not_a_recipient(self):
+        bob = self._new_reader("Bob")
+        self.head.with_user(bob)._log_recipient_download(self.attachment.id)
+        self.assertEqual(self.head.distribution_count, 1)
+        self.assertEqual(self.head.download_recipient_count, 0)
+        self.assertEqual(self.head.download_summary, "0/1")
+
+    def test_version_without_recipients_has_no_download_summary(self):
+        page = self.env["document.page"].create(
+            {
+                "name": "Never distributed",
+                "type": "content",
+                "groups_id": [(6, 0, [self.group.id])],
+                "content": self._doc_link(self.attachment.id),
+            }
+        )
+        head = page.history_head
+        head.with_user(self.alice)._log_recipient_download(self.attachment.id)
+        self.assertEqual(head.distribution_count, 0)
+        self.assertEqual(head.download_recipient_count, 0)
+        self.assertFalse(head.download_summary)
 
     def test_attachment_must_belong_to_version(self):
         self.assertTrue(self.head._download_attachment_is_tracked(self.attachment.id))

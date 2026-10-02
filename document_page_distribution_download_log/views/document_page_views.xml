@@ -12,6 +12,12 @@
         />
         <field name="arch" type="xml">
             <xpath
+                expr="//field[@name='history_ids']/tree/field[@name='distribution_summary']"
+                position="after"
+            >
+                <field name="download_summary" string="Downloads" />
+            </xpath>
+            <xpath
                 expr="//field[@name='current_recipient_ids']/tree/field[@name='last_successful_sent_date']"
                 position="after"
             >

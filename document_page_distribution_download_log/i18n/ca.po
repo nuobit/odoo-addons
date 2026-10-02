@@ -82,6 +82,16 @@ msgid "Download Date"
 msgstr "Data de descàrrega"
 
 #. module: document_page_distribution_download_log
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history__download_recipient_count
+msgid "Download Recipient Count"
+msgstr "Recompte de destinataris amb descàrrega"
+
+#. module: document_page_distribution_download_log
+#: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history__download_summary
+msgid "Download Summary"
+msgstr "Resum de descàrregues"
+
+#. module: document_page_distribution_download_log
 #: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient__downloaded
 msgid "Downloaded"
 msgstr "Descarregat"
@@ -91,6 +101,7 @@ msgstr "Descarregat"
 #: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient__download_ids
 #: model_terms:ir.ui.view,arch_db:document_page_distribution_download_log.view_wiki_form_distribution_download_log
 #: model_terms:ir.ui.view,arch_db:document_page_distribution_download_log.view_wiki_history_form_distribution_download_log
+#: model_terms:ir.ui.view,arch_db:document_page_distribution_download_log.view_wiki_history_tree_distribution_download_log
 #, python-format
 msgid "Downloads"
 msgstr "Descàrregues"

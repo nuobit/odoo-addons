@@ -4,7 +4,7 @@
 
 from lxml import html as lxml_html
 
-from odoo import _, api, models
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 WEB_CONTENT_PREFIX = "/web/content/"
@@ -13,6 +13,34 @@ TRACKING_ROUTE = "/document_page_distribution_download_log/download"
 
 class DocumentPageHistory(models.Model):
     _inherit = "document.page.history"
+
+    # facts of the version, the same for every reader
+    download_recipient_count = fields.Integer(
+        compute="_compute_download_recipient_count",
+        compute_sudo=True,
+    )
+    download_summary = fields.Char(
+        compute="_compute_download_summary",
+        compute_sudo=True,
+    )
+
+    @api.depends("recipient_ids.downloaded")
+    def _compute_download_recipient_count(self):
+        for history in self:
+            history.download_recipient_count = len(
+                history.recipient_ids.filtered("downloaded")
+            )
+
+    @api.depends("distribution_count", "download_recipient_count")
+    def _compute_download_summary(self):
+        for history in self:
+            if history.distribution_count:
+                history.download_summary = "%s/%s" % (
+                    history.download_recipient_count,
+                    history.distribution_count,
+                )
+            else:
+                history.download_summary = False
 
     @api.model_create_multi
     def create(self, vals_list):
