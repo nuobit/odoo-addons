@@ -1,4 +1,5 @@
 # Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 import base64
@@ -70,6 +71,31 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content, b"%PDF-1.4 test")
         self.assertEqual(self.download_model.search_count([]), before + 1)
+
+    def test_download_of_a_user_who_is_not_a_recipient_is_served_and_logged(self):
+        # a reader of the document who joins its group after the distribution
+        bob = (
+            self.env["res.users"]
+            .with_context(no_reset_password=True, install_filename="test")
+            .create(
+                {
+                    "name": "Bob",
+                    "login": "bob_dpddl_test",
+                    "password": "bob_dpddl_test",
+                    "email": "bob.http@example.com",
+                    "groups_id": [(6, 0, [self.doc_user.id, self.group.id])],
+                }
+            )
+        )
+        self.authenticate("bob_dpddl_test", "bob_dpddl_test")
+        response = self.url_open(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, b"%PDF-1.4 test")
+        download = self.download_model.search([("user_id", "=", bob.id)])
+        self.assertEqual(len(download), 1)
+        self.assertEqual(download.history_id, self.head)
+        self.assertEqual(download.attachment_id, self.attachment)
+        self.assertFalse(download.recipient_id)
 
     def test_attachment_of_another_version_returns_404(self):
         other_attachment = self.env["ir.attachment"].create(

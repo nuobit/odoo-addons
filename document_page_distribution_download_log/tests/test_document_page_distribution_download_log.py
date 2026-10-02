@@ -1,4 +1,5 @@
 # Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 import base64
@@ -57,6 +58,21 @@ class TestDocumentPageDistributionDownloadLog(SavepointCase):
                 ("history_id", "=", history.id),
                 ("partner_id", "=", user.partner_id.id),
             ]
+        )
+
+    def _new_reader(self, name):
+        # a reader of the document who joins its group after the distribution
+        return (
+            self.env["res.users"]
+            .with_context(no_reset_password=True)
+            .create(
+                {
+                    "name": name,
+                    "login": "%s_dpddl" % name.lower(),
+                    "email": "%s@example.com" % name.lower(),
+                    "groups_id": [(6, 0, [self.doc_user.id, self.group.id])],
+                }
+            )
         )
 
     def test_link_is_rewritten_with_history_id(self):
@@ -121,22 +137,27 @@ class TestDocumentPageDistributionDownloadLog(SavepointCase):
         self.assertEqual(recipient.first_download_date, datetime(2026, 6, 1, 10, 0, 0))
         self.assertEqual(recipient.last_download_date, datetime(2026, 6, 5, 18, 30, 0))
 
-    def test_download_without_recipient_is_not_logged(self):
-        bob = (
-            self.env["res.users"]
-            .with_context(no_reset_password=True)
-            .create(
-                {
-                    "name": "Bob",
-                    "login": "bob_dpddl",
-                    "email": "bob@example.com",
-                    "groups_id": [(6, 0, [self.doc_user.id, self.group.id])],
-                }
-            )
-        )
+    def test_download_of_a_user_who_is_not_a_recipient_is_logged(self):
+        bob = self._new_reader("Bob")
         self.assertFalse(self._recipient(self.head, bob))
         download = self.head.with_user(bob)._log_recipient_download(self.attachment.id)
-        self.assertFalse(download)
+        self.assertEqual(len(download), 1)
+        self.assertEqual(download.history_id, self.head)
+        self.assertEqual(download.user_id, bob)
+        self.assertEqual(download.attachment_id, self.attachment)
+        self.assertFalse(download.recipient_id)
+
+    def test_download_outlives_its_recipient(self):
+        recipient = self._recipient(self.head, self.alice)
+        download = self.head.with_user(self.alice)._log_recipient_download(
+            self.attachment.id
+        )
+        self.assertEqual(download.recipient_id, recipient)
+        recipient.unlink()
+        self.assertTrue(download.exists())
+        self.assertFalse(download.recipient_id)
+        self.assertEqual(download.history_id, self.head)
+        self.assertEqual(download.user_id, self.alice)
 
     def test_attachment_must_belong_to_version(self):
         self.assertTrue(self.head._download_attachment_is_tracked(self.attachment.id))
