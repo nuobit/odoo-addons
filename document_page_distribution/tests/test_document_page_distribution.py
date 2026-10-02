@@ -410,6 +410,13 @@ class TestDocumentPageDistribution(SavepointCase):
         self.assertTrue(line.sendable)
         self.assertTrue(line.selected)
 
+    def test_confirm_without_selection_raises(self):
+        wizard = self._open_wizard()
+        wizard.line_ids.write({"selected": False})
+        with self.assertRaises(UserError), self.cr.savepoint():
+            wizard.action_confirm()
+        self.assertFalse(self._recipients())
+
     def test_inbox_user_still_receives_email(self):
         self.reader_es.notification_type = "inbox"
         self._distribute(only_partners=self.reader_es.partner_id)
