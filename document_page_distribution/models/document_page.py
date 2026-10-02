@@ -172,7 +172,7 @@ class DocumentPage(models.Model):
                     "partners": self._distribution_recipients_data(recs),
                     "channels": [],
                 },
-                send_after_commit=False,
+                force_send=False,
             )
             notifications = self.env["mail.notification"].search(
                 [
