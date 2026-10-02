@@ -277,6 +277,8 @@ msgstr "Línia de distribució de pàgina de document"
 
 #. module: document_page_distribution
 #: model_terms:ir.ui.view,arch_db:document_page_distribution.view_wiki_form_distribution
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.view_wiki_history_form_distribution
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.view_wiki_history_tree_distribution
 msgid "Distribution"
 msgstr "Distribució"
 
@@ -284,6 +286,18 @@ msgstr "Distribució"
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history__recipient_ids
 msgid "Distribution Recipients"
 msgstr "Destinataris de la distribució"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page__current_distribution_sent_count
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history__distribution_sent_count
+msgid "Distribution Sent Count"
+msgstr "Recompte d'enviats de la distribució"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page__current_distribution_summary
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history__distribution_summary
+msgid "Distribution Summary"
+msgstr "Resum de la distribució"
 
 #. module: document_page_distribution
 #: model_terms:ir.ui.view,arch_db:document_page_distribution.res_config_settings_view_form

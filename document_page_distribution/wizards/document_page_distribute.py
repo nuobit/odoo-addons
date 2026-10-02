@@ -5,7 +5,7 @@
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
-from ..models.document_page_history_recipient import STATE_SELECTION
+from ..models.document_page_history_recipient import SENT_STATES, STATE_SELECTION
 
 
 class DocumentPageDistribute(models.TransientModel):
@@ -31,7 +31,7 @@ class DocumentPageDistribute(models.TransientModel):
     def _preselect(self, recipient):
         if not recipient:
             return True
-        return recipient.state not in ("sent", "queued")
+        return recipient.state not in SENT_STATES
 
     @api.model
     def default_get(self, fields_list):

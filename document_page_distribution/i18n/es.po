@@ -277,6 +277,8 @@ msgstr "Línea de distribución de página de documento"
 
 #. module: document_page_distribution
 #: model_terms:ir.ui.view,arch_db:document_page_distribution.view_wiki_form_distribution
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.view_wiki_history_form_distribution
+#: model_terms:ir.ui.view,arch_db:document_page_distribution.view_wiki_history_tree_distribution
 msgid "Distribution"
 msgstr "Distribución"
 
@@ -284,6 +286,18 @@ msgstr "Distribución"
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history__recipient_ids
 msgid "Distribution Recipients"
 msgstr "Destinatarios de la distribución"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page__current_distribution_sent_count
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history__distribution_sent_count
+msgid "Distribution Sent Count"
+msgstr "Recuento de enviados de la distribución"
+
+#. module: document_page_distribution
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page__current_distribution_summary
+#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history__distribution_summary
+msgid "Distribution Summary"
+msgstr "Resumen de la distribución"
 
 #. module: document_page_distribution
 #: model_terms:ir.ui.view,arch_db:document_page_distribution.res_config_settings_view_form
