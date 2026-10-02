@@ -71,10 +71,17 @@ Scope:
   ``document_page_distribution_download_log``).
 * A file uploaded into a page that has not been saved yet gets ``res_id=0``; it
   becomes searchable once the page is saved (the save anchors it, see above) or
-  after the post-migration linking below. A file removed or replaced in the body
-  is intentionally not re-anchored, so the page stops matching it.
+  after the post-migration linking of the usage section. A file removed or
+  replaced in the body is intentionally not re-anchored, so the page stops
+  matching it.
 
-Prerequisites:
+**Table of contents**
+
+.. contents::
+   :local:
+
+Installation
+============
 
 * ``attachment_indexation`` must be installed (declared as a dependency).
 * ``pdfminer.six`` must be installed in Odoo's Python environment (declared as an
@@ -83,8 +90,10 @@ Prerequisites:
   unindexed and cannot be matched.
 * Attachments uploaded before installing ``attachment_indexation`` /
   ``pdfminer.six`` are not retroactively indexed; use the post-migration
-  reindexing below to index them.
-* Scanned PDFs (image-only) yield no extractable text and are not matched.
+  reindexing of the usage section to index them.
+
+Usage
+=====
 
 Post-migration reindexing:
 
@@ -120,10 +129,10 @@ Each orphan attachment gets its ``res_id`` set to the page whose current body
 references it. Attachments that no longer appear in any page body (files removed
 or replaced) are intentionally left untouched.
 
-**Table of contents**
+Known issues / Roadmap
+======================
 
-.. contents::
-   :local:
+* Scanned PDFs (image-only) yield no extractable text and are not matched.
 
 Bug Tracker
 ===========
