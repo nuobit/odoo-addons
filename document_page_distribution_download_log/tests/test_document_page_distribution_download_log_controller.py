@@ -268,6 +268,24 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(self.download_model.search_count([]), before)
 
+    def test_version_without_document_returns_404(self):
+        history = self.env["document.page.history"].create(
+            {
+                "name": "Version without document",
+                "content": '<p><a href="/web/content/%s">file</a></p>'
+                % self.attachment.id,
+            }
+        )
+        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        before = self.download_model.search_count([])
+        url = "/document_page_distribution_download_log/download/%s/%s" % (
+            history.id,
+            self.attachment.id,
+        )
+        response = self.url_open(url, allow_redirects=False)
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(self.download_model.search_count([]), before)
+
     def test_download_of_deleted_attachment_returns_404(self):
         self.attachment.unlink()
         self.authenticate("alice_dpddl_http", "alice_dpddl_http")

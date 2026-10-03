@@ -73,6 +73,9 @@ class DocumentPageDistributionDownloadLogController(http.Controller):
             page.check_access_rule("read")
         except AccessError:
             raise NotFound() from None
+        # a version is read through its document: without one, 404
+        if not page:
+            raise NotFound()
         if not history._download_attachment_is_tracked(attachment_id):
             raise NotFound()
         # the check of /web/content itself: a row is written only when
