@@ -1,4 +1,5 @@
 # Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from odoo.exceptions import ValidationError
@@ -51,6 +52,24 @@ class TestDocumentPageReference(TransactionCase):
         self._create_page(reference="1234567890")
         with self.assertRaisesRegex(ValidationError, "unique"):
             self._create_page(name="Another Page", reference="1234567890")
+
+    def test_generated_reference_skips_existing_reference(self):
+        sequence = self.env.ref(
+            "document_page_reference_numeric.seq_document_page_reference_numeric"
+        )
+        sequence.number_next_actual = 1234567890
+        self._create_page(name="Legacy Page", reference="1234567890")
+        page = self._create_page(name="New Page")
+        self.assertEqual(page.reference, "1234567891")
+
+    def test_generated_reference_skips_archived_reference(self):
+        sequence = self.env.ref(
+            "document_page_reference_numeric.seq_document_page_reference_numeric"
+        )
+        sequence.number_next_actual = 1234567890
+        self._create_page(name="Archived Page", reference="1234567890", active=False)
+        page = self._create_page(name="New Page")
+        self.assertEqual(page.reference, "1234567891")
 
     def test_reference_at_int4_max_rejected(self):
         with self.assertRaisesRegex(ValidationError, "too large"):
