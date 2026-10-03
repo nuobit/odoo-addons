@@ -17,6 +17,16 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: mgmtsystem_document_category
+#: model:ir.model.fields,help:mgmtsystem_document_category.field_document_page__is_mgmtsystem_document
+msgid ""
+"Checked on a document stored at any depth under a category that has a "
+"Management System Category Type. Never checked on a category."
+msgstr ""
+"Marcado en un documento almacenado, a cualquier nivel, bajo una categoría "
+"que tiene un Tipo de categoría del sistema de gestión. Nunca marcado en una "
+"categoría."
+
+#. module: mgmtsystem_document_category
 #: model:ir.model.fields,field_description:mgmtsystem_document_category.field_document_page__display_name
 #: model:ir.model.fields,field_description:mgmtsystem_document_category.field_mgmtsystem_nonconformity__display_name
 msgid "Display Name"
@@ -53,6 +63,19 @@ msgstr "Última modificación el"
 #: model:ir.model.fields,field_description:mgmtsystem_document_category.field_document_page__mgmtsystem_category_type
 msgid "Management System Category Type"
 msgstr "Tipo de categoría del sistema de gestión"
+
+#. module: mgmtsystem_document_category
+#: model:ir.model.fields,field_description:mgmtsystem_document_category.field_document_page__is_mgmtsystem_document
+msgid "Management System Document"
+msgstr "Documento del sistema de gestión"
+
+#. module: mgmtsystem_document_category
+#: code:addons/mgmtsystem_document_category/models/document_page.py:0
+#, python-format
+msgid "Management System Document can only be searched as true or false."
+msgstr ""
+"El campo Documento del sistema de gestión solo se puede buscar como "
+"verdadero o falso."
 
 #. module: mgmtsystem_document_category
 #: model:ir.model.fields,help:mgmtsystem_document_category.field_document_page__mgmtsystem_category_type
