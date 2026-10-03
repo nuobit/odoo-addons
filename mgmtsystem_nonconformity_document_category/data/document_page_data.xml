@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo noupdate="1">
+
+    <record
+        id="document_page_procedure.document_page_group_procedure"
+        model="document.page"
+        forcecreate="0"
+    >
+        <field name="mgmtsystem_category_type">procedure</field>
+    </record>
+
+</odoo>
