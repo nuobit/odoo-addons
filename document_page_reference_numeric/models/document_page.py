@@ -2,7 +2,7 @@
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-from odoo import _, api, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 SEQUENCE_CODE = "document.page.reference.numeric"
@@ -10,6 +10,8 @@ SEQUENCE_CODE = "document.page.reference.numeric"
 
 class DocumentPage(models.Model):
     _inherit = "document.page"
+
+    reference = fields.Char(copy=False)
 
     @api.model_create_multi
     def create(self, vals_list):

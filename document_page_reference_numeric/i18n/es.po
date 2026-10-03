@@ -36,6 +36,11 @@ msgid "Last Modified on"
 msgstr "Última modificación el"
 
 #. module: document_page_reference_numeric
+#: model:ir.model.fields,field_description:document_page_reference_numeric.field_document_page__reference
+msgid "Reference"
+msgstr ""
+
+#. module: document_page_reference_numeric
 #: code:addons/document_page_reference_numeric/models/document_page.py:0
 #, python-format
 msgid ""
@@ -45,3 +50,8 @@ msgstr ""
 "No hay ninguna secuencia activa con el código %s para generar una referencia"
 " numérica. Escriba una referencia o pida a un administrador que restaure la "
 "secuencia."
+
+#. module: document_page_reference_numeric
+#: model:ir.model.fields,help:document_page_reference_numeric.field_document_page__reference
+msgid "Used to find the document, it can contain letters, numbers and _"
+msgstr ""
