@@ -26,27 +26,21 @@ Management System Document Category
 
 |badge1| |badge2| |badge3|
 
-This module makes the management system **Procedures** selection robust against
-the document category name and language.
+This module classifies the document categories for the management system, so
+that the management system finds its documents whatever the categories are
+called and in whatever language.
 
-The OCA ``mgmtsystem_nonconformity`` module filters the *Procedures* field of a
-nonconformity by matching hardcoded English category names (``Procedure``,
-``Environmental Aspect``, ``Manuals``). That match relies on the category title,
-so it breaks as soon as the categories are renamed or created in another
-language (for example in Spanish), leaving the field empty even though
-procedures exist.
+* A document category gets a *Management System Category Type*: ``Procedure``,
+  ``Environmental Aspect``, ``Quality Manual`` or ``Environment Manual``. Only
+  a category can have one.
+* A document gets the searchable flag *Management System Document* when it is
+  stored, at any depth, under a category that has a type. A category never
+  has the flag.
 
-This module replaces that name based match with an explicit classification:
-
-* It adds a *Management System Category Type* selection on document categories
-  (``Procedure``, ``Environmental Aspect``, ``Quality Manual``,
-  ``Environment Manual``).
-* The nonconformity *Procedures* field then offers every document stored under a
-  classified category (at any depth), resolved from that stable classification
-  instead of from the category name.
-
-As a result the selection keeps working regardless of how the categories are
-named or in which language they are used.
+The glue modules ``mgmtsystem_nonconformity_document_category`` and
+``mgmtsystem_audit_document_category`` use the flag to offer these documents
+as the procedures of nonconformities and audits; each one is installed
+automatically with the module it extends.
 
 **Table of contents**
 
@@ -56,22 +50,24 @@ named or in which language they are used.
 Configuration
 =============
 
-After installing this module, the nonconformity *Procedures* selection only
-offers the documents stored under a document category that has a *Management
-System Category Type* set. This replaces the previous name based filter, so
-until the categories are classified the selection is empty, also on databases
-where that filter used to match (categories named ``Procedure``,
-``Environmental Aspect`` or ``Manuals``).
-
-To classify the document categories:
+To classify a document category:
 
 #. Go to *Knowledge > Pages > Categories* (or *Management System >
    Configuration > Categories* when ``mgmtsystem_manual`` is installed).
-#. Open each category that holds management system documents.
+#. Open the category that holds the management system documents.
 #. Set its *Management System Category Type* (for example *Procedure*).
 
-The documents stored under a classified category, at any depth, then become
-selectable as procedures on the nonconformity.
+The documents stored under it, at any depth, then have the flag *Management
+System Document*.
+
+Known issues / Roadmap
+======================
+
+* The flag *Management System Document* covers the four types, so the
+  procedure pickers that use it offer the documents of the four types.
+  Restricting them to one type (for example *Procedure* only) is a one-word
+  change in the domain that finds the classified categories, in the search of
+  the flag; it applies to every picker that uses the flag.
 
 Bug Tracker
 ===========
