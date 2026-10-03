@@ -375,23 +375,17 @@ ul.auto-toc {
 !! source digest: sha256:7942fedb89a6c098f3631b6f17adbf2a5276ea2577fcdcd261b026ad1a61030f
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 <p><a class="reference external image-reference" href="https://odoo-community.org/page/development-status"><img alt="Beta" src="https://img.shields.io/badge/maturity-Beta-yellow.png" /></a> <a class="reference external image-reference" href="http://www.gnu.org/licenses/agpl-3.0-standalone.html"><img alt="License: AGPL-3" src="https://img.shields.io/badge/license-AGPL--3-blue.png" /></a> <a class="reference external image-reference" href="https://github.com/NuoBiT/odoo-addons/tree/14.0/mgmtsystem_audit_document_category"><img alt="NuoBiT/odoo-addons" src="https://img.shields.io/badge/github-NuoBiT%2Fodoo--addons-lightgray.png?logo=github" /></a></p>
-<p>This module makes the management system audit <strong>Procedure</strong> selection robust
-against the document category name and language.</p>
-<p>The OCA <tt class="docutils literal">mgmtsystem_audit</tt> module filters the <em>Procedure</em> field of an audit
-verification line by matching hardcoded English category names (<tt class="docutils literal">Procedure</tt>,
-<tt class="docutils literal">Environmental Aspect</tt>, <tt class="docutils literal">Quality Manual</tt>, <tt class="docutils literal">Environment Manual</tt>). That match
-relies on the category title, so it breaks as soon as the categories are renamed
-or created in another language (for example in Spanish), leaving the field empty
-even though procedures exist.</p>
-<p>This module replaces that name based match with the explicit <em>Management System
-Category Type</em> classification provided by <tt class="docutils literal">mgmtsystem_document_category</tt>:</p>
-<ul class="simple">
-<li>The verification line <em>Procedure</em> field, both in the form and in the search
-filter, offers every document stored directly under a classified category,
-resolved from that stable classification instead of from the category name.</li>
-</ul>
-<p>As a result the selection keeps working regardless of how the categories are
-named or in which language they are used.</p>
+<p>This module offers, as the <em>Procedure</em> of an audit verification line, in the
+form and in the search, the documents stored at any depth under a document
+category that has a <em>Management System Category Type</em> (module
+<tt class="docutils literal">mgmtsystem_document_category</tt>), whatever the categories are called and in
+whatever language. The categories themselves are not offered.</p>
+<p>It replaces the filter of the OCA <tt class="docutils literal">mgmtsystem_audit</tt> module, which offers the
+documents stored directly under the categories named <tt class="docutils literal">Procedure</tt>,
+<tt class="docutils literal">Environmental Aspect</tt>, <tt class="docutils literal">Quality Manual</tt> or <tt class="docutils literal">Environment Manual</tt> in
+English, and finds nothing in a tree named in another language.</p>
+<p>It is installed automatically when <tt class="docutils literal">mgmtsystem_audit</tt> and
+<tt class="docutils literal">mgmtsystem_document_category</tt> are both installed.</p>
 <p><strong>Table of contents</strong></p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
@@ -407,24 +401,10 @@ named or in which language they are used.</p>
 </div>
 <div class="section" id="configuration">
 <h2><a class="toc-backref" href="#toc-entry-1">Configuration</a></h2>
-<p>After installing this module, the audit verification line <em>Procedure</em> selection
-only offers the documents stored directly under a document category that has a
-<em>Management System Category Type</em> set. This replaces the previous name based
-filter, so until the categories are classified the selection is empty, also on
-databases where that filter used to match (categories named <tt class="docutils literal">Procedure</tt>,
-<tt class="docutils literal">Environmental Aspect</tt>, <tt class="docutils literal">Quality Manual</tt> or <tt class="docutils literal">Environment Manual</tt>).</p>
-<p>The classification is the same one used by the nonconformity <em>Procedures</em>
-selection (provided by <tt class="docutils literal">mgmtsystem_document_category</tt>): categories already
-classified for the nonconformity are picked up by the audit immediately.</p>
-<p>To classify the document categories:</p>
-<ol class="arabic simple">
-<li>Go to <em>Knowledge &gt; Pages &gt; Categories</em> (or <em>Management System &gt;
-Configuration &gt; Categories</em> when <tt class="docutils literal">mgmtsystem_manual</tt> is installed).</li>
-<li>Open each category that holds management system documents.</li>
-<li>Set its <em>Management System Category Type</em> (for example <em>Procedure</em>).</li>
-</ol>
-<p>The documents stored directly under a classified category then become
-selectable as procedures on the audit verification lines.</p>
+<p>The categories are classified as described in <tt class="docutils literal">mgmtsystem_document_category</tt>;
+nonconformities and audits use the same classification. A category classified
+while a verification line is open is offered at the next search, without
+reloading the page.</p>
 </div>
 <div class="section" id="bug-tracker">
 <h2><a class="toc-backref" href="#toc-entry-2">Bug Tracker</a></h2>
