@@ -1,6 +1,8 @@
 # Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dev1@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+from odoo.exceptions import ValidationError
 from odoo.tests.common import TransactionCase
 
 
@@ -70,3 +72,18 @@ class TestMgmtsystemDocumentCategory(TransactionCase):
             }
         )
         self.assertNotIn(document, self._offered_procedures())
+
+    def test_classify_content_page(self):
+        """A content page cannot have a management system category type."""
+        page = self.page_model.create(
+            {"name": "Content page", "type": "content", "content": "Test"}
+        )
+        with self.assertRaises(ValidationError) as error:
+            page.with_context(lang="en_US").write(
+                {"mgmtsystem_category_type": "procedure"}
+            )
+        self.assertEqual(
+            error.exception.args[0],
+            'The page "Content page" is not a category: only a category can '
+            "have a Management System Category Type.",
+        )
