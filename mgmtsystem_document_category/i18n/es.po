@@ -28,7 +28,6 @@ msgstr ""
 
 #. module: mgmtsystem_document_category
 #: model:ir.model.fields,field_description:mgmtsystem_document_category.field_document_page__display_name
-#: model:ir.model.fields,field_description:mgmtsystem_document_category.field_mgmtsystem_nonconformity__display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
 
@@ -49,13 +48,11 @@ msgstr "Aspecto ambiental"
 
 #. module: mgmtsystem_document_category
 #: model:ir.model.fields,field_description:mgmtsystem_document_category.field_document_page__id
-#: model:ir.model.fields,field_description:mgmtsystem_document_category.field_mgmtsystem_nonconformity__id
 msgid "ID"
 msgstr "ID"
 
 #. module: mgmtsystem_document_category
 #: model:ir.model.fields,field_description:mgmtsystem_document_category.field_document_page____last_update
-#: model:ir.model.fields,field_description:mgmtsystem_document_category.field_mgmtsystem_nonconformity____last_update
 msgid "Last Modified on"
 msgstr "Última modificación el"
 
@@ -91,12 +88,6 @@ msgstr ""
 " no conformidad), independientemente del nombre o el idioma de la categoría."
 
 #. module: mgmtsystem_document_category
-#: model:ir.model,name:mgmtsystem_document_category.model_mgmtsystem_nonconformity
-msgid "Nonconformity"
-msgstr "No conformidad"
-
-#. module: mgmtsystem_document_category
-#: model:ir.model.fields,field_description:mgmtsystem_document_category.field_mgmtsystem_nonconformity__procedure_ids
 #: model:ir.model.fields.selection,name:mgmtsystem_document_category.selection__document_page__mgmtsystem_category_type__procedure
 msgid "Procedure"
 msgstr "Procedimiento"
