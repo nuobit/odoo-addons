@@ -35,6 +35,18 @@ msgid "Cannot archive document(s) that are already archived:\n%s"
 msgstr "No es poden arxivar documents que ja estan arxivats:\n%s"
 
 #. module: document_page_archive_reason
+#: code:addons/document_page_archive_reason/models/document_page.py:0
+#, python-format
+msgid ""
+"Cannot archive document(s) without a reason:\n"
+"%s\n"
+"Use the Archive action, which asks for the reason."
+msgstr ""
+"No es poden arxivar documents sense motiu:\n"
+"%s\n"
+"Feu servir l'acció Arxivar, que demana el motiu."
+
+#. module: document_page_archive_reason
 #: code:addons/document_page_archive_reason/wizards/document_page_archive_reason.py:0
 #, python-format
 msgid "Archive reason is required."

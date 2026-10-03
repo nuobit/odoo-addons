@@ -392,6 +392,14 @@ are archived through the standard archive action.</li>
 <li>Archiving a selection that already contains archived documents is rejected
 with a <tt class="docutils literal">UserError</tt> listing them, so a single reason is never recorded
 against the wrong set.</li>
+<li>A document cannot be archived without a reason, whatever the way. A write
+that archives documents (an automated action, an RPC call) must write their
+<tt class="docutils literal">Archive Reason</tt> too, or it is rejected with a <tt class="docutils literal">ValidationError</tt> listing
+them. The reason cannot be imported (the field is read-only), so an import
+that archives documents is always rejected: archive them with the
+<tt class="docutils literal">Archive</tt> action instead.</li>
+<li>A copy of an archived document starts active, without the archive reason
+of the original.</li>
 <li>Unarchiving is the standard, direct Odoo action: it reactivates the
 document and clears the stored archive reason, while the change is recorded
 automatically through the tracked <tt class="docutils literal">active</tt> field. Past archive reasons
