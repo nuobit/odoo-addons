@@ -7,6 +7,12 @@
   redirects to) serves the file without any record.
 * A download record says that a user opened the address of a file, not that
   the file arrived or was read.
+* A file with a recorded download stays: it cannot be deleted, and Odoo has no
+  archive for files. A wrong file is corrected with a new version of the
+  document that links the right one; removing a file once downloaded needs a
+  technician. A record that owns such a file cannot be deleted either, since
+  Odoo deletes a record's attachments with it, for instance a document whose
+  file another document links: archive it instead.
 * A download of a user who is not a recipient of the version is recorded and
   shown in no list of the module; it counts as soon as the version is
   distributed to that user.

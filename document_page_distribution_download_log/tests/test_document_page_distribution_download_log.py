@@ -301,6 +301,29 @@ class TestDocumentPageDistributionDownloadLog(SavepointCase):
         )
         self.assertTrue(page.exists())
 
+    def test_file_with_downloads_cannot_be_deleted(self):
+        self.head.with_user(self.alice)._log_recipient_download(self.attachment.id)
+        with self.assertRaises(IntegrityError) as error, mute_logger("odoo.sql_db"):
+            with self.cr.savepoint():
+                self.attachment.unlink()
+        self.assertEqual(
+            error.exception.diag.constraint_name,
+            "document_page_history_recipient_download_attachment_id_fkey",
+        )
+        self.assertTrue(self.attachment.exists())
+
+    def test_file_without_downloads_can_be_deleted(self):
+        self.attachment.unlink()
+        self.assertFalse(self.attachment.exists())
+
+    def test_download_without_file_is_refused(self):
+        with self.assertRaises(IntegrityError) as error, mute_logger("odoo.sql_db"):
+            with self.cr.savepoint():
+                self.env["document.page.history.recipient.download"].create(
+                    {"history_id": self.head.id, "user_id": self.alice.id}
+                )
+        self.assertEqual(error.exception.diag.column_name, "attachment_id")
+
     def test_no_user_can_change_the_download_log(self):
         manager = (
             self.env["res.users"]

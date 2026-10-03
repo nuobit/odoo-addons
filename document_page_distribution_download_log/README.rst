@@ -44,9 +44,13 @@ how many of its recipients downloaded at least one of its files: *3/10* means 3
 of 10.
 
 No user can create, edit or delete a download record. A version or a document
-with recorded downloads cannot be deleted, only archived. A download record
-says that a user opened the address of a file; the log cannot know whether the
-file arrived or was read.
+with recorded downloads cannot be deleted, only archived. A file with a
+recorded download cannot be deleted either, by anyone: the user who downloaded
+it holds a copy, and the record keeps saying which file it was. Neither can a
+record that owns such a file, such as another document: Odoo deletes a record's
+files with it, so archive the record instead. A download record says that a
+user opened the address of a file; the log cannot know whether the file arrived
+or was read.
 
 Visibility follows the security groups of the document: a user sees the
 downloads of the documents they can read, and a document manager sees all of
@@ -90,6 +94,12 @@ Known issues / Roadmap
   redirects to) serves the file without any record.
 * A download record says that a user opened the address of a file, not that
   the file arrived or was read.
+* A file with a recorded download stays: it cannot be deleted, and Odoo has no
+  archive for files. A wrong file is corrected with a new version of the
+  document that links the right one; removing a file once downloaded needs a
+  technician. A record that owns such a file cannot be deleted either, since
+  Odoo deletes a record's attachments with it, for instance a document whose
+  file another document links: archive it instead.
 * A download of a user who is not a recipient of the version is recorded and
   shown in no list of the module; it counts as soon as the version is
   distributed to that user.

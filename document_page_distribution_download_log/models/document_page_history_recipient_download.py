@@ -49,7 +49,13 @@ class DocumentPageHistoryRecipientDownload(models.Model):
         store=True,
         index=True,
     )
-    attachment_id = fields.Many2one("ir.attachment", ondelete="set null")
+    # the file is evidence: it is not deleted while a row names it
+    attachment_id = fields.Many2one(
+        comodel_name="ir.attachment",
+        required=True,
+        ondelete="restrict",
+        index=True,
+    )
     download_date = fields.Datetime(required=True, default=fields.Datetime.now)
 
     @api.depends("history_id.recipient_ids.partner_id", "user_id.partner_id")
