@@ -82,6 +82,35 @@ class TestArchiveReason(TransactionCase):
             "<p>Document archived.<br>Reason: Replaced by procedure P-016</p>",
         )
 
+    def test_wizard_archives_each_page_with_its_note(self):
+        page_1 = self._create_page(name="Page 1")
+        page_2 = self._create_page(name="Page 2")
+        self._flush_tracking()
+        messages_before_1 = page_1.message_ids
+        messages_before_2 = page_2.message_ids
+        self._archive_with_reason(page_1 + page_2, reason="Replaced by procedure P-016")
+        self._flush_tracking()
+        self.assertFalse(page_1.active)
+        self.assertEqual(page_1.archive_reason, "Replaced by procedure P-016")
+        messages_1 = page_1.message_ids - messages_before_1
+        self.assertEqual(len(messages_1), 2)
+        self.assertEqual(len(messages_1.tracking_value_ids), 1)
+        note_1 = messages_1 - messages_1.tracking_value_ids.mail_message_id
+        self.assertEqual(
+            note_1.body,
+            "<p>Document archived.<br>Reason: Replaced by procedure P-016</p>",
+        )
+        self.assertFalse(page_2.active)
+        self.assertEqual(page_2.archive_reason, "Replaced by procedure P-016")
+        messages_2 = page_2.message_ids - messages_before_2
+        self.assertEqual(len(messages_2), 2)
+        self.assertEqual(len(messages_2.tracking_value_ids), 1)
+        note_2 = messages_2 - messages_2.tracking_value_ids.mail_message_id
+        self.assertEqual(
+            note_2.body,
+            "<p>Document archived.<br>Reason: Replaced by procedure P-016</p>",
+        )
+
     def test_wizard_requires_non_empty_reason(self):
         page = self._create_page()
         wizard = self.Wizard.create(
@@ -120,6 +149,22 @@ class TestArchiveReason(TransactionCase):
             page.archive_reason,
             "Unarchiving must clear the stored archive reason.",
         )
+
+    def test_unarchive_logs_tracking_line(self):
+        page = self._create_page()
+        self._flush_tracking()
+        self._archive_with_reason(page)
+        self._flush_tracking()
+        messages_before = page.message_ids
+        page.action_unarchive()
+        self._flush_tracking()
+        messages = page.message_ids - messages_before
+        self.assertEqual(len(messages), 1)
+        tracking = messages.tracking_value_ids
+        self.assertEqual(len(tracking), 1)
+        self.assertEqual(tracking.field.name, "active")
+        self.assertEqual(tracking.old_value_integer, 0)
+        self.assertEqual(tracking.new_value_integer, 1)
 
     def test_toggle_active_clears_reason(self):
         page = self._create_page()
