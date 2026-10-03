@@ -1,23 +1,16 @@
-By default, the OCA module ``document_page_reference`` generates a new
-reference from a slug of the document title. That is unsuitable for
-environments where each document is identified by a fixed-width numeric
-code (legacy DMS migrations, ERP integrations, GMP traceability, etc.).
+The OCA module ``document_page_reference`` proposes, for a document created
+without a reference, one made from its title. This module gives it a number
+instead:
 
-This module replaces the default behavior:
-
-* When a new document page is created without an explicit ``reference``,
-  the field is auto-filled from a dedicated ``ir.sequence`` (code
-  ``document.page.reference.numeric``) as a zero-padded, 10-digit number.
-* When a ``reference`` is provided manually it is left untouched, so
-  migrated documents keep their legacy code verbatim.
-* Existing document pages keep their current reference.
-* Uniqueness is enforced via the existing ``_check_reference`` constraint.
-
-.. note::
-
-   A purely numeric reference cannot be used as a ``${...}`` cross-link in a
-   page body. ``document_page_reference`` resolves ``${code}`` by treating
-   ``code`` as a Jinja variable name, but a pure-digit expression such as
-   ``${0000000001}`` is parsed as an integer literal instead of a name, so no
-   link is produced. Pages that must be cross-linked need a manual,
-   alphanumeric reference.
+* A document created without a reference gets the next number of the sequence
+  with code ``document.page.reference.numeric``, which the module creates
+  zero-padded to 10 digits. If no active sequence has that code, such a
+  document cannot be saved until a reference is typed.
+* A reference typed by hand, such as a code from a previous system, is kept as
+  typed and does not move the sequence.
+* A number already used as the reference of another document, of any company,
+  archived or not, is skipped: the document gets the next free one.
+* A duplicated document gets a new number.
+* A document cannot be saved without a reference: clearing the reference of a
+  saved document is refused.
+* Categories are documents and follow the same rules.
