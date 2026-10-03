@@ -17,4 +17,5 @@
     "data": [
         "views/mgmtsystem_audit.xml",
     ],
+    "auto_install": True,
 }
