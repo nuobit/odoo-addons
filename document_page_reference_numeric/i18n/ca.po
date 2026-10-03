@@ -34,10 +34,3 @@ msgstr ""
 #: model:ir.model.fields,field_description:document_page_reference_numeric.field_document_page____last_update
 msgid "Last Modified on"
 msgstr "Última modificació el"
-
-#. module: document_page_reference_numeric
-#: code:addons/document_page_reference_numeric/models/document_page.py:0
-#, python-format
-msgid "Numeric reference %(ref)s is too large: it must be below %(max)s."
-msgstr ""
-"La referència numèrica %(ref)s és massa gran: ha de ser inferior a %(max)s."

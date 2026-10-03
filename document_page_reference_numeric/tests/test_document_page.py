@@ -39,6 +39,10 @@ class TestDocumentPageReference(TransactionCase):
         page = self._create_page(reference="1799534795")
         self.assertEqual(page.reference, "1799534795")
 
+    def test_manual_large_numeric_reference_is_preserved(self):
+        page = self._create_page(reference="5123456789")
+        self.assertEqual(page.reference, "5123456789")
+
     def test_uniqueness_among_auto_generated(self):
         pages = self.env["document.page"]
         for i in range(20):
@@ -70,14 +74,6 @@ class TestDocumentPageReference(TransactionCase):
         self._create_page(name="Archived Page", reference="1234567890", active=False)
         page = self._create_page(name="New Page")
         self.assertEqual(page.reference, "1234567891")
-
-    def test_reference_at_int4_max_rejected(self):
-        with self.assertRaisesRegex(ValidationError, "too large"):
-            self._create_page(reference="2147483647")
-
-    def test_reference_just_below_int4_max_accepted(self):
-        page = self._create_page(reference="2147483646")
-        self.assertEqual(page.reference, "2147483646")
 
     def test_sequence_is_company_global(self):
         sequence = self.env.ref(
