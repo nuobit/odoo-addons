@@ -1,4 +1,5 @@
 # Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from odoo import _, fields, models
@@ -14,6 +15,11 @@ class DocumentPage(models.Model):
         readonly=True,
         copy=False,
     )
+
+    def write(self, vals):
+        if vals.get("active"):
+            vals = dict(vals, archive_reason=False)
+        return super().write(vals)
 
     def _check_can_archive_with_reason(self):
         self.invalidate_cache(["active"], self.ids)
@@ -50,9 +56,3 @@ class DocumentPage(models.Model):
         if self.env.context.get("archive_reason_validated"):
             return super().action_archive()
         return self._open_archive_reason()
-
-    def action_unarchive(self):
-        archived = self.filtered(lambda page: not page.active)
-        res = super().action_unarchive()
-        archived.archive_reason = False
-        return res
