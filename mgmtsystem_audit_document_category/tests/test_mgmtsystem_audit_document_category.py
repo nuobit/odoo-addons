@@ -50,17 +50,12 @@ class TestMgmtsystemAuditDocumentCategory(TransactionCase):
         )
 
     def _procedures_domain(self, view_xmlid, view_type):
-        # The domain the web client gives the procedure picker of a
-        # verification line view: the one of the field node, or the field's
-        # own when the node has none.
+        # The domain the procedure picker of a verification line view carries
         view = self.env["mgmtsystem.verification.line"].fields_view_get(
             view_id=self.env.ref(view_xmlid).id, view_type=view_type
         )
         [node] = etree.fromstring(view["arch"]).xpath("//field[@name='procedure_id']")
-        domain = node.get("domain")
-        if domain:
-            return safe_eval(domain)
-        return view["fields"]["procedure_id"]["domain"]
+        return safe_eval(node.get("domain"))
 
     def test_form_procedures_offered(self):
         """The verification line form offers the documents under a classified
