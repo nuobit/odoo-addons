@@ -148,3 +148,35 @@ class TestDocumentPageReference(TransactionCase):
         sequence.number_next_actual = 42
         page_copy = page.copy()
         self.assertEqual(page_copy.reference, "0000000042")
+
+    def test_cleared_reference_rejected(self):
+        page = self._create_page(reference="1799534795")
+        with self.assertRaises(ValidationError) as error:
+            page.with_context(lang="en_US").write({"reference": False})
+        self.assertEqual(
+            str(error.exception), 'The reference of "Test Page" cannot be empty.'
+        )
+
+    def test_empty_text_reference_rejected(self):
+        page = self._create_page(reference="1799534795")
+        with self.assertRaises(ValidationError) as error:
+            page.with_context(lang="en_US").write({"reference": ""})
+        self.assertEqual(
+            str(error.exception), 'The reference of "Test Page" cannot be empty.'
+        )
+
+    def test_page_without_reference_gets_next_number(self):
+        sequence = self.env.ref(
+            "document_page_reference_numeric.seq_document_page_reference_numeric"
+        )
+        sequence.number_next_actual = 42
+        page = self._create_page()
+        self.assertEqual(page.reference, "0000000042")
+
+    def test_page_created_with_empty_reference_gets_next_number(self):
+        sequence = self.env.ref(
+            "document_page_reference_numeric.seq_document_page_reference_numeric"
+        )
+        sequence.number_next_actual = 42
+        page = self._create_page(reference=False)
+        self.assertEqual(page.reference, "0000000042")

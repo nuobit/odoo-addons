@@ -43,6 +43,12 @@ msgstr ""
 #. module: document_page_reference_numeric
 #: code:addons/document_page_reference_numeric/models/document_page.py:0
 #, python-format
+msgid "The reference of \"%s\" cannot be empty."
+msgstr "La referència de \"%s\" no pot estar buida."
+
+#. module: document_page_reference_numeric
+#: code:addons/document_page_reference_numeric/models/document_page.py:0
+#, python-format
 msgid ""
 "There is no active sequence with code %s to generate a numeric reference. "
 "Type a reference, or ask an administrator to restore the sequence."
