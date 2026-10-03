@@ -85,6 +85,28 @@ class TestMgmtsystemNonconformityDocumentCategory(TransactionCase):
         category.mgmtsystem_category_type = "procedure"
         self.assertIn(document, self.page_model.search(domain))
 
+    def test_other_type_documents_offered(self):
+        """The documents of a category of another type are flagged and offered."""
+        category = self.page_model.create(
+            {
+                "name": "Environment",
+                "type": "category",
+                "mgmtsystem_category_type": "environment_manual",
+            }
+        )
+        document = self.page_model.create(
+            {
+                "name": "Emissions",
+                "type": "content",
+                "parent_id": category.id,
+                "content": "Test",
+            }
+        )
+        self.assertIn(
+            document, self.page_model.search([("is_mgmtsystem_document", "=", True)])
+        )
+        self.assertIn(document, self.page_model.search(self._procedures_domain()))
+
     def test_oca_procedure_category_documents_offered(self):
         """After the install, the documents of the OCA procedure category are
         offered."""
