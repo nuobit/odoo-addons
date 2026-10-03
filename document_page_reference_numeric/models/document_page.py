@@ -11,12 +11,12 @@ class DocumentPage(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         sequence = self.env["ir.sequence"]
+        # Any document holding the number counts, seen by the user or not
+        pages = self.sudo().with_context(active_test=False)
         for vals in vals_list:
             if not vals.get("reference"):
                 reference = sequence.next_by_code("document.page.reference.numeric")
-                while reference and self.with_context(active_test=False).search_count(
-                    [("reference", "=", reference)]
-                ):
+                while reference and pages.search_count([("reference", "=", reference)]):
                     reference = sequence.next_by_code("document.page.reference.numeric")
                 vals["reference"] = reference
         return super().create(vals_list)
