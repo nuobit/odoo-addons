@@ -24,7 +24,9 @@ class MgmtsystemHazardRiskComputation(models.Model):
     # plain, non-translatable Text field, so the risk-formula descriptions can
     # only ever be shown in English. Redeclaring the field as translatable lets
     # those descriptions be presented in the user's language; the Spanish and
-    # Catalan values ship in this module's i18n/ files.
+    # Catalan values ship in this module's i18n_extra/ files, the folder for
+    # hand-written translations: they translate records of the base module,
+    # which an export of this module cannot produce.
     description = fields.Text(translate=True)
 
     def _delete_description_translations(self, module_name):
