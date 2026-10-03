@@ -25,14 +25,6 @@ migrated documents keep their legacy code verbatim.</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Legacy migration: import the existing documents first (their numeric codes
-are preserved verbatim), then install this module. A post-init hook advances
-the <tt class="docutils literal">document.page.reference.numeric</tt> sequence above the highest existing
-numeric reference, so auto-generated references never collide with the imported
-ones. (You can also set the sequence's <em>Next Number</em> manually.)</p>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
 <p class="last">A purely numeric reference cannot be used as a <tt class="docutils literal">${...}</tt> cross-link in a
 page body. <tt class="docutils literal">document_page_reference</tt> resolves <tt class="docutils literal">${code}</tt> by
 treating <tt class="docutils literal">code</tt> as a Jinja variable name, but a pure-digit

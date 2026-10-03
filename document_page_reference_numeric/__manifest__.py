@@ -17,5 +17,4 @@
     "data": [
         "data/ir_sequence.xml",
     ],
-    "post_init_hook": "post_init_hook",
 }

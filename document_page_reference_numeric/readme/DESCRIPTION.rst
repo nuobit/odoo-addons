@@ -15,14 +15,6 @@ This module replaces the default behavior:
 
 .. note::
 
-   Legacy migration: import the existing documents first (their numeric codes
-   are preserved verbatim), then install this module. A post-init hook advances
-   the ``document.page.reference.numeric`` sequence above the highest existing
-   numeric reference, so auto-generated references never collide with the
-   imported ones. (You can also set the sequence's *Next Number* manually.)
-
-.. note::
-
    A purely numeric reference cannot be used as a ``${...}`` cross-link in a
    page body. ``document_page_reference`` resolves ``${code}`` by treating
    ``code`` as a Jinja variable name, but a pure-digit expression such as
