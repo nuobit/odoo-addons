@@ -123,7 +123,7 @@ class DocumentPageHistory(models.Model):
             for anchor in fragment.findall(".//a")
         }
         linked_ids.discard(False)
-        return set(self.env["ir.attachment"].sudo().browse(linked_ids).exists().ids)
+        return set(self.env["ir.attachment"].browse(linked_ids).exists().ids)
 
     def _get_tracking_url(self, attachment_id, href):
         """Address of the tracking route for the link ``href`` to the
