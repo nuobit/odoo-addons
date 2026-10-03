@@ -56,13 +56,23 @@ class TestReviewCopyLines(TransactionCase):
     def test_copy_includes_lines(self):
         copy = self.review.copy()
         self.assertEqual(len(copy.line_ids), 4)
-        for field in ("name", "type", "decision"):
-            self.assertEqual(
-                copy.line_ids.mapped(field),
-                self.review.line_ids.mapped(field),
-            )
+        self.assertEqual(
+            copy.line_ids.mapped("name"),
+            [
+                "Change description",
+                "Change reason",
+                "Linked action",
+                "Linked nonconformity",
+            ],
+        )
+        self.assertEqual(
+            copy.line_ids.mapped("type"), [False, False, "action", "nonconformity"]
+        )
+        self.assertEqual(
+            copy.line_ids.mapped("decision"), [False, "Pending", False, False]
+        )
         self.assertFalse(
-            set(copy.line_ids.ids) & set(self.review.line_ids.ids),
+            copy.line_ids & self.review.line_ids,
             "Copied lines must be new records, not shared with the source.",
         )
         self.assertEqual(
