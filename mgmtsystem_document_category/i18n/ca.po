@@ -77,15 +77,14 @@ msgstr ""
 #. module: mgmtsystem_document_category
 #: model:ir.model.fields,help:mgmtsystem_document_category.field_document_page__mgmtsystem_category_type
 msgid ""
-"Management system classification of this document category. Documents stored"
-" under a classified category become available in the related management "
-"system fields (e.g. nonconformity procedures), regardless of the category "
-"name or language."
+"Management system classification of this document category. The documents "
+"stored at any depth under a classified category are flagged as Management "
+"System Document, whatever the category is called and in whatever language."
 msgstr ""
 "Classificació del sistema de gestió d'aquesta categoria de documents. Els "
-"documents emmagatzemats sota una categoria classificada queden disponibles "
-"als camps del sistema de gestió relacionats (p. ex. els procediments de no "
-"conformitat), independentment del nom o l'idioma de la categoria."
+"documents emmagatzemats a qualsevol nivell sota una categoria classificada "
+"es marquen com a Document del sistema de gestió, sigui quin sigui el nom de "
+"la categoria i el seu idioma."
 
 #. module: mgmtsystem_document_category
 #: model:ir.model.fields.selection,name:mgmtsystem_document_category.selection__document_page__mgmtsystem_category_type__procedure
