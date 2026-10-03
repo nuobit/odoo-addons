@@ -3,9 +3,10 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from odoo.exceptions import ValidationError
-from odoo.tests.common import TransactionCase
+from odoo.tests.common import TransactionCase, tagged
 
 
+@tagged("post_install", "-at_install")
 class TestDocumentPageReference(TransactionCase):
     def setUp(self):
         super().setUp()
@@ -86,12 +87,9 @@ class TestDocumentPageReference(TransactionCase):
         )
 
     def test_reference_numeric_in_other_company(self):
-        main_company = self.env.ref("base.main_company")
-        other_company = self.env["res.company"].search(
-            [("id", "!=", main_company.id)], limit=1
+        other_company = self.env["res.company"].create(
+            {"name": "Document Page Test Company"}
         )
-        if not other_company:
-            self.skipTest("No second company in this database to test cross-company")
         page = self.DocumentPage.with_company(other_company).create(
             {
                 "name": "Doc in other company",
