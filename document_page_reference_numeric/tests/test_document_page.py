@@ -2,7 +2,7 @@
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tests.common import TransactionCase, new_test_user, tagged
 
 
@@ -125,3 +125,17 @@ class TestDocumentPageReference(TransactionCase):
             "in a company other than the one that installed the module",
         )
         self.assertEqual(len(page.reference), 10)
+
+    def test_archived_sequence_rejected(self):
+        sequence = self.env.ref(
+            "document_page_reference_numeric.seq_document_page_reference_numeric"
+        )
+        sequence.active = False
+        with self.assertRaises(UserError) as error:
+            self.DocumentPage.with_context(lang="en_US").create({"name": "Test Page"})
+        self.assertEqual(
+            str(error.exception),
+            "There is no active sequence with code document.page.reference.numeric "
+            "to generate a numeric reference. Type a reference, or ask an "
+            "administrator to restore the sequence.",
+        )
