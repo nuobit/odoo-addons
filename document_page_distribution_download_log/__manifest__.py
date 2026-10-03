@@ -4,8 +4,7 @@
 
 {
     "name": "Document Page Distribution Download Log",
-    "summary": "Per-recipient download evidence log for distributed document "
-    "page versions.",
+    "summary": "Logs who downloads which file of each document page version.",
     "version": "14.0.1.0.0",
     "category": "Knowledge Management",
     "author": "NuoBiT Solutions, S.L.",
