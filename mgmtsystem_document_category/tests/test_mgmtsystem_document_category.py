@@ -100,3 +100,13 @@ class TestMgmtsystemDocumentCategory(TransactionCase):
             'The page "Content page" is not a category: only a category can '
             "have a Management System Category Type.",
         )
+
+    def test_retype_classified_category(self):
+        """A classified category cannot become a content page."""
+        with self.assertRaises(ValidationError) as error:
+            self.category.with_context(lang="en_US").write({"type": "content"})
+        self.assertEqual(
+            error.exception.args[0],
+            'The page "Operations" is not a category: only a category can '
+            "have a Management System Category Type.",
+        )
