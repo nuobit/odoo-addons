@@ -26,25 +26,19 @@ Management System Audit Document Category
 
 |badge1| |badge2| |badge3|
 
-This module makes the management system audit **Procedure** selection robust
-against the document category name and language.
+This module offers, as the *Procedure* of an audit verification line, in the
+form and in the search, the documents stored at any depth under a document
+category that has a *Management System Category Type* (module
+``mgmtsystem_document_category``), whatever the categories are called and in
+whatever language. The categories themselves are not offered.
 
-The OCA ``mgmtsystem_audit`` module filters the *Procedure* field of an audit
-verification line by matching hardcoded English category names (``Procedure``,
-``Environmental Aspect``, ``Quality Manual``, ``Environment Manual``). That match
-relies on the category title, so it breaks as soon as the categories are renamed
-or created in another language (for example in Spanish), leaving the field empty
-even though procedures exist.
+It replaces the filter of the OCA ``mgmtsystem_audit`` module, which offers the
+documents stored directly under the categories named ``Procedure``,
+``Environmental Aspect``, ``Quality Manual`` or ``Environment Manual`` in
+English, and finds nothing in a tree named in another language.
 
-This module replaces that name based match with the explicit *Management System
-Category Type* classification provided by ``mgmtsystem_document_category``:
-
-* The verification line *Procedure* field, both in the form and in the search
-  filter, offers every document stored directly under a classified category,
-  resolved from that stable classification instead of from the category name.
-
-As a result the selection keeps working regardless of how the categories are
-named or in which language they are used.
+It is installed automatically when ``mgmtsystem_audit`` and
+``mgmtsystem_document_category`` are both installed.
 
 **Table of contents**
 
@@ -54,26 +48,10 @@ named or in which language they are used.
 Configuration
 =============
 
-After installing this module, the audit verification line *Procedure* selection
-only offers the documents stored directly under a document category that has a
-*Management System Category Type* set. This replaces the previous name based
-filter, so until the categories are classified the selection is empty, also on
-databases where that filter used to match (categories named ``Procedure``,
-``Environmental Aspect``, ``Quality Manual`` or ``Environment Manual``).
-
-The classification is the same one used by the nonconformity *Procedures*
-selection (provided by ``mgmtsystem_document_category``): categories already
-classified for the nonconformity are picked up by the audit immediately.
-
-To classify the document categories:
-
-#. Go to *Knowledge > Pages > Categories* (or *Management System >
-   Configuration > Categories* when ``mgmtsystem_manual`` is installed).
-#. Open each category that holds management system documents.
-#. Set its *Management System Category Type* (for example *Procedure*).
-
-The documents stored directly under a classified category then become
-selectable as procedures on the audit verification lines.
+The categories are classified as described in ``mgmtsystem_document_category``;
+nonconformities and audits use the same classification. A category classified
+while a verification line is open is offered at the next search, without
+reloading the page.
 
 Bug Tracker
 ===========

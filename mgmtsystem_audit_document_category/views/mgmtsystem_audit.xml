@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dev1@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
 <odoo>
 
@@ -16,7 +17,7 @@
             <field name="procedure_id" position="attributes">
                 <attribute
                     name="domain"
-                >[('parent_id.type', '=', 'category'), ('parent_id.mgmtsystem_category_type', '!=', False)]</attribute>
+                >[('is_mgmtsystem_document', '=', True)]</attribute>
             </field>
         </field>
     </record>
@@ -32,7 +33,7 @@
             <field name="procedure_id" position="attributes">
                 <attribute
                     name="domain"
-                >[('parent_id.type', '=', 'category'), ('parent_id.mgmtsystem_category_type', '!=', False)]</attribute>
+                >[('is_mgmtsystem_document', '=', True)]</attribute>
             </field>
         </field>
     </record>
