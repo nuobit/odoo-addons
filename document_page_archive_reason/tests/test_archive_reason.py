@@ -2,7 +2,7 @@
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tests.common import TransactionCase
 
 
@@ -129,3 +129,75 @@ class TestArchiveReason(TransactionCase):
         with self.assertRaises(UserError) as ctx:
             page.action_archive()
         self.assertIn("already archived", str(ctx.exception))
+
+    def test_toggle_active_without_reason_raises(self):
+        page = self._create_page()
+        with self.assertRaises(ValidationError) as ctx:
+            page.toggle_active()
+        self.assertEqual(
+            str(ctx.exception),
+            "Cannot archive document(s) without a reason:\n- Test Page\n"
+            "Use the Archive action, which asks for the reason.",
+        )
+        self.assertTrue(page.active)
+
+    def test_write_archive_without_reason_raises(self):
+        page = self._create_page()
+        with self.assertRaises(ValidationError) as ctx:
+            page.write({"active": False})
+        self.assertEqual(
+            str(ctx.exception),
+            "Cannot archive document(s) without a reason:\n- Test Page\n"
+            "Use the Archive action, which asks for the reason.",
+        )
+        self.assertTrue(page.active)
+
+    def test_write_archive_with_blank_reason_raises(self):
+        page = self._create_page()
+        with self.assertRaises(ValidationError) as ctx:
+            page.write({"active": False, "archive_reason": "   "})
+        self.assertEqual(
+            str(ctx.exception),
+            "Cannot archive document(s) without a reason:\n- Test Page\n"
+            "Use the Archive action, which asks for the reason.",
+        )
+        self.assertTrue(page.active)
+
+    def test_write_archive_of_two_pages_without_reason_raises(self):
+        page_1 = self._create_page(name="Page 1")
+        page_2 = self._create_page(name="Page 2")
+        records = page_1 + page_2
+        with self.assertRaises(ValidationError) as ctx:
+            records.write({"active": False})
+        self.assertEqual(
+            str(ctx.exception),
+            "Cannot archive document(s) without a reason:\n- Page 1\n- Page 2\n"
+            "Use the Archive action, which asks for the reason.",
+        )
+        self.assertTrue(page_1.active)
+        self.assertTrue(page_2.active)
+
+    def test_clear_reason_of_archived_page_raises(self):
+        page = self._create_page()
+        self._archive_with_reason(page, reason="Replaced by procedure P-016")
+        with self.assertRaises(ValidationError) as ctx:
+            page.write({"archive_reason": False})
+        self.assertEqual(
+            str(ctx.exception),
+            "Cannot archive document(s) without a reason:\n- Test Page\n"
+            "Use the Archive action, which asks for the reason.",
+        )
+        self.assertEqual(page.archive_reason, "Replaced by procedure P-016")
+
+    def test_write_archive_with_reason_saves(self):
+        page = self._create_page()
+        page.write({"active": False, "archive_reason": "Replaced by procedure P-016"})
+        self.assertFalse(page.active)
+        self.assertEqual(page.archive_reason, "Replaced by procedure P-016")
+
+    def test_copy_of_archived_page_is_active(self):
+        page = self._create_page()
+        self._archive_with_reason(page)
+        page_copy = page.copy()
+        self.assertTrue(page_copy.active)
+        self.assertFalse(page_copy.archive_reason)
