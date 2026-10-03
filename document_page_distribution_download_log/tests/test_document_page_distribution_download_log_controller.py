@@ -13,9 +13,8 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
         super().setUp()
         self.download_model = self.env["document.page.history.recipient.download"]
         self.doc_user = self.env.ref("knowledge.group_document_user")
-        setup_env = self.env(context=dict(self.env.context, install_filename="test"))
-        self.group = setup_env["res.groups"].create({"name": "Quality Audience HTTP"})
-        users = setup_env["res.users"].with_context(no_reset_password=True)
+        self.group = self.env["res.groups"].create({"name": "Quality Audience HTTP"})
+        users = self.env["res.users"].with_context(no_reset_password=True)
         self.alice = users.create(
             {
                 "name": "Alice",
@@ -76,7 +75,7 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
         # a reader of the document who joins its group after the distribution
         bob = (
             self.env["res.users"]
-            .with_context(no_reset_password=True, install_filename="test")
+            .with_context(no_reset_password=True)
             .create(
                 {
                     "name": "Bob",
@@ -211,9 +210,7 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
         self.assertEqual(self.download_model.search_count([]), before + 1)
 
     def test_user_without_document_access_is_blocked(self):
-        self.env["res.users"].with_context(
-            no_reset_password=True, install_filename="test"
-        ).create(
+        self.env["res.users"].with_context(no_reset_password=True).create(
             {
                 "name": "Stranger",
                 "login": "stranger_dpddl_http",
@@ -230,9 +227,7 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
     def test_user_without_document_access_is_blocked_even_with_a_token(self):
         # the token of the file does not open a document the user cannot read
         access_token = self.attachment.generate_access_token()[0]
-        self.env["res.users"].with_context(
-            no_reset_password=True, install_filename="test"
-        ).create(
+        self.env["res.users"].with_context(no_reset_password=True).create(
             {
                 "name": "Stranger",
                 "login": "stranger_dpddl_test",
