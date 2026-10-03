@@ -19,8 +19,8 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
         self.alice = users.create(
             {
                 "name": "Alice",
-                "login": "alice_dpddl_http",
-                "password": "alice_dpddl_http",
+                "login": "alice_dpddl_http_test",
+                "password": "alice_dpddl_http_test",
                 "email": "alice.http@example.com",
                 "groups_id": [(6, 0, [self.doc_user.id, self.group.id])],
             }
@@ -54,7 +54,7 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
         )
 
     def test_recipient_download_is_logged_over_http(self):
-        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        self.authenticate("alice_dpddl_http_test", "alice_dpddl_http_test")
         before = self.download_model.search_count([])
         response = self.url_open(self.url, allow_redirects=False)
         self.assertEqual(response.status_code, 303)
@@ -65,7 +65,7 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
         self.assertEqual(self.download_model.search_count([]), before + 1)
 
     def test_recipient_download_serves_file_after_logging(self):
-        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        self.authenticate("alice_dpddl_http_test", "alice_dpddl_http_test")
         before = self.download_model.search_count([])
         response = self.url_open(self.url)
         self.assertEqual(response.status_code, 200)
@@ -73,7 +73,7 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
         self.assertEqual(self.download_model.search_count([]), before + 1)
 
     def test_click_is_served_and_recorded(self):
-        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        self.authenticate("alice_dpddl_http_test", "alice_dpddl_http_test")
         before = self.download_model.search_count([])
         response = self.url_open(
             self.url, headers={"Sec-Fetch-Dest": "document"}, allow_redirects=False
@@ -82,7 +82,7 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
         self.assertEqual(self.download_model.search_count([]), before + 1)
 
     def test_navigation_in_a_frame_is_served_and_recorded(self):
-        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        self.authenticate("alice_dpddl_http_test", "alice_dpddl_http_test")
         for destination in ("iframe", "frame", "embed", "object"):
             before = self.download_model.search_count([])
             response = self.url_open(
@@ -98,7 +98,7 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
             )
 
     def test_request_with_no_destination_is_served_and_recorded(self):
-        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        self.authenticate("alice_dpddl_http_test", "alice_dpddl_http_test")
         before = self.download_model.search_count([])
         response = self.url_open(
             self.url, headers={"Sec-Fetch-Dest": "empty"}, allow_redirects=False
@@ -107,7 +107,7 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
         self.assertEqual(self.download_model.search_count([]), before + 1)
 
     def test_address_asked_as_a_part_of_a_page_is_refused(self):
-        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        self.authenticate("alice_dpddl_http_test", "alice_dpddl_http_test")
         for destination in (
             "image",
             "audio",
@@ -145,7 +145,7 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
             )
 
     def test_address_asked_ahead_of_the_user_is_refused(self):
-        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        self.authenticate("alice_dpddl_http_test", "alice_dpddl_http_test")
         for headers in (
             {"Sec-Purpose": "prefetch"},
             {"Sec-Purpose": "prefetch", "Sec-Fetch-Dest": "empty"},
@@ -170,7 +170,7 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
             )
 
     def test_head_request_is_answered_without_a_row(self):
-        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        self.authenticate("alice_dpddl_http_test", "alice_dpddl_http_test")
         before = self.download_model.search_count([])
         self.env["base"].flush()
         response = self.opener.head(
@@ -214,7 +214,7 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
         # a file bound to nothing: only its access token opens it to a reader
         self.attachment.write({"res_model": False, "res_id": False})
         access_token = self.attachment.generate_access_token()[0]
-        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        self.authenticate("alice_dpddl_http_test", "alice_dpddl_http_test")
         response = self.url_open("%s?access_token=%s" % (self.url, access_token))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content, b"%PDF-1.4 test")
@@ -223,7 +223,7 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
         )
 
     def test_link_with_wrong_access_token_returns_404(self):
-        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        self.authenticate("alice_dpddl_http_test", "alice_dpddl_http_test")
         before = self.download_model.search_count([])
         response = self.url_open(
             "%s?access_token=wrong" % self.url, allow_redirects=False
@@ -246,7 +246,7 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
         )
         v2 = self.page.history_head
         self.assertNotEqual(v2, self.head)
-        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        self.authenticate("alice_dpddl_http_test", "alice_dpddl_http_test")
         before = self.download_model.search_count([])
         # a real attachment, but tracked by another version of the page
         forged_url = "/document_page_distribution_download_log/download/%s/%s" % (
@@ -258,7 +258,7 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
         self.assertEqual(self.download_model.search_count([]), before)
 
     def test_forged_attachment_returns_404(self):
-        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        self.authenticate("alice_dpddl_http_test", "alice_dpddl_http_test")
         before = self.download_model.search_count([])
         forged_url = "/document_page_distribution_download_log/download/%s/%s" % (
             self.head.id,
@@ -276,7 +276,7 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
                 % self.attachment.id,
             }
         )
-        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        self.authenticate("alice_dpddl_http_test", "alice_dpddl_http_test")
         before = self.download_model.search_count([])
         url = "/document_page_distribution_download_log/download/%s/%s" % (
             history.id,
@@ -288,7 +288,7 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
 
     def test_download_of_deleted_attachment_returns_404(self):
         self.attachment.unlink()
-        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        self.authenticate("alice_dpddl_http_test", "alice_dpddl_http_test")
         before = self.download_model.search_count([])
         response = self.url_open(self.url, allow_redirects=False)
         self.assertEqual(response.status_code, 404)
@@ -299,7 +299,7 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
         # /web/content would deny it to a non-author (403): no download
         # evidence may be written for a file that will not be served
         self.attachment.write({"res_model": False, "res_id": False})
-        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        self.authenticate("alice_dpddl_http_test", "alice_dpddl_http_test")
         before = self.download_model.search_count([])
         response = self.url_open(self.url, allow_redirects=False)
         self.assertEqual(response.status_code, 404)
@@ -331,7 +331,7 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
         page._ensure_distribution_recipients(
             head, page._get_distribution_coverage_users()
         )
-        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        self.authenticate("alice_dpddl_http_test", "alice_dpddl_http_test")
         before = self.download_model.search_count([])
         response = self.url_open(
             "/document_page_distribution_download_log/download/%s/%s"
@@ -345,12 +345,12 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
         self.env["res.users"].with_context(no_reset_password=True).create(
             {
                 "name": "Stranger",
-                "login": "stranger_dpddl_http",
-                "password": "stranger_dpddl_http",
+                "login": "stranger_dpddl_http_test",
+                "password": "stranger_dpddl_http_test",
                 "groups_id": [(6, 0, [self.doc_user.id])],
             }
         )
-        self.authenticate("stranger_dpddl_http", "stranger_dpddl_http")
+        self.authenticate("stranger_dpddl_http_test", "stranger_dpddl_http_test")
         before = self.download_model.search_count([])
         response = self.url_open(self.url, allow_redirects=False)
         self.assertEqual(response.status_code, 404)
