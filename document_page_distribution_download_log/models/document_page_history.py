@@ -166,7 +166,7 @@ class DocumentPageHistory(models.Model):
     def _log_recipient_download(self, attachment_id):
         self.ensure_one()
         # no user can write the download log: the module writes the row for
-        # the user who opens the file
+        # the user who downloads the file
         return (
             self.env["document.page.history.recipient.download"]
             .sudo()

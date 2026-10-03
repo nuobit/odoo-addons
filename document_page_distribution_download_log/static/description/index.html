@@ -375,15 +375,20 @@ ul.auto-toc {
 !! source digest: sha256:faa911e0ce3b5f9838401c584a990300ef36a04bde8a269c6de14c0091cc68f7
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 <p><a class="reference external image-reference" href="https://odoo-community.org/page/development-status"><img alt="Beta" src="https://img.shields.io/badge/maturity-Beta-yellow.png" /></a> <a class="reference external image-reference" href="http://www.gnu.org/licenses/agpl-3.0-standalone.html"><img alt="License: AGPL-3" src="https://img.shields.io/badge/license-AGPL--3-blue.png" /></a> <a class="reference external image-reference" href="https://github.com/NuoBiT/odoo-addons/tree/14.0/document_page_distribution_download_log"><img alt="NuoBiT/odoo-addons" src="https://img.shields.io/badge/github-NuoBiT%2Fodoo--addons-lightgray.png?logo=github" /></a></p>
-<p>This module records who opened the files of a distributed document: it is the
-download log of <em>Document Page Distribution</em>. That module sends a version of a
-document to its readers and keeps the log of the sends; this one keeps, for
-every version, the evidence that a reader opened a file linked in its content.</p>
+<p>This module records who downloaded the files of a distributed document: it is
+the download log of <em>Document Page Distribution</em>. That module sends a version of
+a document to its readers and keeps the log of the sends; this one keeps, for
+every version, the evidence that a reader downloaded a file linked in its
+content.</p>
 <p>When a version of a document is saved, every link of its content that points to
 an attachment is rewritten to an address of this module that carries the
-version and the file. Opening that address checks that the user can read the
-document, records the download and serves the file as Odoo does.</p>
-<p>A download is recorded for every user who opens a file, whether or not the
+version and the file. When the user’s browser asks for that address to hand the
+file to the user, the module checks that the user can read the document,
+records the download and serves the file as Odoo does. When the browser says
+that it asks for it as a part of another page, such as an image in a message,
+or ahead of the user, such as a prefetch, the module answers <em>not found</em> and
+records nothing. A browser that says nothing is served and recorded.</p>
+<p>A download is recorded for every user who downloads a file, whether or not the
 version was distributed to that user. When the user is a recipient of the
 version, the recipient line shows the downloads: whether the user downloaded,
 how many times, the first and the last date. Every version says in <em>Downloads</em>
@@ -394,9 +399,10 @@ with recorded downloads cannot be deleted, only archived. A file with a
 recorded download cannot be deleted either, by anyone: the user who downloaded
 it holds a copy, and the record keeps saying which file it was. Neither can a
 record that owns such a file, such as another document: Odoo deletes a record’s
-files with it, so archive the record instead. A download record says that a
-user opened the address of a file; the log cannot know whether the file arrived
-or was read.</p>
+files with it, so archive the record instead. A download record says that the
+user’s browser asked for the file to hand it to the user: a click on the link,
+the link opened in a new tab, a save of the link. The log cannot know whether
+the file arrived or was read.</p>
 <p>Visibility follows the security groups of the document: a user sees the
 downloads of the documents they can read, and a document manager sees all of
 them.</p>
@@ -424,10 +430,10 @@ type of the file and however many links there are; images and links to
 other sites are not.</li>
 <li>On save, each link to a file is rewritten to a download address of this
 module that carries the version and the file.</li>
-<li>When a user opens the link, the download is recorded against that exact
-version and the file is served. Opening it again adds a new record; the
-first and the last date of the user are kept. The link of an old version is
-always recorded against that old version.</li>
+<li>When a user downloads the file through the link, the download is recorded
+against that exact version and the file is served. Downloading it again adds
+a new record; the first and the last date of the user are kept. The link of
+an old version is always recorded against that old version.</li>
 <li>In the <em>Distribution</em> tab of the document and in the form of every version,
 each recipient shows whether they downloaded the version, with a button that
 opens the detail (date, user, file) next to the sends. The form of every
@@ -446,8 +452,19 @@ saved while it was installed: their content keeps the addresses of the
 module, which stop working with it. The links have to be inserted again.</li>
 <li>The address of the file itself (<tt class="docutils literal">/web/content</tt>, the one the module
 redirects to) serves the file without any record.</li>
-<li>A download record says that a user opened the address of a file, not that
-the file arrived or was read.</li>
+<li>A download record says that the user’s browser asked for the file to hand it
+to the user, not that the file arrived or was read. The module tells that
+request from the others by what the browser declares: the <tt class="docutils literal"><span class="pre">Sec-Fetch-Dest</span></tt>
+header, and <tt class="docutils literal"><span class="pre">Sec-Purpose</span></tt> and the older prefetch headers. A browser that
+declares nothing, such as an older browser or any browser on a site served
+over plain HTTP other than localhost, and a program are recorded on every
+request.</li>
+<li>An address loaded by a frame of a page (<tt class="docutils literal">iframe</tt>, <tt class="docutils literal">frame</tt>, <tt class="docutils literal">embed</tt> or
+<tt class="docutils literal">object</tt>) is recorded as a download: the browser receives the file, and a
+link clicked inside a frame asks for it the same way. Odoo removes these
+elements from the content of documents and from messages.</li>
+<li>A program or a download manager that asks for the address several times, to
+resume a download for instance, writes one record per request.</li>
 <li>A file with a recorded download stays: it cannot be deleted, and Odoo has no
 archive for files. A wrong file is corrected with a new version of the
 document that links the right one; removing a file once downloaded needs a

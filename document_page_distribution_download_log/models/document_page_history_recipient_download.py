@@ -6,11 +6,14 @@ from odoo import api, fields, models
 
 
 class DocumentPageHistoryRecipientDownload(models.Model):
-    """Evidence that a user opened a file of a version of a document.
+    """Evidence that a user's browser asked for a file of a version of a
+    document, to hand it to the user.
 
-    A row is written for every click on a tracked link, whoever clicks. It
-    belongs to the version the link was saved in, never to the current version
-    of the document.
+    A row is written each time a tracked link is asked for that way (a click, a
+    new tab, a save), whoever the user is; never for an address that the
+    browser declares as a part of another page (an image, a media file, a
+    script) or as asked ahead of the user. It belongs to the version the link
+    was saved in, never to the current version of the document.
     """
 
     _name = "document.page.history.recipient.download"

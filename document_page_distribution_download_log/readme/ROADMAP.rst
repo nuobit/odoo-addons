@@ -5,8 +5,19 @@
   module, which stop working with it. The links have to be inserted again.
 * The address of the file itself (``/web/content``, the one the module
   redirects to) serves the file without any record.
-* A download record says that a user opened the address of a file, not that
-  the file arrived or was read.
+* A download record says that the user's browser asked for the file to hand it
+  to the user, not that the file arrived or was read. The module tells that
+  request from the others by what the browser declares: the ``Sec-Fetch-Dest``
+  header, and ``Sec-Purpose`` and the older prefetch headers. A browser that
+  declares nothing, such as an older browser or any browser on a site served
+  over plain HTTP other than localhost, and a program are recorded on every
+  request.
+* An address loaded by a frame of a page (``iframe``, ``frame``, ``embed`` or
+  ``object``) is recorded as a download: the browser receives the file, and a
+  link clicked inside a frame asks for it the same way. Odoo removes these
+  elements from the content of documents and from messages.
+* A program or a download manager that asks for the address several times, to
+  resume a download for instance, writes one record per request.
 * A file with a recorded download stays: it cannot be deleted, and Odoo has no
   archive for files. A wrong file is corrected with a new version of the
   document that links the right one; removing a file once downloaded needs a
