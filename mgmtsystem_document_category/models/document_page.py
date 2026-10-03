@@ -18,10 +18,10 @@ class DocumentPage(models.Model):
             ("environment_manual", "Environment Manual"),
         ],
         string="Management System Category Type",
-        help="Management system classification of this document category. "
-        "Documents stored under a classified category become available in "
-        "the related management system fields (e.g. nonconformity "
-        "procedures), regardless of the category name or language.",
+        help="Management system classification of this document category. The "
+        "documents stored at any depth under a classified category are flagged "
+        "as Management System Document, whatever the category is called and in "
+        "whatever language.",
     )
     is_mgmtsystem_document = fields.Boolean(
         string="Management System Document",
