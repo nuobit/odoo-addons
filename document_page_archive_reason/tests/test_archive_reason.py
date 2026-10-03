@@ -35,6 +35,10 @@ class TestArchiveReason(TransactionCase):
         wizard.action_confirm()
         return wizard
 
+    def _flush_tracking(self):
+        self.env["base"].flush()
+        self.cr.precommit.run()
+
     def test_action_archive_opens_wizard(self):
         page = self._create_page()
         action = page.action_archive()
@@ -46,15 +50,37 @@ class TestArchiveReason(TransactionCase):
             "Document must remain active until the wizard confirms.",
         )
 
-    def test_wizard_confirm_archives_stores_reason_and_posts_message(self):
+    def test_wizard_confirm_archives_and_stores_reason(self):
         page = self._create_page()
-        count_before = len(page.message_ids)
         self._archive_with_reason(page, reason="Replaced by procedure P-016")
         self.assertFalse(page.active)
         self.assertEqual(page.archive_reason, "Replaced by procedure P-016")
-        self.assertEqual(len(page.message_ids), count_before + 1)
-        self.assertIn("archived", page.message_ids[0].body)
-        self.assertIn("Replaced by procedure P-016", page.message_ids[0].body)
+
+    def test_wizard_confirm_logs_tracking_line(self):
+        page = self._create_page()
+        self._flush_tracking()
+        messages_before = page.message_ids
+        self._archive_with_reason(page)
+        self._flush_tracking()
+        tracking = (page.message_ids - messages_before).tracking_value_ids
+        self.assertEqual(len(tracking), 1)
+        self.assertEqual(tracking.field.name, "active")
+        self.assertEqual(tracking.old_value_integer, 1)
+        self.assertEqual(tracking.new_value_integer, 0)
+
+    def test_wizard_confirm_logs_note(self):
+        page = self._create_page()
+        self._flush_tracking()
+        messages_before = page.message_ids
+        self._archive_with_reason(page, reason="Replaced by procedure P-016")
+        self._flush_tracking()
+        messages = page.message_ids - messages_before
+        note = messages - messages.tracking_value_ids.mail_message_id
+        self.assertEqual(len(note), 1)
+        self.assertEqual(
+            note.body,
+            "<p>Document archived.<br>Reason: Replaced by procedure P-016</p>",
+        )
 
     def test_wizard_requires_non_empty_reason(self):
         page = self._create_page()

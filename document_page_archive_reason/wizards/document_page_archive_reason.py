@@ -24,7 +24,7 @@ class DocumentPageArchiveReason(models.TransientModel):
 
     def action_confirm(self):
         self.ensure_one()
-        pages = self.document_page_ids.with_context(mail_notrack=True)
+        pages = self.document_page_ids
         reason = (self.reason or "").strip()
         if not reason:
             raise UserError(_("Archive reason is required."))
