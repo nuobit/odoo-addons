@@ -3,8 +3,9 @@
 * Uninstalling the module does not restore the original links of the versions
   saved while it was installed: their content keeps the addresses of the
   module, which stop working with it. The links have to be inserted again.
-* The address of the file itself (``/web/content``, the one the module
-  redirects to) serves the file without any record.
+* The file's own address serves it without any record: the module redirects to
+  it (``/web/content``), the attachment box of the document's chatter offers it
+  with a download icon, and its image address (``/web/image``) serves it too.
 * A download record says that the user's browser asked for the file to hand it
   to the user, not that the file arrived or was read. The module tells that
   request from the others by what the browser declares: the ``Sec-Fetch-Dest``
