@@ -72,6 +72,14 @@ class TestArchiveReason(TransactionCase):
         self.assertIn("boom", body)
         self.assertNotIn("<b>boom</b>", body)
 
+    def test_wizard_note_keeps_reason_line_breaks(self):
+        page = self._create_page()
+        self._archive_with_reason(page, reason="Replaced by P-016\nRevision 03")
+        self.assertEqual(
+            page.message_ids[0].body,
+            "<p>Document archived.<br>Reason: Replaced by P-016<br>Revision 03</p>",
+        )
+
     def test_unarchive_is_direct_and_clears_reason(self):
         page = self._create_page()
         self._archive_with_reason(page)

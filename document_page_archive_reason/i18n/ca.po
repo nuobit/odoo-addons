@@ -43,8 +43,12 @@ msgstr "El motiu d'arxivament és obligatori."
 #. module: document_page_archive_reason
 #: code:addons/document_page_archive_reason/wizards/document_page_archive_reason.py:0
 #, python-format
-msgid "Document archived.<br/>Reason: %s"
-msgstr "Document arxivat.<br/>Motiu: %s"
+msgid ""
+"Document archived.\n"
+"Reason: %s"
+msgstr ""
+"Document arxivat.\n"
+"Motiu: %s"
 
 #. module: document_page_archive_reason
 #: model:ir.model.fields,field_description:document_page_archive_reason.field_document_page_archive_reason__reason

@@ -1,4 +1,5 @@
 # Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from odoo import _, fields, models, tools
@@ -29,7 +30,7 @@ class DocumentPageArchiveReason(models.TransientModel):
             raise UserError(_("Archive reason is required."))
         pages._check_can_archive_with_reason()
         pages.archive_reason = reason
-        body = _("Document archived.<br/>Reason: %s") % tools.html_escape(reason)
+        body = tools.plaintext2html(_("Document archived.\nReason: %s") % reason)
         for doc in pages:
             doc.message_post(body=body, subtype_xmlid="mail.mt_note")
         pages.with_context(archive_reason_validated=True).action_archive()
