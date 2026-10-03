@@ -395,14 +395,14 @@ how many times, the first and the last date. Every version says in <em>Downloads
 how many of its recipients downloaded at least one of its files: <em>3/10</em> means 3
 of 10.</p>
 <p>No user can create, edit or delete a download record. A version or a document
-with recorded downloads cannot be deleted, only archived. A file with a
-recorded download cannot be deleted either, by anyone: the user who downloaded
-it holds a copy, and the record keeps saying which file it was. Neither can a
-record that owns such a file, such as another document: Odoo deletes a record’s
-files with it, so archive the record instead. A download record says that the
-user’s browser asked for the file to hand it to the user: a click on the link,
-the link opened in a new tab, a save of the link. The log cannot know whether
-the file arrived or was read.</p>
+with recorded downloads cannot be deleted; a document can be archived instead.
+A file with a recorded download cannot be deleted either, by anyone: the user
+who downloaded it holds a copy, and the record keeps saying which file it was.
+Neither can a record that owns such a file, such as another document: Odoo
+deletes a record’s files with it, so archive the record instead. A download
+record says that the user’s browser asked for the file to hand it to the user:
+a click on the link, the link opened in a new tab, a save of the link. The log
+cannot know whether the file arrived or was read.</p>
 <p>Visibility follows the security groups of the document: a user sees the
 downloads of the documents they can read, and a document manager sees all of
 them.</p>
@@ -450,8 +450,9 @@ is not tracked until its content is saved again.</li>
 <li>Uninstalling the module does not restore the original links of the versions
 saved while it was installed: their content keeps the addresses of the
 module, which stop working with it. The links have to be inserted again.</li>
-<li>The address of the file itself (<tt class="docutils literal">/web/content</tt>, the one the module
-redirects to) serves the file without any record.</li>
+<li>The file’s own address serves it without any record: the module redirects to
+it (<tt class="docutils literal">/web/content</tt>), the attachment box of the document’s chatter offers it
+with a download icon, and its image address (<tt class="docutils literal">/web/image</tt>) serves it too.</li>
 <li>A download record says that the user’s browser asked for the file to hand it
 to the user, not that the file arrived or was read. The module tells that
 request from the others by what the browser declares: the <tt class="docutils literal"><span class="pre">Sec-Fetch-Dest</span></tt>

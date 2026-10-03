@@ -21,14 +21,14 @@ how many of its recipients downloaded at least one of its files: *3/10* means 3
 of 10.
 
 No user can create, edit or delete a download record. A version or a document
-with recorded downloads cannot be deleted, only archived. A file with a
-recorded download cannot be deleted either, by anyone: the user who downloaded
-it holds a copy, and the record keeps saying which file it was. Neither can a
-record that owns such a file, such as another document: Odoo deletes a record's
-files with it, so archive the record instead. A download record says that the
-user's browser asked for the file to hand it to the user: a click on the link,
-the link opened in a new tab, a save of the link. The log cannot know whether
-the file arrived or was read.
+with recorded downloads cannot be deleted; a document can be archived instead.
+A file with a recorded download cannot be deleted either, by anyone: the user
+who downloaded it holds a copy, and the record keeps saying which file it was.
+Neither can a record that owns such a file, such as another document: Odoo
+deletes a record's files with it, so archive the record instead. A download
+record says that the user's browser asked for the file to hand it to the user:
+a click on the link, the link opened in a new tab, a save of the link. The log
+cannot know whether the file arrived or was read.
 
 Visibility follows the security groups of the document: a user sees the
 downloads of the documents they can read, and a document manager sees all of
