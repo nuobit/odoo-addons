@@ -1,4 +1,5 @@
 # Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from odoo.exceptions import UserError
@@ -85,6 +86,13 @@ class TestArchiveReason(TransactionCase):
             page.archive_reason,
             "Unarchiving must clear the stored archive reason.",
         )
+
+    def test_toggle_active_clears_reason(self):
+        page = self._create_page()
+        self._archive_with_reason(page)
+        page.toggle_active()
+        self.assertTrue(page.active)
+        self.assertFalse(page.archive_reason)
 
     def test_unarchive_ignores_already_active(self):
         # Standard Odoo behavior: unarchiving active records is a no-op,
