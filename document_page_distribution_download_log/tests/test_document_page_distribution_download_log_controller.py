@@ -4,7 +4,8 @@
 
 import base64
 
-from odoo.tests import HttpCase, tagged
+from odoo.tests import HOST, HttpCase, tagged
+from odoo.tools import config
 
 
 @tagged("post_install", "-at_install")
@@ -70,6 +71,119 @@ class TestDocumentPageDistributionDownloadLogController(HttpCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content, b"%PDF-1.4 test")
         self.assertEqual(self.download_model.search_count([]), before + 1)
+
+    def test_click_is_served_and_recorded(self):
+        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        before = self.download_model.search_count([])
+        response = self.url_open(
+            self.url, headers={"Sec-Fetch-Dest": "document"}, allow_redirects=False
+        )
+        self.assertEqual(response.status_code, 303)
+        self.assertEqual(self.download_model.search_count([]), before + 1)
+
+    def test_navigation_in_a_frame_is_served_and_recorded(self):
+        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        for destination in ("iframe", "frame", "embed", "object"):
+            before = self.download_model.search_count([])
+            response = self.url_open(
+                self.url,
+                headers={"Sec-Fetch-Dest": destination},
+                allow_redirects=False,
+            )
+            self.assertEqual(response.status_code, 303, "Refused as %r" % destination)
+            self.assertEqual(
+                self.download_model.search_count([]),
+                before + 1,
+                "Not recorded as %r" % destination,
+            )
+
+    def test_request_with_no_destination_is_served_and_recorded(self):
+        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        before = self.download_model.search_count([])
+        response = self.url_open(
+            self.url, headers={"Sec-Fetch-Dest": "empty"}, allow_redirects=False
+        )
+        self.assertEqual(response.status_code, 303)
+        self.assertEqual(self.download_model.search_count([]), before + 1)
+
+    def test_address_asked_as_a_part_of_a_page_is_refused(self):
+        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        for destination in (
+            "image",
+            "audio",
+            "audioworklet",
+            "fencedframe",
+            "font",
+            "json",
+            "manifest",
+            "paintworklet",
+            "report",
+            "script",
+            "serviceworker",
+            "sharedworker",
+            "style",
+            "text",
+            "track",
+            "video",
+            "webidentity",
+            "worker",
+            "xslt",
+            "unknown",
+            "",
+        ):
+            before = self.download_model.search_count([])
+            response = self.url_open(
+                self.url,
+                headers={"Sec-Fetch-Dest": destination},
+                allow_redirects=False,
+            )
+            self.assertEqual(response.status_code, 404, "Served as %r" % destination)
+            self.assertEqual(
+                self.download_model.search_count([]),
+                before,
+                "Recorded as %r" % destination,
+            )
+
+    def test_address_asked_ahead_of_the_user_is_refused(self):
+        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        for headers in (
+            {"Sec-Purpose": "prefetch"},
+            {"Sec-Purpose": "prefetch", "Sec-Fetch-Dest": "empty"},
+            {"Sec-Purpose": "prefetch", "Sec-Fetch-Dest": "document"},
+            {"Purpose": "prefetch"},
+            {"Purpose": "prefetch", "Sec-Fetch-Dest": "empty"},
+            {"Purpose": "prefetch", "Sec-Fetch-Dest": "document"},
+            {"X-Purpose": "preview"},
+            {"X-Purpose": "preview", "Sec-Fetch-Dest": "empty"},
+            {"X-Purpose": "preview", "Sec-Fetch-Dest": "document"},
+            {"X-Moz": "prefetch"},
+            {"X-Moz": "prefetch", "Sec-Fetch-Dest": "empty"},
+            {"X-Moz": "prefetch", "Sec-Fetch-Dest": "document"},
+        ):
+            before = self.download_model.search_count([])
+            response = self.url_open(self.url, headers=headers, allow_redirects=False)
+            self.assertEqual(response.status_code, 404, "Served with %r" % headers)
+            self.assertEqual(
+                self.download_model.search_count([]),
+                before,
+                "Recorded with %r" % headers,
+            )
+
+    def test_head_request_is_answered_without_a_row(self):
+        self.authenticate("alice_dpddl_http", "alice_dpddl_http")
+        before = self.download_model.search_count([])
+        self.env["base"].flush()
+        response = self.opener.head(
+            "http://%s:%s%s" % (HOST, config["http_port"], self.url),
+            timeout=10,
+            allow_redirects=False,
+        )
+        self.assertEqual(response.status_code, 303)
+        self.assertIn(
+            "/web/content/%s" % self.attachment.id,
+            response.headers.get("Location", ""),
+        )
+        self.assertEqual(self.download_model.search_count([]), before)
 
     def test_download_of_a_user_who_is_not_a_recipient_is_served_and_logged(self):
         # a reader of the document who joins its group after the distribution

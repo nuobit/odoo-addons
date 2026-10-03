@@ -26,17 +26,22 @@ Document Page Distribution Download Log
 
 |badge1| |badge2| |badge3|
 
-This module records who opened the files of a distributed document: it is the
-download log of *Document Page Distribution*. That module sends a version of a
-document to its readers and keeps the log of the sends; this one keeps, for
-every version, the evidence that a reader opened a file linked in its content.
+This module records who downloaded the files of a distributed document: it is
+the download log of *Document Page Distribution*. That module sends a version of
+a document to its readers and keeps the log of the sends; this one keeps, for
+every version, the evidence that a reader downloaded a file linked in its
+content.
 
 When a version of a document is saved, every link of its content that points to
 an attachment is rewritten to an address of this module that carries the
-version and the file. Opening that address checks that the user can read the
-document, records the download and serves the file as Odoo does.
+version and the file. When the user's browser asks for that address to hand the
+file to the user, the module checks that the user can read the document,
+records the download and serves the file as Odoo does. When the browser says
+that it asks for it as a part of another page, such as an image in a message,
+or ahead of the user, such as a prefetch, the module answers *not found* and
+records nothing. A browser that says nothing is served and recorded.
 
-A download is recorded for every user who opens a file, whether or not the
+A download is recorded for every user who downloads a file, whether or not the
 version was distributed to that user. When the user is a recipient of the
 version, the recipient line shows the downloads: whether the user downloaded,
 how many times, the first and the last date. Every version says in *Downloads*
@@ -48,9 +53,10 @@ with recorded downloads cannot be deleted, only archived. A file with a
 recorded download cannot be deleted either, by anyone: the user who downloaded
 it holds a copy, and the record keeps saying which file it was. Neither can a
 record that owns such a file, such as another document: Odoo deletes a record's
-files with it, so archive the record instead. A download record says that a
-user opened the address of a file; the log cannot know whether the file arrived
-or was read.
+files with it, so archive the record instead. A download record says that the
+user's browser asked for the file to hand it to the user: a click on the link,
+the link opened in a new tab, a save of the link. The log cannot know whether
+the file arrived or was read.
 
 Visibility follows the security groups of the document: a user sees the
 downloads of the documents they can read, and a document manager sees all of
@@ -71,10 +77,10 @@ Usage
    other sites are not.
 #. On save, each link to a file is rewritten to a download address of this
    module that carries the version and the file.
-#. When a user opens the link, the download is recorded against that exact
-   version and the file is served. Opening it again adds a new record; the
-   first and the last date of the user are kept. The link of an old version is
-   always recorded against that old version.
+#. When a user downloads the file through the link, the download is recorded
+   against that exact version and the file is served. Downloading it again adds
+   a new record; the first and the last date of the user are kept. The link of
+   an old version is always recorded against that old version.
 #. In the *Distribution* tab of the document and in the form of every version,
    each recipient shows whether they downloaded the version, with a button that
    opens the detail (date, user, file) next to the sends. The form of every
@@ -92,8 +98,19 @@ Known issues / Roadmap
   module, which stop working with it. The links have to be inserted again.
 * The address of the file itself (``/web/content``, the one the module
   redirects to) serves the file without any record.
-* A download record says that a user opened the address of a file, not that
-  the file arrived or was read.
+* A download record says that the user's browser asked for the file to hand it
+  to the user, not that the file arrived or was read. The module tells that
+  request from the others by what the browser declares: the ``Sec-Fetch-Dest``
+  header, and ``Sec-Purpose`` and the older prefetch headers. A browser that
+  declares nothing, such as an older browser or any browser on a site served
+  over plain HTTP other than localhost, and a program are recorded on every
+  request.
+* An address loaded by a frame of a page (``iframe``, ``frame``, ``embed`` or
+  ``object``) is recorded as a download: the browser receives the file, and a
+  link clicked inside a frame asks for it the same way. Odoo removes these
+  elements from the content of documents and from messages.
+* A program or a download manager that asks for the address several times, to
+  resume a download for instance, writes one record per request.
 * A file with a recorded download stays: it cannot be deleted, and Odoo has no
   archive for files. A wrong file is corrected with a new version of the
   document that links the right one; removing a file once downloaded needs a
