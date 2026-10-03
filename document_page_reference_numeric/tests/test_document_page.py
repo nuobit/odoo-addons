@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from odoo.exceptions import ValidationError
-from odoo.tests.common import TransactionCase, tagged
+from odoo.tests.common import TransactionCase, new_test_user, tagged
 
 
 @tagged("post_install", "-at_install")
@@ -74,6 +74,28 @@ class TestDocumentPageReference(TransactionCase):
         sequence.number_next_actual = 1234567890
         self._create_page(name="Archived Page", reference="1234567890", active=False)
         page = self._create_page(name="New Page")
+        self.assertEqual(page.reference, "1234567891")
+
+    def test_generated_reference_skips_reference_of_other_company(self):
+        sequence = self.env.ref(
+            "document_page_reference_numeric.seq_document_page_reference_numeric"
+        )
+        sequence.number_next_actual = 1234567890
+        other_company = self.env["res.company"].create(
+            {"name": "Document Page Test Company"}
+        )
+        self._create_page(
+            name="Other Company Page",
+            reference="1234567890",
+            company_id=other_company.id,
+        )
+        user = new_test_user(
+            self.env,
+            login="document_editor_test",
+            groups="base.group_user,document_page.group_document_editor",
+            context={"no_reset_password": True},
+        )
+        page = self.DocumentPage.with_user(user).create({"name": "New Page"})
         self.assertEqual(page.reference, "1234567891")
 
     def test_sequence_is_company_global(self):
