@@ -72,7 +72,16 @@ class TestDocumentPageReference(TransactionCase):
             "document_page_reference_numeric.seq_document_page_reference_numeric"
         )
         sequence.number_next_actual = 1234567890
-        self._create_page(name="Archived Page", reference="1234567890", active=False)
+        archived_page = self._create_page(name="Archived Page", reference="1234567890")
+        # Archived below the ORM: modules installed in the same database may add
+        # rules to archiving, and this test only needs an archived page
+        archived_page.flush()
+        self.env.cr.execute(
+            "UPDATE document_page SET active = FALSE WHERE id = %s",
+            (archived_page.id,),
+        )
+        archived_page.invalidate_cache(fnames=["active"], ids=archived_page.ids)
+        self.assertFalse(archived_page.active)
         page = self._create_page(name="New Page")
         self.assertEqual(page.reference, "1234567891")
 
