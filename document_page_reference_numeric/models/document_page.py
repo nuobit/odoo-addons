@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 SEQUENCE_CODE = "document.page.reference.numeric"
 
@@ -12,6 +12,14 @@ class DocumentPage(models.Model):
     _inherit = "document.page"
 
     reference = fields.Char(copy=False)
+
+    @api.constrains("reference")
+    def _check_reference_required(self):
+        for page in self:
+            if not page.reference:
+                raise ValidationError(
+                    _('The reference of "%s" cannot be empty.', page.name)
+                )
 
     @api.model_create_multi
     def create(self, vals_list):
