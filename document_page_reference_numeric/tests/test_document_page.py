@@ -139,3 +139,12 @@ class TestDocumentPageReference(TransactionCase):
             "to generate a numeric reference. Type a reference, or ask an "
             "administrator to restore the sequence.",
         )
+
+    def test_copy_gets_next_reference(self):
+        sequence = self.env.ref(
+            "document_page_reference_numeric.seq_document_page_reference_numeric"
+        )
+        page = self._create_page(reference="1799534795")
+        sequence.number_next_actual = 42
+        page_copy = page.copy()
+        self.assertEqual(page_copy.reference, "0000000042")
