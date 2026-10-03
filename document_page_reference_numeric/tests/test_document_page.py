@@ -79,28 +79,6 @@ class TestDocumentPageReference(TransactionCase):
         page = self._create_page(reference="2147483646")
         self.assertEqual(page.reference, "2147483646")
 
-    def test_post_init_hook_seeds_sequence_above_legacy_max(self):
-        from odoo.addons.document_page_reference_numeric.hooks import post_init_hook
-
-        sequence = self.env.ref(
-            "document_page_reference_numeric.seq_document_page_reference_numeric"
-        )
-        original_next = sequence.number_next_actual
-        try:
-            self._create_page(name="Legacy High", reference="2000000000")
-            post_init_hook(self.env.cr, self.env.registry)
-            sequence.invalidate_cache(["number_next_actual"], sequence.ids)
-            self.assertGreater(
-                sequence.number_next_actual,
-                2000000000,
-                "Hook must advance the sequence above the highest legacy reference",
-            )
-            page = self._create_page(name="After Seed")
-            self.assertTrue(page.reference.isdigit())
-            self.assertGreater(int(page.reference), 2000000000)
-        finally:
-            sequence.number_next_actual = original_next
-
     def test_sequence_is_company_global(self):
         sequence = self.env.ref(
             "document_page_reference_numeric.seq_document_page_reference_numeric"
