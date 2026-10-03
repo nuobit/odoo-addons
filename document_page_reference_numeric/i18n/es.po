@@ -34,3 +34,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:document_page_reference_numeric.field_document_page____last_update
 msgid "Last Modified on"
 msgstr "Última modificación el"
+
+#. module: document_page_reference_numeric
+#: code:addons/document_page_reference_numeric/models/document_page.py:0
+#, python-format
+msgid ""
+"There is no active sequence with code %s to generate a numeric reference. "
+"Type a reference, or ask an administrator to restore the sequence."
+msgstr ""
+"No hay ninguna secuencia activa con el código %s para generar una referencia"
+" numérica. Escriba una referencia o pida a un administrador que restaure la "
+"secuencia."
