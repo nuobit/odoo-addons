@@ -107,6 +107,15 @@ class TestMgmtsystemNonconformityDocumentCategory(TransactionCase):
         )
         self.assertIn(document, self.page_model.search(self._procedures_domain()))
 
+    def test_oca_procedure_category_classified(self):
+        """The install classifies the OCA procedure category as a procedure."""
+        self.assertEqual(
+            self.env.ref(
+                "document_page_procedure.document_page_group_procedure"
+            ).mgmtsystem_category_type,
+            "procedure",
+        )
+
     def test_oca_procedure_category_documents_offered(self):
         """After the install, the documents of the OCA procedure category are
         offered."""
