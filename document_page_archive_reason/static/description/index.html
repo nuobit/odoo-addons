@@ -388,7 +388,8 @@ must be justified.</p>
 is mandatory.</li>
 <li>On confirm, the reason is stored on each document (field <tt class="docutils literal">Archive
 Reason</tt>) and posted as an internal note in its chatter, then the documents
-are archived through the standard archive action.</li>
+are archived through the standard archive action. The chatter shows both:
+the note with the reason and the change of the tracked <tt class="docutils literal">active</tt> field.</li>
 <li>Archiving a selection that already contains archived documents is rejected
 with a <tt class="docutils literal">UserError</tt> listing them, so a single reason is never recorded
 against the wrong set.</li>

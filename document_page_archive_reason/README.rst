@@ -41,7 +41,8 @@ Behavior:
   is mandatory.
 * On confirm, the reason is stored on each document (field ``Archive
   Reason``) and posted as an internal note in its chatter, then the documents
-  are archived through the standard archive action.
+  are archived through the standard archive action. The chatter shows both:
+  the note with the reason and the change of the tracked ``active`` field.
 * Archiving a selection that already contains archived documents is rejected
   with a ``UserError`` listing them, so a single reason is never recorded
   against the wrong set.
