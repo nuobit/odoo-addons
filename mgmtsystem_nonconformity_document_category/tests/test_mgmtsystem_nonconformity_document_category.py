@@ -13,9 +13,7 @@ class TestMgmtsystemNonconformityDocumentCategory(TransactionCase):
         self.page_model = self.env["document.page"]
 
     def _procedures_domain(self):
-        # The domain the web client gives the procedures picker of the
-        # nonconformity form: the one of the field node, or the field's own
-        # when the node has none.
+        # The domain the procedures picker of the nonconformity form carries
         view = self.env["mgmtsystem.nonconformity"].fields_view_get(
             view_id=self.env.ref(
                 "mgmtsystem_nonconformity.view_mgmtsystem_nonconformity_form"
@@ -23,10 +21,7 @@ class TestMgmtsystemNonconformityDocumentCategory(TransactionCase):
             view_type="form",
         )
         [node] = etree.fromstring(view["arch"]).xpath("//field[@name='procedure_ids']")
-        domain = node.get("domain")
-        if domain:
-            return safe_eval(domain)
-        return view["fields"]["procedure_ids"]["domain"]
+        return safe_eval(node.get("domain"))
 
     def test_procedures_offered(self):
         """The procedures offered are the documents under a classified category,
