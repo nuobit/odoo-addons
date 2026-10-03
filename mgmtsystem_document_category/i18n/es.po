@@ -82,3 +82,13 @@ msgstr "Procedimiento"
 #: model:ir.model.fields.selection,name:mgmtsystem_document_category.selection__document_page__mgmtsystem_category_type__quality_manual
 msgid "Quality Manual"
 msgstr "Manual de calidad"
+
+#. module: mgmtsystem_document_category
+#: code:addons/mgmtsystem_document_category/models/document_page.py:0
+#, python-format
+msgid ""
+"The page \"%s\" is not a category: only a category can have a Management "
+"System Category Type."
+msgstr ""
+"La página \"%s\" no es una categoría: solo una categoría puede tener un Tipo"
+" de categoría del sistema de gestión."
