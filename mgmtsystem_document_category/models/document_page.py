@@ -50,7 +50,8 @@ class DocumentPage(models.Model):
             ("type", "=", "content"),
             ("parent_id", "child_of", categories.ids),
         ]
-        if (operator == "=") == value:
+        flagged = value if operator == "=" else not value
+        if flagged:
             return documents
         return ["!"] + expression.normalize_domain(documents)
 
