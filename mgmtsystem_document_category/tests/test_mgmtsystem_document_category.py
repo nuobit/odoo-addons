@@ -69,6 +69,13 @@ class TestMgmtsystemDocumentCategory(TransactionCase):
         self.assertIn(self.other_category, found)
         self.assertIn(self.other_document, found)
 
+    def test_search_not_false(self):
+        """Searching the flag as not false finds what searching it as true finds."""
+        self.assertEqual(
+            self.page_model.search([("is_mgmtsystem_document", "!=", False)]),
+            self.page_model.search([("is_mgmtsystem_document", "=", True)]),
+        )
+
     def test_read_is_mgmtsystem_document(self):
         """The value read agrees with the search."""
         self.assertTrue(self.nested_document.is_mgmtsystem_document)
@@ -80,6 +87,17 @@ class TestMgmtsystemDocumentCategory(TransactionCase):
         with self.assertRaises(UserError) as error:
             self.page_model.with_context(lang="en_US").search(
                 [("is_mgmtsystem_document", "in", [True])]
+            )
+        self.assertEqual(
+            error.exception.args[0],
+            "Management System Document can only be searched as true or false.",
+        )
+
+    def test_search_unsupported_value(self):
+        """The flag is only compared with true or false."""
+        with self.assertRaises(UserError) as error:
+            self.page_model.with_context(lang="en_US").search(
+                [("is_mgmtsystem_document", "=", 1)]
             )
         self.assertEqual(
             error.exception.args[0],
