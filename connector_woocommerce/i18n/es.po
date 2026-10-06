@@ -4416,6 +4416,28 @@ msgid ""
 msgstr ""
 
 #. module: connector_woocommerce
+#: code:addons/connector_woocommerce/models/sale_order/import_mapper.py:0
+#, python-format
+msgid ""
+"The WooCommerce order %(order)s is in %(order_currency)s, but its pricelist "
+"'%(pricelist)s' is in %(pricelist_currency)s: set a discount pricelist in "
+"%(order_currency)s on the backend."
+msgstr ""
+"El pedido de WooCommerce %(order)s está en %(order_currency)s, pero su "
+"tarifa '%(pricelist)s' está en %(pricelist_currency)s: ponga en el backend "
+"una tarifa de descuentos en %(order_currency)s."
+
+#. module: connector_woocommerce
+#: code:addons/connector_woocommerce/models/sale_order/import_mapper.py:0
+#, python-format
+msgid ""
+"The WooCommerce order %s gets no pricelist: set a discount pricelist on the "
+"backend."
+msgstr ""
+"El pedido de WooCommerce %s no tiene ninguna tarifa: ponga en el backend una"
+" tarifa de descuentos."
+
+#. module: connector_woocommerce
 #: model:ir.model.fields,help:connector_woocommerce.field_woocommerce_sale_order__amount_delivery
 msgid "The amount without tax."
 msgstr ""

@@ -42,27 +42,29 @@ class WooCommerceSaleOrderImportMapper(Component):
         ("line_items", "woocommerce_order_line_ids", "woocommerce.sale.order.line")
     ]
 
+    def _get_billing_partner(self, record):
+        binder = self.binder_for("woocommerce.res.partner")
+        external_id = binder.dict2id(record["billing"], in_field=False)
+        partner = binder.to_internal(external_id, unwrap=True)
+        assert partner, (
+            "partner_id %s should have been imported in "
+            "SaleOrderImporter._import_dependencies" % external_id
+        )
+        return partner
+
     @mapping
     def billing(self, record):
         if record["billing"]:
-            binder = self.binder_for("woocommerce.res.partner")
-            external_id = binder.dict2id(record["billing"], in_field=False)
-            partner = binder.to_internal(external_id, unwrap=True)
-            assert partner, (
-                "partner_id %s should have been imported in "
-                "SaleOrderImporter._import_dependencies" % external_id
-            )
+            partner = self._get_billing_partner(record)
             if not partner.active:
                 raise ValidationError(
                     _("The partner %s, with id:%s is archived, please, enable it")
                     % (partner.name, partner.id)
                 )
-            partner_return = {"partner_invoice_id": partner.id}
-            if partner.parent_id:
-                partner_return["partner_id"] = partner.parent_id.id
-            else:
-                partner_return["partner_id"] = partner.id
-            return partner_return
+            return {
+                "partner_id": (partner.parent_id or partner).id,
+                "partner_invoice_id": partner.id,
+            }
 
     @mapping
     def shipping(self, record):
@@ -88,25 +90,56 @@ class WooCommerceSaleOrderImportMapper(Component):
             )
         return {"payment_mode_id": payment_mode.payment_mode_id.id}
 
-    @mapping
-    def currency(self, record):
-        currency = self.env["res.currency"].search(
-            [("name", "=", record.get("currency"))]
-        )
+    def _get_currency(self, record):
+        currency = self.env["res.currency"].search([("name", "=", record["currency"])])
         if not currency:
             raise ValidationError(
-                _("Currency '%s' is not defined") % record.get("currency")
+                _("Currency '%s' is not defined") % record["currency"]
             )
-        return {"currency_id": currency.id}
+        return currency
+
+    @mapping
+    def currency(self, record):
+        return {"currency_id": self._get_currency(record).id}
 
     @only_create
     @mapping
     def pricelist(self, record):
         # The shop's prices come from the discount pricelist, so the order
-        # carries it. Without one, Odoo gives the order the partner's pricelist.
-        # It is Odoo's choice, not shop data, so an update leaves it alone.
+        # carries it; without one, it carries the pricelist Odoo would give it,
+        # its partner's. It is Odoo's choice, not shop data, so an update
+        # leaves it alone.
         pricelist = self.backend_record.discount_pricelist_id
-        return {"pricelist_id": pricelist.id} if pricelist else {}
+        if not pricelist and record["billing"]:
+            partner = self._get_billing_partner(record)
+            pricelist = (partner.parent_id or partner).property_product_pricelist
+
+        if not pricelist:
+            raise ValidationError(
+                _(
+                    "The WooCommerce order %s gets no pricelist: set a discount "
+                    "pricelist on the backend."
+                )
+                % record["id"]
+            )
+        # Odoo gives the order the currency of its pricelist, whatever the
+        # currency of the WooCommerce order, so both have to be the same.
+        currency = self._get_currency(record)
+        if pricelist.currency_id != currency:
+            raise ValidationError(
+                _(
+                    "The WooCommerce order %(order)s is in %(order_currency)s, but "
+                    "its pricelist '%(pricelist)s' is in %(pricelist_currency)s: set "
+                    "a discount pricelist in %(order_currency)s on the backend."
+                )
+                % {
+                    "order": record["id"],
+                    "order_currency": currency.name,
+                    "pricelist": pricelist.name,
+                    "pricelist_currency": pricelist.currency_id.name,
+                }
+            )
+        return {"pricelist_id": pricelist.id}
 
     @mapping
     def woocommerce_order_id(self, record):
