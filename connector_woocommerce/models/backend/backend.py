@@ -79,6 +79,8 @@ class WooCommerceBackend(models.Model):
     )
     discount_pricelist_id = fields.Many2one(
         comodel_name="product.pricelist",
+        help="Its rules give the sale prices exported to WooCommerce, and the "
+        "orders imported from WooCommerce get it as their pricelist.",
     )
     wordpress_backend_id = fields.Many2one(
         comodel_name="wordpress.backend",

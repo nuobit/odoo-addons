@@ -2277,6 +2277,15 @@ msgid ""
 msgstr ""
 
 #. module: connector_woocommerce
+#: model:ir.model.fields,help:connector_woocommerce.field_woocommerce_backend__discount_pricelist_id
+msgid ""
+"Its rules give the sale prices exported to WooCommerce, and the orders "
+"imported from WooCommerce get it as their pricelist."
+msgstr ""
+"Les seves regles donen els preus d'oferta que s'exporten a WooCommerce, i les "
+"comandes importades de WooCommerce la reben com a tarifa."
+
+#. module: connector_woocommerce
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_sale_order__json_popover
 msgid "JSON data for the popover widget"
 msgstr ""
