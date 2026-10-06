@@ -37,6 +37,8 @@ class ProductProduct(models.Model):
         "product_tmpl_id.woocommerce_enabled",
         # A variation's tax class is exported with its parent template
         "product_tmpl_id.taxes_id",
+        "product_tmpl_id.taxes_id.woocommerce_tax_class_ids.woocommerce_tax_class",
+        "product_tmpl_id.taxes_id.woocommerce_tax_class_ids.backend_id",
     )
     def _compute_woocommerce_write_date(self):
         for rec in self:
