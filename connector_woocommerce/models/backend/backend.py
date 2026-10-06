@@ -19,6 +19,7 @@ class WooCommerceBackend(models.Model):
     _name = "woocommerce.backend"
     _inherit = "connector.extension.backend"
     _description = "WooCommerce Backend"
+    _check_company_auto = True
 
     url = fields.Char(
         help="WooCommerce URL",
@@ -79,6 +80,7 @@ class WooCommerceBackend(models.Model):
     )
     discount_pricelist_id = fields.Many2one(
         comodel_name="product.pricelist",
+        check_company=True,
         help="Its rules give the sale prices exported to WooCommerce, and the "
         "orders imported from WooCommerce get it as their pricelist.",
     )

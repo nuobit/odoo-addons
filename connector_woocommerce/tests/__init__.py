@@ -12,3 +12,4 @@ from . import test_image_policy_migration
 from . import test_reexport_blank_html
 from . import test_import_mapper_sale_order
 from . import test_product_taxes
+from . import test_backend_discount_pricelist
