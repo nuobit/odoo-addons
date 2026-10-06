@@ -25,7 +25,6 @@ class ProductProduct(models.Model):
         "type",
         "default_code",
         "image_1920",
-        "default_code",
         "qty_available",
         "product_template_attribute_value_ids",
         "variant_public_description",
