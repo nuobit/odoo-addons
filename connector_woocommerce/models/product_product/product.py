@@ -21,10 +21,13 @@ class ProductProduct(models.Model):
 
     @api.depends(
         "is_published",
+        "active",
         "lst_price",
         "type",
         "default_code",
         "image_1920",
+        "product_variant_image_ids",
+        "product_variant_image_ids.sequence",
         "qty_available",
         "product_template_attribute_value_ids",
         "variant_public_description",
@@ -39,6 +42,15 @@ class ProductProduct(models.Model):
         "product_tmpl_id.taxes_id",
         "product_tmpl_id.taxes_id.woocommerce_tax_class_ids.woocommerce_tax_class",
         "product_tmpl_id.taxes_id.woocommerce_tax_class_ids.backend_id",
+        # and so are its texts, its categories and its gallery
+        "product_tmpl_id.name",
+        "product_tmpl_id.website_name",
+        "product_tmpl_id.public_description",
+        "product_tmpl_id.public_short_description",
+        "product_tmpl_id.slug_name",
+        "product_tmpl_id.public_categ_ids",
+        "product_tmpl_id.product_template_image_ids",
+        "product_tmpl_id.product_template_image_ids.sequence",
     )
     def _compute_woocommerce_write_date(self):
         for rec in self:
