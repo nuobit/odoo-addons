@@ -38,6 +38,7 @@ class ProductTemplate(models.Model):
         "is_published",
         "name",
         "lst_price",
+        "taxes_id",
         "active",
         "qty_available",
         "image_1920",
