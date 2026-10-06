@@ -99,10 +99,12 @@ class WooCommerceSaleOrderImportMapper(Component):
             )
         return {"currency_id": currency.id}
 
+    @only_create
     @mapping
     def pricelist(self, record):
         # The shop's prices come from the discount pricelist, so the order
         # carries it. Without one, Odoo gives the order the partner's pricelist.
+        # It is Odoo's choice, not shop data, so an update leaves it alone.
         pricelist = self.backend_record.discount_pricelist_id
         return {"pricelist_id": pricelist.id} if pricelist else {}
 

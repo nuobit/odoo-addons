@@ -5,7 +5,7 @@ from .common import WooCommerceCase
 
 
 class TestImportMapperSaleOrder(WooCommerceCase):
-    def _order_values(self):
+    def _order_values(self, for_create=True):
         record = {
             "id": 5001,
             "billing": {},
@@ -18,7 +18,7 @@ class TestImportMapperSaleOrder(WooCommerceCase):
         }
         with self.backend.work_on("woocommerce.sale.order") as work:
             mapper = work.component(usage="import.mapper")
-            return mapper.map_record(record).values(for_create=True)
+            return mapper.map_record(record).values(for_create=for_create)
 
     def test_order_gets_the_discount_pricelist(self):
         self.assertEqual(
@@ -37,6 +37,9 @@ class TestImportMapperSaleOrder(WooCommerceCase):
             {"partner_id": partner.id, "pricelist_id": values["pricelist_id"]}
         )
         self.assertEqual(order.pricelist_id, self.discount_pricelist)
+
+    def test_order_update_keeps_its_pricelist(self):
+        self.assertNotIn("pricelist_id", self._order_values(for_create=False))
 
     def test_backend_without_discount_pricelist_maps_no_pricelist(self):
         self.backend.discount_pricelist_id = False
