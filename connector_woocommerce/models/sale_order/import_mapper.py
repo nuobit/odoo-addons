@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 from odoo import _
 from odoo.exceptions import ValidationError
@@ -97,6 +98,13 @@ class WooCommerceSaleOrderImportMapper(Component):
                 _("Currency '%s' is not defined") % record.get("currency")
             )
         return {"currency_id": currency.id}
+
+    @mapping
+    def pricelist(self, record):
+        # The shop's prices come from the discount pricelist, so the order
+        # carries it. Without one, Odoo gives the order the partner's pricelist.
+        pricelist = self.backend_record.discount_pricelist_id
+        return {"pricelist_id": pricelist.id} if pricelist else {}
 
     @mapping
     def woocommerce_order_id(self, record):
