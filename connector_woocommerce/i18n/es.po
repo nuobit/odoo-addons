@@ -5554,6 +5554,11 @@ msgid "WooCommerce Tax Class"
 msgstr ""
 
 #. module: connector_woocommerce
+#: model:ir.model.fields,field_description:connector_woocommerce.field_account_tax__woocommerce_tax_class_ids
+msgid "WooCommerce Tax Classes"
+msgstr "Clases de impuesto de WooCommerce"
+
+#. module: connector_woocommerce
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_backend_account_tax__woocommerce_tax_rate_id
 msgid "WooCommerce Tax Rate ID"
 msgstr ""

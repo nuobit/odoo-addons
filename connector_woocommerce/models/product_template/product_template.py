@@ -39,6 +39,9 @@ class ProductTemplate(models.Model):
         "name",
         "lst_price",
         "taxes_id",
+        # The tax class the backends export each tax with
+        "taxes_id.woocommerce_tax_class_ids.woocommerce_tax_class",
+        "taxes_id.woocommerce_tax_class_ids.backend_id",
         "active",
         "qty_available",
         "image_1920",
