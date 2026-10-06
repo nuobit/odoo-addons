@@ -14,3 +14,4 @@ from . import test_import_mapper_sale_order
 from . import test_product_taxes
 from . import test_backend_discount_pricelist
 from . import test_product_export_marking
+from . import test_product_translation_marking
