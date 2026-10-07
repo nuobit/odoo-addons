@@ -8,6 +8,7 @@ from odoo.exceptions import ValidationError
 
 class ProductTemplate(models.Model):
     _inherit = "product.template"
+    _woocommerce_translation_marking = "depends"
 
     woocommerce_bind_ids = fields.One2many(
         comodel_name="woocommerce.product.template",

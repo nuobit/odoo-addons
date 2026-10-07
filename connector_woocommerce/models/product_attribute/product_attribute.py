@@ -7,6 +7,7 @@ from odoo import fields, models
 
 class ProductAttribute(models.Model):
     _inherit = "product.attribute"
+    _woocommerce_translation_marking = "write_date"
 
     woocommerce_bind_ids = fields.One2many(
         comodel_name="woocommerce.product.attribute",

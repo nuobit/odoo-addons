@@ -7,6 +7,7 @@ from odoo import api, fields, models
 
 class ProductProduct(models.Model):
     _inherit = "product.product"
+    _woocommerce_translation_marking = "depends"
 
     woocommerce_bind_ids = fields.One2many(
         comodel_name="woocommerce.product.product",
