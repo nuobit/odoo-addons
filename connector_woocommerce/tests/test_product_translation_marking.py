@@ -23,19 +23,6 @@ class TestProductTranslationMarking(WooCommerceCase):
         self.clock = freezer.start()
         self.addCleanup(freezer.stop)
 
-    def _translate(self, record, field_name, value):
-        return self.env["ir.translation"].create(
-            {
-                "type": "model",
-                "name": "%s,%s" % (record._name, field_name),
-                "res_id": record.id,
-                "lang": "es_ES",
-                "src": record[field_name],
-                "value": value,
-                "state": "translated",
-            }
-        )
-
     def test_new_translation_marks_simple_template(self):
         template = self._create_template("WooCommerce simple product")
         template.website_name = "Product name on the shop"

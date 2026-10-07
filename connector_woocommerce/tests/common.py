@@ -219,6 +219,22 @@ class WooCommerceCase(SavepointComponentCase):
         vals.update(values)
         return self.env["product.pricelist.item"].create(vals)
 
+    def _translate(self, record, field_name, value):
+        """Save the Spanish translation of a field without writing the record
+        it translates, as the translation dialog does. The test class
+        activates Spanish."""
+        return self.env["ir.translation"].create(
+            {
+                "type": "model",
+                "name": "%s,%s" % (record._name, field_name),
+                "res_id": record.id,
+                "lang": "es_ES",
+                "src": record[field_name],
+                "value": value,
+                "state": "translated",
+            }
+        )
+
     def assert_touched(self, records):
         for record in records:
             self.assertNotEqual(

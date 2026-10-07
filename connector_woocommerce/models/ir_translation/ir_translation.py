@@ -11,12 +11,22 @@ class IrTranslation(models.Model):
         # Odoo 14 tells a record that a translated field changed only for the
         # translation of its terms. The translation of a whole field, as the
         # translation dialog saves it, would leave the products that export
-        # the field unmarked.
+        # the field unmarked, and the attribute values, attributes and
+        # categories out of their next export by date.
         super()._modified()
         for translation in self.filtered(lambda x: x.type == "model" and x.res_id):
             model_name, field_name = translation.name.split(",")
-            if (
-                model_name in ("product.template", "product.product")
-                and field_name in self.env[model_name]._fields
+            if model_name in ("product.template", "product.product"):
+                if field_name in self.env[model_name]._fields:
+                    self.env[model_name].browse(translation.res_id).modified(
+                        [field_name]
+                    )
+            elif model_name in (
+                "product.attribute",
+                "product.attribute.value",
+                "product.public.category",
             ):
-                self.env[model_name].browse(translation.res_id).modified([field_name])
+                # Their exports select by write date, which an empty write
+                # stamps; a translation can outlive the record it translates.
+                self.env[model_name].browse(translation.res_id).exists().write({})
+            # A translation of any other model marks nothing here.
