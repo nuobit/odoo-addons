@@ -39,8 +39,10 @@ class TestTranslationExportSince(WooCommerceCase):
 
     def _selection_of(self, binding_model, action, record):
         job = self._new_job(binding_model, "export_batch", action)
-        return self.env[record._name].search(
-            [("id", "=", record.id)] + job.kwargs["domain"]
+        return (
+            self.env[record._name]
+            .with_context(active_test=False)
+            .search([("id", "=", record.id)] + job.kwargs["domain"])
         )
 
     def test_new_translation_selects_attribute_value(self):
@@ -57,10 +59,10 @@ class TestTranslationExportSince(WooCommerceCase):
         )
 
     def test_changed_translation_selects_attribute_value(self):
-        translation = self._translate(self.value, "name", "Talla única")
+        self._translate(self.value, "name", "Talla única")
         self._set_write_date(self.value, "2000-01-01 00:00:00")
         self.backend.export_product_attribute_value_since_date = "2000-01-02 00:00:00"
-        translation.value = "Única"
+        self._translate(self.value, "name", "Única")
         self.assertEqual(
             self._selection_of(
                 "woocommerce.product.attribute.value",
@@ -140,6 +142,8 @@ class TestTranslationExportSince(WooCommerceCase):
                 "domain_force": "[('name', '!=', False)]",
             }
         )
+        # Without its record, the translation is changed from the list of
+        # translated terms.
         translation.with_user(self.env.ref("base.user_admin")).value = "Grande XL"
         self.assertEqual(translation.value, "Grande XL")
 

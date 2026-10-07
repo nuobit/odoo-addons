@@ -34,10 +34,10 @@ class TestProductTranslationMarking(WooCommerceCase):
     def test_changed_translation_marks_simple_template(self):
         template = self._create_template("WooCommerce simple product")
         template.website_name = "Product name on the shop"
-        translation = self._translate(template, "website_name", "Nombre en la tienda")
+        self._translate(template, "website_name", "Nombre en la tienda")
         self._remember_write_dates(template)
         self.clock.tick(timedelta(seconds=1))
-        translation.value = "Otro nombre en la tienda"
+        self._translate(template, "website_name", "Otro nombre en la tienda")
         self.assert_touched(template)
 
     def test_removed_translation_marks_simple_template(self):

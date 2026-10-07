@@ -21,12 +21,14 @@ class IrTranslation(models.Model):
                     self.env[model_name].browse(translation.res_id).modified(
                         [field_name]
                     )
+                # A translation of a field no longer installed marks nothing.
             elif model_name in (
                 "product.attribute",
                 "product.attribute.value",
                 "product.public.category",
             ):
                 # Their exports select by write date, which an empty write
-                # stamps; a translation can outlive the record it translates.
+                # stamps. A translation can outlive the record it translates,
+                # and writing a deleted record fails when a record rule reads it.
                 self.env[model_name].browse(translation.res_id).exists().write({})
             # A translation of any other model marks nothing here.
