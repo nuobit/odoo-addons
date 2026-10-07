@@ -39,7 +39,7 @@ class WooCommerceProductAttribute(models.Model):
         if since_date:
             domain += [
                 (
-                    "write_date",
+                    "woocommerce_write_date",
                     ">",
                     since_date.strftime("%Y-%m-%dT%H:%M:%S"),
                 )

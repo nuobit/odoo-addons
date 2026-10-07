@@ -1,7 +1,8 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
-from odoo import _, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -14,6 +15,15 @@ class ProductPublicCategory(models.Model):
         string="WooCommerce Bindings",
         context={"active_test": False},
     )
+    woocommerce_write_date = fields.Datetime(
+        compute="_compute_woocommerce_write_date",
+        store=True,
+    )
+
+    @api.depends("name", "description", "slug_name", "parent_id")
+    def _compute_woocommerce_write_date(self):
+        for rec in self:
+            rec.woocommerce_write_date = fields.Datetime.now()
 
     def unlink(self):
         categories_with_bindings = self.filtered(lambda x: x.woocommerce_bind_ids)

@@ -287,3 +287,59 @@ class TestExportSince(WooCommerceCase):
             self.discount_pricelist._get_woocommerce_transition_rules(
                 False, datetime(2030, 1, 1, 12, 10)
             )
+
+    def test_export_product_attribute_since_selects_by_export_date(self):
+        renamed, reordered = self.env["product.attribute"].create(
+            [{"name": "Color"}, {"name": "Material"}]
+        )
+        self.env["base"].flush()
+        self.backend.export_product_attribute_since_date = datetime(2030, 1, 1, 12)
+        self.clock.tick(timedelta(seconds=1))
+        renamed.name = "Colour"
+        reordered.sequence = 5
+        self._assert_selected(
+            "woocommerce.product.attribute",
+            self.backend.export_product_attribute_since,
+            renamed,
+        )
+
+    def test_export_product_attribute_value_since_selects_by_export_date(self):
+        attribute = self.env["product.attribute"].create({"name": "Color"})
+        renamed, reordered = self.env["product.attribute.value"].create(
+            [
+                {"name": "Red", "attribute_id": attribute.id},
+                {"name": "Blue", "attribute_id": attribute.id},
+            ]
+        )
+        self.env["base"].flush()
+        self.backend.export_product_attribute_value_since_date = datetime(
+            2030, 1, 1, 12
+        )
+        self.clock.tick(timedelta(seconds=1))
+        renamed.name = "Crimson"
+        reordered.sequence = 5
+        self._assert_selected(
+            "woocommerce.product.attribute.value",
+            self.backend.export_product_attribute_value_since,
+            renamed,
+        )
+
+    def test_export_product_public_category_since_selects_by_export_date(self):
+        renamed, reordered = self.env["product.public.category"].create(
+            [
+                {"name": "Masks", "slug_name": "masks"},
+                {"name": "Tubes", "slug_name": "tubes"},
+            ]
+        )
+        self.env["base"].flush()
+        self.backend.export_product_public_category_since_date = datetime(
+            2030, 1, 1, 12
+        )
+        self.clock.tick(timedelta(seconds=1))
+        renamed.name = "Face masks"
+        reordered.sequence = 5
+        self._assert_selected(
+            "woocommerce.product.public.category",
+            self.backend.export_product_public_category_since,
+            renamed,
+        )

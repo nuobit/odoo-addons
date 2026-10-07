@@ -13,3 +13,4 @@ from . import test_reexport_blank_html
 from . import test_import_mapper_sale_order
 from . import test_product_taxes
 from . import test_backend_discount_pricelist
+from . import test_attribute_category_export_marking
