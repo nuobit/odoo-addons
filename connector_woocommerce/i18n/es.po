@@ -2918,6 +2918,18 @@ msgid ""
 msgstr ""
 
 #. module: connector_woocommerce
+#: model_terms:ir.ui.view,arch_db:connector_woocommerce.woocommerce_backend_view_form
+msgid ""
+"Only the categories already linked to WooCommerce\n"
+"                                    that changed after this date are sent.\n"
+"                                    A new category reaches WooCommerce\n"
+"                                    with its first product."
+msgstr ""
+"Solo se envían las categorías que ya están enlazadas con WooCommerce y que "
+"han cambiado después de esta fecha. Una categoría nueva llega a WooCommerce "
+"con su primer producto."
+
+#. module: connector_woocommerce
 #: code:addons/connector_woocommerce/models/common/tools.py:0
 #, python-format
 msgid "Operator %s not supported"

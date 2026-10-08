@@ -331,6 +331,20 @@ class TestExportSince(WooCommerceCase):
                 {"name": "Tubes", "slug_name": "tubes"},
             ]
         )
+        self.env["woocommerce.product.public.category"].create(
+            [
+                {
+                    "odoo_id": renamed.id,
+                    "backend_id": self.backend.id,
+                    "woocommerce_idpubliccategory": 2001,
+                },
+                {
+                    "odoo_id": reordered.id,
+                    "backend_id": self.backend.id,
+                    "woocommerce_idpubliccategory": 2002,
+                },
+            ]
+        )
         self.env["base"].flush()
         self.backend.export_product_public_category_since_date = datetime(
             2030, 1, 1, 12
@@ -342,4 +356,72 @@ class TestExportSince(WooCommerceCase):
             "woocommerce.product.public.category",
             self.backend.export_product_public_category_since,
             renamed,
+        )
+
+    def test_export_product_public_category_since_leaves_out_new_categories(self):
+        self.backend.export_product_public_category_since_date = datetime(
+            2030, 1, 1, 12
+        )
+        self.clock.tick(timedelta(seconds=1))
+        category = self.env["product.public.category"].create(
+            {"name": "Masks", "slug_name": "masks"}
+        )
+        self.env["product.template"].create(
+            {
+                "name": "Face mask",
+                "woocommerce_enabled": True,
+                "public_categ_ids": [(6, 0, category.ids)],
+            }
+        )
+        self._assert_selected(
+            "woocommerce.product.public.category",
+            self.backend.export_product_public_category_since,
+            self.env["product.public.category"],
+        )
+
+    def test_export_product_public_category_since_selects_empty_ones_in_the_shop(self):
+        category = self.env["product.public.category"].create(
+            {"name": "Masks", "slug_name": "masks"}
+        )
+        self.env["woocommerce.product.public.category"].create(
+            {
+                "odoo_id": category.id,
+                "backend_id": self.backend.id,
+                "woocommerce_idpubliccategory": 2001,
+            }
+        )
+        self.env["base"].flush()
+        self.backend.export_product_public_category_since_date = datetime(
+            2030, 1, 1, 12
+        )
+        self.clock.tick(timedelta(seconds=1))
+        category.name = "Face masks"
+        self._assert_selected(
+            "woocommerce.product.public.category",
+            self.backend.export_product_public_category_since,
+            category,
+        )
+
+    def test_export_product_public_category_since_ignores_other_shops(self):
+        other_backend = self.backend.copy({"name": "Other WooCommerce backend"})
+        category = self.env["product.public.category"].create(
+            {"name": "Masks", "slug_name": "masks"}
+        )
+        self.env["woocommerce.product.public.category"].create(
+            {
+                "odoo_id": category.id,
+                "backend_id": other_backend.id,
+                "woocommerce_idpubliccategory": 2001,
+            }
+        )
+        self.env["base"].flush()
+        self.backend.export_product_public_category_since_date = datetime(
+            2030, 1, 1, 12
+        )
+        self.clock.tick(timedelta(seconds=1))
+        category.name = "Face masks"
+        self._assert_selected(
+            "woocommerce.product.public.category",
+            self.backend.export_product_public_category_since,
+            self.env["product.public.category"],
         )

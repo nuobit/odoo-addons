@@ -181,6 +181,12 @@
                                     class="oe_highlight"
                                     string="Export in background"
                                 />
+                                <div class="oe_grey" colspan="2">
+                                    Only the categories already linked to WooCommerce
+                                    that changed after this date are sent.
+                                    A new category reaches WooCommerce
+                                    with its first product.
+                                </div>
                             </group>
                             <group>
                                 <div>
