@@ -105,6 +105,12 @@ class TestProductExportMarking(WooCommerceCase):
         image.sequence = 20
         self.assert_touched(template)
 
+    def test_internal_notes_change_leaves_simple_template(self):
+        template = self._create_template("WooCommerce simple product")
+        self.clock.tick(timedelta(seconds=1))
+        template.description = "Internal notes"
+        self.assert_untouched(template)
+
     # Variable products
 
     def test_name_change_marks_variants_of_variable_template(self):
