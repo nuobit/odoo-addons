@@ -2,6 +2,7 @@ from . import account_tax
 from . import backend
 from . import binding
 from . import ir_attachment
+from . import ir_translation
 from . import product_attachment
 from . import product_public_category
 from . import product_attribute
