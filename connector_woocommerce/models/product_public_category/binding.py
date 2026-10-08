@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
@@ -62,7 +63,11 @@ class WooCommerceProductPublicCategory(models.Model):
         #         print(">>>", values)
         # exit()
 
-        domain = self._get_base_domain()
+        # Only the categories already in the shop: a new one reaches it with
+        # its first product, whose export sends its categories first
+        domain = self._get_base_domain() + [
+            ("woocommerce_bind_ids.backend_id", "=", backend_record.id)
+        ]
         if since_date:
             domain += [
                 (
