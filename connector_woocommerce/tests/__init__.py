@@ -15,3 +15,5 @@ from . import test_product_taxes
 from . import test_backend_discount_pricelist
 from . import test_attribute_category_export_marking
 from . import test_product_export_marking
+from . import test_product_translation_marking
+from . import test_attribute_category_translation_marking
