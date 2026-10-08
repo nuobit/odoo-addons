@@ -50,7 +50,6 @@ class ProductTemplate(models.Model):
         "product_template_image_ids",
         "product_template_image_ids.sequence",
         "default_code",
-        "description",
         "public_categ_ids",
         "attribute_line_ids",
         "public_description",
