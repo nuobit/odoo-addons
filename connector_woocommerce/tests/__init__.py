@@ -18,3 +18,4 @@ from . import test_product_export_marking
 from . import test_product_translation_marking
 from . import test_attribute_category_translation_marking
 from . import test_category_dependency_export
+from . import test_adapter_errors
