@@ -57,8 +57,8 @@ class ProductTemplate(models.Model):
         "slug_name",
         # A single variant's description is sent when the template has none
         "product_variant_ids.variant_public_description",
-        "alternative_product_ids",
-        "accessory_product_ids",
+        "woocommerce_alternative_product_ids",
+        "woocommerce_accessory_product_ids",
         "inventory_availability",
         "has_attributes",
         "document_ids",
@@ -105,6 +105,35 @@ class ProductTemplate(models.Model):
     def _compute_woocommerce_enabled(self):
         for rec in self:
             rec.woocommerce_enabled = rec.is_published
+
+    # The alternatives and the accessories sent to the shop with a product: only
+    # those with the WooCommerce check, because the export buttons select only the
+    # checked products and nothing would ever update another one there
+    woocommerce_alternative_product_ids = fields.Many2many(
+        comodel_name="product.template",
+        string="WooCommerce Alternative Products",
+        compute="_compute_woocommerce_related_product_ids",
+    )
+    woocommerce_accessory_product_ids = fields.Many2many(
+        comodel_name="product.product",
+        string="WooCommerce Accessory Products",
+        compute="_compute_woocommerce_related_product_ids",
+    )
+
+    @api.depends(
+        "alternative_product_ids.woocommerce_enabled",
+        "accessory_product_ids.woocommerce_enabled",
+    )
+    def _compute_woocommerce_related_product_ids(self):
+        # Archived ones included, as a relation keeps them: each reader leaves
+        # them out or not by its own active_test
+        for rec in self.with_context(active_test=False):
+            rec.woocommerce_alternative_product_ids = (
+                rec.alternative_product_ids.filtered("woocommerce_enabled")
+            )
+            rec.woocommerce_accessory_product_ids = rec.accessory_product_ids.filtered(
+                "woocommerce_enabled"
+            )
 
     @api.depends("product_variant_ids.variant_is_published")
     def _compute_template_is_published(self):

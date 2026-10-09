@@ -77,6 +77,26 @@ class TestProductExportMarking(WooCommerceCase):
         template.accessory_product_ids = self.unbound_template.product_variant_id
         self.assert_touched(template)
 
+    def test_upsell_check_change_marks_simple_template(self):
+        alternative = self._create_template("Alternative")
+        alternative.woocommerce_enabled = False
+        template = self._create_template("WooCommerce simple product")
+        template.alternative_product_ids = alternative
+        self._remember_write_dates(template)
+        self.clock.tick(timedelta(seconds=1))
+        alternative.woocommerce_enabled = True
+        self.assert_touched(template)
+
+    def test_cross_sell_check_change_marks_simple_template(self):
+        accessory = self._create_template("Accessory")
+        accessory.woocommerce_enabled = False
+        template = self._create_template("WooCommerce simple product")
+        template.accessory_product_ids = accessory.product_variant_id
+        self._remember_write_dates(template)
+        self.clock.tick(timedelta(seconds=1))
+        accessory.woocommerce_enabled = True
+        self.assert_touched(template)
+
     def test_type_change_marks_simple_template(self):
         template = self._create_template("WooCommerce simple product")
         self.clock.tick(timedelta(seconds=1))
@@ -158,6 +178,26 @@ class TestProductExportMarking(WooCommerceCase):
                 "slug_name": "woocommerce-shop-category",
             }
         )
+        self.assert_touched(template.product_variant_ids)
+
+    def test_upsell_check_change_marks_variants_of_variable_template(self):
+        alternative = self._create_template("Alternative")
+        alternative.woocommerce_enabled = False
+        template = self._create_variable_template()
+        template.alternative_product_ids = alternative
+        self._remember_write_dates(template)
+        self.clock.tick(timedelta(seconds=1))
+        alternative.woocommerce_enabled = True
+        self.assert_touched(template.product_variant_ids)
+
+    def test_cross_sell_check_change_marks_variants_of_variable_template(self):
+        accessory = self._create_template("Accessory")
+        accessory.woocommerce_enabled = False
+        template = self._create_variable_template()
+        template.accessory_product_ids = accessory.product_variant_id
+        self._remember_write_dates(template)
+        self.clock.tick(timedelta(seconds=1))
+        accessory.woocommerce_enabled = True
         self.assert_touched(template.product_variant_ids)
 
     def test_template_gallery_image_added_marks_variants_of_variable_template(self):
