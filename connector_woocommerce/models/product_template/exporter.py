@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import Component
@@ -48,7 +49,7 @@ class WooCommerceProductTemplateExporter(Component):
                     "woocommerce.product.attribute.value",
                 )
         if not relation.env.context.get("export_wo_alt_p"):
-            for alternative_product in relation.alternative_product_ids:
+            for alternative_product in relation.woocommerce_alternative_product_ids:
                 self._export_dependency(
                     alternative_product.with_context(export_wo_alt_p=True),
                     "woocommerce.product.template",
@@ -58,7 +59,7 @@ class WooCommerceProductTemplateExporter(Component):
         #  is an accessory product of the product template, probably we will have
         #  a circular reference.
         if not relation.env.context.get("export_wo_acc_p"):
-            for accessory_product in relation.accessory_product_ids:
+            for accessory_product in relation.woocommerce_accessory_product_ids:
                 if accessory_product.product_tmpl_id.has_attributes:
                     self._export_dependency(
                         accessory_product.with_context(export_wo_acc_p=True),

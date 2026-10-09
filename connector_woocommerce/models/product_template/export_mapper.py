@@ -239,7 +239,7 @@ class WooCommerceProductTemplateExportMapper(Component):
         if record.alternative_product_ids and not record.env.context.get(
             "export_wo_alt_p"
         ):
-            for product in record.alternative_product_ids:
+            for product in record.woocommerce_alternative_product_ids:
                 values = binder.get_external_dict_ids(product)
                 alternate_list.append(values["id"])
         return {"upsell_ids": alternate_list}
@@ -252,7 +252,7 @@ class WooCommerceProductTemplateExportMapper(Component):
         if record.accessory_product_ids and not record.env.context.get(
             "export_wo_acc_p"
         ):
-            for product in record.accessory_product_ids:
+            for product in record.woocommerce_accessory_product_ids:
                 if product.product_tmpl_id.has_attributes:
                     values = product_binder.get_external_dict_ids(product)
                 else:

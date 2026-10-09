@@ -5367,6 +5367,22 @@ msgid "WooCommerce - Import Sale Orders"
 msgstr ""
 
 #. module: connector_woocommerce
+#: model:ir.model.fields,field_description:connector_woocommerce.field_product_product__woocommerce_accessory_product_ids
+#: model:ir.model.fields,field_description:connector_woocommerce.field_product_template__woocommerce_accessory_product_ids
+#: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_product_product__woocommerce_accessory_product_ids
+#: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_product_template__woocommerce_accessory_product_ids
+msgid "WooCommerce Accessory Products"
+msgstr "Productos accesorios de WooCommerce"
+
+#. module: connector_woocommerce
+#: model:ir.model.fields,field_description:connector_woocommerce.field_product_product__woocommerce_alternative_product_ids
+#: model:ir.model.fields,field_description:connector_woocommerce.field_product_template__woocommerce_alternative_product_ids
+#: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_product_product__woocommerce_alternative_product_ids
+#: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_product_template__woocommerce_alternative_product_ids
+msgid "WooCommerce Alternative Products"
+msgstr "Productos alternativos de WooCommerce"
+
+#. module: connector_woocommerce
 #: model:ir.model,name:connector_woocommerce.model_woocommerce_backend
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_binding__backend_id
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_product_attribute__backend_id
