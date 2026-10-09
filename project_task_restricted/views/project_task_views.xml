@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="view_task_form2_inherit_project_task_restricted" model="ir.ui.view">
+        <field name="name">project.task.form.inherit.restricted</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2" />
+        <field name="arch" type="xml">
+            <field name="tag_ids" position="after">
+                <field name="restricted" />
+            </field>
+        </field>
+    </record>
+    <record id="view_task_kanban_inherit_project_task_restricted" model="ir.ui.view">
+        <field name="name">project.task.kanban.inherit.restricted</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_kanban" />
+        <field name="arch" type="xml">
+            <field name="is_private" position="after">
+                <field name="restricted" />
+            </field>
+            <field name="tag_ids" position="before">
+                <span
+                    name="restricted"
+                    class="badge badge-danger"
+                    attrs="{'invisible': [('restricted', '=', False)]}"
+                    groups="project_task_restricted.group_restricted_task"
+                >Restricted</span>
+            </field>
+        </field>
+    </record>
+    <record
+        id="view_task_search_form_inherit_project_task_restricted"
+        model="ir.ui.view"
+    >
+        <field name="name">project.task.search.form.inherit.restricted</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_search_form" />
+        <field name="arch" type="xml">
+            <filter name="starred" position="after">
+                <separator />
+                <filter
+                    string="Restricted"
+                    name="restricted"
+                    domain="[('restricted', '=', True)]"
+                    groups="project_task_restricted.group_restricted_task"
+                />
+            </filter>
+        </field>
+    </record>
+</odoo>

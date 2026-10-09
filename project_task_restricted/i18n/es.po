@@ -1,0 +1,176 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* project_task_restricted
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 19:11+0000\n"
+"PO-Revision-Date: 2026-10-09 19:11+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: project_task_restricted
+#: model_terms:ir.ui.view,arch_db:project_task_restricted.view_task_kanban_inherit_project_task_restricted
+msgid ""
+"<span name=\"restricted\" class=\"badge badge-danger\" attrs=\"{'invisible':"
+" [('restricted', '=', False)]}\" "
+"groups=\"project_task_restricted.group_restricted_task\">Restricted</span>"
+msgstr ""
+"<span name=\"restricted\" class=\"badge badge-danger\" attrs=\"{'invisible':"
+" [('restricted', '=', False)]}\" "
+"groups=\"project_task_restricted.group_restricted_task\">Restricted</span>"
+
+#. module: project_task_restricted
+#: code:addons/project_task_restricted/models/mail_message.py:0
+#, python-format
+msgid "A message of a restricted task can only be answered on that task."
+msgstr ""
+"Un mensaje de una tarea restringida solo se puede responder en esa tarea."
+
+#. module: project_task_restricted
+#: model:ir.model.fields,help:project_task_restricted.field_project_task__restricted
+msgid "Hide this task from everyone outside the Restricted tasks group."
+msgstr ""
+"Oculta esta tarea a todos los que no pertenezcan al grupo Tareas "
+"restringidas."
+
+#. module: project_task_restricted
+#: code:addons/project_task_restricted/models/project_task.py:0
+#, python-format
+msgid ""
+"Leaving the group: %(users)s. When you save, they will be taken off the "
+"restricted tasks they are assigned to or follow, with an internal note on "
+"each. Tasks affected: %(count)s."
+msgstr ""
+"Personas que salen del grupo: %(users)s. Al guardar, se las quitará de las "
+"tareas restringidas a las que están asignadas o que siguen, con una nota "
+"interna en cada una. Tareas afectadas: %(count)s."
+
+#. module: project_task_restricted
+#: code:addons/project_task_restricted/models/mail_mail.py:0
+#, python-format
+msgid ""
+"Not sent: it is about a restricted task, and none of its recipients is a "
+"member of the Restricted tasks group or was addressed on purpose."
+msgstr ""
+"No se ha enviado: trata de una tarea restringida y ninguno de sus "
+"destinatarios es miembro del grupo Tareas restringidas ni ha sido elegido "
+"expresamente."
+
+#. module: project_task_restricted
+#: code:addons/project_task_restricted/models/project_task.py:0
+#, python-format
+msgid ""
+"Only members of the Restricted tasks group can be assigned to the restricted"
+" task \"%(task)s\". Not in the group: %(users)s. Remove them from the "
+"assignees, or untick Restricted."
+msgstr ""
+"Solo se pueden asignar miembros del grupo Tareas restringidas a la tarea "
+"restringida \"%(task)s\". No están en el grupo: %(users)s. Quítelos de los "
+"asignados o desmarque Restricted."
+
+#. module: project_task_restricted
+#: code:addons/project_task_restricted/wizards/portal_share.py:0
+#, python-format
+msgid ""
+"Only members of the Restricted tasks group can be sent the restricted task "
+"\"%(task)s\". Not in the group: %(partners)s. Remove them from the "
+"recipients."
+msgstr ""
+"Solo se puede enviar la tarea restringida \"%(task)s\" a los miembros del "
+"grupo Tareas restringidas. No están en el grupo: %(partners)s. Quítelos de "
+"los destinatarios."
+
+#. module: project_task_restricted
+#: code:addons/project_task_restricted/wizards/mail_wizard_invite.py:0
+#, python-format
+msgid ""
+"Only members of the Restricted tasks group can follow the restricted task "
+"\"%(task)s\". Not in the group: %(partners)s. Remove them from the "
+"recipients."
+msgstr ""
+"Solo los miembros del grupo Tareas restringidas pueden seguir la tarea "
+"restringida \"%(task)s\". No están en el grupo: %(partners)s. Quítelos de "
+"los destinatarios."
+
+#. module: project_task_restricted
+#: code:addons/project_task_restricted/models/project_task.py:0
+#, python-format
+msgid ""
+"Only members of the Restricted tasks group can have activities on restricted"
+" tasks. Leaving the group: %(users)s, with activities on %(tasks)s. Assign "
+"those activities to a member or mark them as done first."
+msgstr ""
+"Solo los miembros del grupo Tareas restringidas pueden tener actividades en "
+"las tareas restringidas. Personas que salen del grupo: %(users)s, con "
+"actividades en %(tasks)s. Antes, asigne esas actividades a un miembro o "
+"márquelas como hechas."
+
+#. module: project_task_restricted
+#: code:addons/project_task_restricted/models/project_task.py:0
+#, python-format
+msgid ""
+"Only members of the Restricted tasks group can have activities on the "
+"restricted task \"%(task)s\". Not in the group: %(users)s. Assign those "
+"activities to a member, or untick Restricted."
+msgstr ""
+"Solo los miembros del grupo Tareas restringidas pueden tener actividades en "
+"la tarea restringida \"%(task)s\". No están en el grupo: %(users)s. Asigne "
+"esas actividades a un miembro o desmarque Restricted."
+
+#. module: project_task_restricted
+#: model:ir.model.fields,field_description:project_task_restricted.field_mail_mail__restricted
+#: model:ir.model.fields,field_description:project_task_restricted.field_mail_message__restricted
+#: model:ir.model.fields,field_description:project_task_restricted.field_project_task__restricted
+#: model:ir.model.fields,field_description:project_task_restricted.field_rating_rating__restricted
+#: model_terms:ir.ui.view,arch_db:project_task_restricted.view_task_search_form_inherit_project_task_restricted
+msgid "Restricted"
+msgstr "Restricted"
+
+#. module: project_task_restricted
+#: code:addons/project_task_restricted/models/project_task.py:0
+#: model:res.groups,name:project_task_restricted.group_restricted_task
+#, python-format
+msgid "Restricted tasks"
+msgstr "Tareas restringidas"
+
+#. module: project_task_restricted
+#: code:addons/project_task_restricted/models/project_task.py:0
+#, python-format
+msgid ""
+"Taken off this restricted task after leaving the Restricted tasks group: "
+"%(users)s."
+msgstr ""
+"Se ha quitado de esta tarea restringida a quien ha dejado el grupo Tareas "
+"restringidas: %(users)s."
+
+#. module: project_task_restricted
+#: model:ir.model.fields,field_description:project_task_restricted.field_project_task_burndown_chart_report__task_id
+msgid "Task"
+msgstr "Tarea"
+
+#. module: project_task_restricted
+#: model:res.groups,comment:project_task_restricted.group_restricted_task
+msgid ""
+"Tasks marked Restricted are hidden from everyone outside this group. Only "
+"its members can mark or unmark a task."
+msgstr ""
+"Las tareas marcadas como Restricted quedan ocultas para todos los que no "
+"pertenezcan a este grupo. Solo sus miembros pueden marcar o desmarcar una "
+"tarea."
+
+#. module: project_task_restricted
+#: code:addons/project_task_restricted/models/project_project.py:0
+#, python-format
+msgid ""
+"You cannot delete a project that contains restricted tasks. You can archive "
+"it instead."
+msgstr ""
+"No puede eliminar un proyecto que contiene tareas restringidas. En su lugar,"
+" puede archivarlo."
