@@ -18,6 +18,29 @@ msgstr ""
 #. module: connector_extension_woocommerce
 #: code:addons/connector_extension_woocommerce/components/adapter.py:0
 #, python-format
+msgid ""
+"Could not update %s because it was deleted from WooCommerce. What Odoo sends"
+" to WooCommerce should not be deleted. For each record it sends, Odoo keeps "
+"one link per language. As long as the language links of this record exist, "
+"every update from Odoo will fail. If you really do not want it in "
+"WooCommerce, delete in Odoo all the language links of this record: if one "
+"remains, Odoo will keep trying. If no product uses it, Odoo will not send it"
+" again; if a product uses it, now or some day, it will go back to "
+"WooCommerce when that product is exported."
+msgstr ""
+"No se ha podido actualizar %s porque se ha borrado de WooCommerce. Lo que "
+"Odoo envía a WooCommerce no se debería borrar. Por cada registro que envía, "
+"Odoo guarda un enlace por idioma. Mientras existan los enlaces de los "
+"idiomas de este registro, cada vez que Odoo lo actualice, fallará. Si "
+"realmente no lo quiere en WooCommerce, borre en Odoo todos los enlaces de "
+"los idiomas de este registro: si queda alguno, Odoo lo seguirá intentando. "
+"Si ningún producto lo usa, Odoo ya no lo volverá a enviar; si un producto lo"
+" usa, ahora o algún día, volverá a WooCommerce cuando se exporte ese "
+"producto."
+
+#. module: connector_extension_woocommerce
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+#, python-format
 msgid "Error connecting to WooCommerce: %s"
 msgstr "Error de conexión a WooCommerce: %s"
 
