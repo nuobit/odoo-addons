@@ -19,6 +19,24 @@ msgstr ""
 #: code:addons/connector_extension_woocommerce/components/adapter.py:0
 #, python-format
 msgid ""
+"Could not send \"%(name)s\" because its parent, %(parent)s, was deleted from"
+" WooCommerce. What Odoo sends to WooCommerce should not be deleted. For each"
+" record it sends, Odoo keeps one link per language. Delete in Odoo all the "
+"language links of the parent: Odoo will create it again in WooCommerce the "
+"next time it sends this record. If you do not want the parent in "
+"WooCommerce, change the parent of this record in Odoo."
+msgstr ""
+"No s'ha pogut enviar «%(name)s» perquè el seu pare, %(parent)s, s'ha "
+"esborrat de WooCommerce. El que Odoo envia a WooCommerce no s'hauria "
+"d'esborrar. Per cada registre que envia, Odoo guarda una vinculació per "
+"idioma. Esborra a Odoo totes les vinculacions dels idiomes del pare: Odoo el"
+" tornarà a crear a WooCommerce la propera vegada que enviï aquest registre. "
+"Si no vols el pare a WooCommerce, canvia a Odoo el pare d'aquest registre."
+
+#. module: connector_extension_woocommerce
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+#, python-format
+msgid ""
 "Could not update %s because it was deleted from WooCommerce. What Odoo sends"
 " to WooCommerce should not be deleted. For each record it sends, Odoo keeps "
 "one link per language. As long as the language links of this record exist, "
