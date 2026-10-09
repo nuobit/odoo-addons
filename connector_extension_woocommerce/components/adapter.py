@@ -93,6 +93,10 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
                             kwargs["data"],
                         )
                     )
+                elif res_data.get("code") == "missing_parent":
+                    error_message = self._missing_parent_message(
+                        op, resource, kwargs["data"]
+                    )
                 # elif res_data.get("code") in [
                 #     "woocommerce_rest_product_variation_invalid_id",
                 #     "woocommerce_rest_product_invalid_id",
@@ -102,6 +106,11 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
                 #         "If it's the case, try to remove the binding of the %s."
                 #         % (res_data.get("message"), resource, self.model._name)
                 #     )
+            elif res.status_code == 500:
+                if res_data.get("code") == "missing_parent":
+                    error_message = self._missing_parent_message(
+                        op, resource, kwargs["data"]
+                    )
             if not error_message:
                 error_message = _(
                     "Error: %s -> Op: %s, Resource: %s, Args: %s, KWArgs: %s"
@@ -111,6 +120,21 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
                 raise ValidationError(error_message)
             return error_message
         return res_data
+
+    def _missing_parent_message(self, op, resource, data):
+        # WooCommerce answers 400 to a create and 500 to an update whose parent
+        # no longer exists. The parent lives in the collection of the record: a
+        # create is sent to the collection, an update to the record inside it
+        collection = resource if op == "post" else resource.rsplit("/", 1)[0]
+        return _(
+            'Could not send "%(name)s" because its parent, %(parent)s, was '
+            "deleted from WooCommerce. What Odoo sends to WooCommerce should not "
+            "be deleted. For each record it sends, Odoo keeps one link per "
+            "language. Delete in Odoo all the language links of the parent: Odoo "
+            "will create it again in WooCommerce the next time it sends this "
+            "record. If you do not want the parent in WooCommerce, change the "
+            "parent of this record in Odoo."
+        ) % {"name": data["name"], "parent": "%s/%s" % (collection, data["parent"])}
 
     # TODO: Remove *args and *kwargs and put params=None
     #       Check other methods than get to see if it'll work for them too
