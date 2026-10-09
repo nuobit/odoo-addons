@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="group_restricted_task" model="res.groups">
+        <field name="name">Restricted tasks</field>
+        <field
+            name="comment"
+        >Tasks marked Restricted are hidden from everyone outside this group. Only its members can mark or unmark a task.</field>
+        <field name="implied_ids" eval="[Command.link(ref('base.group_user'))]" />
+        <field name="users" eval="[Command.link(ref('base.user_admin'))]" />
+    </record>
+    <record id="project_task_rule_restricted" model="ir.rule">
+        <field
+            name="name"
+        >Project/Task: restricted tasks only for the Restricted tasks group</field>
+        <field name="model_id" ref="project.model_project_task" />
+        <field
+            name="domain_force"
+        >[(1, '=', 1)] if user.has_group('project_task_restricted.group_restricted_task') else [('restricted', '=', False)]</field>
+    </record>
+    <record id="report_project_task_user_rule_restricted" model="ir.rule">
+        <field
+            name="name"
+        >Tasks Analysis: restricted tasks only for the Restricted tasks group</field>
+        <field name="model_id" ref="project.model_report_project_task_user" />
+        <field
+            name="domain_force"
+        >[(1, '=', 1)] if user.has_group('project_task_restricted.group_restricted_task') else [('task_id.restricted', '=', False)]</field>
+    </record>
+    <record id="project_task_burndown_chart_report_rule_restricted" model="ir.rule">
+        <field
+            name="name"
+        >Burndown Chart: restricted tasks only for the Restricted tasks group</field>
+        <field name="model_id" ref="project.model_project_task_burndown_chart_report" />
+        <field
+            name="domain_force"
+        >[(1, '=', 1)] if user.has_group('project_task_restricted.group_restricted_task') else [('task_id.restricted', '=', False)]</field>
+    </record>
+    <record id="mail_notification_rule_restricted" model="ir.rule">
+        <field
+            name="name"
+        >Notifications: those of restricted tasks only for the Restricted tasks group and their own partner</field>
+        <field name="model_id" ref="mail.model_mail_notification" />
+        <field
+            name="domain_force"
+        >[(1, '=', 1)] if user.has_group('project_task_restricted.group_restricted_task') else ['|', ('res_partner_id', '=', user.partner_id.id), ('mail_message_id.restricted', '=', False)]</field>
+    </record>
+    <record id="rating_rating_rule_restricted" model="ir.rule">
+        <field
+            name="name"
+        >Ratings: those of restricted tasks only for the Restricted tasks group</field>
+        <field name="model_id" ref="rating.model_rating_rating" />
+        <field
+            name="domain_force"
+        >[(1, '=', 1)] if user.has_group('project_task_restricted.group_restricted_task') else [('restricted', '=', False)]</field>
+    </record>
+</odoo>
