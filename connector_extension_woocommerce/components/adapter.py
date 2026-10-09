@@ -41,13 +41,28 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
                         "If it's the case, try to remove the binding of the %s."
                         % (res_data.get("message"), resource, self.model._name)
                     )
-                # elif res_data.get("code") == "woocommerce_rest_term_invalid":
-                #     error_message = _(
-                #         "Error: '%s'. Probably the %s has been "
-                #         "removed from Woocommerce. "
-                #         "If it's the case, try to remove the binding of the %s."
-                #         % (res_data.get("message"), resource, self.model._name)
-                #     )
+                elif res_data.get("code") == "woocommerce_rest_term_invalid":
+                    # The message explains a failed update; a delete of a record
+                    # already deleted in WooCommerce keeps the generic error, and
+                    # a read never gets here (it returns an empty result)
+                    if op == "put":
+                        error_message = (
+                            _(
+                                "Could not update %s because it was deleted from "
+                                "WooCommerce. What Odoo sends to WooCommerce "
+                                "should not be deleted. For each record it sends, "
+                                "Odoo keeps one link per language. As long as the "
+                                "language links of this record exist, every update "
+                                "from Odoo will fail. If you really do not want it "
+                                "in WooCommerce, delete in Odoo all the language "
+                                "links of this record: if one remains, Odoo will "
+                                "keep trying. If no product uses it, Odoo will not "
+                                "send it again; if a product uses it, now or some "
+                                "day, it will go back to WooCommerce when that "
+                                "product is exported."
+                            )
+                            % resource
+                        )
                 # elif (
                 #     res_data.get("code")
                 #     == "woocommerce_rest_product_variation_invalid_parent"

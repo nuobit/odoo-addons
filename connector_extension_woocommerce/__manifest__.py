@@ -6,7 +6,7 @@
     "name": "Connector Extension Woocommerce",
     "summary": "This module extends the connector extension module "
     "to add support for Woocommerce",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.0.1",
     "author": "NuoBiT Solutions, SL",
     "license": "LGPL-3",
     "category": "Connector",
