@@ -4,7 +4,7 @@
 
 {
     "name": "Connector WooCommerce",
-    "version": "14.0.0.6.6",
+    "version": "14.0.0.6.7",
     "author": "NuoBiT Solutions, S.L.",
     "license": "AGPL-3",
     "category": "Connector",
