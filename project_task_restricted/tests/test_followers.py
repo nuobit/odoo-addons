@@ -69,6 +69,36 @@ class TestFollowers(TestProjectTaskRestrictedCommon, MailCase):
         )
 
     @users("member_test")
+    def test_member_invites_non_member_to_normal_task(self):
+        invite_form = Form(
+            self.env["mail.wizard.invite"].with_context(
+                default_res_model="project.task",
+                default_res_id=self.task_quote.id,
+            )
+        )
+        invite_form.partner_ids.add(self.user_developer.partner_id)
+        with self.mock_mail_gateway():
+            invite_form.save().add_followers()
+        self.assertIn(
+            self.user_developer.partner_id, self.task_quote.message_partner_ids
+        )
+
+    @users("member_test")
+    def test_member_shares_normal_task_with_non_member(self):
+        # only a contact manager may share a document
+        self.user_member.groups_id += self.env.ref("base.group_partner_manager")
+        share_form = Form(
+            self.env["portal.share"].with_context(
+                active_model="project.task", active_id=self.task_quote.id
+            )
+        )
+        share_form.partner_ids.add(self.partner_2)
+        with self.mock_mail_gateway():
+            share_form.save().action_send_mail()
+        # sharing subscribes the recipients
+        self.assertIn(self.partner_2, self.task_quote.message_partner_ids)
+
+    @users("member_test")
     def test_member_cannot_share_restricted_task_with_non_member(self):
         # only a contact manager may share a document
         self.user_member.groups_id += self.env.ref("base.group_partner_manager")

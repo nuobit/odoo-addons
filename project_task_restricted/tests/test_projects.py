@@ -32,3 +32,10 @@ class TestProjects(TestProjectTaskRestrictedCommon):
         with self.assertRaises(UserError):
             project.unlink()
         self.assertTrue(project.exists())
+
+    # Odoo itself refuses to delete a project with any task
+    @users("administrator_test")
+    def test_non_member_deletes_project_without_tasks(self):
+        project = self.env["project.project"].create({"name": "Cows"})
+        project.unlink()
+        self.assertFalse(project.exists())

@@ -121,6 +121,31 @@ class TestListing(TestProjectTaskRestrictedCommon):
         self.assertEqual((restricted | quote).mapped("restricted"), [True, False])
 
     @users("member_test")
+    def test_member_searches_messages_not_restricted(self):
+        restricted = self.task_restricted.with_user(self.env.user).message_post(
+            body="Hourly rate agreed with the customer",
+            message_type="comment",
+            subtype_xmlid="mail.mt_comment",
+        )
+        quote = self.task_quote.with_user(self.env.user).message_post(
+            body="Estimate of the remaining hours",
+            message_type="comment",
+            subtype_xmlid="mail.mt_comment",
+        )
+        found = self.env["mail.message"].search(
+            [("id", "in", (restricted | quote).ids), ("restricted", "!=", True)]
+        )
+        self.assertEqual(found, quote)
+
+    @users("member_test")
+    def test_restricted_is_searched_only_with_equality(self):
+        with self.assertRaises(ValueError) as error:
+            self.env["mail.message"].search([("restricted", "in", [True])])
+        self.assertEqual(
+            str(error.exception), "Restricted is searched with = or !=, not with in"
+        )
+
+    @users("member_test")
     def test_member_reads_which_ratings_are_restricted(self):
         task_model_id = self.env["ir.model"]._get_id("project.task")
         ratings = (

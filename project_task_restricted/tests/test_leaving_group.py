@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 import logging
+from unittest.mock import patch
 
 from markupsafe import Markup
 
@@ -381,3 +382,35 @@ class TestLeavingGroup(TestProjectTaskRestrictedCommon):
                 "as done first."
             ],
         )
+
+    @users("settings_test")
+    def test_user_form_does_not_warn_for_member_on_no_restricted_task(self):
+        user_other = mail_new_test_user(
+            self.env,
+            login="other_member_test",
+            name="Other Member",
+            groups="project.group_project_user,"
+            "project_task_restricted.group_restricted_task",
+        )
+        with patch.object(
+            logging.getLogger("odoo.tests.common.onchange"), "warning"
+        ) as warning:
+            with Form(
+                user_other.with_user(self.env.user), view="base.view_users_form"
+            ) as user_form:
+                setattr(
+                    user_form, self.env["res.users"]._restricted_group_field(), False
+                )
+        warning.assert_not_called()
+        self.assertNotIn(user_other, self.group.users)
+
+    @users("settings_test")
+    def test_user_form_does_not_warn_when_other_fields_change(self):
+        user_form = Form(
+            self.user_member.with_user(self.env.user), view="base.view_users_form"
+        )
+        with patch.object(
+            logging.getLogger("odoo.tests.common.onchange"), "warning"
+        ) as warning:
+            user_form.login = "member_renamed_test"
+        warning.assert_not_called()
