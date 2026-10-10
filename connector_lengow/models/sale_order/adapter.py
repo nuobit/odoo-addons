@@ -117,6 +117,7 @@ class LengowSaleOrderTypeAdapter(Component):
                         ]
                     value[f]["marketplace"] = value["marketplace"]
                     value[f]["marketplace_order_id"] = value["marketplace_order_id"]
+                    value[f]["marketplace_order_date"] = value["marketplace_order_date"]
                     # complete_name (and the identity hash derived from it)
                     # comes strictly from the contact name source configured
                     # on the marketplace mapping. No resolvable mapping or
