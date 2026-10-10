@@ -58,7 +58,7 @@ class SQLAdapterCRUD(AbstractComponent):
     def _convert_value(self, v, to_backend=True):
         if isinstance(v, datetime.datetime):
             if to_backend:
-                func = self.backend_record.tz_to_local
+                func = self.backend_record.utc_to_local
             else:
                 func = self.backend_record.tz_to_utc
             return func(v)
