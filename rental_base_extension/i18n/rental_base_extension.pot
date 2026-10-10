@@ -52,6 +52,12 @@ msgid "Adopt & Sign"
 msgstr ""
 
 #. module: rental_base_extension
+#: code:addons/rental_base_extension/models/product.py:0
+#, python-format
+msgid "All variants already have a rental service."
+msgstr ""
+
+#. module: rental_base_extension
 #. odoo-javascript
 #: code:addons/rental_base_extension/static/src/xml/signature_dialog.xml:0
 #, python-format
@@ -91,8 +97,19 @@ msgid "Create Rental Service"
 msgstr ""
 
 #. module: rental_base_extension
+#: model_terms:ir.ui.view,arch_db:rental_base_extension.product_template_only_form_view
+msgid "Create Rental Services"
+msgstr ""
+
+#. module: rental_base_extension
 #: model_terms:ir.actions.act_window,help:rental_base_extension.sale_order_action_rental
 msgid "Create a new rental order!"
+msgstr ""
+
+#. module: rental_base_extension
+#: code:addons/rental_base_extension/models/product.py:0
+#, python-format
+msgid "Created Rental Services"
 msgstr ""
 
 #. module: rental_base_extension
@@ -217,6 +234,12 @@ msgid "Quotation Sent"
 msgstr ""
 
 #. module: rental_base_extension
+#: code:addons/rental_base_extension/models/product.py:0
+#, python-format
+msgid "RENT-{}"
+msgstr ""
+
+#. module: rental_base_extension
 #: model:ir.model.fields,field_description:rental_base_extension.field_sale_order__rental_ids
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.product_normal_form_view
 #: model_terms:ir.ui.view,arch_db:rental_base_extension.product_template_only_form_view
@@ -250,6 +273,12 @@ msgstr ""
 #. module: rental_base_extension
 #: model:ir.model.fields,field_description:rental_base_extension.field_sale_order__rental_status
 msgid "Rental Status"
+msgstr ""
+
+#. module: rental_base_extension
+#: code:addons/rental_base_extension/models/product.py:0
+#, python-format
+msgid "Rental of a {}"
 msgstr ""
 
 #. module: rental_base_extension
