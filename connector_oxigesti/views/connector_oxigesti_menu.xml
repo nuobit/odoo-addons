@@ -76,6 +76,14 @@
     />
 
     <menuitem
+        id="oxigesti_external_mrp_production_menu"
+        name="External Productions"
+        sequence="60"
+        parent="oxigesti_external_objects_menu"
+        action="oxigesti_mrp_production_action"
+    />
+
+    <menuitem
         id="oxigesti_external_sales_orders_menu"
         name="External Services"
         sequence="100"
