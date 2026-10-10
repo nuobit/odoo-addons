@@ -42,6 +42,19 @@ msgid "All"
 msgstr "Todas"
 
 #. module: account_invoice_batches
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_bank_statement_line__invoice_batch_email_recipient_id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_move__invoice_batch_email_recipient_id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_account_payment__invoice_batch_email_recipient_id
+msgid "Batch e-mail recipient"
+msgstr "Destinatario del e-mail del lote"
+
+#. module: account_invoice_batches
+#: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:0
+#, python-format
+msgid "Batch processing launched: %s"
+msgstr "Procesamiento del lote lanzado: %s"
+
+#. module: account_invoice_batches
 #: model_terms:ir.ui.view,arch_db:account_invoice_batches.account_invoice_batch_process_view_form
 msgid "Cancel"
 msgstr "Cancelar"
@@ -55,6 +68,16 @@ msgstr "Compañías"
 #: model:ir.model.fields,field_description:account_invoice_batches.field_account_invoice_batch__company_id
 msgid "Company"
 msgstr "Compañía"
+
+#. module: account_invoice_batches
+#: code:addons/account_invoice_batches/models/res_company.py:0
+#, python-format
+msgid ""
+"Company %(company)s has no invoice batch user. Set one in Settings > "
+"Invoicing > Invoice batches."
+msgstr ""
+"La compañía %(company)s no tiene usuario del lote de facturación. Configure "
+"uno en Ajustes > Facturación > Lotes de facturación."
 
 #. module: account_invoice_batches
 #: model:ir.model,name:account_invoice_batches.model_res_config_settings
@@ -149,6 +172,15 @@ msgid "E-mail template"
 msgstr "Plantilla de e-mail"
 
 #. module: account_invoice_batches
+#: model:ir.model.fields,help:account_invoice_batches.field_sale_advance_payment_inv__invoice_batch_create
+msgid ""
+"Enabled by default when the current company has an invoice batch user; a "
+"batch cannot be created without one."
+msgstr ""
+"Activado por defecto cuando la compañía actual tiene usuario del lote de "
+"facturación; sin él no se puede crear un lote."
+
+#. module: account_invoice_batches
 #: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:0
 #: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:0
 #, python-format
@@ -203,6 +235,34 @@ msgid "In background"
 msgstr "En segundo plano"
 
 #. module: account_invoice_batches
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.res_config_settings_view_form
+msgid "Internal user the batch invoicing and e-mailing jobs run as."
+msgstr ""
+"Usuario interno con el que se ejecutan los trabajos de facturación y envío "
+"de e-mails del lote."
+
+#. module: account_invoice_batches
+#: model:ir.model.fields,help:account_invoice_batches.field_res_company__invoice_batch_user_id
+#: model:ir.model.fields,help:account_invoice_batches.field_res_config_settings__invoice_batch_user_id
+msgid ""
+"Internal user the invoice batch jobs run as. The invoices generated from a "
+"batch and the e-mails sent from it belong to this user: it is their creator, "
+"their follower and the author of the sent messages, so the customer replies "
+"reach its mailbox."
+msgstr ""
+"Usuario interno con el que se ejecutan los trabajos del lote de facturación. "
+"Las facturas generadas desde un lote y los e-mails enviados desde él "
+"pertenecen a este usuario: es su creador, su seguidor y el autor de los "
+"mensajes enviados, de modo que las respuestas de los clientes llegan a su "
+"buzón."
+
+#. module: account_invoice_batches
+#: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:0
+#, python-format
+msgid "Invoice %s does not belong to a batch."
+msgstr "La factura %s no pertenece a ningún lote."
+
+#. module: account_invoice_batches
 #: model:ir.model.fields,field_description:account_invoice_batches.field_res_partner__invoice_batch_email_partner_id
 #: model:ir.model.fields,field_description:account_invoice_batches.field_res_users__invoice_batch_email_partner_id
 msgid "Invoice Batch Contact"
@@ -223,6 +283,13 @@ msgstr "Método de envío de Lote de facturación"
 #: model_terms:ir.ui.view,arch_db:account_invoice_batches.view_account_invoice_filter
 msgid "Invoice batch"
 msgstr "Lote de facturación"
+
+#. module: account_invoice_batches
+#: model:ir.model.fields,field_description:account_invoice_batches.field_res_company__invoice_batch_user_id
+#: model:ir.model.fields,field_description:account_invoice_batches.field_res_config_settings__invoice_batch_user_id
+#: model_terms:ir.ui.view,arch_db:account_invoice_batches.res_config_settings_view_form
+msgid "Invoice batch user"
+msgstr "Usuario del lote de facturación"
 
 #. module: account_invoice_batches
 #: model:ir.actions.act_window,name:account_invoice_batches.account_invoice_batch_action
@@ -306,6 +373,17 @@ msgid "Process invoices"
 msgstr "Procesar facturas"
 
 #. module: account_invoice_batches
+#: model:ir.model.fields,help:account_invoice_batches.field_account_bank_statement_line__invoice_batch_email_recipient_id
+#: model:ir.model.fields,help:account_invoice_batches.field_account_move__invoice_batch_email_recipient_id
+#: model:ir.model.fields,help:account_invoice_batches.field_account_payment__invoice_batch_email_recipient_id
+msgid ""
+"Recipient of the batch e-mail: the batch e-mail contact of the invoice or, "
+"when it is empty, its partner."
+msgstr ""
+"Destinatario del e-mail del lote: el contacto de e-mail del lote de la "
+"factura o, si está vacío, su cliente."
+
+#. module: account_invoice_batches
 #: model:ir.model,name:account_invoice_batches.model_sale_advance_payment_inv
 msgid "Sales Advance Payment Invoice"
 msgstr "Ventas. Anticipo pago factura"
@@ -332,10 +410,71 @@ msgid "Sent"
 msgstr "Enviadas"
 
 #. module: account_invoice_batches
+#: code:addons/account_invoice_batches/models/res_company.py:0
+#, python-format
+msgid ""
+"The invoice batch user %(user)s is not allowed on company %(company)s."
+msgstr ""
+"El usuario del lote de facturación %(user)s no está permitido en la compañía "
+"%(company)s."
+
+#. module: account_invoice_batches
+#: code:addons/account_invoice_batches/models/res_company.py:0
+#, python-format
+msgid ""
+"The invoice batch user %(user)s of company %(company)s has no e-mail "
+"address."
+msgstr ""
+"El usuario del lote de facturación %(user)s de la compañía %(company)s no "
+"tiene dirección de e-mail."
+
+#. module: account_invoice_batches
+#: code:addons/account_invoice_batches/models/res_company.py:0
+#, python-format
+msgid "The invoice batch user %(user)s of company %(company)s is archived."
+msgstr ""
+"El usuario del lote de facturación %(user)s de la compañía %(company)s está "
+"archivado."
+
+#. module: account_invoice_batches
+#: code:addons/account_invoice_batches/models/res_company.py:0
+#, python-format
+msgid ""
+"The invoice batch user %(user)s of company %(company)s is not an internal "
+"user."
+msgstr ""
+"El usuario del lote de facturación %(user)s de la compañía %(company)s no es "
+"un usuario interno."
+
+#. module: account_invoice_batches
+#: code:addons/account_invoice_batches/models/res_company.py:0
+#, python-format
+msgid ""
+"The invoice batch user %(user)s of company %(company)s must be an internal "
+"user, not a portal or public one."
+msgstr ""
+"El usuario del lote de facturación %(user)s de la compañía %(company)s debe "
+"ser un usuario interno, no uno de portal o público."
+
+#. module: account_invoice_batches
+#: code:addons/account_invoice_batches/wizard/sale_make_invoice_advance.py:0
+#, python-format
+msgid ""
+"The orders invoiced in a batch must belong to the current company %s."
+msgstr ""
+"Los pedidos facturados en un lote deben pertenecer a la compañía actual %s."
+
+#. module: account_invoice_batches
 #: code:addons/account_invoice_batches/wizard/sale_make_invoice_advance.py:0
 #, python-format
 msgid "There is no invoiceable line."
 msgstr "No hay ninguna línea facturable"
+
+#. module: account_invoice_batches
+#: code:addons/account_invoice_batches/wizard/sale_make_invoice_advance.py:0
+#, python-format
+msgid "There is no order to invoice."
+msgstr "No hay ningún pedido que facturar."
 
 #. module: account_invoice_batches
 #: code:addons/account_invoice_batches/wizard/account_invoice_batch_process.py:0

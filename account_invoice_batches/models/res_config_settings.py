@@ -12,3 +12,7 @@ class ResConfigSettings(models.TransientModel):
         related="company_id.invoice_batch_sending_email_template_id",
         readonly=False,
     )
+    invoice_batch_user_id = fields.Many2one(
+        related="company_id.invoice_batch_user_id",
+        readonly=False,
+    )
