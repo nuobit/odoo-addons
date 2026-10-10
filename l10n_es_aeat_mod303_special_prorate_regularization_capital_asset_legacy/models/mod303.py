@@ -13,24 +13,24 @@ class L10nEsAeatMod303Report(models.AbstractModel):
         tax_line_vals = super()._prepare_tax_line_vals_dates(
             date_start, date_end, map_line
         )
-        asset_ids = self.env["account.asset"].search(
+        legacy_assets = self.env["account.asset"].search(
             [
                 ("invoice_move_line_id", "=", False),
                 ("prorate_tax_id", "in", self.get_taxes_from_map(map_line).ids),
             ]
         )
-        tax_line_vals["asset_ids"] = [(6, 0, asset_ids.ids)]
+        tax_line_vals["legacy_asset_ids"] = [(6, 0, legacy_assets.ids)]
         return tax_line_vals
 
     def _get_assets_from_tax_line_vals(self, tax_line_vals):
         assets = super()._get_assets_from_tax_line_vals(tax_line_vals)
         return assets | self.env["account.asset"].browse(
-            tax_line_vals["asset_ids"][0][2]
+            tax_line_vals["legacy_asset_ids"][0][2]
         )
 
     def _prepare_move_lines(self, tax_lines):
         move_lines_values = super()._prepare_move_lines(tax_lines)
-        for asset in tax_lines.asset_ids:
+        for asset in tax_lines.legacy_asset_ids:
             deductible_line = self._calculate_repartition_tax(asset)
             move_lines_values.append(
                 {
@@ -65,7 +65,7 @@ class L10nEsAeatMod303Report(models.AbstractModel):
             **super()._updated_tax_line_vals_capital_asset(
                 assets, tax_final_percentage
             ),
-            "asset_ids": [
+            "legacy_asset_ids": [
                 (6, 0, assets.filtered(lambda x: not x.invoice_move_line_id).ids)
             ],
         }
