@@ -1,3 +1,7 @@
+.. image:: https://odoo-community.org/readme-banner-image
+   :target: https://odoo-community.org/get-involved?utm_source=readme
+   :alt: Odoo Community Association
+
 =================
 L10n ES Extension
 =================
@@ -13,7 +17,7 @@ L10n ES Extension
 .. |badge1| image:: https://img.shields.io/badge/maturity-Beta-yellow.png
     :target: https://odoo-community.org/page/development-status
     :alt: Beta
-.. |badge2| image:: https://img.shields.io/badge/licence-AGPL--3-blue.png
+.. |badge2| image:: https://img.shields.io/badge/license-AGPL--3-blue.png
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-NuoBiT%2Fodoo--addons-lightgray.png?logo=github
@@ -22,7 +26,18 @@ L10n ES Extension
 
 |badge1| |badge2| |badge3|
 
-* This module extends l10n_es
+This module extends l10n_es with generic pieces the official Spanish
+localization does not ship:
+
+* Split of the exempt output VAT into "con derecho a deducción" /
+  "sin derecho a deducción" variants.
+* The complete non-deductible input VAT family: goods variants
+  (bienes corrientes / bienes de inversión) for the official 4%, 10%
+  and 21% non-deductible templates, plus the intra-community and
+  reverse-charge non-deductible cases, wired into the official
+  intra-community and IRPF 15 fiscal positions.
+* VAT group flags (``is_vat``) on the official tax groups and
+  consistency checks on taxes and journal entries.
 
 **Table of contents**
 
