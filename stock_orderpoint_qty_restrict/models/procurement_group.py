@@ -5,8 +5,8 @@
 from odoo import api, models
 
 
-class StockRule(models.Model):
-    _inherit = "stock.rule"
+class ProcurementGroup(models.Model):
+    _inherit = "procurement.group"
 
     @api.model
     def _get_orderpoint_domain(self, company_id=False):
