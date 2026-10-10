@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -65,6 +66,10 @@ class SageBackend(models.Model):
         "Import labour agreements since"
     )
 
+    import_payslip_processes_since_date = fields.Datetime(
+        "Import payslip processes since"
+    )
+
     import_payslip_line_id = fields.Many2one(
         "payroll.sage.payslip", string="Payslip Line"
     )
@@ -126,6 +131,17 @@ class SageBackend(models.Model):
 
         return True
 
+    def import_payslip_processes_since(self):
+        for rec in self:
+            since_date = rec.import_payslip_processes_since_date
+            self.env[
+                "sage.payroll.sage.payslip.process"
+            ].with_delay().import_payslip_processes_since(
+                backend_record=rec, since_date=since_date
+            )
+
+        return True
+
     def import_payslip_lines(self):
         for rec in self:
             if not rec.import_payslip_line_id:
@@ -180,3 +196,11 @@ class SageBackend(models.Model):
         domain = [("company_id", "=", company_id.id)]
 
         self.search(domain).import_labour_agreements_since()
+
+    @api.model
+    def _scheduler_import_payslip_processes(self):
+        company_id = self.get_current_user_company()
+
+        domain = [("company_id", "=", company_id.id)]
+
+        self.search(domain).import_payslip_processes_since()

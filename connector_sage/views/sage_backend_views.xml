@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <!-- Sage backend -->
@@ -173,6 +174,31 @@
                                 </div>
                                 <button
                                     name="import_labour_agreements_since"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Import in background"
+                                />
+                            </group>
+                            <group>
+                                <div>
+                                    <h4>Import payslip processes</h4>
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <label
+                                                string="Since"
+                                                class="oe_inline"
+                                                for="import_payslip_processes_since_date"
+                                            />
+                                            <field
+                                                name="import_payslip_processes_since_date"
+                                                class="oe_inline"
+                                                nolabel="1"
+                                            />
+                                        </li>
+                                    </ul>
+                                </div>
+                                <button
+                                    name="import_payslip_processes_since"
                                     type="object"
                                     class="oe_highlight"
                                     string="Import in background"
