@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "<span name=\"restricted\" class=\"badge badge-danger\" attrs=\"{'invisible':"
 " [('restricted', '=', False)]}\" "
-"groups=\"project_task_restricted.group_restricted_task\">Restricted</span>"
+"groups=\"project_task_restricted.group_restricted_task\">Restringido</span>"
 
 #. module: project_task_restricted
 #: code:addons/project_task_restricted/models/mail_message.py:0
@@ -73,7 +73,7 @@ msgid ""
 msgstr ""
 "Solo se pueden asignar miembros del grupo Tareas restringidas a la tarea "
 "restringida \"%(task)s\". No están en el grupo: %(users)s. Quítelos de los "
-"asignados o desmarque Restricted."
+"asignados o desmarque Restringido."
 
 #. module: project_task_restricted
 #: code:addons/project_task_restricted/wizards/portal_share.py:0
@@ -122,7 +122,7 @@ msgid ""
 msgstr ""
 "Solo los miembros del grupo Tareas restringidas pueden tener actividades en "
 "la tarea restringida \"%(task)s\". No están en el grupo: %(users)s. Asigne "
-"esas actividades a un miembro o desmarque Restricted."
+"esas actividades a un miembro o desmarque Restringido."
 
 #. module: project_task_restricted
 #: model:ir.model.fields,field_description:project_task_restricted.field_mail_mail__restricted
@@ -131,7 +131,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:project_task_restricted.field_rating_rating__restricted
 #: model_terms:ir.ui.view,arch_db:project_task_restricted.view_task_search_form_inherit_project_task_restricted
 msgid "Restricted"
-msgstr "Restricted"
+msgstr "Restringido"
 
 #. module: project_task_restricted
 #: code:addons/project_task_restricted/models/project_task.py:0
@@ -161,7 +161,7 @@ msgid ""
 "Tasks marked Restricted are hidden from everyone outside this group. Only "
 "its members can mark or unmark a task."
 msgstr ""
-"Las tareas marcadas como Restricted quedan ocultas para todos los que no "
+"Las tareas marcadas como restringidas quedan ocultas para todos los que no "
 "pertenezcan a este grupo. Solo sus miembros pueden marcar o desmarcar una "
 "tarea."
 
