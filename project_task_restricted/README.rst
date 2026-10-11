@@ -96,7 +96,8 @@ Usage
 
 To restrict a task, open it and tick **Restricted**. To list the restricted
 tasks, use the **Restricted** filter of the task search; in the kanban, a red
-**Restricted** badge marks them.
+**Restricted** badge marks them. The task list has a **Restricted** column,
+hidden by default: add it from the list's optional columns.
 
 To write to someone outside the group about a restricted task, type them as a
 recipient of the message, or mention them: they receive that message only.
