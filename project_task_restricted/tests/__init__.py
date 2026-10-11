@@ -10,4 +10,5 @@ from . import test_portal
 from . import test_projects
 from . import test_reports
 from . import test_subtasks_copy
+from . import test_task_list
 from . import test_visibility
