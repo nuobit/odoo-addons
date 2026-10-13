@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 import base64
+from datetime import datetime
 from io import BytesIO
 from unittest.mock import patch
 
@@ -317,3 +318,169 @@ class TestExportMapperImages(WooCommerceCase):
         self.assertEqual(len(variant_calls), 1)
         self.assertEqual(variant_calls[0]["data"]["image"], {"id": 201})
         self.assertEqual(variant_calls[0]["data"]["gallery_image_ids"], [202, 203])
+
+    def _field_attachment(self, record, field):
+        return self.env["ir.attachment"].search(
+            [
+                ("res_model", "=", record._name),
+                ("res_id", "=", record.id),
+                ("res_field", "=", field),
+            ]
+        )
+
+    def _create_product_files(self):
+        """One file of each kind the image export sends, on the variable
+        template and its variant."""
+        template_image = self.env["product.image"].create(
+            {
+                "name": "Template gallery image",
+                "product_tmpl_id": self.template.id,
+                "image_1920": self._image_data("green"),
+            }
+        )
+        variant_image = self.env["product.image"].create(
+            {
+                "name": "Variant gallery image",
+                "product_variant_id": self.variant.id,
+                "image_1920": self._image_data("blue"),
+            }
+        )
+        template_document = self.env["product.template.document"].create(
+            {
+                "template_id": self.template.id,
+                "name": "Template manual",
+                "datas": base64.b64encode(b"template manual"),
+            }
+        )
+        variant_document = self.env["product.product.document"].create(
+            {
+                "product_id": self.variant.id,
+                "name": "Variant sheet",
+                "datas": base64.b64encode(b"variant sheet"),
+            }
+        )
+        return {
+            "template image": self._field_attachment(template_image, "image_1920"),
+            "variant image": self._field_attachment(variant_image, "image_1920"),
+            "template document": self._field_attachment(template_document, "datas"),
+            "variant document": self._field_attachment(variant_document, "datas"),
+        }
+
+    def _image_export_files(self):
+        domain = self.env["wordpress.ir.attachment"]._get_woocommerce_base_domain()
+        return self.env["ir.attachment"].search(domain)
+
+    def test_image_export_domain_finds_the_files_of_the_attachment_fields(self):
+        files = self._create_product_files()
+        templates = (
+            self.env["product.template"]
+            .with_context(active_test=False)
+            .search(
+                [
+                    ("woocommerce_enabled", "=", True),
+                    ("has_attributes", "!=", False),
+                ]
+            )
+        )
+        variants = (
+            self.env["product.product"]
+            .with_context(active_test=False)
+            .search(
+                [
+                    ("product_tmpl_id.woocommerce_enabled", "=", True),
+                    ("product_tmpl_id.has_attributes", "=", True),
+                ]
+            )
+        )
+        computed = (
+            templates.product_image_attachment_ids.attachment_id
+            | templates.product_document_attachment_ids.attachment_id
+            | variants.product_variant_image_attachment_ids.attachment_id
+            | variants.product_document_attachment_ids.attachment_id
+        )
+
+        for kind, attachment in files.items():
+            self.assertIn(attachment, computed, kind)
+        self.assertEqual(self._image_export_files(), computed)
+
+    def test_image_export_domain_keeps_archived_products(self):
+        files = self._create_product_files()
+        self.template.active = False
+
+        selected = self._image_export_files()
+
+        self.assertFalse(self.variant.active)
+        for kind, attachment in files.items():
+            self.assertIn(attachment, selected, kind)
+
+    def test_image_export_domain_leaves_out_other_files(self):
+        gallery_image = self.env["product.image"].create(
+            {
+                "name": "Gallery image",
+                "product_tmpl_id": self.template.id,
+                "image_1920": self._image_data("green"),
+            }
+        )
+        self.variant.image_1920 = self._image_data("red")
+        simple = self._create_template("Simple product", 1010)
+        simple_image = self.env["product.image"].create(
+            {
+                "name": "Simple product image",
+                "product_tmpl_id": simple.id,
+                "image_1920": self._image_data("blue"),
+            }
+        )
+        offline = self.env["product.template"].create({"name": "Not in the shop"})
+        offline_image = self.env["product.image"].create(
+            {
+                "name": "Image of a product not in the shop",
+                "product_tmpl_id": offline.id,
+                "image_1920": self._image_data("yellow"),
+            }
+        )
+
+        selected = self._image_export_files()
+
+        self.assertIn(self._field_attachment(gallery_image, "image_1920"), selected)
+        left_out = {
+            "resized copy": self._field_attachment(gallery_image, "image_1024"),
+            "template main image": self._field_attachment(self.template, "image_1920"),
+            "variant main image": self._field_attachment(
+                self.variant, "image_variant_1920"
+            ),
+            "simple product image": self._field_attachment(simple_image, "image_1920"),
+            "product not in the shop": self._field_attachment(
+                offline_image, "image_1920"
+            ),
+        }
+        for kind, attachment in left_out.items():
+            self.assertEqual(len(attachment), 1, kind)
+            self.assertNotIn(attachment, selected, kind)
+
+    def test_image_export_button_queues_the_batch_with_the_files(self):
+        files = self._create_product_files()
+        self.backend.export_product_attachment_since_date = datetime(2026, 9, 1)
+        links = self.env["connector.woocommerce.product.attachment"]
+        links_before = links.search_count([])
+
+        batch = self._new_job(
+            "wordpress.ir.attachment",
+            "export_batch",
+            self.backend.export_product_attachment_since,
+        )
+
+        # The click computes none of the attachment fields: they create links.
+        self.assertEqual(links.search_count([]), links_before)
+        self.assertEqual(batch.args[0], self.backend.wordpress_backend_id)
+        self.assertEqual(
+            tuple(batch.kwargs["domain"][-1]),
+            ("write_date", ">", "2026-09-01T00:00:00"),
+        )
+        exports = self._new_jobs(
+            "wordpress.ir.attachment",
+            "export_record",
+            Job.load(self.env, batch.uuid).perform,
+        )
+        exported = [export.args[1] for export in exports]
+        for kind, attachment in files.items():
+            self.assertEqual(exported.count(attachment), 1, kind)
