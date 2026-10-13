@@ -44,12 +44,6 @@
                 <field name="name" />
                 <field name="address_hash" />
                 <field name="sync_date" />
-                <button
-                    name="resync_export"
-                    type="object"
-                    string="Resynchronize"
-                    icon="fa-refresh fa-lg"
-                />
             </tree>
         </field>
     </record>
