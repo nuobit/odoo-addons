@@ -10,6 +10,7 @@ from PIL import Image
 from odoo.addons.connector_extension_woocommerce.components.adapter import (
     ConnectorExtensionWooCommerceAdapterCRUD,
 )
+from odoo.addons.queue_job.job import Job
 
 from .common import WooCommerceCase
 
@@ -295,12 +296,15 @@ class TestExportMapperImages(WooCommerceCase):
             {"id": 202, "source_url": "https://shop.example.test/green.png"},
             {"id": 203, "source_url": "https://shop.example.test/blue.png"},
         ]
+        job = self._new_job(
+            "woocommerce.product.product", "export_record", binding.resync_export
+        )
         with patch.object(
             type(media_adapter), "_exec", side_effect=responses
         ) as upload, patch.object(
             ConnectorExtensionWooCommerceAdapterCRUD, "_exec", return_value={}
         ) as woo:
-            binding.resync_export()
+            Job.load(self.env, job.uuid).perform()
 
         self.assertEqual(upload.call_count, 3)
         for args, _kwargs in upload.call_args_list:
