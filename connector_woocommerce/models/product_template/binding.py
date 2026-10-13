@@ -48,9 +48,16 @@ class WooCommerceProductTemplate(models.Model):
         self.with_delay().export_batch(backend_record, domain=domain)
         return True
 
-    def resync_export(self):
-        super().resync_export()
-        for rec in self:
-            rec.product_variant_ids.woocommerce_bind_ids.filtered(
-                lambda x: x.backend_id == self.backend_id
-            ).resync_export()
+    @api.model
+    def export_record(self, backend_record, relation):
+        result = super().export_record(backend_record, relation)
+        if relation.env.context.get("resync_export"):
+            # A template's resync takes its bound variants along in this same
+            # job, so the template's dependencies are exported once for all.
+            for variant in relation.product_variant_ids.filtered(
+                lambda x: backend_record in x.woocommerce_bind_ids.backend_id
+            ):
+                self.env["woocommerce.product.product"].export_record(
+                    backend_record, variant
+                )
+        return result
