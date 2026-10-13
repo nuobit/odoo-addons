@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
 """
@@ -10,7 +11,7 @@ Extend the 'base' Odoo Model to add Events related features.
 
 """
 
-from odoo import models
+from odoo import api, models
 
 
 class Base(models.AbstractModel):
@@ -28,6 +29,11 @@ class Base(models.AbstractModel):
     """
 
     _inherit = "base"
+
+    @api.model
+    def _job_prepare_context_before_enqueue_keys(self):
+        # A queued resync keeps its flag: it re-exports every dependency.
+        return super()._job_prepare_context_before_enqueue_keys() + ("resync_export",)
 
     def _dict_binding_data(self, binding):
         with binding.backend_id.work_on(binding._name) as work:
