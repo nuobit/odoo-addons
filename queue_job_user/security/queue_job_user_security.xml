@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl). -->
+<odoo>
+    <data>
+        <record id="group_queue_job_user" model="res.groups">
+            <field name="name">Job Queue User</field>
+            <field name="category_id" ref="queue_job.module_category_queue_job" />
+        </record>
+        <record id="queue_job.group_queue_job_manager" model="res.groups">
+            <field name="implied_ids" eval="[(4, ref('group_queue_job_user'))]" />
+        </record>
+    </data>
+    <data noupdate="1">
+        <record id="queue_job_user_rule" model="ir.rule">
+            <field name="name">Job Queue User: all jobs</field>
+            <field name="model_id" ref="queue_job.model_queue_job" />
+            <field name="groups" eval="[(4, ref('group_queue_job_user'))]" />
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="perm_read" eval="True" />
+            <field name="perm_write" eval="False" />
+            <field name="perm_create" eval="False" />
+            <field name="perm_unlink" eval="False" />
+        </record>
+    </data>
+</odoo>
