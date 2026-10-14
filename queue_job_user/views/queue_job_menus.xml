@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl). -->
+<odoo>
+    <record id="queue_job.menu_queue_job_root" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('group_queue_job_user'))]" />
+    </record>
+</odoo>
