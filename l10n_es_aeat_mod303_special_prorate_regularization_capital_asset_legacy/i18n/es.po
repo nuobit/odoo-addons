@@ -61,3 +61,15 @@ msgstr "Periodo"
 #: model_terms:ir.ui.view,arch_db:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset_legacy.view_l10n_es_aeat_tax_line_tree
 msgid "Show asset items"
 msgstr "Mostrar activos"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset_legacy
+#: code:addons/l10n_es_aeat_mod303_special_prorate_regularization_capital_asset_legacy/models/l10n_es_aeat_tax_line.py:0
+#, python-format
+msgid "Unsupported operator %s for Model 303 search"
+msgstr "Operador %s no admitido en la búsqueda del Modelo 303"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset_legacy
+#: code:addons/l10n_es_aeat_mod303_special_prorate_regularization_capital_asset_legacy/models/l10n_es_aeat_tax_line.py:0
+#, python-format
+msgid "Unsupported value %s for Model 303 search"
+msgstr "Valor %s no admitido en la búsqueda del Modelo 303"
