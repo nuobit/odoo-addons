@@ -150,7 +150,7 @@ class TestL10nEsAeatTaxLine(TestL10nEsAeatMod303Base):
     def test_tax_line_search_mod303_unsupported_operator(self):
         with self.assertRaises(NotImplementedError):
             self.env["l10n.es.aeat.tax.line"].search(
-                [("mod303_id", "ilike", self.model303.id)]
+                [("mod303_id", "ilike", self.model303.ids)]
             )
 
     def test_tax_line_search_mod303_name(self):
