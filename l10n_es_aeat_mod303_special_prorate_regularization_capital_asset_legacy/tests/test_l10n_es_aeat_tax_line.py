@@ -188,6 +188,18 @@ class TestL10nEsAeatTaxLine(TestL10nEsAeatMod303Base):
                 [("mod303_id", "not in", reports_4t)]
             )
 
+    def test_tax_line_write_res_id(self):
+        tax_line = self.model303.tax_line_ids[0]
+        self.assertEqual(tax_line.mod303_id, self.model303)
+        tax_line.write({"res_id": self.model303_4t.id})
+        self.assertEqual(tax_line.mod303_id, self.model303_4t)
+
+    def test_tax_line_write_model(self):
+        tax_line = self.model303.tax_line_ids[0]
+        self.assertEqual(tax_line.mod303_id, self.model303)
+        tax_line.write({"model": "l10n.es.aeat.mod390.report"})
+        self.assertFalse(tax_line.mod303_id)
+
     def test_mod303_write_period_type_refreshes_lines_without_error(self):
         tax_line = self.model303_4t.tax_line_ids[0]
         self.assertEqual(tax_line.mod303_period_type, "4T")
