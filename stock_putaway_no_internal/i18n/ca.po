@@ -47,12 +47,6 @@ msgid "Last Modified on"
 msgstr "Última modificació el "
 
 #. module: stock_putaway_no_internal
-#: code:addons/stock_putaway_no_internal/models/stock_location.py:0
-#, python-format
-msgid "No picking type defined in context"
-msgstr ""
-
-#. module: stock_putaway_no_internal
 #: model:ir.model,name:stock_putaway_no_internal.model_stock_putaway_rule
 msgid "Putaway Rule"
 msgstr ""
