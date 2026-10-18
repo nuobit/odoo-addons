@@ -2,8 +2,7 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import _, models
-from odoo.exceptions import UserError
+from odoo import models
 
 
 class Location(models.Model):
@@ -35,11 +34,7 @@ class Location(models.Model):
                         break
                     categ = categ.parent_id
             if putaway_rules and putaway_rules[0].exclude_internal_operations:
-                picking_type_code = self.env.context.get(
-                    "stock_picking_type_code", False
-                )
-                if not picking_type_code:
-                    raise UserError(_("No picking type defined in context"))
+                picking_type_code = self.env.context.get("stock_picking_type_code")
                 if picking_type_code in self._excluded_picking_types():
                     putaway_location = self.env["stock.location"]
             current_location = current_location.location_id

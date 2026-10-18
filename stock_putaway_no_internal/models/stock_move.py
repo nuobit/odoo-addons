@@ -9,9 +9,10 @@ class StockMove(models.Model):
     _inherit = "stock.move"
 
     def _prepare_move_line_vals(self, quantity=None, reserved_quant=None):
+        picking_type = self.picking_type_id or self.picking_id.picking_type_id
         return super(
             StockMove,
-            self.with_context(stock_picking_type_code=self.picking_type_id.code),
+            self.with_context(stock_picking_type_code=picking_type.code),
         )._prepare_move_line_vals(quantity=quantity, reserved_quant=reserved_quant)
 
 
