@@ -22,7 +22,8 @@ class StockMoveLine(models.Model):
 
     @api.onchange("product_id", "product_uom_id", "move_id")
     def _onchange_product_id(self):
-        picking_code = self.move_id.picking_code
+        picking_type = self.move_id.picking_type_id or self.picking_id.picking_type_id
         return super(
-            StockMoveLine, self.with_context(stock_picking_type_code=picking_code)
+            StockMoveLine,
+            self.with_context(stock_picking_type_code=picking_type.code),
         )._onchange_product_id()

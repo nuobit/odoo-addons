@@ -190,3 +190,32 @@ class TestStockPutawayNoInternal(SavepointCase):
         form_wizard.next_serial_count = 2
         form_wizard.save().generate_serial_numbers()
         self.assertEqual(picking.move_line_ids.location_dest_id, self.shelf_location)
+
+    def test_internal_move_line_new(self):
+        self.warehouse.int_type_id.show_operations = True
+        picking = self.env["stock.picking"].create(
+            {
+                "picking_type_id": self.warehouse.int_type_id.id,
+                "location_id": self.source_location.id,
+                "location_dest_id": self.stock_location.id,
+                "move_lines": [
+                    (
+                        0,
+                        0,
+                        {
+                            "name": self.product.name,
+                            "product_id": self.product.id,
+                            "product_uom": self.product.uom_id.id,
+                            "product_uom_qty": 1,
+                        },
+                    )
+                ],
+            }
+        )
+        picking.action_confirm()
+        picking_form = Form(picking)
+        with picking_form.move_line_ids_without_package.new() as move_line:
+            move_line.product_id = self.product
+            move_line.qty_done = 1
+        picking_form.save()
+        self.assertEqual(picking.move_line_ids.location_dest_id, self.stock_location)
