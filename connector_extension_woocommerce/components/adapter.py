@@ -332,7 +332,7 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
     # TODO: User API params search and search_fields to find for some fields like
     #       name, etc. This is a ilike contain %name% search so we need _filter
     #       as well but on a lot less records
-    def _exec_get(
+    def _exec_get(  # noqa: C901
         self,
         resource,
         domain=None,
@@ -360,7 +360,6 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
         :param count: If True, return count; if False, return data
         :return: list[dict] or int
         """
-        # flake8: noqa: C901
         if resource == "system_status":
             return self._exec_wcapi_call("get", resource)  # , *args, **kwargs)
         # prepare parameters
