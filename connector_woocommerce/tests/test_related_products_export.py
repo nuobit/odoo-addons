@@ -30,7 +30,7 @@ class TestRelatedProductsExport(WooCommerceCase):
             return {**kwargs["data"], "id": 4000 + len(requests)}
 
         with self.backend.work_on("woocommerce.product.template") as work:
-            adapter = work.component(usage="backend.adapter")
+            adapter = work.component(usage="adapter")
             # Stop only at the external API boundary; run the real exporters
             with patch.object(type(adapter), "_exec", side_effect=shop):
                 self.env["woocommerce.product.template"].export_record(
