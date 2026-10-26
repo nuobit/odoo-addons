@@ -1,14 +1,13 @@
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-from odoo.tests import tagged
-from odoo.tests.common import Form, SavepointCase
+from odoo.tests import Form, TransactionCase, tagged
 
 
 # post_install: the products created here need the defaults of every installed
 # module, and on an update at_install tests run before the modules loaded later
 @tagged("post_install", "-at_install")
-class TestStockPutawayNoInternal(SavepointCase):
+class TestStockPutawayNoInternal(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -28,12 +27,16 @@ class TestStockPutawayNoInternal(SavepointCase):
         cls.supplier_location = cls.env.ref("stock.stock_location_suppliers")
         cls.category = cls.env["product.category"].create({"name": "Putaway"})
         cls.product = cls.env["product.product"].create(
-            {"name": "Putaway Product", "type": "product", "categ_id": cls.category.id}
+            {
+                "name": "Putaway Product",
+                "is_storable": True,
+                "categ_id": cls.category.id,
+            }
         )
         cls.product_serial = cls.env["product.product"].create(
             {
                 "name": "Putaway Product Serial",
-                "type": "product",
+                "is_storable": True,
                 "tracking": "serial",
                 "categ_id": cls.category.id,
             }
@@ -56,7 +59,7 @@ class TestStockPutawayNoInternal(SavepointCase):
                 "picking_type_id": self.warehouse.int_type_id.id,
                 "location_id": self.source_location.id,
                 "location_dest_id": self.stock_location.id,
-                "move_lines": [
+                "move_ids": [
                     (
                         0,
                         0,
@@ -80,7 +83,7 @@ class TestStockPutawayNoInternal(SavepointCase):
                 "picking_type_id": self.warehouse.in_type_id.id,
                 "location_id": self.supplier_location.id,
                 "location_dest_id": self.stock_location.id,
-                "move_lines": [
+                "move_ids": [
                     (
                         0,
                         0,
@@ -110,6 +113,7 @@ class TestStockPutawayNoInternal(SavepointCase):
             {
                 "name": self.product.name,
                 "picking_id": picking.id,
+                "picking_type_id": False,
                 "product_id": self.product.id,
                 "product_uom": self.product.uom_id.id,
                 "product_uom_qty": 1,
@@ -167,7 +171,7 @@ class TestStockPutawayNoInternal(SavepointCase):
                 "picking_type_id": self.warehouse.in_type_id.id,
                 "location_id": self.supplier_location.id,
                 "location_dest_id": self.stock_location.id,
-                "move_lines": [
+                "move_ids": [
                     (
                         0,
                         0,
@@ -182,13 +186,9 @@ class TestStockPutawayNoInternal(SavepointCase):
             }
         )
         picking.action_confirm()
-        action = picking.move_lines.action_assign_serial()
-        form_wizard = Form(
-            self.env[action["res_model"]].with_context(action["context"])
-        )
-        form_wizard.next_serial_number = "001"
-        form_wizard.next_serial_count = 2
-        form_wizard.save().generate_serial_numbers()
+        # without reserved lines, every generated line looks its location up
+        picking.move_ids._do_unreserve()
+        picking.move_ids._generate_serial_numbers("001", next_serial_count=2)
         self.assertEqual(picking.move_line_ids.location_dest_id, self.shelf_location)
 
     def test_internal_move_line_new(self):

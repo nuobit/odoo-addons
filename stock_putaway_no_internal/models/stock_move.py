@@ -19,7 +19,11 @@ class StockMoveLine(models.Model):
     _inherit = "stock.move.line"
 
     def _apply_putaway_strategy(self):
-        picking_code = self.picking_id.picking_type_id.code
-        return super(
-            StockMoveLine, self.with_context(stock_picking_type_code=picking_code)
-        )._apply_putaway_strategy()
+        for picking_type, move_lines in self.grouped(
+            lambda line: line.move_id.picking_type_id or line.picking_id.picking_type_id
+        ).items():
+            super(
+                StockMoveLine,
+                move_lines.with_context(stock_picking_type_code=picking_type.code),
+            )._apply_putaway_strategy()
+        return None
