@@ -1,6 +1,7 @@
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html)
 
+import json
 from unittest.mock import Mock
 
 import requests
@@ -91,7 +92,9 @@ class TestAdapterErrors(WooCommerceAdapterCase):
                 "</body></html>"
             ),
         )
-        response.json.side_effect = requests.JSONDecodeError(
+        # the error the adapter catches: what requests raises on a body that is
+        # not JSON, on every requests version (2.27 added a subclass of it)
+        response.json.side_effect = json.JSONDecodeError(
             "Expecting value", response.text, 0
         )
         response.request = Mock(headers={"Accept": "application/json"}, method="POST")
