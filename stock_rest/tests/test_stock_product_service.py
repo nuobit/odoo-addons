@@ -61,7 +61,9 @@ class TestStockProductService(HttpCase):
         query_string = f"?{url_encode(params)}" if params else ""
         response = self.url_open(f"/api/v2/products{query_string}")
         self.assertEqual(response.status_code, 200, response.text)
-        self.assertEqual(response.headers["Content-Type"], "application/json")
+        self.assertEqual(
+            response.headers["Content-Type"].split(";")[0], "application/json"
+        )
         return response.json()
 
     def _get_test_product_rows(self, rows):
