@@ -23,6 +23,12 @@
                     invisible="sale_ok == False"
                 />
             </xpath>
+            <xpath
+                expr="//group[@name='extra_info']/field[@name='is_published']"
+                position="attributes"
+            >
+                <attribute name="string">Published</attribute>
+            </xpath>
         </field>
     </record>
 </odoo>
