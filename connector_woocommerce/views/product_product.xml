@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
      Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record
@@ -62,14 +63,17 @@
                     </group>
                 </page>
             </xpath>
+            <!-- Hidden from the connector managers only, as on 14.0, where
+                 groups_id limited this view to them: 18.0 refuses groups_id
+                 on an inherited view -->
             <xpath
                 expr="//group[@name='extra_info']/field[@name='is_published']"
                 position="attributes"
             >
-                <attribute name="invisible">1</attribute>
+                <attribute name="groups">!connector.group_connector_manager</attribute>
             </xpath>
             <field name="woocommerce_enabled" position="attributes">
-                <attribute name="invisible">1</attribute>
+                <attribute name="groups">!connector.group_connector_manager</attribute>
             </field>
         </field>
     </record>
