@@ -192,13 +192,12 @@ class TestStockPutawayNoInternal(TransactionCase):
         self.assertEqual(picking.move_line_ids.location_dest_id, self.shelf_location)
 
     def test_internal_move_line_new(self):
-        self.warehouse.int_type_id.show_operations = True
         picking = self.env["stock.picking"].create(
             {
                 "picking_type_id": self.warehouse.int_type_id.id,
                 "location_id": self.source_location.id,
                 "location_dest_id": self.stock_location.id,
-                "move_lines": [
+                "move_ids": [
                     (
                         0,
                         0,
@@ -213,9 +212,12 @@ class TestStockPutawayNoInternal(TransactionCase):
             }
         )
         picking.action_confirm()
-        picking_form = Form(picking)
-        with picking_form.move_line_ids_without_package.new() as move_line:
-            move_line.product_id = self.product
-            move_line.qty_done = 1
-        picking_form.save()
+        move_line_form = Form(
+            self.env["stock.move.line"].with_context(
+                **picking.action_detailed_operations()["context"]
+            )
+        )
+        move_line_form.product_id = self.product
+        move_line_form.quantity = 1
+        move_line_form.save()
         self.assertEqual(picking.move_line_ids.location_dest_id, self.stock_location)
