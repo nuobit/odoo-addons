@@ -147,7 +147,7 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
             "will create it again in WooCommerce the next time it sends this "
             "record. If you do not want the parent in WooCommerce, change the "
             "parent of this record in Odoo."
-        ) % {"name": data["name"], "parent": "%s/%s" % (collection, data["parent"])}
+        ) % {"name": data["name"], "parent": f"{collection}/{data['parent']}"}
 
     # TODO: Remove *args and *kwargs and put params=None
     #       Check other methods than get to see if it'll work for them too
