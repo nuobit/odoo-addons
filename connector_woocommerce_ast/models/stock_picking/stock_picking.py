@@ -27,4 +27,4 @@ class StockPicking(models.Model):
 
     @api.depends("delivery_state")
     def _compute_woocommerce_stock_picking_state(self):
-        super()._compute_woocommerce_stock_picking_state()
+        return super()._compute_woocommerce_stock_picking_state()
