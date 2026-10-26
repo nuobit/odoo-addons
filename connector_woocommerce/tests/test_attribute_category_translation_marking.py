@@ -31,7 +31,7 @@ class TestAttributeCategoryTranslationMarking(WooCommerceCase):
             {"name": "Masks", "slug_name": "masks"}
         )
         # The export dates are computed now, before the clock moves on.
-        self.env["base"].flush()
+        self.env.flush_all()
         self.clock.tick(timedelta(seconds=1))
 
     def test_new_translation_marks_attribute_value(self):
@@ -49,9 +49,9 @@ class TestAttributeCategoryTranslationMarking(WooCommerceCase):
         )
 
     def test_removed_translation_marks_attribute_value(self):
-        translation = self._translate(self.value, "name", "Talla única")
+        self._translate(self.value, "name", "Talla única")
         self.clock.tick(timedelta(seconds=1))
-        translation.unlink()
+        self._translate(self.value, "name", False)
         self.assertEqual(
             self.value.woocommerce_write_date, datetime(2030, 1, 1, 12, 0, 2)
         )
@@ -76,22 +76,3 @@ class TestAttributeCategoryTranslationMarking(WooCommerceCase):
         self.assertEqual(
             self.category.woocommerce_write_date, datetime(2030, 1, 1, 12, 0, 1)
         )
-
-    def test_translation_of_deleted_attribute_value_can_be_changed(self):
-        value = self.env["product.attribute.value"].create(
-            {"name": "Large", "attribute_id": self.attribute.id}
-        )
-        translation = self._translate(value, "name", "Grande")
-        value.unlink()
-        # A record rule reads the records it checks, a deleted one too.
-        self.env["ir.rule"].create(
-            {
-                "name": "Named attribute values",
-                "model_id": self.env.ref("product.model_product_attribute_value").id,
-                "domain_force": "[('name', '!=', False)]",
-            }
-        )
-        # Without its record, the translation is changed from the list of
-        # translated terms.
-        translation.with_user(self.env.ref("base.user_admin")).value = "Grande XL"
-        self.assertEqual(translation.value, "Grande XL")

@@ -179,23 +179,9 @@ class WooCommerceCase(TransactionComponentCase):
 
     def _translate(self, record, field_name, value):
         """Save the Spanish translation of a field as the translation dialog
-        does, without writing the record it translates: opening the dialog
-        inserts the record's missing translations, saving it writes the
-        Spanish one. The test class activates Spanish: the dialog offers only
-        active languages."""
-        action = self.env["ir.translation"].translate_fields(
-            record._name, record.id, field_name
-        )
-        translation = self.env["ir.translation"].search(
-            action["domain"]
-            + [
-                ("name", "=", action["context"]["search_default_name"]),
-                ("lang", "=", "es_ES"),
-            ]
-        )
-        self.assertEqual(len(translation), 1)
-        translation.write({"value": value})
-        return translation
+        does, which removes it when emptied: ``value`` False. The test class
+        activates Spanish: the dialog offers only active languages."""
+        record.update_field_translations(field_name, {"es_ES": value})
 
     def assert_touched(self, records):
         for record in records:

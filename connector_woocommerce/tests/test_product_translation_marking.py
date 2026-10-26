@@ -43,15 +43,18 @@ class TestProductTranslationMarking(WooCommerceCase):
         """Make the export date of a model depend on one more path until the
         end of the test, as a module that sends one more field does."""
         field = self.env[model_name]._fields["woocommerce_write_date"]
-        depends = field.depends
-        field.depends = depends + (path,)
-        lazy_property.reset_all(self.registry)
+        depends = self.registry.field_depends[field]
 
-        def restore():
-            field.depends = depends
+        def set_depends(value):
+            self.registry.field_depends[field] = value
+            # The registry derives the triggers from the dependencies once, and
+            # keeps them with the trees it builds from them
             lazy_property.reset_all(self.registry)
+            self.registry._field_trigger_trees.clear()
+            self.registry._is_modifying_relations.clear()
 
-        self.addCleanup(restore)
+        set_depends(depends + (path,))
+        self.addCleanup(set_depends, depends)
 
     def test_new_translation_marks_simple_template(self):
         template = self._create_template("WooCommerce simple product")
@@ -73,10 +76,10 @@ class TestProductTranslationMarking(WooCommerceCase):
     def test_removed_translation_marks_simple_template(self):
         template = self._create_template("WooCommerce simple product")
         template.website_name = "Product name on the shop"
-        translation = self._translate(template, "website_name", "Nombre en la tienda")
+        self._translate(template, "website_name", "Nombre en la tienda")
         self._remember_write_dates(template)
         self.clock.tick(timedelta(seconds=1))
-        translation.unlink()
+        self._translate(template, "website_name", False)
         self.assert_touched(template)
 
     def test_template_translation_marks_variants_of_variable_template(self):
