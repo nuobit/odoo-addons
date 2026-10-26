@@ -292,7 +292,7 @@ class TestExportSince(WooCommerceCase):
         renamed, reordered = self.env["product.attribute"].create(
             [{"name": "Color"}, {"name": "Material"}]
         )
-        self.env["base"].flush()
+        self.env.flush_all()
         self.backend.export_product_attribute_since_date = datetime(2030, 1, 1, 12)
         self.clock.tick(timedelta(seconds=1))
         renamed.name = "Colour"
@@ -311,7 +311,7 @@ class TestExportSince(WooCommerceCase):
                 {"name": "Blue", "attribute_id": attribute.id},
             ]
         )
-        self.env["base"].flush()
+        self.env.flush_all()
         self.backend.export_product_attribute_value_since_date = datetime(
             2030, 1, 1, 12
         )
@@ -345,7 +345,7 @@ class TestExportSince(WooCommerceCase):
                 },
             ]
         )
-        self.env["base"].flush()
+        self.env.flush_all()
         self.backend.export_product_public_category_since_date = datetime(
             2030, 1, 1, 12
         )

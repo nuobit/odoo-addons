@@ -26,7 +26,7 @@ class TestAttributeCategoryExportMarking(WooCommerceCase):
             {"name": "Masks", "slug_name": "masks"}
         )
         # The export dates are computed now, before the clock moves on.
-        self.env["base"].flush()
+        self.env.flush_all()
         self.clock.tick(timedelta(seconds=1))
 
     # Attributes
