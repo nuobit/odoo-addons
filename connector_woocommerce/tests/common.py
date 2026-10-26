@@ -4,6 +4,8 @@
 from contextlib import nullcontext
 from unittest.mock import patch
 
+from odoo.tests import Form
+
 from odoo.addons.component.tests.common import TransactionComponentCase
 from odoo.addons.queue_job.job import Job
 
@@ -217,10 +219,10 @@ class WooCommerceCase(TransactionComponentCase):
         domain = [("model_name", "=", model_name), ("method_name", "=", method_name)]
         # A request flushes when it ends, and the computations it runs then may
         # queue jobs: flushing on both sides counts the jobs of ``run`` alone.
-        self.env["base"].flush()
+        self.env.flush_all()
         before = job_model.search(domain)
         run()
-        self.env["base"].flush()
+        self.env.flush_all()
         return job_model.search(domain) - before
 
     def _new_job(self, model_name, method_name, run):
@@ -242,7 +244,7 @@ class WooCommerceOrderCase(WooCommerceCase):
 
     @classmethod
     def _create_storable_product(cls, name):
-        product = cls.env["product.product"].create({"name": name, "type": "product"})
+        product = cls.env["product.product"].create({"name": name, "is_storable": True})
         cls.env["stock.quant"]._update_available_quantity(
             product, cls.env.ref("stock.stock_location_stock"), 100.0
         )
@@ -276,8 +278,8 @@ class WooCommerceOrderCase(WooCommerceCase):
         product, everything by default, and ``backorder`` as the answer to the
         backorder question when something is left."""
         picking.action_assign()
-        for move in picking.move_lines:
-            move.quantity_done = (
+        for move in picking.move_ids:
+            move.quantity = (
                 quantities.get(move.product_id, 0.0)
                 if quantities is not None
                 else move.product_uom_qty
@@ -286,7 +288,7 @@ class WooCommerceOrderCase(WooCommerceCase):
         if action is not True:
             self.assertEqual(action["res_model"], "stock.backorder.confirmation")
             wizard = Form(
-                self.env[action["res_model"]].with_context(action["context"])
+                self.env[action["res_model"]].with_context(**action["context"])
             ).save()
             if backorder:
                 wizard.process()

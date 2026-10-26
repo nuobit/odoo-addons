@@ -1,7 +1,7 @@
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-from odoo.tests import TransactionCase
+from odoo.tests import Form, TransactionCase
 
 from .common import WooCommerceOrderCase
 
@@ -129,7 +129,11 @@ class TestSaleOrderDelivery(WooCommerceOrderCase):
         order = self._create_order({self.product_1: 1})
         order.action_confirm()
         self.assertEqual(order.woocommerce_order_state, "processing")
-        order.action_cancel()
+        # A confirmed order is cancelled through the cancellation wizard
+        action = order.action_cancel()
+        Form(
+            self.env[action["res_model"]].with_context(**action["context"])
+        ).save().action_cancel()
         self.assertEqual(order.woocommerce_order_state, "cancel")
         self.assertEqual(order.done_picking_count, 0)
 
