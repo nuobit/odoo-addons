@@ -1,0 +1,187 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* connector_extension_woocommerce
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-26 16:33+0000\n"
+"PO-Revision-Date: 2026-10-26 16:33+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid ""
+"Could not send \"%(name)s\" because its parent, %(parent)s, was deleted from"
+" WooCommerce. What Odoo sends to WooCommerce should not be deleted. For each"
+" record it sends, Odoo keeps one link per language. Delete in Odoo all the "
+"language links of the parent: Odoo will create it again in WooCommerce the "
+"next time it sends this record. If you do not want the parent in "
+"WooCommerce, change the parent of this record in Odoo."
+msgstr ""
+"No s'ha pogut enviar «%(name)s» perquè el seu pare, %(parent)s, s'ha "
+"esborrat de WooCommerce. El que Odoo envia a WooCommerce no s'hauria "
+"d'esborrar. Per cada registre que envia, Odoo guarda una vinculació per "
+"idioma. Esborra a Odoo totes les vinculacions dels idiomes del pare: Odoo el"
+" tornarà a crear a WooCommerce la propera vegada que enviï aquest registre. "
+"Si no vols el pare a WooCommerce, canvia a Odoo el pare d'aquest registre."
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid ""
+"Could not update %s because it was deleted from WooCommerce. What Odoo sends"
+" to WooCommerce should not be deleted. For each record it sends, Odoo keeps "
+"one link per language. As long as the language links of this record exist, "
+"every update from Odoo will fail. If you really do not want it in "
+"WooCommerce, delete in Odoo all the language links of this record: if one "
+"remains, Odoo will keep trying. If no product uses it, Odoo will not send it"
+" again; if a product uses it, now or some day, it will go back to "
+"WooCommerce when that product is exported."
+msgstr ""
+"No s'ha pogut actualitzar %s perquè s'ha esborrat de WooCommerce. El que "
+"Odoo envia a WooCommerce no s'hauria d'esborrar. Per cada registre que "
+"envia, Odoo guarda una vinculació per idioma. Mentre les vinculacions dels "
+"idiomes d'aquest registre existeixin, cada vegada que Odoo l'actualitzi, "
+"fallarà. Si realment no el vols a WooCommerce, esborra a Odoo totes les "
+"vinculacions dels idiomes d'aquest registre: si en queda alguna, Odoo ho "
+"continuarà intentant. Si cap producte no el fa servir, Odoo ja no el tornarà"
+" a enviar; si un producte el fa servir, ara o algun dia, tornarà a "
+"WooCommerce quan s'exporti aquell producte."
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid "Error connecting to WooCommerce: %s"
+msgstr "Error al connectar amb WooCommerce: %s"
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid ""
+"Error decoding json WooCommerce response: %(error)s\n"
+"Args:%(args)s\n"
+"Kwargs:%(kwargs)s\n"
+"URL:%(url)s\n"
+"Headers:%(headers)s\n"
+"Method:%(method)s\n"
+"Body:%(body)s"
+msgstr ""
+"Error decodificant la resposta json de WooCommerce: %(error)s\n"
+"Args:%(args)s\n"
+"Kwargs:%(kwargs)s\n"
+"URL:%(url)s\n"
+"Headers:%(headers)s\n"
+"Method:%(method)s\n"
+"Body:%(body)s"
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid ""
+"Error: %(data)s -> Op: %(op)s, Resource: %(resource)s, Args: %(args)s, "
+"KWArgs: %(kwargs)s"
+msgstr ""
+"Error: %(data)s -> Op: %(op)s, Recurs: %(resource)s, Args: %(args)s, KWArgs:"
+" %(kwargs)s"
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid ""
+"Error: '%(message)s'. Probably repeated record already exists in Woocommerce. If you don't see it from the interface probably the database is dirty and you should check the database directly. It means that there's terms (value attributes) in table wp_term_taxonomy with a non-existent taxonomy (attribute).\n"
+"Please, review the data in %(resource)s/%(resource_id)s and compare it with %(data)s"
+msgstr ""
+"Error: '%(message)s'. Probablement el registre repetit ja existeix a Woocommerce. Si no el veus des de la interfície, probablement la base de dades està bruta i l'hauries de revisar directament. Vol dir que hi ha termes (valors d'atribut) a la taula wp_term_taxonomy amb una taxonomia (atribut) que no existeix.\n"
+"Si us plau, revisa les dades a %(resource)s/%(resource_id)s i compara-les amb %(data)s"
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid ""
+"Error: '%(message)s'. Probably the %(resource)s has been removed from "
+"Woocommerce. If it's the case, try to remove the binding of the %(model)s."
+msgstr ""
+"Error: '%(message)s'. Probablement el %(resource)s ha estat eliminat de "
+"Woocommerce. Si és el cas, intenta eliminar la vinculació del %(model)s."
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid "The '%(header)s' header is missing in multi responses: %(response)s"
+msgstr ""
+"Falta la capçalera '%(header)s' en les respostes múltiples: %(response)s"
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid ""
+"The '%(header)s' header should not be present in singleton responses: "
+"%(response)s"
+msgstr ""
+"La capçalera '%(header)s' no hauria d'aparèixer en les respostes d'un sol "
+"registre: %(response)s"
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid ""
+"The 'offset' and 'page' parameters are incompatible in WooCommerce API "
+"calls. Please, use only one of them."
+msgstr ""
+"Els paràmetres 'offset' i 'page' són incompatibles en les crides a l'API de "
+"WooCommerce. Si us plau, fes-ne servir només un."
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid ""
+"The 'per_page' parameter is managed automatically in WooCommerce API calls. "
+"Do not use it in the domain."
+msgstr ""
+"El paràmetre 'per_page' es gestiona automàticament en les crides a l'API de "
+"WooCommerce. No el facis servir al domini."
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid "Unexpected multi-response for operation '%(op)s': %(response)s"
+msgstr "Resposta múltiple inesperada per a l'operació '%(op)s': %(response)s"
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid "Unexpected response from WooCommerce DELETE %(resource)s: %(response)s"
+msgstr ""
+"Resposta inesperada de WooCommerce a DELETE %(resource)s: %(response)s"
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid "Unexpected response from WooCommerce POST %(resource)s: %(response)s"
+msgstr "Resposta inesperada de WooCommerce a POST %(resource)s: %(response)s"
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid "Unexpected response from WooCommerce PUT %(resource)s: %(response)s"
+msgstr "Resposta inesperada de WooCommerce a PUT %(resource)s: %(response)s"
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid "Unexpected response from WooCommerce system_status: %s"
+msgstr "Resposta inesperada de WooCommerce a system_status: %s"
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid "Unexpected response from WooCommerce: %s"
+msgstr "Resposta inesperada de WooCommerce: %s"
