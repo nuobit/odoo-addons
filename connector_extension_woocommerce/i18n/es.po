@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0\n"
+"Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-22 12:50+0000\n"
-"PO-Revision-Date: 2024-10-22 12:50+0000\n"
+"POT-Creation-Date: 2026-10-26 16:33+0000\n"
+"PO-Revision-Date: 2026-10-26 16:33+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,6 @@ msgstr ""
 #. module: connector_extension_woocommerce
 #. odoo-python
 #: code:addons/connector_extension_woocommerce/components/adapter.py:0
-#, python-format
 msgid ""
 "Could not send \"%(name)s\" because its parent, %(parent)s, was deleted from"
 " WooCommerce. What Odoo sends to WooCommerce should not be deleted. For each"
@@ -37,7 +36,6 @@ msgstr ""
 #. module: connector_extension_woocommerce
 #. odoo-python
 #: code:addons/connector_extension_woocommerce/components/adapter.py:0
-#, python-format
 msgid ""
 "Could not update %s because it was deleted from WooCommerce. What Odoo sends"
 " to WooCommerce should not be deleted. For each record it sends, Odoo keeps "
@@ -59,67 +57,132 @@ msgstr ""
 "producto."
 
 #. module: connector_extension_woocommerce
+#. odoo-python
 #: code:addons/connector_extension_woocommerce/components/adapter.py:0
-#, python-format
 msgid "Error connecting to WooCommerce: %s"
 msgstr "Error de conexión a WooCommerce: %s"
 
 #. module: connector_extension_woocommerce
+#. odoo-python
 #: code:addons/connector_extension_woocommerce/components/adapter.py:0
-#, python-format
 msgid ""
-"Error decoding json WooCommerce response: %s\n"
-"Args:%s\n"
-"Kwargs:%s\n"
-"URL:%s\n"
-"Headers:%s\n"
-"Method:%s\n"
-"Body:%s"
+"Error decoding json WooCommerce response: %(error)s\n"
+"Args:%(args)s\n"
+"Kwargs:%(kwargs)s\n"
+"URL:%(url)s\n"
+"Headers:%(headers)s\n"
+"Method:%(method)s\n"
+"Body:%(body)s"
 msgstr ""
-"Error al decodificar la respuesta json de WooCommerce: %s\n"
-"Args:%s\n"
-"Kwargs:%s\n"
-"URL:%s\n"
-"Headers:%s\n"
-"Método:%s\n"
-"Cuerpo:%s"
+"Error al decodificar la respuesta json de WooCommerce: %(error)s\n"
+"Args:%(args)s\n"
+"Kwargs:%(kwargs)s\n"
+"URL:%(url)s\n"
+"Headers:%(headers)s\n"
+"Método:%(method)s\n"
+"Cuerpo:%(body)s"
 
 #. module: connector_extension_woocommerce
+#. odoo-python
 #: code:addons/connector_extension_woocommerce/components/adapter.py:0
-#, python-format
-msgid "Error: %s, Resource: %s"
-msgstr "Error: %s, Recurso: %s"
+msgid ""
+"Error: %(data)s -> Op: %(op)s, Resource: %(resource)s, Args: %(args)s, "
+"KWArgs: %(kwargs)s"
+msgstr ""
+"Error: %(data)s -> Op: %(op)s, Recurso: %(resource)s, Args: %(args)s, "
+"KWArgs: %(kwargs)s"
 
 #. module: connector_extension_woocommerce
+#. odoo-python
 #: code:addons/connector_extension_woocommerce/components/adapter.py:0
-#, python-format
 msgid ""
-"Error: '%s'. Probably repeated record already exists in Woocommerce.\n"
-"Please, review the data in %s/%s and compare it with %s"
+"Error: '%(message)s'. Probably repeated record already exists in Woocommerce. If you don't see it from the interface probably the database is dirty and you should check the database directly. It means that there's terms (value attributes) in table wp_term_taxonomy with a non-existent taxonomy (attribute).\n"
+"Please, review the data in %(resource)s/%(resource_id)s and compare it with %(data)s"
 msgstr ""
-"Error: '%s'. Probablemente el registro repetido ya existe en Woocommerce.\n"
-"Por favor, revise los datos en %s/%s y compárelos con %s"
+"Error: '%(message)s'. Probablemente el registro repetido ya existe en Woocommerce. Si no lo ve desde la interfaz, probablemente la base de datos está sucia y debería revisarla directamente. Significa que hay términos (valores de atributo) en la tabla wp_term_taxonomy con una taxonomía (atributo) que no existe.\n"
+"Por favor, revise los datos en %(resource)s/%(resource_id)s y compárelos con %(data)s"
 
 #. module: connector_extension_woocommerce
+#. odoo-python
 #: code:addons/connector_extension_woocommerce/components/adapter.py:0
-#: code:addons/connector_extension_woocommerce/components/adapter.py:0
-#: code:addons/connector_extension_woocommerce/components/adapter.py:0
-#, python-format
 msgid ""
-"Error: '%s'. Probably the %s has been removed from Woocommerce. If it's the "
-"case, try to remove the binding of the %s."
+"Error: '%(message)s'. Probably the %(resource)s has been removed from "
+"Woocommerce. If it's the case, try to remove the binding of the %(model)s."
 msgstr ""
-"Error: '%s'. Probablemente el %s ha sido eliminado de Woocommerce. Si es el "
-"caso, intente eliminar el enlace del %s."
+"Error: '%(message)s'. Probablemente el %(resource)s ha sido eliminado de "
+"Woocommerce. Si es el caso, intente eliminar el enlace del %(model)s."
 
 #. module: connector_extension_woocommerce
+#. odoo-python
 #: code:addons/connector_extension_woocommerce/components/adapter.py:0
-#, python-format
-msgid ""
-"Error: '%s'. Probably the product in %s has been removed from Woocommerce. "
-"If it's the case, try to remove the binding of the "
-"woocommerce.product.template"
+msgid "The '%(header)s' header is missing in multi responses: %(response)s"
 msgstr ""
-"Error: '%s'. Probablemente el producto en %s ha sido eliminado de "
-"Woocommerce. Si es el caso, intente eliminar el enlace de la "
-"woocommerce.product.template"
+"Falta la cabecera '%(header)s' en las respuestas múltiples: %(response)s"
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid ""
+"The '%(header)s' header should not be present in singleton responses: "
+"%(response)s"
+msgstr ""
+"La cabecera '%(header)s' no debería aparecer en las respuestas de un solo "
+"registro: %(response)s"
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid ""
+"The 'offset' and 'page' parameters are incompatible in WooCommerce API "
+"calls. Please, use only one of them."
+msgstr ""
+"Los parámetros 'offset' y 'page' son incompatibles en las llamadas a la API "
+"de WooCommerce. Por favor, use solo uno de ellos."
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid ""
+"The 'per_page' parameter is managed automatically in WooCommerce API calls. "
+"Do not use it in the domain."
+msgstr ""
+"El parámetro 'per_page' se gestiona automáticamente en las llamadas a la API"
+" de WooCommerce. No lo use en el dominio."
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid "Unexpected multi-response for operation '%(op)s': %(response)s"
+msgstr ""
+"Respuesta múltiple inesperada para la operación '%(op)s': %(response)s"
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid "Unexpected response from WooCommerce DELETE %(resource)s: %(response)s"
+msgstr ""
+"Respuesta inesperada de WooCommerce a DELETE %(resource)s: %(response)s"
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid "Unexpected response from WooCommerce POST %(resource)s: %(response)s"
+msgstr "Respuesta inesperada de WooCommerce a POST %(resource)s: %(response)s"
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid "Unexpected response from WooCommerce PUT %(resource)s: %(response)s"
+msgstr "Respuesta inesperada de WooCommerce a PUT %(resource)s: %(response)s"
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid "Unexpected response from WooCommerce system_status: %s"
+msgstr "Respuesta inesperada de WooCommerce a system_status: %s"
+
+#. module: connector_extension_woocommerce
+#. odoo-python
+#: code:addons/connector_extension_woocommerce/components/adapter.py:0
+msgid "Unexpected response from WooCommerce: %s"
+msgstr "Respuesta inesperada de WooCommerce: %s"
