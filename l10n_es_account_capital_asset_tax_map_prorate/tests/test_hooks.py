@@ -1,6 +1,7 @@
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+from odoo.modules.migration import load_script
 from odoo.tests import tagged
 
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
@@ -124,4 +125,18 @@ class TestHooks(AccountTestInvoicingCommon):
                 self.map_tax_domain
             ),
             8,
+        )
+
+    def test_post_migration(self):
+        post_migration = load_script(
+            "l10n_es_account_capital_asset_tax_map_prorate"
+            "/migrations/18.0.1.0.3/post-migration.py",
+            "post_migration",
+        )
+        post_migration.migrate(self.env.cr, "14.0.1.0.0")
+        self.assertEqual(
+            self.env["l10n.es.account.capital.asset.map.tax"].search_count(
+                self.map_tax_domain
+            ),
+            9,
         )

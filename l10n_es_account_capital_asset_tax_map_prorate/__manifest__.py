@@ -7,7 +7,7 @@
     "name": "Account Capital Asset Tax Map",
     "summary": "This module adds l10n_es_special_prorate "
     "data to capital assets tax map",
-    "version": "18.0.1.0.2",
+    "version": "18.0.1.0.3",
     "category": "Accounting",
     "author": "NuoBiT Solutions SL",
     "website": "https://github.com/NuoBiT/odoo-addons",
