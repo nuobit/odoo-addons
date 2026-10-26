@@ -5,16 +5,6 @@
 from odoo import api, models
 
 
-class StockMove(models.Model):
-    _inherit = "stock.move"
-
-    def prepare_move_line_vals(self, quantity=None, reserved_quant=None):
-        return super(
-            StockMove,
-            self.with_context(stock_picking_type_code=self.picking_type_id.code),
-        ).prepare_move_line_vals(quantity=quantity, reserved_quant=reserved_quant)
-
-
 class StockMoveLine(models.Model):
     _inherit = "stock.move.line"
 
