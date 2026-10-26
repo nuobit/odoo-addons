@@ -34,6 +34,7 @@ msgstr ""
 " WooCommerce, cambie en Odoo el padre de este registro."
 
 #. module: connector_extension_woocommerce
+#. odoo-python
 #: code:addons/connector_extension_woocommerce/components/adapter.py:0
 #, python-format
 msgid ""
