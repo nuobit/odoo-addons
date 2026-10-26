@@ -362,8 +362,8 @@ class TestExportMapperImages(WooCommerceCase):
         return {
             "template image": self._field_attachment(template_image, "image_1920"),
             "variant image": self._field_attachment(variant_image, "image_1920"),
-            "template document": self._field_attachment(template_document, "datas"),
-            "variant document": self._field_attachment(variant_document, "datas"),
+            "template document": template_document.ir_attachment_id,
+            "variant document": variant_document.ir_attachment_id,
         }
 
     def _image_export_files(self):

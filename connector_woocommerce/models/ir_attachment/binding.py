@@ -54,16 +54,9 @@ class WordPressIrAttachment(models.Model):
                     ("res_field", "=", "image_1920"),
                     ("res_id", "in", images.ids),
                 ],
-                [
-                    ("res_model", "=", template_documents._name),
-                    ("res_field", "=", "datas"),
-                    ("res_id", "in", template_documents.ids),
-                ],
-                [
-                    ("res_model", "=", variant_documents._name),
-                    ("res_field", "=", "datas"),
-                    ("res_id", "in", variant_documents.ids),
-                ],
+                # A document keeps its file in the attachment it delegates to
+                [("id", "in", template_documents.ir_attachment_id.ids)],
+                [("id", "in", variant_documents.ir_attachment_id.ids)],
             ]
         )
 
