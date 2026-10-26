@@ -1,0 +1,3 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_capital_asset_prorate_regularization_user","Capital asset prorate regularization - Account User","model_capital_asset_prorate_regularization","account.group_account_invoice",1,0,0,0
+"access_capital_asset_prorate_regularization_manager","Capital asset prorate regularization - Account Manager","model_capital_asset_prorate_regularization","account.group_account_manager",1,1,1,1
