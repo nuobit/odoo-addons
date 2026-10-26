@@ -6,10 +6,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-05 08:52+0000\n"
+"POT-Creation-Date: 2026-10-26 16:50+0000\n"
 "PO-Revision-Date: 2022-10-05 08:52+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -26,22 +27,22 @@ msgid "AEAT report base module"
 msgstr "Módulo base para declaraciones AEAT"
 
 #. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_l10n_es_aeat_mod111_report__move_prorate_capital_asset_id
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_l10n_es_aeat_mod115_report__move_prorate_capital_asset_id
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_l10n_es_aeat_mod303_report__move_prorate_capital_asset_id
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_l10n_es_aeat_mod347_report__move_prorate_capital_asset_id
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_l10n_es_aeat_mod349_report__move_prorate_capital_asset_id
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_l10n_es_aeat_report__move_prorate_capital_asset_id
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_l10n_es_aeat_report_tax_mapping__move_prorate_capital_asset_id
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_l10n_es_vat_book__move_prorate_capital_asset_id
 msgid "Account capital asset entry"
 msgstr ""
 
 #. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
+#. odoo-python
 #: code:addons/l10n_es_aeat_mod303_special_prorate_regularization_capital_asset/models/mod303.py:0
-#, python-format
 msgid "Account entry related to the asset is neither an invoice nor a refund"
 msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_account_asset__active_capital_asset_prorate_regularization_ids
+msgid "Active Asset Prorate Regularization"
+msgstr "Regularización de la prorrata del activo vigente"
 
 #. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_capital_asset_prorate_regularization__amount
@@ -55,13 +56,13 @@ msgid "Asset"
 msgstr "Activo"
 
 #. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_account_asset__active_capital_asset_prorate_regularization_ids
-msgid "Active Asset Prorate Regularization"
-msgstr "Regularización de la prorrata del activo vigente"
+#. odoo-python
+#: code:addons/l10n_es_aeat_mod303_special_prorate_regularization_capital_asset/models/mod303.py:0
+msgid "Asset %s doesn't have an invoice line"
+msgstr ""
 
 #. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_account_asset__capital_asset_prorate_regularization_ids
-#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.account_asset_view_form
 msgid "Asset Prorate Regularization"
 msgstr "Regularización de la prorrata del activo"
 
@@ -69,6 +70,11 @@ msgstr "Regularización de la prorrata del activo"
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_res_config_settings__capital_asset_prorate_max_diff
 msgid "Capital Asset Prorate Max Difference"
 msgstr "Máxima diferencia entre las prorratas del bien de inversión"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
+#: model:ir.model,name:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.model_capital_asset_prorate_regularization
+msgid "Capital Asset Prorate Regularization"
+msgstr ""
 
 #. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
 #: model_terms:ir.ui.view,arch_db:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.account_asset_view_form
@@ -122,31 +128,14 @@ msgid "Created on"
 msgstr ""
 
 #. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_account_asset__display_name
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_capital_asset_prorate_regularization__display_name
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_l10n_es_aeat_mod303_report__display_name
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_l10n_es_aeat_report__display_name
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_res_config_settings__display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
 
 #. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_account_asset__id
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_capital_asset_prorate_regularization__id
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_l10n_es_aeat_mod303_report__id
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_l10n_es_aeat_report__id
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_res_config_settings__id
 msgid "ID"
 msgstr "Identificador"
-
-#. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_account_asset____last_update
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_capital_asset_prorate_regularization____last_update
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_l10n_es_aeat_mod303_report____last_update
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_l10n_es_aeat_report____last_update
-#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_res_config_settings____last_update
-msgid "Last Modified on"
-msgstr "Última modificación"
 
 #. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_capital_asset_prorate_regularization__write_uid
@@ -161,7 +150,8 @@ msgstr ""
 #. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
 #: model:ir.model.fields,help:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_res_config_settings__capital_asset_prorate_max_diff
 msgid "Max difference between prorates to regularize capital assets"
-msgstr "Máxima diferencia entre las prorratas para regularizar el bien de inversión"
+msgstr ""
+"Máxima diferencia entre las prorratas para regularizar el bien de inversión"
 
 #. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_capital_asset_prorate_regularization__mod303_id
@@ -169,10 +159,10 @@ msgid "Model 303"
 msgstr "Modelo 303"
 
 #. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
+#. odoo-python
 #: code:addons/l10n_es_aeat_mod303_special_prorate_regularization_capital_asset/models/mod303.py:0
-#, python-format
-msgid "More than one repartition line found on asset %s tax %s"
-msgstr "Más de una línea de reparto encontrada en el activo %s impuesto %s"
+msgid "More than one repartition line found on tax %s"
+msgstr "Más de una línea de reparto encontrada en el impuesto %s"
 
 #. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_capital_asset_prorate_regularization__prorate_percent
@@ -180,30 +170,30 @@ msgid "Prorate (%)"
 msgstr "Prorrata (%)"
 
 #. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
+#. odoo-python
 #: code:addons/l10n_es_aeat_mod303_special_prorate_regularization_capital_asset/models/mod303.py:0
-#, python-format
-msgid "Repartition line not found on asset %s tax %s"
-msgstr "Línea de reparto encontrada en el activo %s impuesto %s"
+msgid "Repartition line not found on tax %s"
+msgstr "Línea de reparto no encontrada en el impuesto %s"
 
 #. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
+#. odoo-python
 #: code:addons/l10n_es_aeat_mod303_special_prorate_regularization_capital_asset/models/mod303.py:0
-#, python-format
 msgid "The account move cannot be created because it already exists"
 msgstr "El asiento contable no puede ser creado porque ya existe"
 
 #. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
+#. odoo-python
 #: code:addons/l10n_es_aeat_mod303_special_prorate_regularization_capital_asset/models/mod303.py:0
-#, python-format
 msgid ""
 "The following assets require a capital asset type before creating the "
 "capital asset prorate regularization: %s"
 msgstr ""
-"Los siguientes activos requieren un tipo de bien de inversión antes de crear "
-"la regularización de prorrata de bienes de inversión: %s"
+"Los siguientes activos requieren un tipo de bien de inversión antes de crear"
+" la regularización de prorrata de bienes de inversión: %s"
 
 #. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
+#. odoo-python
 #: code:addons/l10n_es_aeat_mod303_special_prorate_regularization_capital_asset/models/mod303.py:0
-#, python-format
 msgid ""
 "The following invoices %s have products with capital asset taxes but without"
 " asset"
@@ -212,54 +202,71 @@ msgstr ""
 "sin activo"
 
 #. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
+#. odoo-python
+#: code:addons/l10n_es_aeat_mod303_special_prorate_regularization_capital_asset/models/mod303.py:0
+msgid ""
+"The model 303 is linked in prorate lines in the year: %(year)s. Please "
+"review the assets: %(assets)s"
+msgstr ""
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
+#. odoo-python
+#: code:addons/l10n_es_aeat_mod303_special_prorate_regularization_capital_asset/models/capital_asset_prorate_regularization.py:0
+msgid ""
+"There's another capital capital asset prorate regularization with the same "
+"year: %(year)s and asset: %(asset)s"
+msgstr ""
+"Existe otra línea de regularización de prorrata del bien de inversión con el"
+" mismo año: %(year)s y el activo: %(asset)s"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
+#. odoo-python
+#: code:addons/l10n_es_aeat_mod303_special_prorate_regularization_capital_asset/models/capital_asset_prorate_regularization.py:0
+#: code:addons/l10n_es_aeat_mod303_special_prorate_regularization_capital_asset/models/mod303.py:0
+msgid ""
+"This asset have a prorate regularization line this year: %(year)s, but it's "
+"not related with a model 303. Please, review prorate regularizations of "
+"capital asset: %(asset)s"
+msgstr ""
+"Este activo tiene una línea de regularización de prorrata el año %(year)s, "
+"pero no está relacionada con un modelo 303. Por favor, revise las "
+"regularizaciones del bien de inversión: %(asset)s"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
+#. odoo-python
+#: code:addons/l10n_es_aeat_mod303_special_prorate_regularization_capital_asset/models/capital_asset_prorate_regularization.py:0
+#: code:addons/l10n_es_aeat_mod303_special_prorate_regularization_capital_asset/models/mod303.py:0
+msgid ""
+"This asset have a prorate regularization line this year: %(year)s, but "
+"related with another model 303. Please, review prorate regularizations of "
+"capital asset: %(asset)s"
+msgstr ""
+"Este activo tiene una línea de regularización de prorrata el año %(year)s, "
+"pero está relacionada con otro modelo 303. Por favor, revise las "
+"regularizaciones del bien de inversión: %(asset)s"
+
+#. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_capital_asset_prorate_regularization__year
 msgid "Year"
 msgstr "Año"
 
 #. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
+#. odoo-python
 #: code:addons/l10n_es_aeat_mod303_special_prorate_regularization_capital_asset/models/capital_asset_prorate_regularization.py:0
-#, python-format
 msgid ""
-"There's another capital capital asset prorate regularization with the same "
-"year: %s and asset: {%i} %s"
-msgstr "Existe otra línea de regularización de prorrata del bien de inversión con el mismo año: %s "
-"del activo: {%i} %s"
+"You can't delete a capital asset regularization line if it's linked with a "
+"model 303."
+msgstr ""
+"No puedes eliminar una línea de regularización de prorata de bien de "
+"inversión si está vinculada a un modelo 303."
 
 #. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
-#: code:addons/l10n_es_aeat_mod303_special_prorate_regularization_capital_asset/models/capital_asset_prorate_regularization.py:0
-#, python-format
-msgid ""
-"This asset have a prorate regularization line this year: %s, but it's not "
-"related with a model 303. Please, review prorate regularizations of capital "
-"asset: %s"
-msgstr "Este activo tiene una línea de regularizacion de prorata el año %s pero no está relacionada"
-"con un modelo 303. Por favor, revise las regularizaciones del bien de inversión: %s"
-
-#. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
+#. odoo-python
 #: code:addons/l10n_es_aeat_mod303_special_prorate_regularization_capital_asset/models/mod303.py:0
-#, python-format
-msgid ""
-"This asset have a prorate regularization line this year: %s, but related "
-"with another model 303. Please, review prorate regularizations of capital "
-"asset: %s"
-msgstr "Este activo tiene una línea de regularizacion de prorata el año %s pero está relacionada"
-"con otro modelo 303. Por favor, revise las regularizaciones del bien de inversión: %s"
-
-#. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
-#: code:addons/l10n_es_aeat_mod303_special_prorate_regularization_capital_asset/models/mod303.py:0
-#, python-format
 msgid "You must fill both journal and counterpart receivable/payable account."
 msgstr ""
 "Se debe rellenar tanto el diario como las cuentas de contrapartida de pago y"
 " de cobro."
-
-#. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
-#: code:addons/l10n_es_aeat_mod303_special_prorate_regularization_capital_asset/models/capital_asset_prorate_regularization.py:0
-#, python-format
-msgid ""
-"You can't delete a capital asset regularization line if it's linked with a "
-"model 303."
-msgstr "No puedes eliminar una línea de regularización de prorata de bien de inversión si está vinculada a un modelo 303."
 
 #. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
 #: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_l10n_es_aeat_mod303_report__field_43
@@ -267,6 +274,6 @@ msgid "[43] Capital Assets Prorate Regularization"
 msgstr "[43] Regularización de bienes de inversión"
 
 #. module: l10n_es_aeat_mod303_special_prorate_regularization_capital_asset
-#: model:ir.model,name:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.model_capital_asset_prorate_regularization
-msgid "capital.asset.prorate.regularization"
+#: model:ir.model.fields,field_description:l10n_es_aeat_mod303_special_prorate_regularization_capital_asset.field_l10n_es_aeat_mod303_report__capital_asset_prorate_regularization_line_ids
+msgid "capital asset prorate regularization lines"
 msgstr ""
