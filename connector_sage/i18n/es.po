@@ -1,0 +1,2468 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* connector_sage
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-27 11:20+0000\n"
+"PO-Revision-Date: 2025-10-27 11:20+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__supplier_invoice_count
+msgid "# Vendor Bills"
+msgstr "# Facturas de proveedor"
+
+#. module: connector_sage
+#. odoo-python
+#: code:addons/connector_sage/components/adapter.py:0
+msgid "%(message)sAPI / Network Error:\n\n%(error)s"
+msgstr "%(message)sError de API / Red:\n\n%(error)s"
+
+#. module: connector_sage
+#. odoo-python
+#: code:addons/connector_sage/components/adapter.py:0
+msgid "%(message)sDB integrity Error:\n\n%(error)s"
+msgstr "%(message)sError de integridad de BD:\n\n%(error)s"
+
+#. module: connector_sage
+#. odoo-python
+#: code:addons/connector_sage/components/adapter.py:0
+msgid "%(message)sDB interface Error:\n\n%(error)s"
+msgstr "%(message)sError de interfaz de BD:\n\n%(error)s"
+
+#. module: connector_sage
+#. odoo-python
+#: code:addons/connector_sage/components/adapter.py:0
+msgid "%(message)sDB internal Error:\n\n%(error)s"
+msgstr "%(message)sError interno de BD:\n\n%(error)s"
+
+#. module: connector_sage
+#. odoo-python
+#: code:addons/connector_sage/components/adapter.py:0
+msgid "%(message)sDB operational Error:\n\n%(error)s"
+msgstr "%(message)sError operacional de BD:\n\n%(error)s"
+
+#. module: connector_sage
+#. odoo-python
+#: code:addons/connector_sage/components/adapter.py:0
+msgid "%(message)sNetwork Error:\n\n%(error)s"
+msgstr "%(message)sError de red:\n\n%(error)s"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__property_account_payable_id
+msgid "Account Payable"
+msgstr "Cuenta a pagar"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__property_account_receivable_id
+msgid "Account Receivable"
+msgstr "Cuenta a cobrar"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__message_needaction
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__message_needaction
+msgid "Action Needed"
+msgstr "Acción necesaria"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_backend__active
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__active
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__active
+msgid "Active"
+msgstr "Activo"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__active_lang_count
+msgid "Active Lang Count"
+msgstr "Cantidad de idiomas activos"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__activity_ids
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__activity_ids
+msgid "Activities"
+msgstr "Actividades"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__activity_exception_decoration
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr "Decoración de excepción de actividad"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__activity_state
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__activity_state
+msgid "Activity State"
+msgstr "Estado de la actividad"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__activity_type_icon
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__activity_type_icon
+msgid "Activity Type Icon"
+msgstr "Icono del tipo de actividad"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__departure_description
+msgid "Additional Information"
+msgstr "Información adicional"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__additional_note
+msgid "Additional Note"
+msgstr "Nota adicional"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__additional_info
+msgid "Additional info"
+msgstr "Información adicional"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__type
+msgid "Address Type"
+msgstr "Tipo de dirección"
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__lang
+msgid "All the emails and documents sent to this contact will be translated in this language."
+msgstr "Todos los correos electrónicos y documentos enviados a este contacto se traducirán a este idioma."
+
+#. module: connector_sage
+#. odoo-python
+#: code:addons/connector_sage/models/sage_backend/common.py:0
+#: model:ir.model.constraint,message:connector_sage.constraint_sage_backend_company_uniq
+msgid "Already exists another backend associated to the same company!"
+msgstr "¡Ya existe otro backend asociado a la misma empresa!"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_check__amount
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__amount
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__amount
+msgid "Amount"
+msgstr "Importe"
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_backend_view_form
+msgid "Archived"
+msgstr "Archivado"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__message_attachment_count
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__message_attachment_count
+msgid "Attachment Count"
+msgstr "Cantidad de adjuntos"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__autopost_bills
+msgid "Auto-post bills"
+msgstr "Autopublicar facturas"
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__autopost_bills
+msgid "Automatically post bills for this trusted partner"
+msgstr "Publicar automáticamente las facturas para este socio de confianza"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__available_peppol_eas
+msgid "Available Peppol Eas"
+msgstr "Peppol Eas disponibles"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__avatar_1920
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__avatar_1920
+msgid "Avatar"
+msgstr "Avatar"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__avatar_1024
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__avatar_1024
+msgid "Avatar 1024"
+msgstr "Avatar 1024"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__avatar_128
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__avatar_128
+msgid "Avatar 128"
+msgstr "Avatar 128"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__avatar_256
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__avatar_256
+msgid "Avatar 256"
+msgstr "Avatar 256"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__avatar_512
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__avatar_512
+msgid "Avatar 512"
+msgstr "Avatar 512"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_check__sage_ano
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line__sage_ano
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__sage_ano
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__sage_ano
+msgid "Año"
+msgstr "Año"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_binding__backend_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__backend_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement__backend_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement_wage_type_line__backend_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_check__backend_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line__backend_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__backend_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__backend_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__backend_id
+msgid "Backend"
+msgstr "Backend"
+
+#. module: connector_sage
+#: model:ir.ui.menu,name:connector_sage.sage_backend_menu_action
+msgid "Backends"
+msgstr "Backends"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__barcode
+msgid "Badge ID"
+msgstr "ID de credencial"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__bank_account_count
+msgid "Bank"
+msgstr "Banco"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__bank_account_id
+msgid "Bank Account"
+msgstr "Cuenta bancaria"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__bank_ids
+msgid "Banks"
+msgstr "Bancos"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__barcode
+msgid "Barcode"
+msgstr "Código de barras"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__is_blacklisted
+msgid "Blacklist"
+msgstr "Lista negra"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__mobile_blacklisted
+msgid "Blacklisted Phone Is Mobile"
+msgstr "Teléfono móvil en lista negra"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__phone_blacklisted
+msgid "Blacklisted Phone is Phone"
+msgstr "Teléfono fijo en lista negra"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__message_bounce
+msgid "Bounce"
+msgstr "Rebote"
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_backend_view_form
+msgid ""
+"By clicking on the buttons,\n"
+"                                you will initiate the\n"
+"                                synchronizations\n"
+"                                with Sage.\n"
+"                                Note that the import or exports\n"
+"                                won't be done directly,\n"
+"                                they will create 'Jobs'\n"
+"                                executed as soon\n"
+"                                as possible."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__employee_type
+msgid ""
+"Categorize your Employees by type. This field also has an impact on "
+"contracts. Only Employees, Students and Trainee will have contract history."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__certificate
+msgid "Certificate Level"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__channel_ids
+msgid "Channels"
+msgstr ""
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_backend_view_form
+msgid "Check Connection"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement__check_tag_ids
+msgid "Check Tags"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__is_company
+msgid "Check if the contact is a company, otherwise it is a person"
+msgstr ""
+
+#. module: connector_sage
+#. odoo-python
+#: code:addons/connector_sage/models/sage_backend/common.py:0
+msgid "Check import only makes sense on transfer payslips!"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__employee
+msgid "Check this box if this contact is an Employee."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__city
+msgid "City"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__coach_id
+msgid "Coach"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement__code
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement_wage_type_line__code
+msgid "Code"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__peppol_eas
+msgid ""
+"Code used to identify the Endpoint for BIS Billing 3.0 and its derivatives.\n"
+"             List available at https://docs.peppol.eu/poacc/billing/3.0/codelist/eas/"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement_wage_type_line__sage_codigo_concepto_nom
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line__sage_codigo_concepto_nom
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__sage_codigo_concepto_nom
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__sage_codigo_concepto_nom
+msgid "CodigoConceptoNom"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement__sage_codigo_convenio
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement_wage_type_line__sage_codigo_convenio
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line__sage_codigo_convenio
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__sage_codigo_convenio
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__sage_codigo_convenio
+msgid "CodigoConvenio"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__sage_codigo_empleado
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_check__sage_codigo_empleado
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line__sage_codigo_empleado
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__sage_codigo_empleado
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__sage_codigo_empleado
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__sage_codigo_empleado
+msgid "CodigoEmpleado"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__sage_codigo_empresa
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement__sage_codigo_empresa
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement_wage_type_line__sage_codigo_empresa
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_check__sage_codigo_empresa
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line__sage_codigo_empresa
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__sage_codigo_empresa
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__sage_codigo_empresa
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__sage_codigo_empresa
+msgid "CodigoEmpresa"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__color
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__color
+msgid "Color Index"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__commercial_partner_id
+msgid "Commercial Entity"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__ref_company_ids
+msgid "Companies that refers to partner"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_backend__company_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__company_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement__company_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__company_id
+msgid "Company"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__company_country_id
+msgid "Company Country"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__company_registry
+msgid "Company ID"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__company_registry_label
+msgid "Company ID Label"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__company_name
+msgid "Company Name"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__commercial_company_name
+msgid "Company Name Entity"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__company_type
+msgid "Company Type"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__partner_gid
+msgid "Company database ID"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__contact_address
+msgid "Complete Address"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__complete_name
+msgid "Complete Name"
+msgstr ""
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.hr_employee_view_form_inherit_connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.labour_agreement_view_form_inherit_connector_sage
+msgid "Connectors"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model,name:connector_sage.model_res_partner
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__child_ids
+msgid "Contact"
+msgstr "Contacto"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__emergency_contact
+msgid "Contact Name"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__emergency_phone
+msgid "Contact Phone"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.actions.act_window,name:connector_sage.sage_res_partner_action
+msgid "Contacts"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__message_bounce
+msgid "Counter of the number of bounced emails for this contact"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__country_id
+msgid "Country"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__company_country_code
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__country_code
+msgid "Country Code"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__country_of_birth
+msgid "Country of Birth"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_backend__create_uid
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__create_uid
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement__create_uid
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement_wage_type_line__create_uid
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_check__create_uid
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__create_uid
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__create_uid
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_backend__create_date
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__create_date
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement__create_date
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement_wage_type_line__create_date
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_check__create_date
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__create_date
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__create_date
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__credit_limit
+msgid "Credit Limit"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__credit_to_invoice
+msgid "Credit To Invoice"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__credit_limit
+msgid "Credit limit specific to this partner."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__currency_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__currency_id
+msgid "Currency"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__property_payment_term_id
+msgid "Customer Payment Terms"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__customer_rank
+msgid "Customer Rank"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_backend__database
+msgid "Database"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__birthday
+msgid "Date of Birth"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__days_sales_outstanding
+msgid "Days Sales Outstanding (DSO)"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_backend__import_employees_default_account_payable_id
+msgid "Defaul account payable"
+msgstr ""
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_backend_view_form
+msgid "Default account payable"
+msgstr ""
+
+#. module: connector_sage
+#. odoo-python
+#: code:addons/connector_sage/models/sage_binding/common.py:0
+msgid ""
+"Default company of the user must be the same as the company that we want to "
+"import records"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__resource_calendar_id
+msgid ""
+"Define the working schedule of the resource. If not set, the resource will "
+"have fully flexible working hours."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__trust
+msgid "Degree of trust you have in this debtor"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__department_id
+msgid "Department"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__department_color
+msgid "Department Color"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__departure_date
+msgid "Departure Date"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__departure_reason_id
+msgid "Departure Reason"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement_wage_type_line__note
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_check__name
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__name
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__name
+msgid "Description"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__child_count
+msgid "Direct Subordinates Count"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__subordinate_ids
+msgid "Direct and indirect subordinates"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__child_ids
+msgid "Direct subordinates"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__display_invoice_edi_format
+msgid "Display Invoice Edi Format"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__display_invoice_template_pdf_report_id
+msgid "Display Invoice Template Pdf Report"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_backend__display_name
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__display_name
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement__display_name
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement_wage_type_line__display_name
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_check__display_name
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__display_name
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__display_name
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__driving_license
+msgid "Driving License"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__duplicate_bank_partner_ids
+msgid "Duplicate Bank Partner"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__duplicated_bank_account_partners_count
+msgid "Duplicated Bank Account Partners Count"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__partner_share
+msgid ""
+"Either customer (not a user), either shared user. Indicated the current "
+"partner is a customer without access or with a limited access created for "
+"sharing data."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__email
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__email
+msgid "Email"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.constraint,message:connector_sage.constraint_sage_hr_employee_uniq
+msgid "Empllyee with same ID on Sage already exists."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.actions.act_window,name:connector_sage.sage_hr_employee_action
+#: model:ir.model,name:connector_sage.model_hr_employee
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__odoo_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_check__employee_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__employee_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__employee_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__employee
+msgid "Employee"
+msgstr "Empleado"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__name
+msgid "Employee Name"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__employee_type
+msgid "Employee Type"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__bank_account_id
+msgid "Employee bank account to pay salaries"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__employee_ids
+msgid "Employees"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__employees_count
+msgid "Employees Count"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement__end_date
+msgid "End date"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement__error_balancing_account_id
+msgid "Error balancing account"
+msgstr ""
+
+#. module: connector_sage
+#. odoo-python
+#: code:addons/connector_sage/models/payroll_sage_payslip.py:0
+msgid "Expected 1 backend for the current company, found %i"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.ui.menu,name:connector_sage.sage_external_partners_menu
+msgid "External Contacts"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.ui.menu,name:connector_sage.sage_external_employees_menu
+msgid "External Employees"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.ui.menu,name:connector_sage.sage_external_labour_agreements_menu
+msgid "External Labour agreementss"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.ui.menu,name:connector_sage.sage_external_objects_menu
+msgid "External Objects"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__share
+msgid ""
+"External user with limited access, created only for the purpose of sharing "
+"data."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__sage_fecha_cobro
+msgid "FechaCobro"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement__sage_fecha_registro_cv
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement_wage_type_line__sage_fecha_registro_cv
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line__sage_fecha_registro_cv
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__sage_fecha_registro_cv
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__sage_fecha_registro_cv
+msgid "FechaRegistroCV"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__study_field
+msgid "Field of Study"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__phone_sanitized
+msgid ""
+"Field used to store sanitized phone number. Helps speeding up searches and "
+"comparisons."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__fiscal_country_codes
+msgid "Fiscal Country Codes"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__property_account_position_id
+msgid "Fiscal Position"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__message_follower_ids
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__message_follower_ids
+msgid "Followers"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__message_partner_ids
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__message_partner_ids
+msgid "Followers (Partners)"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__activity_type_icon
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__email_formatted
+msgid "Format email address \"Name <email@domain>\""
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__email_formatted
+msgid "Formatted Email"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__gender
+msgid "Gender"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__partner_latitude
+msgid "Geo Latitude"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__partner_longitude
+msgid "Geo Longitude"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__has_message
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__has_message
+msgid "Has Message"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__distance_home_work
+msgid "Home-Work Distance"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__km_home_work
+msgid "Home-Work Distance in Km"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__distance_home_work_unit
+msgid "Home-Work Distance unit"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__hr_icon_display
+msgid "Hr Icon Display"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__hr_presence_state
+msgid "Hr Presence State"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model,name:connector_sage.model_sage_hr_employee
+msgid "Hr employee binding"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_backend__id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement__id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement_wage_type_line__id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_check__id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__id
+msgid "ID"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__id_card
+msgid "ID Card Copy"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__barcode
+msgid "ID used for employee identification."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__im_status
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__im_status
+msgid "IM Status"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__activity_exception_icon
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__activity_exception_icon
+msgid "Icon"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__activity_exception_icon
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_check__sage_id_empleado
+msgid "IdEmpleado"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__identification_id
+msgid "Identification No"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__message_needaction
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__message_has_error
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__message_has_sms_error
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__message_has_error
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__active
+msgid ""
+"If the active field is set to False, it will allow you to hide the resource "
+"record without removing it."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__is_blacklisted
+msgid ""
+"If the email address is on the blacklist, the contact won't receive mass "
+"mailing anymore, from any list"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__phone_sanitized_blacklisted
+msgid ""
+"If the sanitized phone number is on the blacklist, the contact won't receive"
+" mass mailing sms anymore, from any list"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__private_car_plate
+msgid "If you have more than one car, just separate the plates by a space."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__ignore_abnormal_invoice_amount
+msgid "Ignore Abnormal Invoice Amount"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__ignore_abnormal_invoice_date
+msgid "Ignore Abnormal Invoice Date"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__image_1920
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__image_1920
+msgid "Image"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__image_1024
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__image_1024
+msgid "Image 1024"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__image_128
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__image_128
+msgid "Image 128"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__image_256
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__image_256
+msgid "Image 256"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__image_512
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__image_512
+msgid "Image 512"
+msgstr ""
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.payslip_view_form_inherit_connector_sage
+msgid "Import"
+msgstr ""
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_backend_view_form
+msgid "Import Payslip Checks"
+msgstr ""
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_backend_view_form
+msgid "Import Payslip Lines"
+msgstr ""
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_backend_view_form
+msgid "Import employees"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_backend__import_employees_since_date
+msgid "Import employees since"
+msgstr ""
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_backend_view_form
+msgid "Import in background"
+msgstr ""
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_backend_view_form
+msgid "Import labour agreements"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_backend__import_labour_agreements_since_date
+msgid "Import labour agreements since"
+msgstr ""
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_backend_view_form
+msgid "Imports"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__mobile_blacklisted
+msgid ""
+"Indicates if a blacklisted sanitized phone number is a mobile number. Helps "
+"distinguish which number is blacklisted             when there is both a "
+"mobile and phone field in a model."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__phone_blacklisted
+msgid ""
+"Indicates if a blacklisted sanitized phone number is a phone number. Helps "
+"distinguish which number is blacklisted             when there is both a "
+"mobile and phone field in a model."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__child_all_count
+msgid "Indirect Subordinates Count"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__industry_id
+msgid "Industry"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__contact_address_inline
+msgid "Inlined Complete Address"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__invoice_warn
+msgid "Invoice"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__invoice_edi_format_store
+msgid "Invoice Edi Format Store"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__invoice_sending_method
+msgid "Invoice sending"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__invoice_template_pdf_report_id
+msgid "Invoice template"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__invoice_ids
+msgid "Invoices"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__is_coa_installed
+msgid "Is Coa Installed"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__is_flexible
+msgid "Is Flexible"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__message_is_follower
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__message_is_follower
+msgid "Is Follower"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__is_fully_flexible
+msgid "Is Fully Flexible"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__is_peppol_edi_format
+msgid "Is Peppol Edi Format"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__is_public
+msgid "Is Public"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__is_subordinate
+msgid "Is Subordinate"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__is_ubl_format
+msgid "Is Ubl Format"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__is_company
+msgid "Is a Company"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__job_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__function
+msgid "Job Position"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__job_title
+msgid "Job Title"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__journal_item_count
+msgid "Journal Items"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.actions.act_window,name:connector_sage.sage_labour_agreement_action
+#: model:ir.model,name:connector_sage.model_payroll_sage_labour_agreement
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement__odoo_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement_wage_type_line__labour_agreement_id
+msgid "Labour agreement"
+msgstr "Convenio laboral"
+
+#. module: connector_sage
+#: model:ir.model,name:connector_sage.model_payroll_sage_labour_agreement_wage_type_line
+msgid "Labour agreement Wage type line"
+msgstr "Línea de tipo de salario del convenio laboral"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement_wage_type_line__odoo_id
+msgid "Labour agreement wage type"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__lang
+msgid "Lang"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__lang
+msgid "Language"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__last_activity
+msgid "Last Activity"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__last_activity_time
+msgid "Last Activity Time"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_backend__write_uid
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__write_uid
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement__write_uid
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement_wage_type_line__write_uid
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_check__write_uid
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__write_uid
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__write_uid
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_backend__write_date
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__write_date
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement__write_date
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement_wage_type_line__write_date
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_check__write_date
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__write_date
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__write_date
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_binding__sync_date
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__sync_date
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement__sync_date
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement_wage_type_line__sync_date
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_check__sync_date
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line__sync_date
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__sync_date
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__sync_date
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__sync_date
+msgid "Last synchronization date"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__parent_id
+msgid "Manager"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__marital
+msgid "Marital Status"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__member_of_department
+msgid "Member of department"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_check__sage_mesd
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line__sage_mesd
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__sage_mesd
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__sage_mesd
+msgid "MesD"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__message_has_error
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__invoice_warn_msg
+msgid "Message for Invoice"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__message_ids
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__message_ids
+msgid "Messages"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__mobile
+msgid "Mobile"
+msgstr ""
+
+#. module: connector_sage
+#. odoo-python
+#: code:addons/connector_sage/models/res_partner/binder.py:0
+msgid "More than one partner with the same vat (%s) found"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__my_activity_date_deadline
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_backend__name
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement__name
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement_wage_type_line__name
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__name
+msgid "Name"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__country_id
+msgid "Nationality (Country)"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__newly_hired
+msgid "Newly Hired"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__activity_date_deadline
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__activity_summary
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__activity_summary
+msgid "Next Activity Summary"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__activity_type_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__activity_type_id
+msgid "Next Activity Type"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__email_normalized
+msgid "Normalized Email"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__notes
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__comment
+msgid "Notes"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__message_needaction_counter
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__message_needaction_counter
+msgid "Number of Actions"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__children
+msgid "Number of Dependent Children"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__message_has_error_counter
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__message_has_error_counter
+msgid "Number of errors"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__message_needaction_counter
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__message_needaction_counter
+msgid "Number of messages requiring action"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__message_has_error_counter
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_backend_view_form
+msgid ""
+"Once imported,\n"
+"                                some types of records,\n"
+"                                like the products\n"
+"                                or categories,\n"
+"                                need a manual review.\n"
+"                                You will find the list\n"
+"                                of the\n"
+"                                new records to review\n"
+"                                in the menu 'Connectors &gt; Checkpoint'."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_check__sage_orden_nom
+msgid "OrdenNom"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__pin
+msgid "PIN"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__pin
+msgid ""
+"PIN used to Check In/Out in the Kiosk Mode of the Attendance application (if"
+" enabled in Configuration) and to change the cashier in the Point of Sale "
+"application."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__parent_name
+msgid "Parent name"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__odoo_id
+msgid "Partner"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__partner_company_registry_placeholder
+msgid "Partner Company Registry Placeholder"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__contract_ids
+msgid "Partner Contracts"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__use_partner_credit_limit
+msgid "Partner Limit"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__partner_vat_placeholder
+msgid "Partner Vat Placeholder"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model,name:connector_sage.model_sage_payroll_sage_labour_agreement
+#: model:ir.model,name:connector_sage.model_sage_res_partner
+msgid "Partner binding"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__same_company_registry_partner_id
+msgid "Partner with same Company Registry"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.constraint,message:connector_sage.constraint_sage_res_partner_sage_res_partner
+msgid "Partner with same ID on Sage already exists."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__same_vat_partner_id
+msgid "Partner with same Tax ID"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__user_partner_id
+msgid "Partner-related data of the user"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__passport_id
+msgid "Passport No"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_backend__password
+msgid "Password"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__debit_limit
+msgid "Payable Limit"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__payment_token_count
+msgid "Payment Token Count"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__payment_token_ids
+msgid "Payment Tokens"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.constraint,message:connector_sage.constraint_sage_payroll_sage_payslip_line_payroll_uniq
+msgid "Payroll Payslip with same ID on Sage already exists."
+msgstr ""
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.payslip_line_view_form_inherit_connector_sage
+msgid "Payroll Sage Bindings"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model,name:connector_sage.model_sage_payroll_sage_labour_agreement_wage_type_line
+msgid "Payroll sage labour agreement wage type line binding"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model,name:connector_sage.model_sage_payroll_sage_payslip_check
+msgid "Payroll sage payslip check binding"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model,name:connector_sage.model_sage_payroll_sage_payslip_line
+msgid "Payroll sage payslip line binding"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model,name:connector_sage.model_sage_payroll_sage_payslip_line_payroll
+msgid "Payroll sage payslip line payroll binding"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model,name:connector_sage.model_sage_payroll_sage_payslip_line_transfer
+msgid "Payroll sage payslip line transfer binding"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.constraint,message:connector_sage.constraint_sage_payroll_sage_labour_agreement_uniq
+#: model:ir.model.constraint,message:connector_sage.constraint_sage_payroll_sage_payslip_check_uniq
+msgid "Payroll structure with same ID on Sage already exists."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model,name:connector_sage.model_payroll_sage_payslip
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_check__payslip_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__payslip_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__payslip_id
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_backend_view_form
+msgid "Payslip"
+msgstr "Nómina"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_backend__import_payslip_check_id
+msgid "Payslip Check"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_backend__import_payslip_line_id
+msgid "Payslip Line"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model,name:connector_sage.model_payroll_sage_payslip_check
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_check__odoo_id
+msgid "Payslip check"
+msgstr "Cheque de nómina"
+
+#. module: connector_sage
+#: model:ir.model,name:connector_sage.model_payroll_sage_payslip_line
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line__odoo_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__odoo_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__odoo_id
+msgid "Payslip line"
+msgstr "Línea de nómina"
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__peppol_endpoint
+msgid "Peppol Endpoint"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__peppol_eas
+msgid "Peppol e-address (EAS)"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__phone
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__phone
+msgid "Phone"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__phone_sanitized_blacklisted
+msgid "Phone Blacklisted"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__phone_mobile_search
+msgid "Phone/Mobile"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__place_of_birth
+msgid "Place of Birth"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_backend__port
+msgid "Port"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement_wage_type_line__positive
+msgid "Positive"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__property_outbound_payment_method_line_id
+msgid ""
+"Preferred payment method when buying from this vendor. This will be set by "
+"default on all outgoing payments created for this vendor"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__property_inbound_payment_method_line_id
+msgid ""
+"Preferred payment method when selling to this customer. This will be set by "
+"default on all incoming payments created for this customer"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__property_product_pricelist
+msgid "Pricelist"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__private_car_plate
+msgid "Private Car Plate"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__private_city
+msgid "Private City"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__private_country_id
+msgid "Private Country"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__private_email
+msgid "Private Email"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__private_phone
+msgid "Private Phone"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__private_state_id
+msgid "Private State"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__private_street
+msgid "Private Street"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__private_street2
+msgid "Private Street2"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__private_zip
+msgid "Private Zip"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__employee_properties
+msgid "Properties"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__property_inbound_payment_method_line_id
+msgid "Property Inbound Payment Method Line"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__property_outbound_payment_method_line_id
+msgid "Property Outbound Payment Method Line"
+msgstr ""
+
+#. module: connector_sage
+#. odoo-python
+#: code:addons/connector_sage/components/importer.py:0
+msgid "Record does no longer exist in Sage"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__ref
+msgid "Reference"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement__registration_date_cv
+msgid "Registration date"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__parent_id
+msgid "Related Company"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__related_partners_count
+msgid "Related Partners Count"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__employee_ids
+msgid "Related employees based on their private address"
+msgstr ""
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_backend_view_form
+msgid "Reset To draft Connection"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__resource_id
+msgid "Resource"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__activity_user_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__activity_user_id
+msgid "Responsible User"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__resume_line_ids
+msgid "Resume lines"
+msgstr ""
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_hr_employee_view_tree
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_labour_agreement_view_tree
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_payslip_check_view_tree
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_payslip_line_payroll_view_tree
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_payslip_line_transfer_view_tree
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_res_partner_view_tree
+msgid "Resynchronize"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement__ss_tag_ids
+msgid "S.S. Tags"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__sinid
+msgid "SIN No"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__message_has_sms_error
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__ssnid
+msgid "SSN No"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.ui.menu,name:connector_sage.sage_menu_root
+msgid "Sage"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.actions.server,name:connector_sage.ir_cron_import_employees_ir_actions_server
+msgid "Sage - Import employees"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.actions.server,name:connector_sage.ir_cron_import_labour_agreements_ir_actions_server
+msgid "Sage - Import labour agreements"
+msgstr ""
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_backend_view_form
+msgid "Sage Backend"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model,name:connector_sage.model_sage_backend
+msgid "Sage Backend Configuration"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.actions.act_window,name:connector_sage.sage_backend_action
+msgid "Sage Backends"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model,name:connector_sage.model_sage_binding
+msgid "Sage Binding (abstract)"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_hr_employee__sage_bind_ids
+#: model:ir.model.fields,field_description:connector_sage.field_payroll_sage_labour_agreement__sage_bind_ids
+#: model:ir.model.fields,field_description:connector_sage.field_payroll_sage_labour_agreement_wage_type_line__sage_bind_ids
+#: model:ir.model.fields,field_description:connector_sage.field_payroll_sage_payslip_check__sage_bind_ids
+#: model:ir.model.fields,field_description:connector_sage.field_res_partner__sage_bind_ids
+#: model:ir.model.fields,field_description:connector_sage.field_res_users__sage_bind_ids
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__sage_bind_ids
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement__sage_bind_ids
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement_wage_type_line__sage_bind_ids
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_check__sage_bind_ids
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__sage_bind_ids
+#: model_terms:ir.ui.view,arch_db:connector_sage.hr_employee_view_form_inherit_connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.labour_agreement_view_form_inherit_connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.payslip_check_view_form_inherit_connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.res_partner_view_form_connector_sage
+msgid "Sage Bindings"
+msgstr ""
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_hr_employee_view_form
+msgid "Sage Employee"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement_wage_type_line__sage_labour_agreement_id
+msgid "Sage Labour agreeement"
+msgstr ""
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_labour_agreement_view_form
+msgid "Sage Labour agreement"
+msgstr ""
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_res_partner_view_form
+msgid "Sage Partner"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_payroll_sage_payslip_line__sage_payroll_bind_ids
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__sage_payroll_bind_ids
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__sage_payroll_bind_ids
+msgid "Sage Payroll Bindings"
+msgstr ""
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_payslip_check_view_form
+msgid "Sage Payslip Check"
+msgstr ""
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_payslip_line_payroll_view_form
+msgid "Sage Payslip Line Payroll"
+msgstr ""
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_payslip_line_transfer_view_form
+msgid "Sage Payslip Line Transfer"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_payroll_sage_payslip_line__sage_transfer_bind_ids
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__sage_transfer_bind_ids
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__sage_transfer_bind_ids
+msgid "Sage Transfer Bindings"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement__sage_wage_type_line_ids
+msgid "Sage Wage types"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_backend__sage_company_id
+msgid "Sage company ID"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__user_id
+msgid "Salesperson"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__phone_sanitized
+msgid "Sanitized Number"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_backend__schema
+msgid "Schema"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__study_school
+msgid "School"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__coach_id
+msgid ""
+"Select the \"Employee\" who is the coach of this employee.\n"
+"The \"Coach\" has no specific rights or responsibilities by default."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__invoice_warn
+msgid ""
+"Selecting the \"Warning\" option will notify user with the message, "
+"Selecting \"Blocking Message\" will throw an exception with the message and "
+"block the flow. The Message has to be written in the next field."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__self
+msgid "Self"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_backend__server
+msgid "Server"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__use_partner_credit_limit
+msgid "Set a value greater than 0.0 to activate a credit limit check"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__partner_share
+msgid "Share Partner"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__share
+msgid "Share User"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement_wage_type_line__short_name
+msgid "Short Name"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__show_credit_limit
+msgid "Show Credit Limit"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__show_hr_icon_display
+msgid "Show Hr Icon Display"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__signup_type
+msgid "Signup Token Type"
+msgstr ""
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.sage_backend_view_form
+msgid "Since"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__skill_ids
+msgid "Skill"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__employee_skill_ids
+msgid "Skills"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__sinid
+msgid "Social Insurance Number"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__ssnid
+msgid "Social Security Number"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__specific_property_product_pricelist
+msgid "Specific Property Product Pricelist"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__spouse_birthdate
+msgid "Spouse Birthdate"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__spouse_complete_name
+msgid "Spouse Complete Name"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__starred_message_ids
+msgid "Starred Message"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_backend__state
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__state_id
+msgid "State"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__activity_state
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__street
+msgid "Street"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__street2
+msgid "Street2"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__subordinate_ids
+msgid "Subordinates"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__supplier_rank
+msgid "Supplier Rank"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__category_ids
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement_wage_type_line__wage_tag_ids
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__category_id
+msgid "Tags"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__vat
+msgid "Tax ID"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__vat_label
+msgid "Tax ID Label"
+msgstr ""
+
+#. module: connector_sage
+#. odoo-python
+#: code:addons/connector_sage/models/res_partner/binder.py:0
+msgid "The 'VAT' field is not found in mapper."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__company_country_code
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__country_code
+msgid ""
+"The ISO country code in two chars. \n"
+"You can use this field for quick search."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__vat
+msgid ""
+"The Tax Identification Number. Values here will be validated based on the "
+"country format. You can use '/' to indicate that the partner is not subject "
+"to tax."
+msgstr ""
+
+#. module: connector_sage
+#. odoo-python
+#: code:addons/connector_sage/models/sage_backend/common.py:0
+msgid "The cron user cannot be admin"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__property_account_position_id
+msgid ""
+"The fiscal position determines the taxes/accounts used for this contact."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__user_id
+msgid "The internal user in charge of this contact."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__company_registry
+msgid ""
+"The registry number of the company. Use it if it is different from the Tax "
+"ID. It must be unique across all partners of a same country"
+msgstr ""
+
+#. module: connector_sage
+#. odoo-python
+#: code:addons/connector_sage/models/sage_backend/common.py:0
+msgid "There's no Account payable selected!"
+msgstr ""
+
+#. module: connector_sage
+#. odoo-python
+#: code:addons/connector_sage/models/sage_backend/common.py:0
+msgid "There's no Payslip selected!"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__property_account_payable_id
+msgid ""
+"This account will be used instead of the default one as the payable account "
+"for the current partner"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__property_account_receivable_id
+msgid ""
+"This account will be used instead of the default one as the receivable "
+"account for the current partner"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__tz
+msgid ""
+"This field is used in order to define in which timezone the employee will "
+"work."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__email_normalized
+msgid ""
+"This field is used to search on email address as the primary email field can"
+" contain more than strictly an email address."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__property_supplier_payment_term_id
+msgid ""
+"This payment term will be used instead of the default one for purchase "
+"orders and vendor bills"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__property_payment_term_id
+msgid ""
+"This payment term will be used instead of the default one for sales orders "
+"and customer invoices"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__property_product_pricelist
+msgid ""
+"This pricelist will be used, instead of the default one, for sales to the "
+"current partner"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__tz
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__tz
+msgid "Timezone"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__tz_offset
+msgid "Timezone offset"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_check__sage_tipo_proceso
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line__sage_tipo_proceso
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__sage_tipo_proceso
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__sage_tipo_proceso
+msgid "TipoProceso"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__title
+msgid "Title"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__total_invoiced
+msgid "Total Invoiced"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__debit
+msgid "Total Payable"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__credit
+msgid "Total Receivable"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__credit
+msgid "Total amount this customer owes you."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__debit
+msgid "Total amount you have to pay to this vendor."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement_wage_type_line__total_historical_record
+msgid "Totalize in historical record"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.constraint,message:connector_sage.constraint_sage_payroll_sage_payslip_line_transfer_uniq
+msgid "Transfer Payslip with same ID on Sage already exists."
+msgstr ""
+
+#. module: connector_sage
+#: model_terms:ir.ui.view,arch_db:connector_sage.payslip_line_view_form_inherit_connector_sage
+msgid "Transfer Sage Bindings"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_payroll_sage_payslip_line__payslip_type
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__payslip_type
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__payslip_type
+msgid "Type"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__activity_exception_decoration
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr ""
+
+#. module: connector_sage
+#. odoo-python
+#: code:addons/connector_sage/models/payroll_sage_payslip.py:0
+#: code:addons/connector_sage/models/sage_backend/common.py:0
+msgid "Unexpected payslip type %s!"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__peppol_endpoint
+msgid ""
+"Unique identifier used by the BIS Billing 3.0 and its derivatives, also "
+"known as 'Endpoint ID'."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__barcode
+msgid "Use a barcode to identify this contact."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__user_id
+msgid "User"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__user_partner_id
+msgid "User's partner"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_backend__username
+msgid "Username"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__user_ids
+msgid "Users"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__property_supplier_payment_term_id
+msgid "Vendor Payment Terms"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_backend__version
+msgid "Version"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__visa_expire
+msgid "Visa Expiration Date"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__visa_no
+msgid "Visa No"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_payroll__wage_type_line_id
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_payslip_line_transfer__wage_type_line_id
+msgid "Wage type line"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.constraint,message:connector_sage.constraint_sage_payroll_sage_labour_agreement_wage_type_line_uniq
+msgid "Wage type line with same ID on Sage already exists."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_payroll_sage_labour_agreement__wage_type_line_ids
+msgid "Wage types"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__website
+msgid "Website Link"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__website_message_ids
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__website_message_ids
+msgid "Website Messages"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__website_message_ids
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__website_message_ids
+msgid "Website communication history"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__tz
+msgid ""
+"When printing documents and exporting/importing data, time values are computed according to this timezone.\n"
+"If the timezone is not set, UTC (Coordinated Universal Time) is used.\n"
+"Anywhere else, time values are computed according to the time offset of your web client."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_hr_employee__member_of_department
+msgid ""
+"Whether the employee is a member of the active user's department or one of "
+"it's child department."
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__address_id
+msgid "Work Address"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__work_contact_id
+msgid "Work Contact"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__work_email
+msgid "Work Email"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__work_location_id
+msgid "Work Location"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__work_location_name
+msgid "Work Location Name"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__work_location_type
+msgid "Work Location Type"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__mobile_phone
+msgid "Work Mobile"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__has_work_permit
+msgid "Work Permit"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__work_permit_expiration_date
+msgid "Work Permit Expiration Date"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__permit_no
+msgid "Work Permit No"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__work_permit_scheduled_activity
+msgid "Work Permit Scheduled Activity"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__work_phone
+msgid "Work Phone"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__resource_calendar_id
+msgid "Working Hours"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__zip
+msgid "Zip"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,help:connector_sage.field_sage_res_partner__days_sales_outstanding
+msgid ""
+"[(Total Receivable/Total Revenue) * number of days since the first invoice] "
+"for this customer"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_res_partner__invoice_edi_format
+msgid "eInvoice format"
+msgstr ""
+
+#. module: connector_sage
+#: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__work_permit_name
+msgid "work_permit_name"
+msgstr ""
