@@ -49,21 +49,15 @@ class WooCommerceSaleOrderImportMapper(Component):
         external_id = binder.dict2id(record["billing"], in_field=False)
         partner = binder.to_internal(external_id, unwrap=True)
         assert partner, (
-            "partner_id %s should have been imported in "
-            "SaleOrderImporter._import_dependencies" % external_id
+            f"partner_id {external_id} should have been imported in "
+            "SaleOrderImporter._import_dependencies"
         )
         return partner
 
     @mapping
     def billing(self, record):
         if record["billing"]:
-            binder = self.binder_for("woocommerce.res.partner")
-            external_id = binder.dict2id(record["billing"], in_field=False)
-            partner = binder.to_internal(external_id, unwrap=True)
-            assert partner, (
-                f"partner_id {external_id} should have been imported in "
-                "SaleOrderImporter._import_dependencies"
-            )
+            partner = self._get_billing_partner(record)
             if not partner.active:
                 raise ValidationError(
                     _(
