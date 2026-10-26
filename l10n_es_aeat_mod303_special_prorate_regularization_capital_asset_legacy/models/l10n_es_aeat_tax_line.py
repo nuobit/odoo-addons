@@ -5,7 +5,7 @@
 
 from odoo import _, api, fields, models
 from odoo.osv import expression
-from odoo.osv.query import Query
+from odoo.tools.query import Query
 
 
 class L10nEsAeatTaxLine(models.Model):
@@ -19,7 +19,7 @@ class L10nEsAeatTaxLine(models.Model):
         string="Model 303",
         comodel_name="l10n.es.aeat.mod303.report",
         compute="_compute_mod303_id",
-        store=True,
+        search="_search_mod303_id",
     )
     mod303_period_type = fields.Selection(related="mod303_id.period_type")
 
@@ -60,7 +60,7 @@ class L10nEsAeatTaxLine(models.Model):
                 if operator in ("=", "!=")
                 else value
             )
-            if not isinstance(values, (list, tuple)) or not all(
+            if not isinstance(values, list | tuple) or not all(
                 v is False or is_record_id(v) for v in values
             ):
                 raise NotImplementedError(
