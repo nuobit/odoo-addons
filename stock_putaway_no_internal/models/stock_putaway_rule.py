@@ -20,9 +20,10 @@ class StockPutawayRule(models.Model):
     ):
         picking_type_code = self.env.context.get("stock_picking_type_code", False)
         excluded_picking_types = self._excluded_picking_types()
+        # the matching rules come most specific first: the first one decides
         if (
             picking_type_code in excluded_picking_types
-            and self.exclude_internal_operations
+            and self[:1].exclude_internal_operations
         ):
             return self.env["stock.location"]
         return super()._get_putaway_location(
