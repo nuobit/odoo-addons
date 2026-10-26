@@ -494,7 +494,7 @@ class ConnectorExtensionWooCommerceAdapterCRUD(AbstractComponent):
             raise ValidationError(
                 _(
                     "Unexpected response from WooCommerce "
-                    "POST %(resource)s: (response))s"
+                    "POST %(resource)s: %(response)s"
                 )
                 % {
                     "resource": resource,
