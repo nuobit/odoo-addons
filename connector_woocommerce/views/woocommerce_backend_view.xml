@@ -45,7 +45,11 @@
                     <group>
                         <group>
                             <field name="url" readonly="state != 'draft'" />
-                            <field name="consumer_key" readonly="state != 'draft'" />
+                            <field
+                                name="consumer_key"
+                                password="True"
+                                readonly="state != 'draft'"
+                            />
                         </group>
                         <group>
                             <field name="version" />
