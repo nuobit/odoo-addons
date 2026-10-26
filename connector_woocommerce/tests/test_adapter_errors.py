@@ -17,7 +17,7 @@ class TestAdapterErrors(WooCommerceCase):
             "data": {"status": 404},
         }
         with self.backend.work_on("woocommerce.product.public.category") as work:
-            adapter = work.component(usage="backend.adapter")
+            adapter = work.component(usage="adapter")
             adapter.wcapi = Mock(put=Mock(return_value=response))
             with self.assertRaises(ValidationError) as error:
                 adapter.write([2001], {"name": "Masks"})
@@ -42,7 +42,7 @@ class TestAdapterErrors(WooCommerceCase):
             "data": {"status": 404},
         }
         with self.backend.work_on("woocommerce.product.public.category") as work:
-            adapter = work.component(usage="backend.adapter")
+            adapter = work.component(usage="adapter")
             adapter.wcapi = Mock(delete=Mock(return_value=response))
             with self.assertRaisesRegex(
                 ValidationError, "Op: delete, Resource: products/categories/2001,"
@@ -57,7 +57,7 @@ class TestAdapterErrors(WooCommerceCase):
             "data": None,
         }
         with self.backend.work_on("woocommerce.product.public.category") as work:
-            adapter = work.component(usage="backend.adapter")
+            adapter = work.component(usage="adapter")
             adapter.wcapi = Mock(put=Mock(return_value=response))
             with self.assertRaises(ValidationError) as error:
                 adapter.write([2001], {"name": "Masks", "parent": 2000})
@@ -80,7 +80,7 @@ class TestAdapterErrors(WooCommerceCase):
             "data": {"status": 400},
         }
         with self.backend.work_on("woocommerce.product.public.category") as work:
-            adapter = work.component(usage="backend.adapter")
+            adapter = work.component(usage="adapter")
             adapter.wcapi = Mock(post=Mock(return_value=response))
             with self.assertRaises(ValidationError) as error:
                 adapter.create({"name": "Masks", "parent": 2000})
