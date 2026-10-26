@@ -1,0 +1,92 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_es_aeat_prorate_asset
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-26 16:50+0000\n"
+"PO-Revision-Date: 2022-09-29 12:06+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: l10n_es_aeat_prorate_asset
+#: model:ir.model,name:l10n_es_aeat_prorate_asset.model_account_asset
+msgid "Asset"
+msgstr "Activo"
+
+#. module: l10n_es_aeat_prorate_asset
+#. odoo-python
+#: code:addons/l10n_es_aeat_prorate_asset/models/account_asset.py:0
+msgid "Asset has more than 1 Prorate tax. Please, review the taxes"
+msgstr ""
+"El activo tiene más de un impuesto de prorrata. Por favor, revise los "
+"impuestos"
+
+#. module: l10n_es_aeat_prorate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_prorate_asset.field_account_asset__final_deductible_tax_amount
+msgid "Final Deductible VAT Amount"
+msgstr "Cuota IVA deducible definitiva"
+
+#. module: l10n_es_aeat_prorate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_prorate_asset.field_account_asset__final_non_deductible_tax_amount
+msgid "Final Non-Deductible VAT Amount"
+msgstr "Cuota IVA no deducible definitiva"
+
+#. module: l10n_es_aeat_prorate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_prorate_asset.field_account_asset__final_prorate_percent
+msgid "Final Prorate (%)"
+msgstr "Prorrata definitiva (%)"
+
+#. module: l10n_es_aeat_prorate_asset
+#. odoo-python
+#: code:addons/l10n_es_aeat_prorate_asset/models/account_asset.py:0
+msgid ""
+"It's not possible to modify the temporary or final prorate if already exists"
+" value in this years. Temp: %(tax_percentage)s Final: %(tax_final)s"
+msgstr ""
+"No es posible modificar la prorrata temporal o definitiva si ya existe "
+"prorrata definida para el año de adquisición del activo. Temp: "
+"%(tax_percentage)s Definitiva: %(tax_final)s"
+
+#. module: l10n_es_aeat_prorate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_prorate_asset.field_account_asset__map_special_prorate_year_id
+msgid "Map Special Prorate Year"
+msgstr ""
+
+#. module: l10n_es_aeat_prorate_asset
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_prorate_asset.account_asset_view_form
+msgid "Prorate"
+msgstr "Prorrata"
+
+#. module: l10n_es_aeat_prorate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_prorate_asset.field_account_asset__prorate_tax_id
+msgid "Prorate Tax"
+msgstr "Impuesto de prorrata"
+
+#. module: l10n_es_aeat_prorate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_prorate_asset.field_account_asset__temp_deductible_tax_amount
+msgid "Temporal Deductible VAT Amount"
+msgstr "Cuota IVA deducible provisional"
+
+#. module: l10n_es_aeat_prorate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_prorate_asset.field_account_asset__temp_non_deductible_tax_amount
+msgid "Temporal Non-Deductible VAT Amount"
+msgstr "Cuota IVA no deducible provisional"
+
+#. module: l10n_es_aeat_prorate_asset
+#: model:ir.model.fields,field_description:l10n_es_aeat_prorate_asset.field_account_asset__temp_prorate_percent
+msgid "Temporary prorate (%)"
+msgstr "Prorrata provisional (%)"
+
+#. module: l10n_es_aeat_prorate_asset
+#. odoo-python
+#: code:addons/l10n_es_aeat_prorate_asset/models/account_asset.py:0
+msgid "Unsupported operator %s for map special prorate year search"
+msgstr ""
