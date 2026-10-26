@@ -310,5 +310,10 @@ class WooCommerceOrderCase(WooCommerceCase):
             if quantities is not None:
                 line.quantity = quantities.get(line.product_id, 0.0)
             line.to_refund = to_refund
-        action = wizard.create_returns()
+        # Return takes the quantities typed, Return All everything delivered
+        action = (
+            wizard.action_create_returns()
+            if quantities is not None
+            else wizard.action_create_returns_all()
+        )
         return self.env["stock.picking"].browse(action["res_id"])
