@@ -14,7 +14,7 @@ class AccountAsset(models.Model):
     map_special_prorate_year_id = fields.Many2one(
         comodel_name="aeat.map.special.prorrate.year",
         compute="_compute_map_special_prorate_year_id",
-        store=True,
+        search="_search_map_special_prorate_year_id",
     )
 
     @api.depends("company_id", "date_start")
@@ -34,8 +34,8 @@ class AccountAsset(models.Model):
             domains.append(
                 [
                     ("company_id", "=", prorate_map.company_id.id),
-                    ("date_start", ">=", "%s-01-01" % prorate_map.year),
-                    ("date_start", "<=", "%s-12-31" % prorate_map.year),
+                    ("date_start", ">=", f"{prorate_map.year}-01-01"),
+                    ("date_start", "<=", f"{prorate_map.year}-12-31"),
                 ]
             )
         return expression.OR(domains) if domains else expression.FALSE_DOMAIN
