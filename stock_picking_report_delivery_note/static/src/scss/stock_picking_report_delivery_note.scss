@@ -1,0 +1,72 @@
+@mixin sprdn-max-width {
+    width: 100%;
+    max-width: 100%;
+}
+
+.sprdn-header,
+.sprdn-body,
+.sprdn-footer {
+    font-family: "Arial";
+}
+
+.sprdn-header {
+    div {
+        height: 100%;
+    }
+    img {
+        max-height: 100%;
+    }
+}
+
+.sprdn-body .table {
+    thead tr,
+    thead th,
+    tbody tr,
+    tbody td {
+        border: none;
+    }
+    thead th {
+        font-weight: normal;
+    }
+}
+
+.sprdn-body .sprdn-table3 {
+    @include sprdn-max-width;
+    th {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    > thead > tr.grid-header {
+        > th {
+            font-weight: bold;
+            padding-top: 10px;
+        }
+    }
+    > tbody > tr {
+        border-top: 1px solid lightgray;
+    }
+}
+
+.sprdn-body .sprdn-table1 {
+    @include sprdn-max-width;
+    > thead > tr > th,
+    > tbody > tr > td {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .customer_address {
+        vertical-align: top;
+    }
+}
+
+.sprdn-body .sprdn-info-table {
+    width: 100%;
+    border-collapse: collapse;
+    td {
+        padding: 0;
+        vertical-align: top;
+    }
+    p {
+        margin: 0;
+    }
+}
