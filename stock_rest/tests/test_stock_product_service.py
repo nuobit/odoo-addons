@@ -43,7 +43,7 @@ class TestStockProductService(HttpCase):
     def _create_stocked_product(self, name, default_code=None, barcode=None):
         vals = {
             "name": name,
-            "type": "product",
+            "is_storable": True,
             "categ_id": self.product_categ.id,
         }
         if default_code is not None:
@@ -58,8 +58,8 @@ class TestStockProductService(HttpCase):
 
     def _get_products(self, **params):
         self.authenticate(self.api_user.login, self.password)
-        query_string = "?{}".format(url_encode(params)) if params else ""
-        response = self.url_open("/api/v2/products{}".format(query_string))
+        query_string = f"?{url_encode(params)}" if params else ""
+        response = self.url_open(f"/api/v2/products{query_string}")
         self.assertEqual(response.status_code, 200, response.text)
         self.assertEqual(response.headers["Content-Type"], "application/json")
         return response.json()
