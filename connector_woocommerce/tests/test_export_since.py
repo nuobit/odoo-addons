@@ -390,7 +390,7 @@ class TestExportSince(WooCommerceCase):
                 "woocommerce_idpubliccategory": 2001,
             }
         )
-        self.env["base"].flush()
+        self.env.flush_all()
         self.backend.export_product_public_category_since_date = datetime(
             2030, 1, 1, 12
         )
@@ -414,7 +414,7 @@ class TestExportSince(WooCommerceCase):
                 "woocommerce_idpubliccategory": 2001,
             }
         )
-        self.env["base"].flush()
+        self.env.flush_all()
         self.backend.export_product_public_category_since_date = datetime(
             2030, 1, 1, 12
         )

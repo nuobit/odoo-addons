@@ -27,7 +27,7 @@ class TestCategoryDependencyExport(WooCommerceCase):
             return {**kwargs["data"], "id": 3000 + len(created)}
 
         with self.backend.work_on("woocommerce.product.public.category") as work:
-            adapter = work.component(usage="backend.adapter")
+            adapter = work.component(usage="adapter")
             # Stop only at the external API boundary; run the real exporters
             with patch.object(type(adapter), "_exec", side_effect=shop):
                 with self.backend.work_on("woocommerce.product.template") as work:
