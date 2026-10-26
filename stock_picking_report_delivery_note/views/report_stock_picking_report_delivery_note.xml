@@ -83,8 +83,8 @@
                 <table class="table table-condensed sprdn-table3 table-borderless">
                     <thead>
                         <tr>
-                            <th>
-                                <table class="sprdn-table-1">
+                            <th colspan="5">
+                                <table class="sprdn-table1">
                                     <tbody>
                                         <tr style="">
                                             <td width="60%" />
@@ -200,59 +200,25 @@
                                 </table>
                             </th>
                         </tr>
-                        <tr>
-                            <th>
-                                <table class="sprdn-table0">
-                                    <thead>
-                                        <tr>
-                                            <th
-                                                width="15%"
-                                                style="padding: 8px;"
-                                            >Ref./Ref.cli.</th>
-                                            <th
-                                                width="50%"
-                                                style="padding: 8px;"
-                                            >Description</th>
-                                            <th
-                                                width="13%"
-                                                class="text-right"
-                                                style="padding: 8px;"
-                                            >Quantity</th>
-                                            <th
-                                                width="12%"
-                                                class="text-right"
-                                                style="padding: 8px;"
-                                            >Unit Price</th>
-                                            <th
-                                                width="10%"
-                                                class="text-right"
-                                                style="padding: 8px;"
-                                            >Amount</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </th>
+                        <tr class="grid-header">
+                            <th width="15%" class="text-left">Ref./Ref.cli.</th>
+                            <th width="50%" class="text-left">Description</th>
+                            <th width="13%" class="text-right">Quantity</th>
+                            <th width="12%" class="text-right">Unit Price</th>
+                            <th width="10%" class="text-right">Amount</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <table class="sprdn-table2">
-                                    <tbody name="sprdn_document_tbody">
-                                        <t
-                                            t-set="grouped_moves"
-                                            t-value="o.get_delivery_note_moves()"
-                                        />
-                                        <t t-foreach="grouped_moves" t-as="gm">
-                                            <t
-                                                t-call="stock_picking_report_delivery_note.sprdn_document_body"
-                                                class="report_stock"
-                                            />
-                                        </t>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
+                    <tbody name="sprdn_document_tbody">
+                        <t
+                            t-set="grouped_moves"
+                            t-value="o.get_delivery_note_moves()"
+                        />
+                        <t t-foreach="grouped_moves" t-as="gm">
+                            <t
+                                t-call="stock_picking_report_delivery_note.sprdn_document_body"
+                                class="report_stock"
+                            />
+                        </t>
                     </tbody>
                 </table>
 
