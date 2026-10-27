@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <template
+        id="assets_wysiwyg"
+        name="document_page_distribution_download_log wysiwyg assets"
+        inherit_id="web_editor.assets_wysiwyg"
+    >
+        <xpath expr="." position="inside">
+            <script
+                type="text/javascript"
+                src="/document_page_distribution_download_log/static/src/js/wysiwyg/widgets/media.js"
+            />
+        </xpath>
+    </template>
+</odoo>
