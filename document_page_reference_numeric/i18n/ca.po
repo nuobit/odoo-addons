@@ -18,7 +18,7 @@ msgstr ""
 #. module: document_page_reference_numeric
 #: model:ir.model.fields,field_description:document_page_reference_numeric.field_document_page__display_name
 msgid "Display Name"
-msgstr "Nom mostrat"
+msgstr "Nom a mostrar"
 
 #. module: document_page_reference_numeric
 #: model:ir.model,name:document_page_reference_numeric.model_document_page
