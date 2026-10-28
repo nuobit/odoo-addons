@@ -1,0 +1,148 @@
+# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+
+from odoo import _, models
+from odoo.exceptions import ValidationError
+
+
+class SaleOrder(models.Model):
+    _inherit = "sale.order"
+
+    def _get_empty_column(self):
+        return False
+
+    def _get_provider_code(self):
+        return self.partner_id.service_report_config_id.provider_code
+
+    def check_consistency_service_report_values(self):
+        orders = {}
+        for rec in self:
+            typology_name = rec.get_service_typology_name()
+            if not typology_name:
+                orders[rec.name] = _(
+                    "The combination of Service Key ('%(service_key)s') "
+                    "and Transfer Reason ('%(transfer_reason)s') "
+                    "is not found in the Service Report Configuration. Please go to "
+                    "the partner and set the correct service report configuration."
+                ) % {
+                    "service_key": rec.service_key,
+                    "transfer_reason": rec.service_transfer_reason,
+                }
+        if orders:
+            raise ValidationError(
+                _("Errors have been found in the following orders:\n%(orders)s")
+                % {
+                    "orders": "\n".join(
+                        [
+                            _("%(order)s: %(error)s") % {"order": k, "error": v}
+                            for k, v in orders.items()
+                        ]
+                    ),
+                }
+            )
+
+    def get_service_typology_name(self):
+        typology_name = False
+        if self.partner_id.service_intermediary:
+            typology_name = (
+                self.partner_id.service_report_config_id.typology_ids.filtered(
+                    lambda x: x.key == self.service_key
+                    and x.transfer_reason == self.service_transfer_reason
+                ).name
+            )
+        return typology_name
+
+    def get_service_type_products(self, svc_type):
+        products = []
+        if self.partner_id.service_intermediary:
+            products = self.partner_id.service_report_config_id.type_ids.filtered(
+                lambda x: x.type == svc_type
+            ).product_ids
+        return products
+
+    def get_service_type_quantity(self, svc_type):
+        quantity = 0
+        if self.partner_id.service_intermediary:
+            products = self.get_service_type_products(svc_type)
+            quantity = sum(
+                self.order_line.filtered(lambda x: x.product_id in products).mapped(
+                    "product_uom_qty"
+                )
+            )
+        return quantity
+
+    def get_service_type_subtotal(self, svc_type):
+        price_subtotal = 0
+        for rec in self:
+            if rec.partner_id.service_intermediary:
+                products = rec.get_service_type_products(svc_type)
+                price_subtotal += sum(
+                    rec.order_line.filtered(
+                        lambda x, products=products: x.product_id in products
+                    ).mapped("price_subtotal")
+                )
+        return price_subtotal
+
+    def get_service_type_weighted_average_price(self, svc_type):
+        price = 0
+        if self.partner_id.service_intermediary:
+            products = self.get_service_type_products(svc_type)
+            quantity = self.get_service_type_quantity(svc_type)
+            if quantity:
+                price = (
+                    sum(
+                        self.order_line.filtered(
+                            lambda x: x.product_id in products
+                        ).mapped("price_subtotal")
+                    )
+                    / quantity
+                )
+        return price
+
+    def get_service_type_amount_total(self, svc_type):
+        amount_total = 0
+        for rec in self:
+            if rec.partner_id.service_intermediary:
+                amount_total += rec.get_service_type_quantity(
+                    svc_type
+                ) * rec.get_service_type_weighted_average_price(svc_type)
+        return amount_total
+
+    def get_service_return_price_subtotal(self, is_return_service):
+        price_subtotal = 0
+        for rec in self:
+            if rec.partner_id.service_intermediary:
+                if is_return_service == rec.return_service:
+                    service_products = rec.get_service_type_products("service")
+                    price_subtotal += sum(
+                        rec.order_line.filtered(
+                            lambda x, service_products=service_products: x.product_id
+                            in service_products
+                        ).mapped("price_subtotal")
+                    )
+        return price_subtotal
+
+    def get_service_additional_concept(self):
+        concept = ""
+        if self.partner_id.service_intermediary:
+            concept = self.partner_id.service_report_config_id.type_ids.filtered(
+                lambda x: x.type == "additional"
+                and self.order_line.product_id & x.product_ids
+            ).mapped("name")
+        return " + ".join(concept)
+
+    def get_service_total_by(self, field_name):
+        total = 0
+        if self.partner_id.service_intermediary and self[field_name]:
+            move = self.order_line.invoice_lines.move_id
+            orders = move.invoice_line_ids.sale_line_ids.order_id.filtered(
+                lambda x: x[field_name] == self[field_name]
+            )
+            total = (
+                orders.get_service_type_amount_total("km")
+                + orders.get_service_return_price_subtotal(False)
+                + orders.get_service_return_price_subtotal(True)
+                + orders.get_service_type_subtotal("additional")
+                + orders.get_service_type_subtotal("wait")
+            )
+        return total
