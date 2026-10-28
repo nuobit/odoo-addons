@@ -25,7 +25,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:document_page_attachment_search.field_document_page__display_name
 #: model:ir.model.fields,field_description:document_page_attachment_search.field_ir_attachment__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nom a mostrar"
 
 #. module: document_page_attachment_search
 #: model_terms:ir.ui.view,arch_db:document_page_attachment_search.view_wiki_filter
