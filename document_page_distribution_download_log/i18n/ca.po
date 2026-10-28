@@ -41,7 +41,7 @@ msgstr "Creat el"
 #: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient__display_name
 #: model:ir.model.fields,field_description:document_page_distribution_download_log.field_document_page_history_recipient_download__display_name
 msgid "Display Name"
-msgstr "Nom mostrat"
+msgstr "Nom a mostrar"
 
 #. module: document_page_distribution_download_log
 #: model:ir.model,name:document_page_distribution_download_log.model_document_page_history_recipient_download
