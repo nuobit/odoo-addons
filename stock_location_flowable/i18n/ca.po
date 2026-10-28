@@ -116,7 +116,7 @@ msgstr "Crear Lots"
 #: model:ir.model.fields,field_description:stock_location_flowable.field_stock_picking_type__display_name
 #: model:ir.model.fields,field_description:stock_location_flowable.field_stock_return_picking__display_name
 msgid "Display Name"
-msgstr "Nom mostrat"
+msgstr "Nom a mostrar"
 
 #. module: stock_location_flowable
 #: model_terms:ir.ui.view,arch_db:stock_location_flowable.stock_location_view_form
