@@ -23,7 +23,7 @@ msgstr "Comprovar dates"
 #. module: l10n_es_account_statement_import_n43_overlap
 #: model:ir.model.fields,field_description:l10n_es_account_statement_import_n43_overlap.field_account_statement_import__display_name
 msgid "Display Name"
-msgstr "Mostrar Nom"
+msgstr "Nom a mostrar"
 
 #. module: l10n_es_account_statement_import_n43_overlap
 #: model:ir.model.fields,field_description:l10n_es_account_statement_import_n43_overlap.field_account_statement_import__id
