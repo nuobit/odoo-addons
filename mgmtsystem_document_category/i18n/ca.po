@@ -29,7 +29,7 @@ msgstr ""
 #. module: mgmtsystem_document_category
 #: model:ir.model.fields,field_description:mgmtsystem_document_category.field_document_page__display_name
 msgid "Display Name"
-msgstr "Nom mostrat"
+msgstr "Nom a mostrar"
 
 #. module: mgmtsystem_document_category
 #: model:ir.model,name:mgmtsystem_document_category.model_document_page
