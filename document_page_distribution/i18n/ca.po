@@ -179,7 +179,7 @@ msgstr "Estat de lliurament"
 #: model:ir.model.fields,field_description:document_page_distribution.field_res_company__display_name
 #: model:ir.model.fields,field_description:document_page_distribution.field_res_config_settings__display_name
 msgid "Display Name"
-msgstr "Nom mostrat"
+msgstr "Nom a mostrar"
 
 #. module: document_page_distribution
 #: model_terms:ir.ui.view,arch_db:document_page_distribution.view_wiki_form_distribution
