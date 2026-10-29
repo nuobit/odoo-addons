@@ -1,2 +1,3 @@
 from . import test_document_page_distribution_download_log
 from . import test_document_page_distribution_download_log_controller
+from . import test_document_page_distribution_download_log_media
