@@ -257,7 +257,7 @@ msgstr "Enviament de distribució de pàgina de document"
 #. module: document_page_distribution
 #: model:ir.model,name:document_page_distribution.model_document_page_history
 msgid "Document Page History"
-msgstr "Historial de pàgina de document"
+msgstr "Historial de la pàgina del document"
 
 #. module: document_page_distribution
 #: model:mail.template,subject:document_page_distribution.mail_template_document_page_distribution
