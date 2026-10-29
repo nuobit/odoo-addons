@@ -3,8 +3,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import datetime
+import random
 
 import pytz
+from freezegun import freeze_time
 
 from odoo import fields
 from odoo.exceptions import ValidationError
@@ -14,6 +16,14 @@ from odoo.tests import TransactionCase
 class TestTaskAutoassign(TransactionCase):
     def setUp(self):
         super(TestTaskAutoassign, self).setUp()
+        # A Friday after working hours: the tasks of an order go to Monday
+        freezer = freeze_time("2030-01-04 18:00:00")
+        freezer.start()
+        self.addCleanup(freezer.stop)
+        # Among equally free users, the assignment picks one at random
+        random_state = random.getstate()
+        random.seed(0)
+        self.addCleanup(random.setstate, random_state)
 
     def test_task_autoassign(self):
         product1 = self.env.ref(
