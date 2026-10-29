@@ -56,7 +56,7 @@ msgstr "Destinatario de distribución de página de documento"
 #. module: document_page_distribution_download_log
 #: model:ir.model,name:document_page_distribution_download_log.model_document_page_history
 msgid "Document Page History"
-msgstr "Historial de página de documento"
+msgstr "Historial de la página del documento"
 
 #. module: document_page_distribution_download_log
 #: model_terms:ir.ui.view,arch_db:document_page_distribution_download_log.document_page_history_recipient_download_view_form
