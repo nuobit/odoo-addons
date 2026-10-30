@@ -348,7 +348,11 @@ class PayslipLine(models.Model):
     amount = fields.Float("Amount", required=True)
 
     payslip_id = fields.Many2one(
-        "payroll.sage.payslip", string="Payslip", required=True, ondelete="cascade"
+        comodel_name="payroll.sage.payslip",
+        string="Payslip",
+        required=True,
+        ondelete="cascade",
+        index=True,
     )
 
 
@@ -363,7 +367,11 @@ class PayslipCheck(models.Model):
     amount = fields.Float("Amount", required=True)
 
     payslip_id = fields.Many2one(
-        "payroll.sage.payslip", string="Payslip", required=True, ondelete="cascade"
+        comodel_name="payroll.sage.payslip",
+        string="Payslip",
+        required=True,
+        ondelete="cascade",
+        index=True,
     )
 
 
@@ -382,5 +390,9 @@ class PayslipWageType(models.Model):
     amount = fields.Float("Amount", required=True)
 
     payslip_id = fields.Many2one(
-        "payroll.sage.payslip", string="Payslip", required=True, ondelete="cascade"
+        comodel_name="payroll.sage.payslip",
+        string="Payslip",
+        required=True,
+        ondelete="cascade",
+        index=True,
     )
