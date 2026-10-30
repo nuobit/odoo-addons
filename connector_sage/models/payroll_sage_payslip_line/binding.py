@@ -33,6 +33,7 @@ class PayslipLineBinding(models.AbstractModel):
         string="Payslip line",
         required=True,
         ondelete="cascade",
+        index=True,
     )
 
     # composed id

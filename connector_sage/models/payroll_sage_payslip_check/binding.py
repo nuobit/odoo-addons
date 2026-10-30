@@ -26,6 +26,7 @@ class PayslipCheckBinding(models.Model):
         string="Payslip check",
         required=True,
         ondelete="cascade",
+        index=True,
     )
 
     # composed id
