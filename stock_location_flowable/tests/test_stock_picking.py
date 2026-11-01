@@ -1369,7 +1369,8 @@ class TestStockPicking(TestCommon):
         coarse_product = self.env["product.product"].create(
             {
                 "name": "Liquid CO2 coarse",
-                "type": "product",
+                "type": "consu",
+                "is_storable": True,
                 "uom_id": coarse_uom.id,
                 "uom_po_id": coarse_uom.id,
                 "tracking": "lot",
