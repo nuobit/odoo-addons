@@ -10,6 +10,6 @@
     "author": "NuoBiT Solutions SL",
     "website": "https://github.com/NuoBiT/odoo-addons",
     "category": "Product",
-    "depends": ["uom"],
+    "depends": ["stock"],
     "license": "AGPL-3",
 }
