@@ -304,39 +304,14 @@ class TestUomRoundingCoherence(TransactionCase):
             another.write({"rounding": 0.0001})
 
     def _create_product_with_uom(self, name, uom):
-        """Create a storable product via SQL to avoid NOT NULL issues
-        from optional modules (sale, purchase) adding required columns."""
-        self.env.cr.execute(
-            """
-            INSERT INTO product_template
-                (name, type, uom_id, uom_po_id, categ_id, active,
-                 sale_ok, purchase_ok, list_price, tracking,
-                 sale_line_warn, purchase_line_warn,
-                 create_uid, write_uid, create_date, write_date)
-            VALUES
-                (%s, 'product', %s, %s, 1, true,
-                 false, false, 0, 'none',
-                 'no-message', 'no-message',
-                 1, 1, now() at time zone 'UTC', now() at time zone 'UTC')
-            RETURNING id
-            """,
-            (name, uom.id, uom.id),
+        return self.env["product.product"].create(
+            {
+                "name": name,
+                "is_storable": True,
+                "uom_id": uom.id,
+                "uom_po_id": uom.id,
+            }
         )
-        tmpl_id = self.env.cr.fetchone()[0]
-        self.env.cr.execute(
-            """
-            INSERT INTO product_product
-                (product_tmpl_id, active, default_code,
-                 create_uid, write_uid, create_date, write_date)
-            VALUES
-                (%s, true, NULL, 1, 1,
-                 now() at time zone 'UTC', now() at time zone 'UTC')
-            RETURNING id
-            """,
-            (tmpl_id,),
-        )
-        product_id = self.env.cr.fetchone()[0]
-        return self.env["product.product"].browse(product_id)
 
     def test_coarser_rounding_blocked_by_existing_quants(self):
         """
@@ -360,13 +335,22 @@ class TestUomRoundingCoherence(TransactionCase):
         )
         product = self._create_product_with_uom("Quant Test Product", uom)
         location = self.env.ref("stock.stock_location_stock")
-        self.env["stock.quant"].create(
+        quant = self.env["stock.quant"].create(
             {
                 "product_id": product.id,
                 "location_id": location.id,
                 "quantity": 5825.949,
             }
         )
+        # The ORM rounds the quantity to the Product Unit of Measure precision
+        # (two digits by default): set the three decimals in the database, as
+        # a quant recorded under a finer precision has them.
+        self.env.flush_all()
+        self.env.cr.execute(
+            "UPDATE stock_quant SET quantity = %s WHERE id = %s",
+            (5825.949, quant.id),
+        )
+        quant.invalidate_recordset(["quantity"])
         # ACT & ASSERT
         with self.assertRaises(ValidationError):
             uom.write({"rounding": 0.01})
