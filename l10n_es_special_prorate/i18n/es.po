@@ -1,0 +1,96 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_es_special_prorate
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-29 09:13+0000\n"
+"PO-Revision-Date: 2022-03-09 17:50+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: l10n_es_special_prorate
+#: model:ir.model,name:l10n_es_special_prorate.model_account_chart_template
+msgid "Account Chart Template"
+msgstr ""
+
+#. module: l10n_es_special_prorate
+#. odoo-python
+#: code:addons/l10n_es_special_prorate/models/account_tax.py:0
+msgid "Invalid date format '%(date)s' for prorate context"
+msgstr ""
+
+#. module: l10n_es_special_prorate
+#. odoo-python
+#: code:addons/l10n_es_special_prorate/models/account_tax.py:0
+msgid ""
+"Invoice and credit note distribution should have the same number of lines."
+msgstr ""
+
+#. module: l10n_es_special_prorate
+#. odoo-python
+#: code:addons/l10n_es_special_prorate/models/account_tax.py:0
+msgid ""
+"Invoice and credit note repartition should have at least one tax repartition"
+" line."
+msgstr ""
+
+#. module: l10n_es_special_prorate
+#. odoo-python
+#: code:addons/l10n_es_special_prorate/models/account_tax.py:0
+msgid ""
+"On non deductible taxes there should be only one repartition line without "
+"account"
+msgstr ""
+
+#. module: l10n_es_special_prorate
+#. odoo-python
+#: code:addons/l10n_es_special_prorate/models/account_tax.py:0
+msgid "On prorate taxes it's only supported 'percent' as a amount type"
+msgstr ""
+
+#. module: l10n_es_special_prorate
+#. odoo-python
+#: code:addons/l10n_es_special_prorate/models/account_tax.py:0
+msgid "On prorate taxes it's only supported 'purchase' type"
+msgstr ""
+
+#. module: l10n_es_special_prorate
+#: model:ir.model.fields,field_description:l10n_es_special_prorate.field_account_tax__prorate
+msgid "Prorate"
+msgstr "Prorrata"
+
+#. module: l10n_es_special_prorate
+#. odoo-python
+#: code:addons/l10n_es_special_prorate/models/account_tax.py:0
+msgid ""
+"Prorate tax '%(tax_name)s' requires exactly two 100%% positive tax "
+"repartition lines (found %(found_count)i). Please check the configuration of"
+" the %(repartition_type)s repartition lines of this tax."
+msgstr ""
+"El impuesto de prorrata '%(tax_name)s' requiere exactamente dos líneas de "
+"reparto de impuestos positivas al 100%% (se han encontrado %(found_count)i)."
+" Por favor, compruebe la configuración de las líneas de reparto "
+"%(repartition_type)s de este impuesto."
+
+#. module: l10n_es_special_prorate
+#: model:ir.model,name:l10n_es_special_prorate.model_account_tax
+msgid "Tax"
+msgstr "Impuesto"
+
+#. module: l10n_es_special_prorate
+#: model:ir.model,name:l10n_es_special_prorate.model_account_tax_repartition_line
+msgid "Tax Repartition Line"
+msgstr ""
+
+#. module: l10n_es_special_prorate
+#. odoo-python
+#: code:addons/l10n_es_special_prorate/models/account_tax.py:0
+msgid "Tax type '%(amount_type)s' not supported yet"
+msgstr ""
