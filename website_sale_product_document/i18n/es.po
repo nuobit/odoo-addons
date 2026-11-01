@@ -1,0 +1,320 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* website_sale_product_document
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-29 09:28+0000\n"
+"PO-Revision-Date: 2025-08-29 08:50+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__access_token
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__access_token
+msgid "Access Token"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__active
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__active
+msgid "Active"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,help:website_sale_product_document.field_product_product_document__attached_on_sale
+#: model:ir.model.fields,help:website_sale_product_document.field_product_template_document__attached_on_sale
+msgid ""
+"Allows you to share the document with your customers within a sale.\n"
+"On quote: the document will be sent to and accessible by customers at any time.\n"
+"e.g. this option can be useful to share Product description files.\n"
+"On order confirmation: the document will be sent to and accessible by customers.\n"
+"e.g. this option can be useful to share User Manual or digital content bought on ecommerce. "
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__local_url
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__local_url
+msgid "Attachment URL"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__checksum
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__checksum
+msgid "Checksum/SHA1"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__company_id
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__company_id
+msgid "Company"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__create_uid
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__create_date
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__db_datas
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__db_datas
+msgid "Database Data"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__description
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__description
+msgid "Description"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__display_name
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product__document_ids
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template__document_ids
+msgid "Document"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model_terms:ir.ui.view,arch_db:website_sale_product_document.website_sale_product_document_product_product_view_form
+#: model_terms:ir.ui.view,arch_db:website_sale_product_document.website_sale_product_document_view_form_easy_inherit
+#: model_terms:ir.ui.view,arch_db:website_sale_product_document.website_sale_public_description_product_template_view_form
+msgid "Documents"
+msgstr "Documentos"
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__datas
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__datas
+msgid "File Content (base64)"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__raw
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__raw
+msgid "File Content (raw)"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__file_size
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__file_size
+msgid "File Size"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_document__datas_fname
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__datas_fname
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__datas_fname
+msgid "Filename"
+msgstr "Nombre fichero"
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__id
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__id
+msgid "ID"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__image_height
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__image_height
+msgid "Image Height"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__image_src
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__image_src
+msgid "Image Src"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__image_width
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__image_width
+msgid "Image Width"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__index_content
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__index_content
+msgid "Indexed Content"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__public
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__public
+msgid "Is public document"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__key
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__key
+msgid "Key"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__write_uid
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__write_date
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__mimetype
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__mimetype
+msgid "Mime Type"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__name
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__original_id
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__original_id
+msgid "Original (unoptimized, unresized) attachment"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model,name:website_sale_product_document.model_product_template
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__product_id
+msgid "Product"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model,name:website_sale_product_document.model_product_document
+msgid "Product Document"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__template_id
+msgid "Product Template"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model,name:website_sale_product_document.model_product_template_document
+msgid "Product Template Document"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model,name:website_sale_product_document.model_product_product
+msgid "Product Variant"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__shown_on_product_page
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__shown_on_product_page
+msgid "Publish on website"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__ir_attachment_id
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__ir_attachment_id
+msgid "Related attachment"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__res_field
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__res_field
+msgid "Resource Field"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__res_id
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__res_id
+msgid "Resource ID"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__res_model
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__res_model
+msgid "Resource Model"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__res_name
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__res_name
+msgid "Resource Name"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__attached_on_sale
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__attached_on_sale
+msgid "Sale : Visible at"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__sequence
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__sequence
+msgid "Sequence"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__store_fname
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__store_fname
+msgid "Stored Filename"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__theme_template_id
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__theme_template_id
+msgid "Theme Template"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__type
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__type
+msgid "Type"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__url
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__url
+msgid "Url"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model,name:website_sale_product_document.model_product_product_document
+msgid "Variant Document"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__voice_ids
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__voice_ids
+msgid "Voice"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_product_document__website_id
+#: model:ir.model.fields,field_description:website_sale_product_document.field_product_template_document__website_id
+msgid "Website"
+msgstr ""
+
+#. module: website_sale_product_document
+#: model:ir.model.fields,help:website_sale_product_document.field_product_product_document__type
+#: model:ir.model.fields,help:website_sale_product_document.field_product_template_document__type
+msgid ""
+"You can either upload a file from your computer or copy/paste an internet "
+"link to your file."
+msgstr ""
