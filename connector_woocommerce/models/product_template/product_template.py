@@ -1,0 +1,282 @@
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
+
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
+
+
+class ProductTemplate(models.Model):
+    _inherit = "product.template"
+
+    woocommerce_bind_ids = fields.One2many(
+        comodel_name="woocommerce.product.template",
+        inverse_name="odoo_id",
+        string="WooCommerce Bindings",
+        context={"active_test": False},
+    )
+    woocommerce_write_date = fields.Datetime(
+        compute="_compute_woocommerce_write_date",
+        store=True,
+    )
+    has_attributes = fields.Boolean(
+        compute="_compute_has_attributes",
+        search="_search_has_attributes",
+    )
+
+    @api.depends("attribute_line_ids")
+    def _compute_has_attributes(self):
+        for rec in self:
+            rec.has_attributes = bool(rec.attribute_line_ids)
+
+    def _search_has_attributes(self, operator, value):
+        if operator == "=" and value:
+            return [("attribute_line_ids", "!=", False)]
+        return [("attribute_line_ids", operator, value)]
+
+    @api.depends(
+        "is_published",
+        "name",
+        "website_name",
+        "list_price",
+        "taxes_id",
+        # The tax class the backends export each tax with
+        "taxes_id.woocommerce_tax_class_ids.woocommerce_tax_class",
+        "taxes_id.woocommerce_tax_class_ids.backend_id",
+        "active",
+        "type",
+        "qty_available",
+        "image_1920",
+        "product_template_image_ids",
+        "product_template_image_ids.sequence",
+        "default_code",
+        "public_categ_ids",
+        "attribute_line_ids",
+        "public_description",
+        "public_short_description",
+        "slug_name",
+        # A single variant's description is sent when the template has none
+        "product_variant_ids.variant_public_description",
+        "woocommerce_alternative_product_ids",
+        "woocommerce_accessory_product_ids",
+        "inventory_availability",
+        "has_attributes",
+        "document_ids",
+        "woocommerce_enabled",
+    )
+    def _compute_woocommerce_write_date(self):
+        for rec in self:
+            if (
+                rec.woocommerce_enabled
+                or rec.is_published
+                or rec.woocommerce_write_date
+            ):
+                rec.woocommerce_write_date = fields.Datetime.now()
+
+    website_name = fields.Char(
+        translate=True,
+    )
+    public_description = fields.Text(
+        translate=True,
+    )
+    public_short_description = fields.Text(
+        translate=True,
+    )
+    slug_name = fields.Char(
+        translate=True,
+    )
+    # is_published = fields.Boolean(
+    #     string="Product published",
+    #     compute="_compute_template_is_published",
+    #     inverse="_inverse_template_is_published",
+    #     store=True,
+    #     readonly=False,
+    # )
+    # button_is_published = fields.Boolean(
+    #     string="Button product published",
+    #     related="is_published",
+    # )
+    woocommerce_enabled = fields.Boolean(
+        compute="_compute_woocommerce_enabled",
+        store=True,
+        readonly=False,
+    )
+
+    def _compute_woocommerce_enabled(self):
+        for rec in self:
+            rec.woocommerce_enabled = rec.is_published
+
+    # The alternatives and the accessories sent to the shop with a product: only
+    # those with the WooCommerce check, because the export buttons select only the
+    # checked products and nothing would ever update another one there
+    woocommerce_alternative_product_ids = fields.Many2many(
+        comodel_name="product.template",
+        string="WooCommerce Alternative Products",
+        compute="_compute_woocommerce_related_product_ids",
+    )
+    woocommerce_accessory_product_ids = fields.Many2many(
+        comodel_name="product.product",
+        string="WooCommerce Accessory Products",
+        compute="_compute_woocommerce_related_product_ids",
+    )
+
+    @api.depends(
+        "alternative_product_ids.woocommerce_enabled",
+        "accessory_product_ids.woocommerce_enabled",
+    )
+    def _compute_woocommerce_related_product_ids(self):
+        # Archived ones included, as a relation keeps them: each reader leaves
+        # them out or not by its own active_test
+        for rec in self.with_context(active_test=False):
+            rec.woocommerce_alternative_product_ids = (
+                rec.alternative_product_ids.filtered("woocommerce_enabled")
+            )
+            rec.woocommerce_accessory_product_ids = rec.accessory_product_ids.filtered(
+                "woocommerce_enabled"
+            )
+
+    @api.depends("product_variant_ids.variant_is_published")
+    def _compute_template_is_published(self):
+        for rec in self:
+            published_variants = rec._origin.product_variant_ids.filtered(
+                lambda x: x.variant_is_published
+            )
+            rec.is_published = bool(published_variants)
+
+    def _inverse_template_is_published(self):
+        for rec in self:
+            rec.product_variant_ids.variant_is_published = rec.is_published
+
+    inventory_availability = fields.Selection(
+        compute="_compute_inventory_availability",
+        inverse="_inverse_inventory_availability",
+        store=True,
+        readonly=False,
+    )
+
+    @api.depends("product_variant_ids.variant_inventory_availability")
+    def _compute_inventory_availability(self):
+        for rec in self:
+            never_variants_availability = rec.product_variant_ids.filtered(
+                lambda x: x.variant_inventory_availability == "never"
+            )
+            if never_variants_availability:
+                rec.inventory_availability = "never"
+            else:
+                rec.inventory_availability = "always"
+
+    def _inverse_inventory_availability(self):
+        for rec in self:
+            if rec.inventory_availability in ("always", "never"):
+                rec.product_variant_ids.variant_inventory_availability = (
+                    rec.inventory_availability
+                )
+
+    # Auxiliar fields for images and documents
+    product_image_attachment_ids = fields.Many2many(
+        comodel_name="connector.woocommerce.product.attachment",
+        compute="_compute_product_image_attachment_ids",
+    )
+
+    def _create_main_product_image_attachment(self, is_first=True):
+        self.ensure_one()
+        attachment = self.env["ir.attachment"].search(
+            [
+                ("res_model", "=", self._name),
+                ("res_id", "=", self.id),
+                ("res_field", "=", "image_1920"),
+            ]
+        )
+        if attachment:
+            if is_first:
+                sequence = (
+                    min(self.product_template_image_ids.mapped("sequence")) - 1
+                    if self.product_template_image_ids
+                    else 1
+                )
+            else:
+                sequence = (
+                    max(self.product_template_image_ids.mapped("sequence")) + 1
+                    if self.product_template_image_ids
+                    else 1
+                )
+            self.product_image_attachment_ids = [
+                (
+                    0,
+                    0,
+                    {
+                        "attachment_id": attachment.id,
+                        "sequence": sequence,
+                    },
+                )
+            ]
+
+    @api.depends_context("include_main_product_image")
+    def _compute_product_image_attachment_ids(self):
+        for rec in self:
+            if self.env.context.get("include_main_product_image") == "first":
+                rec._create_main_product_image_attachment(is_first=True)
+            for template_image in rec.product_template_image_ids:
+                if template_image.image_1920:
+                    attachment = self.env["ir.attachment"].search(
+                        [
+                            ("res_model", "=", template_image._name),
+                            ("res_id", "=", template_image.id),
+                            ("res_field", "=", "image_1920"),
+                        ]
+                    )
+                    rec.product_image_attachment_ids = [
+                        (
+                            0,
+                            0,
+                            {
+                                "attachment_id": attachment.id,
+                                "sequence": template_image.sequence,
+                            },
+                        )
+                    ]
+            if self.env.context.get("include_main_product_image") == "last":
+                rec._create_main_product_image_attachment(is_first=False)
+            if not rec.product_image_attachment_ids:
+                rec.product_image_attachment_ids = self.env[
+                    "connector.woocommerce.product.attachment"
+                ]
+
+    product_document_attachment_ids = fields.Many2many(
+        comodel_name="connector.woocommerce.product.attachment",
+        compute="_compute_product_document_attachment_ids",
+    )
+
+    def _compute_product_document_attachment_ids(self):
+        for rec in self:
+            for doc in rec.document_ids:
+                rec.product_document_attachment_ids = [
+                    (
+                        0,
+                        0,
+                        {
+                            "attachment_id": doc.ir_attachment_id.id,
+                            "sequence": doc.sequence,
+                        },
+                    )
+                ]
+            if not rec.product_document_attachment_ids:
+                rec.product_document_attachment_ids = self.env[
+                    "connector.woocommerce.product.attachment"
+                ]
+
+    def write(self, vals):
+        res = super().write(vals)
+        if "has_attributes" in vals:
+            for rec in self:
+                if (
+                    rec.woocommerce_bind_ids
+                    and rec.has_attributes != vals["has_attributes"]
+                ):
+                    raise ValidationError(
+                        _(
+                            "You can't change the attributes if the "
+                            "product has a woocommerce binding"
+                        )
+                    )
+        return res
