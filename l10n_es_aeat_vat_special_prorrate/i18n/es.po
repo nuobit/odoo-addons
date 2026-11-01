@@ -1,0 +1,248 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_es_aeat_vat_special_prorrate
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-29 09:13+0000\n"
+"PO-Revision-Date: 2022-02-04 09:38+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.constraint,message:l10n_es_aeat_vat_special_prorrate.constraint_aeat_map_special_prorrate_year_unique_year
+msgid "AEAT year must be unique"
+msgstr "AEAT year must be unique"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.actions.act_window,name:l10n_es_aeat_vat_special_prorrate.action_aeat_map_special_prorrate_year
+#: model:ir.model,name:l10n_es_aeat_vat_special_prorrate.model_aeat_map_special_prorrate_year
+#: model:ir.ui.menu,name:l10n_es_aeat_vat_special_prorrate.menu_aeat_map_special_prorrate_year
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.aeat_map_special_prorrate_year_view_form
+msgid "Aeat VAT special prorate map"
+msgstr "AEAT prorrata especial IVA - Mapeo anual"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.aeat_map_special_prorrate_year_view_form
+msgid "Close"
+msgstr "Cerrar"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields.selection,name:l10n_es_aeat_vat_special_prorrate.selection__aeat_map_special_prorrate_year__state__closed
+msgid "Closed"
+msgstr "Cerrado"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model,name:l10n_es_aeat_vat_special_prorrate.model_res_company
+msgid "Companies"
+msgstr ""
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__company_id
+msgid "Company"
+msgstr "Compañía"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.aeat_map_special_prorrate_year_view_form
+msgid "Compute"
+msgstr "Calcular"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__tax_final_percentage
+msgid "Final tax %"
+msgstr "Impuesto definitivo %"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__tax_final_percentage_aux
+msgid "Final tax % (aux)"
+msgstr ""
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields.selection,name:l10n_es_aeat_vat_special_prorrate.selection__aeat_map_special_prorrate_year__state__finale
+msgid "Finale"
+msgstr "Final"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__id
+msgid "ID"
+msgstr "ID"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#. odoo-python
+#: code:addons/l10n_es_aeat_vat_special_prorrate/models/account_tax_repartition_line.py:0
+msgid "If a tax has prorate the year should exist on vat mapping"
+msgstr "If a tax has prorate the year should exist on vat mapping"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#. odoo-python
+#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:0
+msgid "It's not possible to delete a closed prorate map"
+msgstr "It's not possible to delete a closed prorate map"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#. odoo-python
+#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:0
+msgid "It's not possible to recompute a closed prorate"
+msgstr "It's not possible to recompute a closed prorate"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model,name:l10n_es_aeat_vat_special_prorrate.model_account_move
+msgid "Journal Entry"
+msgstr ""
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model,name:l10n_es_aeat_vat_special_prorrate.model_account_move_line
+msgid "Journal Item"
+msgstr ""
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_res_company__l10n_es_prorate_enabled
+msgid "L10n ES Prorate Enabled"
+msgstr "L10n ES prorrata activada"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__map_prorrate_next_year_id
+msgid "Map Prorrate Next Year"
+msgstr ""
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#. odoo-python
+#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:0
+msgid "No taxable or exempt operations found"
+msgstr ""
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.view_company_aeat_form
+msgid "Prorate"
+msgstr "Prorrata"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_account_move_line__prorate_year
+msgid "Prorate Year"
+msgstr ""
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.aeat_map_special_prorrate_year_view_form
+msgid "Recompute"
+msgstr "Recalcular"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#. odoo-python
+#: code:addons/l10n_es_aeat_vat_special_prorrate/models/account_tax.py:0
+msgid ""
+"Runtime error: Prorate tax '%(tax_name)s' has %(lines_count)i %(rltype)s "
+"repartition lines instead of expected 2. This may indicate data corruption "
+"or constraint bypass."
+msgstr ""
+"Error de ejecución: El impuesto de prorrata '%(tax_name)s' tiene "
+"%(lines_count)i líneas de reparto de %(rltype)s en lugar de las 2 esperadas."
+" Esto puede indicar corrupción de datos o elusión de restricciones."
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model_terms:ir.ui.view,arch_db:l10n_es_aeat_vat_special_prorrate.aeat_map_special_prorrate_year_view_form
+msgid "Set to Temporary"
+msgstr "Establecer a provisional"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__state
+msgid "State"
+msgstr "Estado"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model,name:l10n_es_aeat_vat_special_prorrate.model_account_tax
+msgid "Tax"
+msgstr "Impuesto"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model,name:l10n_es_aeat_vat_special_prorrate.model_account_tax_repartition_line
+msgid "Tax Repartition Line"
+msgstr ""
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields.selection,name:l10n_es_aeat_vat_special_prorrate.selection__aeat_map_special_prorrate_year__state__temporary
+msgid "Temporary"
+msgstr "Provisional"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__tax_percentage
+msgid "Temporary %"
+msgstr "Impuesto provisional %"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#. odoo-python
+#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:0
+msgid "The final prorate computed should be greater than zero"
+msgstr ""
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.constraint,message:l10n_es_aeat_vat_special_prorrate.constraint_aeat_map_special_prorrate_year_unique_next
+msgid "The map prorate must have only one next year prorate"
+msgstr ""
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#. odoo-python
+#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:0
+msgid ""
+"The previous state to be able to close a prorate should be 'Finale', not "
+"'%s'"
+msgstr ""
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#. odoo-python
+#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:0
+msgid "The prorate of previous year must be closed before compute the new one"
+msgstr ""
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#. odoo-python
+#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:0
+msgid ""
+"The year of the next linked map prorrata must be the next chronological year"
+msgstr ""
+"The year of the next linked map prorrata must be the next chronological year"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#. odoo-python
+#: code:addons/l10n_es_aeat_vat_special_prorrate/models/aeat_map_special_prorrate_year.py:0
+msgid ""
+"The year of the previous linked map prorrata must be the previous "
+"chronological year"
+msgstr ""
+"The year of the previous linked map prorrata must be the previous "
+"chronological year"
+
+#. module: l10n_es_aeat_vat_special_prorrate
+#: model:ir.model.fields,field_description:l10n_es_aeat_vat_special_prorrate.field_aeat_map_special_prorrate_year__year
+msgid "Year"
+msgstr "Año"
