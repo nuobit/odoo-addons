@@ -46,7 +46,7 @@ class UoM(models.Model):
             bad_quants = self.env.cr.dictfetchall()
             if bad_quants:
                 examples = "\n".join(
-                    "  - %s at %s" % (q["value"], q["detail"]) for q in bad_quants
+                    f"  - {q['value']} at {q['detail']}" for q in bad_quants
                 )
                 raise ValidationError(
                     _(
