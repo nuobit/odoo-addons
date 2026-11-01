@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions SL - Kilian Niubo <kniubo@nuobit.com>
+    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+ -->
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//block[@id='capital_assets_settings']/setting[@id='account_uom']"
+                position="after"
+            >
+                <setting id="capital_asset_prorate_max_diff">
+                    <field name="capital_asset_prorate_max_diff" />
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>
