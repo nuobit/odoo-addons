@@ -1,0 +1,668 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <template id="external_layout_invoice_service">
+        <t t-call="web.html_container">
+            <t t-if="not o and doc">
+                <t t-set="o" t-value="doc" />
+            </t>
+
+            <t t-if="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id.sudo()" />
+            </t>
+            <t t-if="not o or not 'company_id' in o">
+                <t t-set="company" t-value="res_company" />
+            </t>
+
+            <div
+                class="header ris-header"
+                t-attf-style="height: {{ header_max_height }}px;"
+            >
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-6">
+                            <img
+                                t-if="company.logo"
+                                class="img-responsive"
+                                t-att-src="image_data_uri(company.logo)"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="article o_report_layout_standard"
+                t-att-data-oe-model="o and o._name"
+                t-att-data-oe-id="o and o.id"
+                t-att-data-oe-lang="o and o.env.context.get('lang')"
+            >
+                <t t-raw="0" />
+            </div>
+
+            <div class="footer">
+                <div class="text-center" style="font-size: 10px;">
+                    <ul class="list-unstyled mt4 mb4">
+                        <li>
+                            <span t-field="company.name" />
+                            -
+                            <t t-esc="company.country_id.vat_label or 'CIF'" />:
+                            <span t-field="company.vat" />
+                        </li>
+                        <li t-if="company.street or company.street2">
+                            <span
+                            t-esc="' '.join(filter(lambda x: x, [company.street,company.street2]))"
+                        />
+                            -
+                            <span
+                            t-esc="' '.join(filter(lambda x: x, [company.zip,company.city,company.state_id.name, company.country_id.name]))"
+                        />
+                        </li>
+                        <li>
+                            <t t-if="company.phone">
+                                Tel.
+                                <span t-field="company.phone" />
+                            </t>
+                            <span
+                                t-esc="' / '.join(filter(lambda x: x, [company.email, company.website]))"
+                            />
+                        </li>
+                    </ul>
+                    <div class="text-muted">
+                        Page
+                        <span class="page" />
+                        of
+                        <span class="topage" />
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_invoice_service_document">
+        <t t-call="account_invoice_report_service.external_layout_invoice_service">
+            <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)" />
+            <div class="page ris-page">
+                <table class="ris-table-2 mb16" name="invoice_line_table">
+                    <thead>
+                        <tr>
+                            <th colspan="6">
+                                <table class="ris-table-1">
+                                    <tbody>
+                                        <tr>
+                                            <td width="60%">
+                                                <h2 class="mt0">
+                                                    <span
+                                                        t-if="o.move_type == 'out_invoice' and o.state == 'posted'"
+                                                    >
+                                                        <span>Invoice</span>
+                                                    </span>
+                                                    <span
+                                                        t-if="o.move_type == 'out_invoice' and o.state == 'draft'"
+                                                    >
+                                                        <span>Draft Invoice</span>
+                                                    </span>
+                                                    <span
+                                                        t-if="o.move_type == 'out_invoice' and o.state == 'cancel'"
+                                                    >
+                                                        <span>Cancelled Invoice</span>
+                                                    </span>
+                                                    <span
+                                                        t-if="o.move_type == 'out_refund'"
+                                                    >Credit Note</span>
+                                                    <span
+                                                        t-if="o.move_type == 'in_refund'"
+                                                    >Vendor Credit Note</span>
+                                                    <span
+                                                        t-if="o.move_type == 'in_invoice'"
+                                                    >Vendor Bill</span>
+                                                    <span t-field="o.name" />
+                                                </h2>
+                                                <div t-if="o.invoice_date">
+                                                    <strong>Invoice date:</strong>
+                                                    <span t-field="o.invoice_date" />
+                                                </div>
+                                                <div
+                                                    t-if="o.partner_id.ref"
+                                                    class="mt4"
+                                                >
+                                                    <strong>Customer code:</strong>
+                                                    <span t-field="o.partner_id.ref" />
+                                                </div>
+                                                <div
+                                                    t-if="o.partner_id.vat"
+                                                    class="mt4"
+                                                >
+                                                    <strong
+                                                    t-esc="o.company_id.country_id.vat_label or 'CIF'"
+                                                />:
+                                                    <span t-field="o.partner_id.vat" />
+                                                </div>
+                                            </td>
+                                            <td class="customer_address" width="40%">
+                                                <div>
+                                                    <p>
+                                                        <div style="font-size: 14px;">
+                                                            <t
+                                                                t-set="partner"
+                                                                t-value="o.partner_id.parent_id or o.partner_id"
+                                                            />
+                                                            <strong
+                                                                t-field="partner.name"
+                                                            />
+                                                        </div>
+                                                        <div style="font-size: 12px;">
+                                                            <div
+                                                                t-if="o.partner_id.street"
+                                                                t-field="o.partner_id.street"
+                                                            />
+                                                            <div
+                                                                t-if="o.partner_id.street2"
+                                                                t-field="o.partner_id.street2"
+                                                            />
+                                                            <div>
+                                                                <span
+                                                                    t-if="o.partner_id.zip"
+                                                                    t-field="o.partner_id.zip"
+                                                                />
+                                                                <span
+                                                                    t-if="o.partner_id.city"
+                                                                    t-field="o.partner_id.city"
+                                                                />
+                                                                <span
+                                                                    t-if="o.partner_id.country_id"
+                                                                >(<span
+                                                                    t-field="o.partner_id.country_id"
+                                                                />)
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <table class="ris-table0">
+                                    <thead>
+                                        <tr>
+                                            <td class="text-left" colspan="6">
+                                                <div
+                                                    style="border-bottom: 1px solid #0d9697;margin-top:1px;margin-bottom:4px;text-align: left;"
+                                                >
+                                                    Patient data
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <table class="ris-table1 test">
+                                                    <thead>
+                                                        <tr>
+                                                            <th
+                                                                width="16%"
+                                                            >Contract number</th>
+                                                            <th
+                                                                width="10%"
+                                                            >ID number</th>
+                                                            <th width="44%">Name</th>
+                                                            <th width="15">Policy</th>
+                                                            <th
+                                                                width="15%"
+                                                            >Authorization num.</th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-left" colspan="6">
+                                                <div
+                                                    style="border-bottom: 1px solid #0d9697;margin-top:1px;margin-bottom:4px;text-align: left;"
+                                                >
+                                                    Service data
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <table class="ris-table1">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="8%">Plate</th>
+                                                            <th
+                                                                width="8%"
+                                                            >Service no.</th>
+                                                            <th
+                                                                width="10%"
+                                                            >Service date</th>
+                                                            <th width="30%">Origin</th>
+                                                            <th
+                                                                width="30%"
+                                                            >Destination</th>
+                                                            <th width="14%" />
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <table class="ris-table1">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="26%" />
+                                                            <th
+                                                                width="44%"
+                                                            >Description</th>
+                                                            <th
+                                                                width="10%"
+                                                                class="text-right"
+                                                            >Quantity</th>
+                                                            <th
+                                                                width="10%"
+                                                                class="text-right"
+                                                            >Unit Price</th>
+                                                            <th
+                                                                width="10%"
+                                                                class="text-right"
+                                                            >Amount</th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="invoice_tbody">
+                        <t t-foreach="o.get_service_lines_by_order()" t-as="l">
+                            <t t-set="order" t-value="l[0]" />
+                            <t t-set="invoice_lines" t-value="l[1]" />
+                            <tr>
+                                <td colspan="6">
+                                    <table class="ris-table2">
+                                        <tbody>
+                                            <tr t-if="order">
+                                                <td colspan="6">
+                                                    <table
+                                                        class="ris-table3"
+                                                        style="width: 100%;"
+                                                    >
+                                                        <tbody>
+                                                            <tr>
+                                                                <td width="16%">
+                                                                    <span
+                                                                        t-field="order.contract_number"
+                                                                    />
+                                                                </td>
+                                                                <td width="10%">
+                                                                    <span
+                                                                        t-field="order.insured_ident_cardnum"
+                                                                    />
+                                                                </td>
+                                                                <td width="44%">
+                                                                    <span
+                                                                        t-field="order.insured_name"
+                                                                    />
+                                                                </td>
+                                                                <td width="15%">
+                                                                    <span
+                                                                        t-field="order.policy_number"
+                                                                    />
+                                                                </td>
+                                                                <td width="15%">
+                                                                    <span
+                                                                        t-field="order.auth_number"
+                                                                    />
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr t-if="order">
+                                                <td colspan="6">
+                                                    <table
+                                                        class="ris-table3"
+                                                        style="width: 100%;"
+                                                    >
+                                                        <tbody>
+                                                            <tr>
+                                                                <td width="8%">
+                                                                    <span
+                                                                        t-field="order.plate_number"
+                                                                    />
+                                                                </td>
+                                                                <td width="8%">
+                                                                    <span
+                                                                        t-field="order.service_number"
+                                                                    />
+                                                                </td>
+                                                                <td width="10%">
+                                                                    <span
+                                                                        t-field="order.service_date_tz"
+                                                                    />
+                                                                </td>
+                                                                <td width="30%">
+                                                                    <span
+                                                                        t-field="order.origin"
+                                                                    />
+                                                                </td>
+                                                                <td width="30%">
+                                                                    <span
+                                                                        t-field="order.destination"
+                                                                    />
+                                                                </td>
+                                                                <td
+                                                                    width="14%"
+                                                                    class="text-right"
+                                                                >
+                                                                    <t
+                                                                        t-if="order.round_trip_code"
+                                                                    >
+                                                                        <span
+                                                                        >Round trip</span>
+                                                                        <t
+                                                                            t-if="order.return_service"
+                                                                        >
+                                                                            <span
+                                                                            >(return)</span>
+                                                                        </t>
+                                                                        <t
+                                                                            t-if="not order.return_service"
+                                                                        >
+                                                                            <span
+                                                                            >(going)</span>
+                                                                        </t>
+                                                                    </t>
+                                                                    <t
+                                                                        t-if="not order.round_trip_code"
+                                                                    >
+                                                                        <t
+                                                                            t-if="order.return_service"
+                                                                        >
+                                                                            <span
+                                                                            >Only return</span>
+                                                                        </t>
+                                                                        <t
+                                                                            t-if="not order.return_service"
+                                                                        >
+                                                                            <span
+                                                                            >One way</span>
+                                                                        </t>
+                                                                    </t>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <t t-if="invoice_lines">
+                                <t t-set="order_total" t-value="0" />
+                                <t t-foreach="invoice_lines" t-as="il">
+                                    <tr class="ris-table2-border-bottom">
+                                        <td width="26%" />
+                                        <td width="44%">
+                                            <span t-field="il.name" />
+                                        </td>
+                                        <td width="10%" class="text-right">
+                                            <span t-field="il.quantity" />
+                                            <span
+                                                t-field="il.product_uom_id"
+                                                groups="uom.group_uom"
+                                            />
+                                        </td>
+                                        <td width="10%" class="text-right">
+                                            <span t-field="il.price_unit" />
+                                        </td>
+                                        <td
+                                            width="10%"
+                                            class="text-right"
+                                            id="subtotal"
+                                        >
+                                            <span
+                                                t-field="il.price_subtotal"
+                                                t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                            />
+                                        </td>
+                                    </tr>
+                                    <t
+                                        t-set="order_total"
+                                        t-value="order_total+il.price_subtotal"
+                                    />
+                                </t>
+                                <tr>
+                                    <td colspan="6">
+                                        <t
+                                            t-set="tax_totals_by_group"
+                                            t-value="o.tax_totals"
+                                        />
+                                        <table
+                                            class="ris-table3"
+                                            t-if="not tax_totals_by_group"
+                                        >
+                                            <tbody>
+                                                <tr>
+                                                    <td width="80%" />
+                                                    <td width="10%" class="text-right">
+                                                        <strong>Total</strong>
+                                                    </td>
+                                                    <td width="10%" class="text-right">
+                                                        <strong>
+                                                            <span
+                                                                t-esc="order_total"
+                                                                t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"
+                                                            />
+                                                        </strong>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                    </tbody>
+                </table>
+
+                <!-- TODO: Review negative margin-top usage here -->
+                <div style="margin-top:-17px;">
+                    <div id="total" class="row d-flex justify-content-end">
+                        <div
+                            class="col-4 ml-auto"
+                            style="border-top:2px solid black;margin-top:0px;"
+                        >
+                            <table
+                                class="table table-condensed"
+                                style="min-width: 250px;max-width: 400px;"
+                            >
+                                <t t-if="o.tax_totals">
+                                    <t t-set="tax_totals" t-value="o.tax_totals" />
+                                    <t
+                                        t-foreach="tax_totals['subtotals']"
+                                        t-as="subtotal"
+                                    >
+                                        <tr
+                                            class="border-black"
+                                            style="border-bottom:1px solid #dddddd;"
+                                        >
+                                            <td>
+                                                <strong>Subtotal</strong>
+                                            </td>
+                                            <td class="text-right">
+                                                <span
+                                                    t-out="subtotal['base_amount_currency']"
+                                                    t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                                />
+                                            </td>
+                                        </tr>
+
+                                        <t
+                                            t-foreach="subtotal['tax_groups']"
+                                            t-as="tax_group"
+                                        >
+                                            <tr style="border-bottom:1px solid black;">
+                                                <t
+                                                    t-if="tax_totals['same_tax_base'] or tax_group['display_base_amount_currency'] is False"
+                                                >
+                                                    <td>
+                                                        <span
+                                                            t-out="tax_group['group_name']"
+                                                        />
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <span
+                                                            t-out="tax_group['tax_amount_currency']"
+                                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                                        />
+                                                    </td>
+                                                </t>
+                                                <t t-else="">
+                                                    <td>
+                                                        <span
+                                                            t-out="tax_group['group_name']"
+                                                        />
+                                                        <span> on </span>
+                                                        <span
+                                                            t-out="tax_group['display_base_amount_currency']"
+                                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                                        />
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <span
+                                                            t-out="tax_group['tax_amount_currency']"
+                                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                                        />
+                                                    </td>
+                                                </t>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </t>
+                                <t t-else="">
+                                    <tr
+                                        class="border-black"
+                                        style="border-bottom:1px solid #dddddd;"
+                                    >
+                                        <td>
+                                            <strong>Subtotal</strong>
+                                        </td>
+                                        <td class="text-right">
+                                            <span
+                                                t-field="o.amount_untaxed"
+                                                t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                            />
+                                        </td>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td>
+                                        <strong>Total</strong>
+                                    </td>
+                                    <td class="text-right">
+                                        <span
+                                            t-field="o.amount_total"
+                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                        />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <p t-if="o.narration">
+                            <strong>Comment:</strong>
+                            <span t-field="o.narration" />
+                        </p>
+                        <ul class="list-unstyled mb4 mt4">
+                            <li t-if="o.payment_mode_id or o.invoice_payment_term_id">
+                                <span>Payment terms:</span>
+                                <span
+                                    t-if="o.payment_mode_id.name"
+                                    t-field="o.payment_mode_id.name"
+                                />
+                                <t t-if="o.invoice_payment_term_id.name">
+                                    <span t-field="o.invoice_payment_term_id.name" />
+                                    <span>from invoice date</span>
+                                </t>
+                            </li>
+                            <li
+                                t-if="o.payment_mode_id.payment_method_id.code == 'customer_transfer' and o.payment_mode_id.payment_method_id.payment_type == 'inbound'"
+                            >
+                                <t
+                                t-set="bank_account_id"
+                                t-value="o.partner_bank_id or o.company_id.partner_id.bank_ids and o.company_id.partner_id.bank_ids.sorted(lambda x: x.sequence)[0]"
+                            />
+                                <strong t-field="bank_account_id.acc_number" />
+                                -
+                                <span t-field="bank_account_id.bank_id.display_name" />
+                            </li>
+                            <li>
+                                Please indicate in your payments the invoice numbers that you cancel*
+                            </li>
+                            <li t-if="o.line_ids">
+                                <t
+                                    t-set="movelines"
+                                    t-value="o.line_ids.filtered(lambda x: x.partner_id == o.partner_id and x.account_id.account_type in ('receivable', 'payable')).sorted(lambda x: x.date_maturity)"
+                                />
+                                <t t-if="movelines">
+                                    <t t-if="len(movelines)>1">
+                                        <span>Maturity dates:</span>
+                                    </t>
+                                    <t t-if="len(movelines)==1">
+                                        <span>Maturity date:</span>
+                                    </t>
+                                    <t t-foreach="movelines" t-as="ml">
+                                        <t t-if="not ml_last">
+                                            <span t-field="ml.date_maturity" />,
+                                        </t>
+                                        <span
+                                            t-if="ml_last"
+                                            t-field="ml.date_maturity"
+                                        />
+                                    </t>
+                                </t>
+                            </li>
+                        </ul>
+                        <t
+                            t-set="notaxable_taxes"
+                            t-value="o.invoice_line_ids.mapped('tax_ids').filtered(lambda x: x.name=='IVA Exento Repercutido Sujeto')"
+                        />
+                        <ul t-if="notaxable_taxes" class="list-unstyled mt8">
+                            <li>
+                                Billing lines with VAT-free operations - Law 37/1992, article 20, one, 15th
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_invoice_service">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t
+                    t-call="account_invoice_report_service.report_invoice_service_document"
+                    t-lang="o.partner_id.lang"
+                />
+            </t>
+        </t>
+    </template>
+</odoo>

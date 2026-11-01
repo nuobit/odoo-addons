@@ -1,0 +1,55 @@
+// ensure image always inside parent divs
+.rid-header {
+    div {
+        height: 100%;
+    }
+
+    img {
+        max-height: 100%;
+    }
+}
+
+.rid-page {
+    font-size: 11px;
+}
+
+@mixin ris-basetable-mixin {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 3px;
+}
+
+.rid-basetable {
+    @include ris-basetable-mixin;
+}
+
+.rid-table-1 {
+    @include ris-basetable-mixin;
+    margin-bottom: 5px;
+}
+
+.rid-table-2 {
+    @include ris-basetable-mixin;
+}
+
+.rid-table0 {
+    @include ris-basetable-mixin;
+    border-bottom: 1px solid #291a63;
+}
+
+.rid-table1 {
+    @include ris-basetable-mixin;
+}
+
+.rid-table2 {
+    @include ris-basetable-mixin;
+}
+
+.rid-table2-border-bottom > td {
+    border-bottom: 1px solid rgb(221, 221, 221);
+    padding-bottom: 5px;
+}
+
+.rid-units {
+    font-size: 9px;
+}
