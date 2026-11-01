@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
+     Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <template id="report_label_template_field">
+        <t t-foreach="field" t-as="f">
+            <div
+                t-att-style="'position: absolute; top: %dmm; left: %dmm;' % (f['position_y'], f['position_x'])"
+            >
+                <div t-att-style="'width: %dmm;' % f['width']">
+                    <span t-esc="f['value']" />
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="report_label_template_barcode">
+        <t t-foreach="lots" t-as="lot">
+            <t t-set="barcode" t-value="lot['barcodes_data']" />
+            <t t-set="field" t-value="lot['fields_data']" />
+            <div class="page-container">
+                <t t-call="barcode_label_template.report_label_template_field" />
+                <t t-if="barcode['barcode_values']">
+                    <div
+                        t-att-style="'position: absolute; top: %dmm; left: %dmm;' % (barcode['position_y'], barcode['position_x'])"
+                    >
+                        <div class="label-container">
+                            <div class="barcode-row">
+                                <div>
+                                    <img
+                                        t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;quiet=0&amp;humanreadable=%i&amp;width=%i&amp;height=%i' % (
+                                            barcode['barcode_type'], barcode['barcode_string'], barcode['humanreadable'],
+                                            barcode['resolution_height'], barcode['resolution_width'])"
+                                        t-att-style="'width: %imm; height: %imm;' % (barcode['width'], barcode['height'])"
+                                    />
+                                </div>
+                                <t
+                                    t-if="barcode['barcode_type'] == 'gs1-datamatrix' and barcode['humanreadable']"
+                                >
+                                    <div class="barcode-details">
+                                        <ul class="list-unstyled">
+                                            <t
+                                                t-foreach="barcode['barcode_values'].items()"
+                                                t-as="bv"
+                                            >
+                                                <li t-esc="'(%s)%s' % bv" />
+                                            </t>
+                                        </ul>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+    <template id="report_label_template">
+        <t t-call="web.basic_layout">
+            <t t-call="barcode_label_template.report_label_template_barcode" />
+        </t>
+    </template>
+</odoo>
