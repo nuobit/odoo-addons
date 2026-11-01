@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright 2025 NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="view_sale_advance_payment_inv" model="ir.ui.view">
+        <field name="inherit_id" ref="sale.view_sale_advance_payment_inv" />
+        <field name="name">Invoice Orders</field>
+        <field name="model">sale.advance.payment.inv</field>
+        <field name="arch" type="xml">
+            <xpath expr="//footer/button[1]" position="before">
+                <button
+                    name="create_invoices"
+                    string="Create and View Batch"
+                    type="object"
+                    context="{'open_batch': True}"
+                    class="btn-primary"
+                    invisible="not invoice_batch_create"
+                />
+            </xpath>
+            <xpath expr="//footer" position="before">
+                <group col="4">
+                    <field name="invoice_batch_create" />
+                    <field name="in_background" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
