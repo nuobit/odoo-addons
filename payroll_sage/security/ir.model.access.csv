@@ -1,0 +1,25 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_labour_agreement_manager,labour.agreement manager,model_payroll_sage_labour_agreement,payroll_sage.group_manager,1,1,1,1
+access_labour_agreement_user,labour.agreement user,model_payroll_sage_labour_agreement,payroll_sage.group_user,1,1,1,1
+access_labour_agreement_guest,labour.agreement guest,model_payroll_sage_labour_agreement,payroll_sage.group_guest,1,0,0,0
+access_labour_agreement_wage_type_line_manager,labour.agreement.wage.type.line manager,model_payroll_sage_labour_agreement_wage_type_line,payroll_sage.group_manager,1,1,1,1
+access_labour_agreement_wage_type_line_user,labour.agreement.wage.type.line user,model_payroll_sage_labour_agreement_wage_type_line,payroll_sage.group_user,1,1,1,1
+access_labour_agreement_wage_type_line_guest,labour.agreement.wage.type.line guest,model_payroll_sage_labour_agreement_wage_type_line,payroll_sage.group_guest,1,0,0,0
+access_payslip_manager,payslip manager,model_payroll_sage_payslip,payroll_sage.group_manager,1,1,1,1
+access_payslip_user,payslip user,model_payroll_sage_payslip,payroll_sage.group_user,1,1,1,1
+access_payslip_guest,payslip guest,model_payroll_sage_payslip,payroll_sage.group_guest,1,0,0,0
+access_payslip_line_manager,payslip.line manager,model_payroll_sage_payslip_line,payroll_sage.group_manager,1,1,1,1
+access_payslip_line_user,payslip.line user,model_payroll_sage_payslip_line,payroll_sage.group_user,1,1,1,1
+access_payslip_line_guest,payslip.line guest,model_payroll_sage_payslip_line,payroll_sage.group_guest,1,0,0,0
+access_payslip_check_manager,payslip.check manager,model_payroll_sage_payslip_check,payroll_sage.group_manager,1,1,1,1
+access_payslip_check_user,payslip.check user,model_payroll_sage_payslip_check,payroll_sage.group_user,1,1,1,1
+access_payslip_check_guest,payslip.check guest,model_payroll_sage_payslip_check,payroll_sage.group_guest,1,0,0,0
+access_payslip_wage_type_manager,payslip.wage.type manager,model_payroll_sage_payslip_wage_type,payroll_sage.group_manager,1,1,1,1
+access_payslip_wage_type_user,payslip.wage.type user,model_payroll_sage_payslip_wage_type,payroll_sage.group_user,1,1,1,1
+access_payslip_wage_type_guest,payslip.wage.type guest,model_payroll_sage_payslip_wage_type,payroll_sage.group_guest,1,0,0,0
+access_wage_tag_line_manager,wage.tag manager,model_payroll_sage_wage_tag,payroll_sage.group_manager,1,1,1,1
+access_wage_tag_line_user,wage.tag user,model_payroll_sage_wage_tag,payroll_sage.group_user,1,1,1,1
+access_wage_tag_line_guest,wage.tag guest,model_payroll_sage_wage_tag,payroll_sage.group_guest,1,0,0,0
+access_payslip_process_manager,payslip.process manager,model_payroll_sage_payslip_process,payroll_sage.group_manager,1,1,1,1
+access_payslip_process_user,payslip.process user,model_payroll_sage_payslip_process,payroll_sage.group_user,1,1,1,1
+access_payslip_process_guest,payslip.process guest,model_payroll_sage_payslip_process,payroll_sage.group_guest,1,0,0,0

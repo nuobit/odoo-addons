@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="payslip_view_form" model="ir.ui.view">
+        <field name="name">payslip.form</field>
+        <field name="model">payroll.sage.payslip</field>
+        <field name="arch" type="xml">
+            <form string="Payslip">
+                <header>
+                    <button
+                        name="action_paysplip_validate"
+                        type="object"
+                        invisible="state != 'draft'"
+                        string="Validate"
+                        class="oe_highlight"
+                    />
+                    <button
+                        name="action_paysplip_post"
+                        type="object"
+                        invisible="state != 'validated'"
+                        string="Post"
+                        class="oe_highlight"
+                    />
+                    <button
+                        name="action_paysplip_set_to_draft"
+                        type="object"
+                        invisible="state != 'validated'"
+                        string="Set to draft"
+                    />
+                    <button
+                        name="action_paysplip_unpost"
+                        type="object"
+                        invisible="state != 'posted'"
+                        string="Unpost"
+                    />
+                    <field name="state" widget="statusbar" />
+                </header>
+                <group col="4">
+                    <field name="name" readonly="state != 'draft'" />
+                    <field name="company_id" />
+                </group>
+                <group>
+                    <group>
+                        <field name="labour_agreement_id" readonly="state != 'draft'" />
+                        <field name="process_id" readonly="state != 'draft'" />
+                    </group>
+                    <group>
+                        <field name="year" readonly="state != 'draft'" />
+                        <field name="month_from" readonly="state != 'draft'" />
+                        <field name="month_to" readonly="state != 'draft'" />
+                    </group>
+                </group>
+                <group col="4">
+                    <field name="type" colspan="2" readonly="state != 'draft'" />
+                    <field
+                        name="ss_cost"
+                        colspan="2"
+                        readonly="state != 'draft'"
+                        invisible="type != 'payroll'"
+                        required="type == 'payroll'"
+                    />
+                    <field
+                        name="payment_date"
+                        colspan="2"
+                        invisible="type != 'transfer'"
+                        readonly="state == 'draft'"
+                    />
+                </group>
+                <group col="4">
+                    <field name="journal_id" readonly="state != 'draft'" />
+                    <field name="move_id" />
+                    <field name="entry_date" readonly="state != 'draft'" />
+                </group>
+                <group>
+                    <field name="note" />
+                </group>
+                <notebook>
+                    <page string="Lines">
+                        <field
+                            name="payslip_line_ids"
+                            nolabel="1"
+                            readonly="state != 'draft'"
+                        >
+                            <list editable="bottom">
+                                <field name="wage_type_line_id" />
+                                <field name="employee_id" />
+                                <field name="name" />
+                                <field name="amount" />
+                            </list>
+                        </field>
+                    </page>
+                    <page string="Checks" invisible="type != 'transfer'">
+                        <field
+                            name="payslip_check_ids"
+                            nolabel="1"
+                            readonly="state != 'draft'"
+                        >
+                            <list editable="bottom">
+                                <field name="employee_id" />
+                                <field name="name" />
+                                <field name="amount" sum="Total checks" />
+                            </list>
+                        </field>
+                    </page>
+                    <page string="Wage types" invisible="state == 'draft'">
+                        <field name="payslip_wage_type_ids" nolabel="1">
+                            <list editable="bottom">
+                                <field name="wage_type_line_id" />
+                                <field name="name" />
+                                <field name="amount" />
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+
+    <record id="payslip_view_tree" model="ir.ui.view">
+        <field name="name">payslip.tree</field>
+        <field name="model">payroll.sage.payslip</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" />
+                <field name="entry_date" />
+                <field name="labour_agreement_id" />
+            </list>
+        </field>
+    </record>
+
+    <record id="payslip_action" model="ir.actions.act_window">
+        <field name="name">Payslip</field>
+        <field name="res_model">payroll.sage.payslip</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="payslip_line_view_form" model="ir.ui.view">
+        <field name="name">payslip.line.form</field>
+        <field name="model">payroll.sage.payslip.line</field>
+        <field name="arch" type="xml">
+            <form string="Payslip Line">
+                <group>
+                    <field name="wage_type_line_id" />
+                    <field name="employee_id" />
+                    <field name="name" />
+                    <field name="amount" />
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="payslip_check_view_form" model="ir.ui.view">
+        <field name="name">payslip.check.form</field>
+        <field name="model">payroll.sage.payslip.check</field>
+        <field name="arch" type="xml">
+            <form string="Payslip Check">
+                <group>
+                    <field name="employee_id" />
+                    <field name="name" />
+                    <field name="amount" />
+                </group>
+            </form>
+        </field>
+    </record>
+</odoo>

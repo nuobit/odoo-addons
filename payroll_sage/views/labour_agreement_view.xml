@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="labour_agreement_view_form" model="ir.ui.view">
+        <field name="name">labour.agreement.form</field>
+        <field name="model">payroll.sage.labour.agreement</field>
+        <field name="arch" type="xml">
+            <form string="Labour agreement">
+                <group col="4">
+                    <field name="name" />
+                    <field name="code" />
+
+                    <field name="registration_date_cv" />
+                    <field name="end_date" />
+                    <field name="company_id" />
+                </group>
+                <group>
+                    <field name="ss_tag_ids" widget="many2many_tags" />
+                    <field name="check_tag_ids" widget="many2many_tags" />
+                </group>
+                <group>
+                    <field name="error_balancing_account_id" />
+                </group>
+                <notebook>
+                    <page string="Wage types">
+                        <field name="wage_type_line_ids" nolabel="1">
+                            <list editable="bottom">
+                                <field name="code" />
+                                <field name="short_name" />
+                                <field name="name" />
+                                <field name="positive" />
+                                <field name="total_historical_record" />
+                                <field name="wage_tag_ids" widget="many2many_tags" />
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+
+    <record id="labour_agreement_view_tree" model="ir.ui.view">
+        <field name="name">labour.agreement.tree</field>
+        <field name="model">payroll.sage.labour.agreement</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code" />
+                <field name="name" />
+                <field name="registration_date_cv" />
+                <field name="end_date" />
+            </list>
+        </field>
+    </record>
+
+    <record id="labour_agreement_wage_type_line_view_tree" model="ir.ui.view">
+        <field name="name">labour.agreement.wage.type.line.tree</field>
+        <field name="model">payroll.sage.labour.agreement.wage.type.line</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code" />
+                <field name="short_name" />
+                <field name="name" />
+                <field name="positive" />
+                <field name="total_historical_record" />
+                <field name="wage_tag_ids" widget="many2many_tags" />
+            </list>
+        </field>
+    </record>
+
+    <record id="labour_agreement_action" model="ir.actions.act_window">
+        <field name="name">Labour agreements</field>
+        <field name="res_model">payroll.sage.labour.agreement</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
