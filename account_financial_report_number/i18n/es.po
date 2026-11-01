@@ -1,0 +1,62 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* account_financial_report_number
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-29 09:02+0000\n"
+"PO-Revision-Date: 2020-12-25 00:22+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_financial_report_number
+#. odoo-python
+#: code:addons/account_financial_report_number/report/journal_ledger.py:0
+msgid "At least from number should be entered"
+msgstr "Al menos el número desde debe ser ingresado"
+
+#. module: account_financial_report_number
+#: model:ir.model.fields,field_description:account_financial_report_number.field_journal_ledger_report_wizard__date_to
+msgid "End date"
+msgstr ""
+
+#. module: account_financial_report_number
+#: model_terms:ir.ui.view,arch_db:account_financial_report_number.journal_ledger_wizard
+msgid "Entry number"
+msgstr "Número de asiento"
+
+#. module: account_financial_report_number
+#: model:ir.model.fields,field_description:account_financial_report_number.field_journal_ledger_report_wizard__filter_by_number
+msgid "Filter by entry number"
+msgstr "Filtrar por número de asiento"
+
+#. module: account_financial_report_number
+#: model:ir.model.fields,field_description:account_financial_report_number.field_journal_ledger_report_wizard__number_from
+msgid "From number"
+msgstr "Desde número"
+
+#. module: account_financial_report_number
+#: model:ir.model,name:account_financial_report_number.model_report_account_financial_report_journal_ledger
+msgid "Journal Ledger Report"
+msgstr "Informe libro diario"
+
+#. module: account_financial_report_number
+#: model:ir.model,name:account_financial_report_number.model_journal_ledger_report_wizard
+msgid "Journal Ledger Report Wizard"
+msgstr "Asistente de informe de Libro Diario"
+
+#. module: account_financial_report_number
+#: model:ir.model.fields,field_description:account_financial_report_number.field_journal_ledger_report_wizard__date_from
+msgid "Start date"
+msgstr ""
+
+#. module: account_financial_report_number
+#: model:ir.model.fields,field_description:account_financial_report_number.field_journal_ledger_report_wizard__number_to
+msgid "To number"
+msgstr "Hasta número"
