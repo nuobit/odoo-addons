@@ -1,0 +1,253 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* stock_picking_import_serials
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-29 09:02+0000\n"
+"PO-Revision-Date: 2020-01-04 19:05+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: stock_picking_import_serials
+#. odoo-python
+#: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:0
+msgid "%(default_code)s -> %(dmls_n)i operations empty"
+msgstr "%(default_code)s -> %(dmls_n)i operaciones vacías"
+
+#. module: stock_picking_import_serials
+#. odoo-python
+#: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:0
+msgid "%(default_code)s -> %(operations)i operations empty"
+msgstr "%(default_code)s -> %(operations)i operaciones vacías"
+
+#. module: stock_picking_import_serials
+#. odoo-python
+#: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:0
+msgid "All fields of the header row must be text"
+msgstr "Todos los campos de la fila del encabezado deben ser texto"
+
+#. module: stock_picking_import_serials
+#: model_terms:ir.ui.view,arch_db:stock_picking_import_serials.stock_picking_import_serials_view_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: stock_picking_import_serials
+#: model_terms:ir.ui.view,arch_db:stock_picking_import_serials.stock_picking_import_serials_view_form
+msgid "Close"
+msgstr "Cerrar"
+
+#. module: stock_picking_import_serials
+#: model:ir.model.fields,field_description:stock_picking_import_serials.field_stock_picking_import_serials__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: stock_picking_import_serials
+#: model:ir.model.fields,field_description:stock_picking_import_serials.field_stock_picking_import_serials__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: stock_picking_import_serials
+#: model:ir.model.fields,field_description:stock_picking_import_serials.field_stock_picking_import_serials__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: stock_picking_import_serials
+#. odoo-python
+#: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:0
+msgid "Extension %s no supported"
+msgstr ""
+
+#. module: stock_picking_import_serials
+#: model:ir.model.fields,field_description:stock_picking_import_serials.field_stock_picking_import_serials__datas
+msgid "File"
+msgstr "Fichero"
+
+#. module: stock_picking_import_serials
+#: model:ir.model.fields,field_description:stock_picking_import_serials.field_stock_picking_import_serials__datas_fname
+msgid "Filename"
+msgstr "Nombre de fichero"
+
+#. module: stock_picking_import_serials
+#. odoo-python
+#: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:0
+msgid "Finished successfully"
+msgstr "Finalizado con éxito"
+
+#. module: stock_picking_import_serials
+#. odoo-python
+#: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:0
+msgid "Finished successfully with warnings"
+msgstr "Finalizado con éxito pero con advertencias"
+
+#. module: stock_picking_import_serials
+#: model:ir.model.fields,field_description:stock_picking_import_serials.field_stock_picking_import_serials__id
+msgid "ID"
+msgstr "ID"
+
+#. module: stock_picking_import_serials
+#: model_terms:ir.ui.view,arch_db:stock_picking_import_serials.stock_picking_import_serials_view_form
+msgid "Import"
+msgstr "Importar"
+
+#. module: stock_picking_import_serials
+#: model:ir.actions.act_window,name:stock_picking_import_serials.stock_picking_import_serials_action
+#: model_terms:ir.ui.view,arch_db:stock_picking_import_serials.stock_picking_import_serials_view_form
+#: model_terms:ir.ui.view,arch_db:stock_picking_import_serials.view_picking_form
+msgid "Import serial numbers"
+msgstr "Importar números de serie"
+
+#. module: stock_picking_import_serials
+#. odoo-python
+#: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:0
+msgid "Incorrect format file, the number of columns must be 2 minimum"
+msgstr ""
+"Archivo con formato incorrecto, el número de columnas debe ser 2 como mínimo"
+
+#. module: stock_picking_import_serials
+#: model:ir.model.fields,field_description:stock_picking_import_serials.field_stock_picking_import_serials__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: stock_picking_import_serials
+#: model:ir.model.fields,field_description:stock_picking_import_serials.field_stock_picking_import_serials__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: stock_picking_import_serials
+#. odoo-python
+#: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:0
+msgid ""
+"Not all serial numbers have been assigned. There are more serial numbers in the file than picking lines without them.\n"
+"Serial numbers not assigned:"
+msgstr ""
+"No se han asignado todos los números de serie. Hay más números de serie en el fichero que líneas de operaciones vacías.\n"
+"Números de serie no asignados:"
+
+#. module: stock_picking_import_serials
+#. odoo-python
+#: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:0
+msgid "Null value in cell %s"
+msgstr "Valor nulo en la celda %s"
+
+#. module: stock_picking_import_serials
+#: model:ir.model.fields.selection,name:stock_picking_import_serials.selection__stock_picking_import_serials__state__params
+msgid "Parameters"
+msgstr "Parámetros"
+
+#. module: stock_picking_import_serials
+#: model:ir.model.fields,field_description:stock_picking_import_serials.field_stock_picking_import_serials__result
+#: model:ir.model.fields.selection,name:stock_picking_import_serials.selection__stock_picking_import_serials__state__result
+msgid "Result"
+msgstr "Resultado"
+
+#. module: stock_picking_import_serials
+#: model:ir.model.fields,field_description:stock_picking_import_serials.field_stock_picking_import_serials__state
+msgid "State"
+msgstr "Estado"
+
+#. module: stock_picking_import_serials
+#: model:ir.model,name:stock_picking_import_serials.model_stock_picking_import_serials
+msgid "Stock Picking Import Serials"
+msgstr ""
+
+#. module: stock_picking_import_serials
+#. odoo-python
+#: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:0
+msgid ""
+"The creation of Lot/Serial number is not allowed in this operation type"
+msgstr ""
+
+#. module: stock_picking_import_serials
+#. odoo-python
+#: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:0
+msgid "The fields on the header row must not be null"
+msgstr "Los campos en la fila del encabezado no pueden ser nulos"
+
+#. module: stock_picking_import_serials
+#: model:ir.model.fields,help:stock_picking_import_serials.field_stock_picking_import_serials__datas
+msgid ""
+"The fields you can import are:\n"
+" -Default Code\n"
+" -Serial Number"
+msgstr ""
+
+#. module: stock_picking_import_serials
+#. odoo-python
+#: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:0
+msgid "The line with the product %s has no detail movements created"
+msgstr "La línea con el producto %s no tiene operaciones creadas"
+
+#. module: stock_picking_import_serials
+#. odoo-python
+#: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:0
+msgid "The line with the product %s must have quantity 1"
+msgstr "La línea con el producto %s debe tener cantidad 1"
+
+#. module: stock_picking_import_serials
+#. odoo-python
+#: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:0
+msgid "The product %s does not exist"
+msgstr "El producto %s no existe"
+
+#. module: stock_picking_import_serials
+#. odoo-python
+#: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:0
+msgid "The product %s has no serial tracking type"
+msgstr "El producto %s no tiene seguimiento o no es de tipo Número de serie"
+
+#. module: stock_picking_import_serials
+#. odoo-python
+#: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:0
+msgid "The tracking number %s duplicated"
+msgstr "El número de serie %s está duplicado"
+
+#. module: stock_picking_import_serials
+#. odoo-python
+#: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:0
+msgid ""
+"The use of existing Lot/Serial number is not allowed in this operation type"
+msgstr ""
+
+#. module: stock_picking_import_serials
+#. odoo-python
+#: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:0
+msgid "There's more than one product with reference %s"
+msgstr "Hay más de un producto con la referencia %s"
+
+#. module: stock_picking_import_serials
+#. odoo-python
+#: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:0
+msgid "There's no data in input file"
+msgstr "No hay datos en el fichero de entrada"
+
+#. module: stock_picking_import_serials
+#. odoo-python
+#: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:0
+msgid "There's no lines with product %s"
+msgstr "No existe ninguna linea con el producto %s"
+
+#. module: stock_picking_import_serials
+#. odoo-python
+#: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:0
+msgid ""
+"There's not enough serial numbers in input file so there's picking lines "
+"with operations without serial number:"
+msgstr ""
+"No hay suficientes números de serie en el fichero de entrada, por lo que aún"
+" quedan líneas de albarán con operaciones sin número de serie:"
+
+#. module: stock_picking_import_serials
+#. odoo-python
+#: code:addons/stock_picking_import_serials/wizard/stock_picking_import_serials.py:0
+msgid ""
+"Wrong format in cell {cellname}. Expected {ctype}, found {current_ctype}"
+msgstr ""
+"Formato incorrecto en la celda {cellname}. Se esperaba {ctype}, se encontró "
+"{current_ctype}"
