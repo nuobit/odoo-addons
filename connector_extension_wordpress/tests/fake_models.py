@@ -29,3 +29,20 @@ class ConnectorExtensionWordpressTestShopBackend(models.Model):
         comodel_name="connector.extension.wordpress.test.backend",
         string="WordPress Backend",
     )
+
+
+class ConnectorExtensionWordpressTestStoreBackend(models.Model):
+    """A store backend with no WordPress credentials of its own, shaped like
+    the WooCommerce connector's backend: it can call WordPress only with the
+    credentials of a linked WordPress backend."""
+
+    _name = "connector.extension.wordpress.test.store.backend"
+    _inherit = "connector.extension.backend"
+    _description = "WordPress Test Store Backend"
+
+    url = fields.Char(string="Site URL")
+    verify_ssl = fields.Boolean(string="Verify SSL", default=True)
+    wordpress_backend_id = fields.Many2one(
+        comodel_name="connector.extension.wordpress.test.backend",
+        string="WordPress Backend",
+    )

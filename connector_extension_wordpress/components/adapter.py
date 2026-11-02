@@ -184,14 +184,18 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
     def _get_auth(self):
         """The credentials POST and PUT send: those of the linked WordPress
         backend when one is set, else the backend's own."""
-        auth = (self.backend_record.username, self.backend_record.application_password)
-        if (
-            "wordpress_backend_id" in self.backend_record
-            and self.backend_record.wordpress_backend_id
-        ):
-            backend = self.backend_record.wordpress_backend_id
-            auth = (backend.username, backend.application_password)
-        return auth
+        backend = self.backend_record
+        if "wordpress_backend_id" in backend and backend.wordpress_backend_id:
+            backend = backend.wordpress_backend_id
+        if "username" not in backend or "application_password" not in backend:
+            raise ValidationError(
+                _(
+                    "The backend %(backend)s cannot call WordPress until a "
+                    "WordPress backend is chosen on it."
+                )
+                % {"backend": backend.display_name}
+            )
+        return (backend.username, backend.application_password)
 
     def _exec_post(self, resource, *args, **kwargs):
         auth = self._get_auth()

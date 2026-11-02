@@ -60,11 +60,13 @@ class TestWordpressAdapter(TransactionComponentRegistryCase):
         from .fake_models import (
             ConnectorExtensionWordpressTestBackend,
             ConnectorExtensionWordpressTestShopBackend,
+            ConnectorExtensionWordpressTestStoreBackend,
         )
 
         fake_models = (
             ConnectorExtensionWordpressTestBackend,
             ConnectorExtensionWordpressTestShopBackend,
+            ConnectorExtensionWordpressTestStoreBackend,
         )
         cls.loader.update_registry(fake_models)
         # Odoo's TransactionCase.check_attrs (odoo/tests/common.py) fails each
@@ -360,6 +362,39 @@ class TestWordpressAdapter(TransactionComponentRegistryCase):
         self.assertEqual(
             put.call_args.kwargs["auth"], ("shop_user_test", "shop_password_test")
         )
+
+    def test_post_without_credentials_of_its_own_uses_the_linked_ones(self):
+        store = self.env["connector.extension.wordpress.test.store.backend"].create(
+            {
+                "name": "Store Test",
+                "lang_ids": [Command.set(self.env.ref("base.lang_en").ids)],
+                "url": "https://store.example.com",
+                "wordpress_backend_id": self.backend.id,
+            }
+        )
+        answer = wordpress_response(201, {"id": 15})
+        with mock.patch.object(requests, "post", return_value=answer) as post:
+            self.adapter(store)._exec("post", "media", data={"data": b"bytes"})
+        self.assertEqual(
+            post.call_args.kwargs["auth"], ("wp_user_test", "app_password_test")
+        )
+
+    def test_post_without_credentials_nor_a_linked_wordpress_is_refused(self):
+        store = self.env["connector.extension.wordpress.test.store.backend"].create(
+            {
+                "name": "Store Test",
+                "lang_ids": [Command.set(self.env.ref("base.lang_en").ids)],
+                "url": "https://store.example.com",
+            }
+        )
+        with mock.patch.object(requests, "post") as post:
+            with self.assertRaisesRegex(
+                ValidationError,
+                "The backend Store Test cannot call WordPress until a WordPress "
+                "backend is chosen on it",
+            ):
+                self.adapter(store)._exec("post", "media", data={"data": b"bytes"})
+        post.assert_not_called()
 
     def test_delete_is_not_supported(self):
         with self.assertRaises(NotImplementedError):
