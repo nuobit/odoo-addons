@@ -43,100 +43,106 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
         string="Locations",
         comodel_name="stock.location",
         compute="_compute_stock_location_ids",
+        store=True,
         readonly=False,
     )
 
     @api.depends("with_stock")
     def _compute_stock_location_ids(self):
         all_locs = self.all_location_ids()
-        if self.with_stock:
-            ids = self.env.context.get("active_ids")
-            model = self.env.context.get("active_model")
-            if model == "product.product":
-                locations = self.env["stock.location"]
-                for doc in (
-                    self.env[model].browse(ids).sorted(lambda x: x.default_code or "")
-                ):
-                    locations |= (
-                        self.env["stock.quant"]
-                        .search(
-                            [
-                                ("product_id", "=", doc.id),
-                                ("location_id.usage", "=", "internal"),
-                                ("location_id", "in", all_locs.ids),
-                                ("quantity", ">", 0),
-                                ("company_id", "=", self.env.company.id),
-                            ]
+        for wizard in self:
+            if wizard.with_stock:
+                ids = self.env.context.get("active_ids")
+                model = self.env.context.get("active_model")
+                if model == "product.product":
+                    locations = self.env["stock.location"]
+                    for doc in (
+                        self.env[model]
+                        .browse(ids)
+                        .sorted(lambda x: x.default_code or "")
+                    ):
+                        locations |= (
+                            self.env["stock.quant"]
+                            .search(
+                                [
+                                    ("product_id", "=", doc.id),
+                                    ("location_id.usage", "=", "internal"),
+                                    ("location_id", "in", all_locs.ids),
+                                    ("quantity", ">", 0),
+                                    ("company_id", "=", self.env.company.id),
+                                ]
+                            )
+                            .mapped("location_id")
                         )
-                        .mapped("location_id")
-                    )
-                self.stock_location_ids = locations
-            elif model == "stock.lot":
-                locations = self.env["stock.location"]
-                for doc in (
-                    self.env[model]
-                    .browse(ids)
-                    .filtered(lambda x: x.product_id.tracking in ("lot", "serial"))
-                    .sorted(lambda x: x.product_id.default_code or "")
-                ):
-                    locations |= (
-                        self.env["stock.quant"]
-                        .search(
-                            [
-                                ("product_id", "=", doc.product_id.id),
-                                ("location_id.usage", "=", "internal"),
-                                ("location_id", "in", all_locs.ids),
-                                ("lot_id", "=", doc.id),
-                                ("quantity", ">", 0),
-                                ("company_id", "=", self.env.company.id),
-                            ]
+                    wizard.stock_location_ids = locations
+                elif model == "stock.lot":
+                    locations = self.env["stock.location"]
+                    for doc in (
+                        self.env[model]
+                        .browse(ids)
+                        .filtered(lambda x: x.product_id.tracking in ("lot", "serial"))
+                        .sorted(lambda x: x.product_id.default_code or "")
+                    ):
+                        locations |= (
+                            self.env["stock.quant"]
+                            .search(
+                                [
+                                    ("product_id", "=", doc.product_id.id),
+                                    ("location_id.usage", "=", "internal"),
+                                    ("location_id", "in", all_locs.ids),
+                                    ("lot_id", "=", doc.id),
+                                    ("quantity", ">", 0),
+                                    ("company_id", "=", self.env.company.id),
+                                ]
+                            )
+                            .mapped("location_id")
                         )
-                        .mapped("location_id")
-                    )
-                self.stock_location_ids = locations
-            elif model == "stock.quant":
-                locations = self.env["stock.location"]
-                for doc in (
-                    self.env[model]
-                    .browse(ids)
-                    .sorted(lambda x: x.product_id.default_code or "")
-                ):
-                    locations |= (
-                        self.env["stock.quant"]
-                        .search(
-                            [
-                                ("id", "=", doc.id),
-                                ("location_id.usage", "=", "internal"),
-                                ("location_id", "=", doc.location_id.id),
-                                ("quantity", ">", 0),
-                                ("company_id", "=", self.env.company.id),
-                            ]
+                    wizard.stock_location_ids = locations
+                elif model == "stock.quant":
+                    locations = self.env["stock.location"]
+                    for doc in (
+                        self.env[model]
+                        .browse(ids)
+                        .sorted(lambda x: x.product_id.default_code or "")
+                    ):
+                        locations |= (
+                            self.env["stock.quant"]
+                            .search(
+                                [
+                                    ("id", "=", doc.id),
+                                    ("location_id.usage", "=", "internal"),
+                                    ("location_id", "=", doc.location_id.id),
+                                    ("quantity", ">", 0),
+                                    ("company_id", "=", self.env.company.id),
+                                ]
+                            )
+                            .mapped("location_id")
                         )
-                        .mapped("location_id")
-                    )
-                self.stock_location_ids = locations
-            elif model == "stock.location":
-                locations = self.env["stock.location"]
-                for doc in (
-                    self.env[model].browse(ids).sorted(lambda x: x.parent_path or "")
-                ):
-                    locations |= (
-                        self.env["stock.quant"]
-                        .search(
-                            [
-                                ("location_id.usage", "=", "internal"),
-                                ("location_id", "child_of", doc.ids),
-                                ("quantity", ">", 0),
-                                ("company_id", "=", self.env.company.id),
-                            ]
+                    wizard.stock_location_ids = locations
+                elif model == "stock.location":
+                    locations = self.env["stock.location"]
+                    for doc in (
+                        self.env[model]
+                        .browse(ids)
+                        .sorted(lambda x: x.parent_path or "")
+                    ):
+                        locations |= (
+                            self.env["stock.quant"]
+                            .search(
+                                [
+                                    ("location_id.usage", "=", "internal"),
+                                    ("location_id", "child_of", doc.ids),
+                                    ("quantity", ">", 0),
+                                    ("company_id", "=", self.env.company.id),
+                                ]
+                            )
+                            .mapped("location_id")
                         )
-                        .mapped("location_id")
-                    )
-                self.stock_location_ids = locations
+                    wizard.stock_location_ids = locations
+                else:
+                    wizard.stock_location_ids = all_locs
             else:
-                self.stock_location_ids = all_locs
-        else:
-            self.stock_location_ids = all_locs
+                wizard.stock_location_ids = all_locs
 
     def _default_label_config_id(self):
         return self.env["barcodes.gs1.label.options.config"].search(

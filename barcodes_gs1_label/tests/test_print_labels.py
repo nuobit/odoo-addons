@@ -63,6 +63,72 @@ class TestPrintLabels(TestCommon):
         wizard = wizard_form.save()
         self.assertEqual(wizard.stock_location_ids, self.stock_location + shelf)
 
+    def test_location_removed_in_the_print_wizard_is_not_printed(self):
+        product = self._create_product("Product", "2000000000015")
+        shelf = self.env["stock.location"].create(
+            {"name": "Shelf", "location_id": self.stock_location.id}
+        )
+        self._set_stock(product, self.stock_location, 2)
+        self._set_stock(product, shelf, 1)
+        action = product.with_user(self.user).print_gs1_barcode_wizard()
+        wizard_form = Form(
+            self.env[action["res_model"]]
+            .with_user(self.user)
+            .with_context(active_model="product.product", active_ids=product.ids)
+        )
+        wizard_form.label_config_id = self.config_gs1_128
+        wizard_form.stock_location_ids.remove(id=shelf.id)
+        wizard = wizard_form.save()
+        # the print button runs in a request of its own, with an empty cache
+        wizard.invalidate_recordset()
+        self.assertEqual(
+            self._get_label_texts(wizard.print_product_barcodes()),
+            ["(01)02000000000015", "(01)02000000000015"],
+        )
+
+    def test_print_wizards_computed_together_propose_each_their_locations(self):
+        # a company of its own, whose internal locations are those of the test
+        company = self.env["res.company"].create({"name": "Labels company"})
+        warehouse = self.env["stock.warehouse"].search(
+            [("company_id", "=", company.id)]
+        )
+        user = new_test_user(
+            self.env,
+            login="gs1_label_locations_test",
+            groups="stock.group_stock_manager",
+            company_id=company.id,
+        )
+        config = self.env["barcodes.gs1.label.options.config"].create(
+            {
+                "name": "GS1-128",
+                "format_id": self.label_format.id,
+                "barcode_type": "gs1-128",
+                "company_id": company.id,
+            }
+        )
+        product = self._create_product("Product", "2000000000015")
+        shelf = self.env["stock.location"].create(
+            {
+                "name": "Shelf",
+                "location_id": warehouse.lot_stock_id.id,
+                "company_id": company.id,
+            }
+        )
+        self._set_stock(product, shelf, 1)
+        wizards = (
+            self.env["barcodes.gs1.label.options.wizard"]
+            .with_user(user)
+            .with_context(active_model="product.product", active_ids=product.ids)
+            .create(
+                [
+                    {"label_config_id": config.id, "with_stock": True},
+                    {"label_config_id": config.id, "with_stock": False},
+                ]
+            )
+        )
+        self.assertEqual(wizards[0].stock_location_ids, shelf)
+        self.assertEqual(wizards[1].stock_location_ids, warehouse.lot_stock_id + shelf)
+
     def test_products_print_in_internal_reference_order(self):
         product_b = self._create_product(
             "Product B", "2000000000022", default_code="REF-B"
