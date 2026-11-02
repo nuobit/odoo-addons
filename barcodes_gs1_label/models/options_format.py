@@ -1,10 +1,11 @@
 # Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
 # Copyright 2025 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# Copyright 2025 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
 
 
 class BarcodesGS1LabelOptionsConfig(models.Model):
@@ -33,23 +34,56 @@ class BarcodesGS1LabelOptionsConfig(models.Model):
         compute="_compute_sheet_sizes",
     )
 
-    # TODO: convert to related??
-    @api.depends("paperformat_id")
-    def _compute_sheet_sizes(self):
+    @api.constrains("paperformat_id")
+    def _check_paperformat_id(self):
         for rec in self:
             if not rec.paperformat_id.format:
-                raise UserError(
-                    _("The paperformat '%(paper_format)s' has no format defined")
+                raise ValidationError(
+                    _(
+                        "The paper format '%(paper_format)s' has no paper size. "
+                        "Set its paper size, or choose another paper format."
+                    )
+                    % {"paper_format": rec.paperformat_id.display_name}
+                )
+            if rec.paperformat_id.format == "custom" and not (
+                rec.paperformat_id.page_width and rec.paperformat_id.page_height
+            ):
+                raise ValidationError(
+                    _(
+                        "The paper format '%(paper_format)s' is custom and has no "
+                        "width or height. Set its width and height, or choose "
+                        "another paper format."
+                    )
                     % {"paper_format": rec.paperformat_id.display_name}
                 )
             if not rec.paperformat_id.orientation:
-                raise UserError(
-                    _("The paperformat '%(paper_format)s' has no orientation defined")
+                raise ValidationError(
+                    _(
+                        "The paper format '%(paper_format)s' has no orientation. "
+                        "Set its orientation, or choose another paper format."
+                    )
                     % {"paper_format": rec.paperformat_id.display_name}
                 )
 
-            rec.sheet_width = rec.paperformat_id.print_page_width
-            rec.sheet_height = rec.paperformat_id.print_page_height
+    # TODO: convert to related??
+    @api.depends(
+        "paperformat_id.format",
+        "paperformat_id.orientation",
+        "paperformat_id.print_page_width",
+        "paperformat_id.print_page_height",
+    )
+    def _compute_sheet_sizes(self):
+        for rec in self:
+            paperformat = rec.paperformat_id
+            # The constraint refuses such a paper when the format is written,
+            # but the paper format can lose its size or orientation afterwards:
+            # the sheet then fits no label, and printing says why
+            if paperformat.format and paperformat.orientation:
+                rec.sheet_width = paperformat.print_page_width
+                rec.sheet_height = paperformat.print_page_height
+            else:
+                rec.sheet_width = 0
+                rec.sheet_height = 0
 
     label_width = fields.Float(
         string="Label width (mm)",

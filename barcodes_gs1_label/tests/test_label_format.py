@@ -1,7 +1,7 @@
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
 from odoo.tests import Form
 
 from .common import TestCommon
@@ -80,6 +80,28 @@ class TestLabelFormat(TestCommon):
         format_form.label_height = 37
         self.assertEqual(format_form.page_max_labels, 24)
 
+    def test_format_on_custom_paper_without_size_raises(self):
+        paperformat = self.env["report.paperformat"].create(
+            {
+                "name": "Custom paper without size",
+                "format": "custom",
+                "orientation": "Portrait",
+            }
+        )
+        with self.assertRaisesRegex(
+            ValidationError,
+            "The paper format 'Custom paper without size' is custom and has no "
+            "width or height",
+        ):
+            self.env["barcodes.gs1.label.options.format"].create(
+                {
+                    "name": "70 x 37 mm",
+                    "paperformat_id": paperformat.id,
+                    "label_width": 70,
+                    "label_height": 37,
+                }
+            )
+
     def test_format_on_paper_without_size_raises(self):
         paperformat = self.env["report.paperformat"].create(
             {
@@ -88,18 +110,18 @@ class TestLabelFormat(TestCommon):
                 "orientation": "Portrait",
             }
         )
-        label_format = self.env["barcodes.gs1.label.options.format"].create(
-            {
-                "name": "70 x 37 mm",
-                "paperformat_id": paperformat.id,
-                "label_width": 70,
-                "label_height": 37,
-            }
-        )
         with self.assertRaisesRegex(
-            UserError, "The paperformat 'Paper without size' has no format defined"
+            ValidationError,
+            "The paper format 'Paper without size' has no paper size",
         ):
-            label_format.read(["page_max_labels"])
+            self.env["barcodes.gs1.label.options.format"].create(
+                {
+                    "name": "70 x 37 mm",
+                    "paperformat_id": paperformat.id,
+                    "label_width": 70,
+                    "label_height": 37,
+                }
+            )
 
     def test_format_on_paper_without_orientation_raises(self):
         paperformat = self.env["report.paperformat"].create(
@@ -109,16 +131,15 @@ class TestLabelFormat(TestCommon):
                 "orientation": False,
             }
         )
-        label_format = self.env["barcodes.gs1.label.options.format"].create(
-            {
-                "name": "70 x 37 mm",
-                "paperformat_id": paperformat.id,
-                "label_width": 70,
-                "label_height": 37,
-            }
-        )
         with self.assertRaisesRegex(
-            UserError,
-            "The paperformat 'Paper without orientation' has no orientation defined",
+            ValidationError,
+            "The paper format 'Paper without orientation' has no orientation",
         ):
-            label_format.read(["page_max_labels"])
+            self.env["barcodes.gs1.label.options.format"].create(
+                {
+                    "name": "70 x 37 mm",
+                    "paperformat_id": paperformat.id,
+                    "label_width": 70,
+                    "label_height": 37,
+                }
+            )

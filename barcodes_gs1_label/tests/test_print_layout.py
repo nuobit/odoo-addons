@@ -1,7 +1,7 @@
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 from .common import TestCommon
 
@@ -61,6 +61,66 @@ class TestPrintLayout(TestCommon):
         product = self._create_product("Product", "2000000000015")
         with self.assertRaisesRegex(UserError, "Start row should be between 1 and 8"):
             self._print_labels(product, config, with_stock=False, start_row=0)
+
+    def test_print_on_paper_that_lost_its_size_raises(self):
+        paperformat = self.env["report.paperformat"].create(
+            {"name": "Labels paper", "format": "A4", "orientation": "Portrait"}
+        )
+        label_format = self.env["barcodes.gs1.label.options.format"].create(
+            {
+                "name": "70 x 37 mm",
+                "paperformat_id": paperformat.id,
+                "label_width": 70,
+                "label_height": 37,
+            }
+        )
+        config = self.env["barcodes.gs1.label.options.config"].create(
+            {
+                "name": "Shelf labels",
+                "format_id": label_format.id,
+                "barcode_type": "gs1-128",
+            }
+        )
+        product = self._create_product("Product", "2000000000015")
+        paperformat.format = False
+        with self.assertRaisesRegex(
+            ValidationError, "The paper format 'Labels paper' has no paper size"
+        ):
+            self._print_labels(product, config, with_stock=False)
+
+    def test_print_on_custom_paper_that_lost_its_size_raises(self):
+        paperformat = self.env["report.paperformat"].create(
+            {
+                "name": "Custom labels paper",
+                "format": "custom",
+                "page_width": 210,
+                "page_height": 297,
+                "orientation": "Portrait",
+            }
+        )
+        label_format = self.env["barcodes.gs1.label.options.format"].create(
+            {
+                "name": "70 x 37 mm",
+                "paperformat_id": paperformat.id,
+                "label_width": 70,
+                "label_height": 37,
+            }
+        )
+        config = self.env["barcodes.gs1.label.options.config"].create(
+            {
+                "name": "Shelf labels",
+                "format_id": label_format.id,
+                "barcode_type": "gs1-128",
+            }
+        )
+        product = self._create_product("Product", "2000000000015")
+        paperformat.page_width = 0
+        with self.assertRaisesRegex(
+            ValidationError,
+            "The paper format 'Custom labels paper' is custom and has no width or "
+            "height",
+        ):
+            self._print_labels(product, config, with_stock=False)
 
     def test_print_without_copies_raises(self):
         product = self._create_product("Product", "2000000000015")

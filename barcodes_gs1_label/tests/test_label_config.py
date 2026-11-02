@@ -134,6 +134,62 @@ class TestLabelConfig(TestCommon):
             "Shelf labels - A4 portrait labels (70 x 37 mm) [24] - EAN13",
         )
 
+    def test_configuration_name_on_paper_that_lost_its_size_fits_no_label(self):
+        paperformat = self.env["report.paperformat"].create(
+            {"name": "Labels paper", "format": "A4", "orientation": "Portrait"}
+        )
+        label_format = self.env["barcodes.gs1.label.options.format"].create(
+            {
+                "name": "70 x 37 mm",
+                "paperformat_id": paperformat.id,
+                "label_width": 70,
+                "label_height": 37,
+            }
+        )
+        config = self.env["barcodes.gs1.label.options.config"].create(
+            {
+                "name": "Shelf labels",
+                "format_id": label_format.id,
+                "barcode_type": "ean13",
+            }
+        )
+        # read before the paper changes, so that the change must reach it
+        self.assertEqual(
+            config.display_name, "Shelf labels - Labels paper (70 x 37 mm) [24] - EAN13"
+        )
+        paperformat.format = False
+        self.assertEqual(
+            config.display_name, "Shelf labels - Labels paper (70 x 37 mm) [0] - EAN13"
+        )
+
+    def test_configuration_name_on_paper_that_lost_its_orientation_fits_no_label(self):
+        paperformat = self.env["report.paperformat"].create(
+            {"name": "Labels paper", "format": "A4", "orientation": "Portrait"}
+        )
+        label_format = self.env["barcodes.gs1.label.options.format"].create(
+            {
+                "name": "70 x 37 mm",
+                "paperformat_id": paperformat.id,
+                "label_width": 70,
+                "label_height": 37,
+            }
+        )
+        config = self.env["barcodes.gs1.label.options.config"].create(
+            {
+                "name": "Shelf labels",
+                "format_id": label_format.id,
+                "barcode_type": "ean13",
+            }
+        )
+        # read before the paper changes, so that the change must reach it
+        self.assertEqual(
+            config.display_name, "Shelf labels - Labels paper (70 x 37 mm) [24] - EAN13"
+        )
+        paperformat.orientation = False
+        self.assertEqual(
+            config.display_name, "Shelf labels - Labels paper (70 x 37 mm) [0] - EAN13"
+        )
+
     def test_new_configuration_name_shows_only_what_is_set(self):
         config = self.env["barcodes.gs1.label.options.config"].new(
             {"name": "Shelf labels"}

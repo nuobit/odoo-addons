@@ -364,16 +364,33 @@ msgstr "El número de copias debe ser mayor que 0"
 #. odoo-python
 #: code:addons/barcodes_gs1_label/models/options_format.py:0
 #, python-format
-msgid "The paperformat '%(paper_format)s' has no format defined"
-msgstr "El formato de papel '%(paper_format)s' no tiene un formato definido"
+msgid ""
+"The paper format '%(paper_format)s' has no orientation. Set its orientation,"
+" or choose another paper format."
+msgstr ""
+"El formato de papel '%(paper_format)s' no tiene orientación. Indique su "
+"orientación o elija otro formato de papel."
 
 #. module: barcodes_gs1_label
 #. odoo-python
 #: code:addons/barcodes_gs1_label/models/options_format.py:0
 #, python-format
-msgid "The paperformat '%(paper_format)s' has no orientation defined"
+msgid ""
+"The paper format '%(paper_format)s' has no paper size. Set its paper size, "
+"or choose another paper format."
 msgstr ""
-"El formato de papel '%(paper_format)s' no tiene una orientación definida"
+"El formato de papel '%(paper_format)s' no tiene tamaño de papel. Indique su "
+"tamaño de papel o elija otro formato de papel."
+
+#. module: barcodes_gs1_label
+#. odoo-python
+#: code:addons/barcodes_gs1_label/models/options_format.py:0
+msgid ""
+"The paper format '%(paper_format)s' is custom and has no width or height. "
+"Set its width and height, or choose another paper format."
+msgstr ""
+"El formato de papel '%(paper_format)s' es personalizado y no tiene ancho o "
+"alto. Indique su ancho y su alto o elija otro formato de papel."
 
 #. module: barcodes_gs1_label
 #. odoo-python

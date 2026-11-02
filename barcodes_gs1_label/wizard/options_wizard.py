@@ -143,6 +143,7 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
 
     def print_product_barcodes(self):
         # checks
+        self.label_config_id.format_id._check_paperformat_id()
         if (
             self.start_col < 1
             or self.start_col > self.label_config_id.format_id.page_cols_max
