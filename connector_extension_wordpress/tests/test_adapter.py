@@ -195,6 +195,22 @@ class TestWordpressAdapter(TransactionComponentRegistryCase):
         self.assertEqual(posts, [{"id": 2}, {"id": 3}])
         self.assertNotIn("offset", get.call_args.kwargs)
 
+    def test_get_reads_pages_of_the_size_of_the_domain(self):
+        # the domain's page size wins over the backend's, larger here
+        self.backend.page_size = 5
+        wordpress = FakeWordpressPosts([{"id": 1}, {"id": 2}, {"id": 3}])
+        with mock.patch.object(requests, "get", side_effect=wordpress.get):
+            posts = self.adapter()._exec("get", "posts", domain=[("per_page", "=", 2)])
+        self.assertEqual(posts, [{"id": 1}, {"id": 2}, {"id": 3}])
+        self.assertEqual(
+            wordpress.queries,
+            [
+                {"per_page": 1},
+                {"offset": 0, "per_page": 2},
+                {"offset": 2, "per_page": 1},
+            ],
+        )
+
     def test_get_without_a_page_size_reads_pages_of_100(self):
         self.backend.page_size = 0
         wordpress = FakeWordpressPosts([{"id": 1}, {"id": 2}, {"id": 3}])
@@ -216,6 +232,14 @@ class TestWordpressAdapter(TransactionComponentRegistryCase):
             wordpress.queries,
             [{"offset": 0, "per_page": 100}, {"offset": 3, "per_page": 100}],
         )
+
+    def test_get_without_a_page_size_stops_at_the_limit(self):
+        self.backend.page_size = 0
+        wordpress = FakeWordpressPosts([{"id": 1}, {"id": 2}, {"id": 3}])
+        with mock.patch.object(requests, "get", side_effect=wordpress.get):
+            posts = self.adapter()._exec("get", "posts", limit=2)
+        self.assertEqual(posts, [{"id": 1}, {"id": 2}])
+        self.assertEqual(wordpress.queries, [{"offset": 0, "per_page": 2}])
 
     def test_get_sends_the_search_fields_and_filters_the_rest_here(self):
         wordpress = FakeWordpressPosts(

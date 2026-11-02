@@ -152,11 +152,12 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
             limit = self.get_total_items(resource, domain)
         # An offset clause of the domain wins over the offset argument
         params.setdefault("offset", kwargs.pop("offset", 0))
+        # A per_page clause of the domain wins over the backend's page size
         page_size = self.backend_record.page_size
-        params["per_page"] = page_size if page_size > 0 else 100
+        per_page = params.setdefault("per_page", page_size if page_size > 0 else 100)
         data = []
         while len(data) < limit:
-            if page_size > limit - len(data):
+            if per_page > limit - len(data):
                 params["per_page"] = limit - len(data)
             res = self._exec_wp_call(
                 "get",
