@@ -1,0 +1,51 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* document_page_related
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-02 09:08+0000\n"
+"PO-Revision-Date: 2026-11-02 09:08+0000\n"
+"Last-Translator: Deniz Gallo <dgallo@nuobit.com>\n"
+"Language-Team: Spanish\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: document_page_related
+#: code:addons/document_page_related/models/document_page.py:0
+#, python-format
+msgid "%s cannot be related to a category."
+msgstr "%s no se puede relacionar con una categoría."
+
+#. module: document_page_related
+#: code:addons/document_page_related/models/document_page.py:0
+#, python-format
+msgid "A category cannot have related documents: %s"
+msgstr "Una categoría no puede tener documentos relacionados: %s"
+
+#. module: document_page_related
+#: code:addons/document_page_related/models/document_page.py:0
+#, python-format
+msgid "A document cannot be related to itself: %s"
+msgstr "Un documento no puede estar relacionado consigo mismo: %s"
+
+#. module: document_page_related
+#: model:ir.model.fields,field_description:document_page_related.field_document_page__related_from_page_ids
+msgid "Cited In"
+msgstr "Citado en"
+
+#. module: document_page_related
+#: model_terms:ir.ui.view,arch_db:document_page_related.view_wiki_form_related
+msgid "Open"
+msgstr "Abrir"
+
+#. module: document_page_related
+#: model:ir.model.fields,field_description:document_page_related.field_document_page__related_page_ids
+#: model_terms:ir.ui.view,arch_db:document_page_related.view_wiki_form_related
+msgid "Related Documents"
+msgstr "Documentos relacionados"
