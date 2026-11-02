@@ -301,6 +301,40 @@ class TestWordpressAdapter(TransactionComponentRegistryCase):
             put.call_args.kwargs["auth"], ("wp_user_test", "app_password_test")
         )
 
+    def test_post_without_a_linked_wordpress_uses_its_own_credentials(self):
+        shop = self.env["connector.extension.wordpress.test.shop.backend"].create(
+            {
+                "name": "Shop Test",
+                "lang_ids": [Command.set(self.env.ref("base.lang_en").ids)],
+                "url": "https://shop.example.com",
+                "username": "shop_user_test",
+                "application_password": "shop_password_test",
+            }
+        )
+        answer = wordpress_response(201, {"id": 15})
+        with mock.patch.object(requests, "post", return_value=answer) as post:
+            self.adapter(shop)._exec("post", "media", data={"data": b"bytes"})
+        self.assertEqual(
+            post.call_args.kwargs["auth"], ("shop_user_test", "shop_password_test")
+        )
+
+    def test_put_without_a_linked_wordpress_uses_its_own_credentials(self):
+        shop = self.env["connector.extension.wordpress.test.shop.backend"].create(
+            {
+                "name": "Shop Test",
+                "lang_ids": [Command.set(self.env.ref("base.lang_en").ids)],
+                "url": "https://shop.example.com",
+                "username": "shop_user_test",
+                "application_password": "shop_password_test",
+            }
+        )
+        answer = wordpress_response(200, {"id": 15})
+        with mock.patch.object(requests, "put", return_value=answer) as put:
+            self.adapter(shop)._exec("put", "media/15", data={"data": b"bytes"})
+        self.assertEqual(
+            put.call_args.kwargs["auth"], ("shop_user_test", "shop_password_test")
+        )
+
     def test_delete_is_not_supported(self):
         with self.assertRaises(NotImplementedError):
             self.adapter()._exec("delete", "posts/15")

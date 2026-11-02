@@ -184,7 +184,10 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
 
     def _exec_post(self, resource, *args, **kwargs):
         auth = (self.backend_record.username, self.backend_record.application_password)
-        if "wordpress_backend_id" in self.backend_record:
+        if (
+            "wordpress_backend_id" in self.backend_record
+            and self.backend_record.wordpress_backend_id
+        ):
             backend = self.backend_record.wordpress_backend_id
             auth = (backend.username, backend.application_password)
         data_aux = kwargs.pop("data", {})
@@ -204,7 +207,10 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
 
     def _exec_put(self, resource, *args, **kwargs):
         auth = (self.backend_record.username, self.backend_record.application_password)
-        if "wordpress_backend_id" in self.backend_record:
+        if (
+            "wordpress_backend_id" in self.backend_record
+            and self.backend_record.wordpress_backend_id
+        ):
             backend = self.backend_record.wordpress_backend_id
             auth = (backend.username, backend.application_password)
         data_aux = kwargs.pop("data", {})
