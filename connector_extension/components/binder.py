@@ -537,7 +537,6 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
                     import_mapper_exists = False
                 if not import_mapper_exists:
                     binding = self.bind_export(record, relation)
-                    # binding[self._sync_date_field] = fields.Datetime.now()
             if not binding:
                 raise InvalidDataError(
                     f"The binding with external id {external_id} "

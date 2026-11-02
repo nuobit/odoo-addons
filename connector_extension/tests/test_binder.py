@@ -4,6 +4,8 @@
 from datetime import datetime
 from unittest import mock
 
+from freezegun import freeze_time
+
 from odoo.tools import config
 
 from odoo.addons.component.core import Component
@@ -154,6 +156,14 @@ class TestBinderEmailRelink(ConnectorExtensionBinderCase):
         self.assertEqual(binding.odoo_id, self.partner)
         self.assertEqual(binding.backend_id, self.backend)
         self.assertEqual(binding.external_id, 7)
+
+    def test_relink_without_import_mapper_dates_the_binding(self):
+        binder = self.binder(
+            remote_records=[{"id": 7, "email": "partner_test@example.com"}]
+        )
+        with freeze_time("2026-03-02 09:30:00"):
+            binding = binder.to_binding_from_internal_key(self.partner)
+        self.assertEqual(binding.sync_date, datetime(2026, 3, 2, 9, 30))
 
     def test_relink_when_the_remote_fails_binds_nothing(self):
         binder = self.binder(remote_records=[])
