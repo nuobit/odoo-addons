@@ -328,7 +328,8 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
         if not isinstance(_id, (list | tuple)):
             _id = [_id]
         for value in _id:
-            if value is None:
+            # An Odoo field never set reads False, and a text set empty is ""
+            if value is None or value is False or value == "":
                 return True
         return False
 

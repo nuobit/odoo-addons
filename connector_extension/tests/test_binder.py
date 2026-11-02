@@ -120,6 +120,12 @@ class TestBinder(ConnectorExtensionBinderCase):
             "linked via ._export_dependencies.",
         )
 
+    def test_an_id_with_a_part_given_as_none_is_null(self):
+        self.assertTrue(self.binder().is_id_null([7, None]))
+
+    def test_an_id_of_zero_is_not_null(self):
+        self.assertFalse(self.binder().is_id_null(0))
+
 
 class TestBinderEmailRelink(ConnectorExtensionBinderCase):
     """A binder whose alternative id is the e-mail, which the export mapper
@@ -174,3 +180,33 @@ class TestBinderEmailRelink(ConnectorExtensionBinderCase):
         self.assertFalse(
             self.env[BINDING_MODEL].search([("odoo_id", "=", self.partner.id)])
         )
+
+    def test_relink_without_an_email_does_not_search_the_remote(self):
+        partner = self.env["res.partner"].create({"name": "No Email Test"})
+        binder = self.binder(remote_records=[{"id": 8, "email": False}])
+        with mock.patch.object(
+            ConnectorExtensionTestAdapter,
+            "search_read",
+            autospec=True,
+            side_effect=ConnectorExtensionTestAdapter.search_read,
+        ) as search_read:
+            binding = binder.to_binding_from_internal_key(partner)
+        search_read.assert_not_called()
+        self.assertEqual(binding, self.env[BINDING_MODEL])
+        self.assertFalse(self.env[BINDING_MODEL].search([("odoo_id", "=", partner.id)]))
+
+    def test_relink_with_an_empty_email_does_not_search_the_remote(self):
+        partner = self.env["res.partner"].create(
+            {"name": "Empty Email Test", "email": ""}
+        )
+        binder = self.binder(remote_records=[{"id": 8, "email": ""}])
+        with mock.patch.object(
+            ConnectorExtensionTestAdapter,
+            "search_read",
+            autospec=True,
+            side_effect=ConnectorExtensionTestAdapter.search_read,
+        ) as search_read:
+            binding = binder.to_binding_from_internal_key(partner)
+        search_read.assert_not_called()
+        self.assertEqual(binding, self.env[BINDING_MODEL])
+        self.assertFalse(self.env[BINDING_MODEL].search([("odoo_id", "=", partner.id)]))
