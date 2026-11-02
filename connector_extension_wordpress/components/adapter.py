@@ -174,6 +174,10 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
             # WooCommerce returns a dict if the response is a single item
             if not isinstance(res["data"], list):
                 res["data"] = [res["data"]]
+            if not res["data"]:
+                # Fewer items than expected: some were deleted after the
+                # count, or the limit is above the total
+                break
             data += res["data"]
             params["offset"] += len(res["data"])
         return self._filter(data, common_domain)

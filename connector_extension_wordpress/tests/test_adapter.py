@@ -147,12 +147,47 @@ class TestWordpressAdapter(TransactionComponentRegistryCase):
             ],
         )
 
+    def test_get_stops_at_an_empty_page_before_the_total(self):
+        self.backend.page_size = 2
+        answers = [
+            wordpress_response(200, [{"id": 1}], {"X-WP-Total": "3"}),
+            wordpress_response(200, [{"id": 1}, {"id": 2}]),
+            wordpress_response(200, []),
+            AssertionError("a page was asked for after an empty one"),
+        ]
+        with mock.patch.object(requests, "get", side_effect=answers) as get:
+            posts = self.adapter()._exec("get", "posts")
+        self.assertEqual(posts, [{"id": 1}, {"id": 2}])
+        self.assertEqual(get.call_count, 3)
+
     def test_get_with_a_limit_reads_without_counting(self):
         wordpress = FakeWordpressPosts([{"id": 1}, {"id": 2}, {"id": 3}])
         with mock.patch.object(requests, "get", side_effect=wordpress.get):
             posts = self.adapter()._exec("get", "posts", limit=2)
         self.assertEqual(posts, [{"id": 1}, {"id": 2}])
         self.assertEqual(wordpress.queries, [{"offset": 0, "per_page": 2}])
+
+    def test_get_without_a_page_size_reads_pages_of_100(self):
+        self.backend.page_size = 0
+        wordpress = FakeWordpressPosts([{"id": 1}, {"id": 2}, {"id": 3}])
+        with mock.patch.object(requests, "get", side_effect=wordpress.get):
+            posts = self.adapter()._exec("get", "posts", limit=150)
+        self.assertEqual(posts, [{"id": 1}, {"id": 2}, {"id": 3}])
+        self.assertEqual(
+            wordpress.queries,
+            [{"offset": 0, "per_page": 100}, {"offset": 3, "per_page": 100}],
+        )
+
+    def test_get_with_a_negative_page_size_reads_pages_of_100(self):
+        self.backend.page_size = -1
+        wordpress = FakeWordpressPosts([{"id": 1}, {"id": 2}, {"id": 3}])
+        with mock.patch.object(requests, "get", side_effect=wordpress.get):
+            posts = self.adapter()._exec("get", "posts", limit=150)
+        self.assertEqual(posts, [{"id": 1}, {"id": 2}, {"id": 3}])
+        self.assertEqual(
+            wordpress.queries,
+            [{"offset": 0, "per_page": 100}, {"offset": 3, "per_page": 100}],
+        )
 
     def test_get_sends_the_search_fields_and_filters_the_rest_here(self):
         wordpress = FakeWordpressPosts(
