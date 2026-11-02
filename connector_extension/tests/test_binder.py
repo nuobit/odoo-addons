@@ -109,6 +109,17 @@ class TestBinder(ConnectorExtensionBinderCase):
         external_ids = self.binder().get_external_dict_ids(self.partner)
         self.assertEqual(external_ids, {"id": 7})
 
+    def test_external_ids_of_an_unbound_record_fail_naming_model_and_step(self):
+        binder = self.binder()
+        with self.assertRaises(AssertionError) as error:
+            binder.get_external_dict_ids(self.partner)
+        self.assertEqual(
+            str(error.exception),
+            "Error on res.partner: The external id cannot be obtained. "
+            "At this stage, the external record should have been already "
+            "linked via ._export_dependencies.",
+        )
+
 
 class TestBinderEmailRelink(ConnectorExtensionBinderCase):
     """A binder whose alternative id is the e-mail, which the export mapper

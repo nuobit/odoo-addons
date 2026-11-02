@@ -562,11 +562,11 @@ class ConnectorExtensionBinderComposite(AbstractComponent):
         external_id = self.to_external(relation, wrap=False)
         if check_external_id:
             assert external_id, (
-                f"Error on {relation._name}:"
-                "The external id cannot be obtained."
+                f"Error on {relation._name}: "
+                "The external id cannot be obtained. "
                 "At this stage, the external record should have "
                 "been already linked via "
-                "._export_dependencies. "
+                "._export_dependencies."
             )
         return self.id2dict(external_id, in_field=False)
 
