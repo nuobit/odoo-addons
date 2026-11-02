@@ -407,10 +407,12 @@ msgstr ""
 #. odoo-python
 #: code:addons/barcodes_gs1_label/report/report_barcode_gs1.py:0
 #, python-format
-msgid "The value of GS1 AI %(key)s is too long (max %(length)s characters)"
+msgid ""
+"The value '%(value)s' of GS1 AI %(key)s is too long (max %(length)s "
+"characters)"
 msgstr ""
-"El valor del AI GS1 %(key)s es demasiado largo (máximo %(length)s "
-"caracteres)"
+"El valor '%(value)s' del AI GS1 %(key)s es demasiado largo (máximo "
+"%(length)s caracteres)"
 
 #. module: barcodes_gs1_label
 #. odoo-python

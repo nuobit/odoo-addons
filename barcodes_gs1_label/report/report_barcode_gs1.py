@@ -383,10 +383,10 @@ class ReportGS1Barcode(models.AbstractModel):
             if len(value) > length:
                 raise ValidationError(
                     _(
-                        "The value of GS1 AI %(key)s "
+                        "The value '%(value)s' of GS1 AI %(key)s "
                         "is too long (max %(length)s characters)"
                     )
-                    % {"key": key, "length": length}
+                    % {"value": value, "key": key, "length": length}
                 )
             res.append(key + value)
             if fnc1_required and i < len(gs1):

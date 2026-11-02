@@ -383,7 +383,8 @@ class TestPrintLabels(TestCommon):
         lot = self._create_lot(product, "LOT-0123456789ABCDEFG")
         report_action = self._print_labels(lot, self.config_gs1_128, with_stock=False)
         with self.assertRaisesRegex(
-            ValidationError, "The value of GS1 AI 10 is too long"
+            ValidationError,
+            r"The value 'LOT-0123456789ABCDEFG' of GS1 AI 10 is too long \(max 20",
         ):
             self._render_labels(report_action)
 
