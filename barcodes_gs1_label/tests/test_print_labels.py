@@ -1,0 +1,343 @@
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+
+from odoo.exceptions import UserError, ValidationError
+from odoo.tests import Form, new_test_user
+
+from .common import TestCommon
+
+
+class TestPrintLabels(TestCommon):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.config_ean13 = cls.env["barcodes.gs1.label.options.config"].create(
+            {
+                "name": "EAN13",
+                "format_id": cls.label_format.id,
+                "barcode_type": "ean13",
+            }
+        )
+        cls.config_ean13_code128 = cls.env["barcodes.gs1.label.options.config"].create(
+            {
+                "name": "EAN13 + Code128",
+                "format_id": cls.label_format.id,
+                "barcode_type": "ean13-code128",
+            }
+        )
+
+    def test_product_with_stock_prints_one_label_per_unit(self):
+        product = self._create_product("Product", "2000000000015")
+        self._set_stock(product, self.stock_location, 3)
+        report_action = self._print_labels(product, self.config_gs1_128)
+        self.assertEqual(
+            self._get_label_texts(report_action),
+            ["(01)02000000000015", "(01)02000000000015", "(01)02000000000015"],
+        )
+
+    def test_product_without_stock_option_prints_one_label(self):
+        product = self._create_product("Product", "2000000000015")
+        self._set_stock(product, self.stock_location, 3)
+        report_action = self._print_labels(
+            product, self.config_gs1_128, with_stock=False
+        )
+        self.assertEqual(self._get_label_texts(report_action), ["(01)02000000000015"])
+
+    def test_product_print_wizard_proposes_the_locations_with_stock(self):
+        product = self._create_product("Product", "2000000000015")
+        shelf = self.env["stock.location"].create(
+            {"name": "Shelf", "location_id": self.stock_location.id}
+        )
+        self.env["stock.location"].create(
+            {"name": "Empty shelf", "location_id": self.stock_location.id}
+        )
+        self._set_stock(product, self.stock_location, 2)
+        self._set_stock(product, shelf, 1)
+        action = product.with_user(self.user).print_gs1_barcode_wizard()
+        wizard_form = Form(
+            self.env[action["res_model"]]
+            .with_user(self.user)
+            .with_context(active_model="product.product", active_ids=product.ids)
+        )
+        wizard_form.label_config_id = self.config_gs1_128
+        wizard = wizard_form.save()
+        self.assertEqual(wizard.stock_location_ids, self.stock_location + shelf)
+
+    def test_products_print_in_internal_reference_order(self):
+        product_b = self._create_product(
+            "Product B", "2000000000022", default_code="REF-B"
+        )
+        product_a = self._create_product(
+            "Product A", "2000000000015", default_code="REF-A"
+        )
+        report_action = self._print_labels(
+            product_b + product_a, self.config_gs1_128, with_stock=False
+        )
+        self.assertEqual(
+            self._get_label_texts(report_action),
+            ["(01)02000000000015", "(01)02000000000022"],
+        )
+
+    def test_product_with_lots_prints_one_label_per_unit_of_each_lot(self):
+        product = self._create_product("Product", "2000000000015", tracking="lot")
+        lot_b = self._create_lot(product, "LOT-B")
+        lot_a = self._create_lot(product, "LOT-A")
+        self._set_stock(product, self.stock_location, 2, lot=lot_b)
+        self._set_stock(product, self.stock_location, 1, lot=lot_a)
+        report_action = self._print_labels(product, self.config_gs1_128)
+        self.assertEqual(
+            self._get_label_texts(report_action),
+            [
+                "(01)02000000000015(10)LOT-A",
+                "(01)02000000000015(10)LOT-B",
+                "(01)02000000000015(10)LOT-B",
+            ],
+        )
+
+    def test_product_with_lots_without_stock_option_prints_one_label_per_lot(self):
+        product = self._create_product("Product", "2000000000015", tracking="lot")
+        self._create_lot(product, "LOT-B")
+        self._create_lot(product, "LOT-A")
+        report_action = self._print_labels(
+            product, self.config_gs1_128, with_stock=False
+        )
+        self.assertEqual(
+            self._get_label_texts(report_action),
+            ["(01)02000000000015(10)LOT-A", "(01)02000000000015(10)LOT-B"],
+        )
+
+    def test_product_with_serials_prints_the_lot_reference_and_the_serial(self):
+        product = self._create_product("Product", "2000000000015", tracking="serial")
+        serial = self._create_lot(product, "SN-001", ref="LOT-REF")
+        self._set_stock(product, self.stock_location, 1, lot=serial)
+        report_action = self._print_labels(product, self.config_gs1_128)
+        self.assertEqual(
+            self._get_label_texts(report_action),
+            ["(01)02000000000015(10)LOT-REF(21)SN-001"],
+        )
+
+    def test_gs1_barcode_closes_a_variable_length_value_followed_by_another(self):
+        product = self._create_product("Product", "2000000000015", tracking="serial")
+        serial = self._create_lot(product, "SN-001", ref="LOT-REF")
+        self._set_stock(product, self.stock_location, 1, lot=serial)
+        report_action = self._print_labels(product, self.config_gs1_128)
+        # FNC1 (%C3%B1) starts the code and ends the lot, not the last value
+        self.assertEqual(
+            self._render_labels(report_action).xpath(
+                "//div[hasclass('bgp-barcode-img')]/img/@src"
+            ),
+            [
+                "/report/barcode/?barcode_type=gs1-128"
+                "&value=%C3%B1010200000000001510LOT-REF%C3%B121SN-001&height=100"
+            ],
+        )
+
+    def test_gs1_datamatrix_closes_a_variable_length_value_followed_by_another(self):
+        config = self._create_config("gs1-datamatrix", 70, 37)
+        product = self._create_product("Product", "2000000000015", tracking="serial")
+        serial = self._create_lot(product, "SN-001", ref="LOT-REF")
+        self._set_stock(product, self.stock_location, 1, lot=serial)
+        report_action = self._print_labels(product, config)
+        # FNC1 (%C3%A7) starts the code and ends the lot, not the last value
+        self.assertEqual(
+            self._render_labels(report_action).xpath(
+                "//div[hasclass('bgp-barcode-img')]/img/@src"
+            ),
+            [
+                "/report/barcode/?barcode_type=gs1-datamatrix"
+                "&value=%C3%A7010200000000001510LOT-REF%C3%A721SN-001&height=100"
+            ],
+        )
+
+    def test_label_copies_repeat_each_product_and_lot_label(self):
+        product = self._create_product("Product", "2000000000015", default_code="REF-A")
+        product_with_lots = self._create_product(
+            "Product with lots", "2000000000022", default_code="REF-B", tracking="lot"
+        )
+        self._create_lot(product_with_lots, "LOT-A")
+        report_action = self._print_labels(
+            product + product_with_lots,
+            self.config_gs1_128,
+            with_stock=False,
+            label_copies=2,
+        )
+        self.assertEqual(
+            self._get_label_texts(report_action),
+            [
+                "(01)02000000000015",
+                "(01)02000000000015",
+                "(01)02000000000022(10)LOT-A",
+                "(01)02000000000022(10)LOT-A",
+            ],
+        )
+
+    def test_label_copies_do_not_repeat_serial_labels(self):
+        product = self._create_product("Product", "2000000000015", tracking="serial")
+        self._create_lot(product, "SN-001")
+        report_action = self._print_labels(
+            product, self.config_gs1_128, with_stock=False, label_copies=2
+        )
+        self.assertEqual(
+            self._get_label_texts(report_action), ["(01)02000000000015(21)SN-001"]
+        )
+
+    def test_product_in_kg_prints_the_weight_of_the_wizard(self):
+        product = self._create_product(
+            "Product",
+            "2000000000015",
+            uom_id=self.uom_kg.id,
+            uom_po_id=self.uom_kg.id,
+        )
+        report_action = self._print_labels(
+            product, self.config_gs1_128, with_stock=False, weight=10
+        )
+        self.assertEqual(
+            self._get_label_texts(report_action), ["(01)02000000000015(3100)000010"]
+        )
+
+    def test_product_in_units_ignores_the_weight_of_the_wizard(self):
+        product = self._create_product("Product", "2000000000015")
+        report_action = self._print_labels(
+            product, self.config_gs1_128, with_stock=False, weight=10
+        )
+        self.assertEqual(self._get_label_texts(report_action), ["(01)02000000000015"])
+
+    def test_weight_of_more_than_six_digits_raises(self):
+        product = self._create_product(
+            "Product",
+            "2000000000015",
+            uom_id=self.uom_kg.id,
+            uom_po_id=self.uom_kg.id,
+        )
+        report_action = self._print_labels(
+            product, self.config_gs1_128, with_stock=False, weight=1234.567
+        )
+        with self.assertRaisesRegex(
+            UserError, "The weight specified '1234.567' is too large"
+        ):
+            self._render_labels(report_action)
+
+    def test_weight_with_six_decimals_raises(self):
+        product = self._create_product(
+            "Product",
+            "2000000000015",
+            uom_id=self.uom_kg.id,
+            uom_po_id=self.uom_kg.id,
+        )
+        report_action = self._print_labels(
+            product, self.config_gs1_128, with_stock=False, weight=0.123456
+        )
+        with self.assertRaisesRegex(
+            ValidationError, "The GS1 AI 3106 is not defined in GS1 AI format"
+        ):
+            self._render_labels(report_action)
+
+    def test_lot_print_wizard_proposes_the_locations_with_stock(self):
+        product = self._create_product("Product", "2000000000015", tracking="lot")
+        lot = self._create_lot(product, "LOT-A")
+        other_lot = self._create_lot(product, "LOT-B")
+        shelf = self.env["stock.location"].create(
+            {"name": "Shelf", "location_id": self.stock_location.id}
+        )
+        other_shelf = self.env["stock.location"].create(
+            {"name": "Other shelf", "location_id": self.stock_location.id}
+        )
+        self.env["stock.location"].create(
+            {"name": "Empty shelf", "location_id": self.stock_location.id}
+        )
+        self._set_stock(product, self.stock_location, 2, lot=lot)
+        self._set_stock(product, shelf, 1, lot=lot)
+        # the same product, but another lot
+        self._set_stock(product, other_shelf, 4, lot=other_lot)
+        action = lot.with_user(self.user).print_gs1_barcode_wizard()
+        wizard_form = Form(
+            self.env[action["res_model"]]
+            .with_user(self.user)
+            .with_context(active_model="stock.lot", active_ids=lot.ids)
+        )
+        wizard_form.label_config_id = self.config_gs1_128
+        wizard = wizard_form.save()
+        self.assertEqual(wizard.stock_location_ids, self.stock_location + shelf)
+
+    def test_lot_with_stock_prints_one_label_per_unit(self):
+        product = self._create_product("Product", "2000000000015", tracking="lot")
+        lot_a = self._create_lot(product, "LOT-A")
+        lot_b = self._create_lot(product, "LOT-B")
+        self._set_stock(product, self.stock_location, 2, lot=lot_a)
+        self._set_stock(product, self.stock_location, 1, lot=lot_b)
+        report_action = self._print_labels(lot_a, self.config_gs1_128)
+        self.assertEqual(
+            self._get_label_texts(report_action),
+            ["(01)02000000000015(10)LOT-A", "(01)02000000000015(10)LOT-A"],
+        )
+
+    def test_lot_in_kg_prints_the_weight_of_the_wizard(self):
+        product = self._create_product(
+            "Product",
+            "2000000000015",
+            tracking="lot",
+            uom_id=self.uom_kg.id,
+            uom_po_id=self.uom_kg.id,
+        )
+        lot = self._create_lot(product, "LOT-A")
+        report_action = self._print_labels(
+            lot, self.config_gs1_128, with_stock=False, weight=0.75
+        )
+        self.assertEqual(
+            self._get_label_texts(report_action),
+            ["(01)02000000000015(10)LOT-A(3102)000075"],
+        )
+
+    def test_lot_name_longer_than_twenty_characters_raises(self):
+        product = self._create_product("Product", "2000000000015", tracking="lot")
+        lot = self._create_lot(product, "LOT-0123456789ABCDEFG")
+        report_action = self._print_labels(lot, self.config_gs1_128, with_stock=False)
+        with self.assertRaisesRegex(
+            ValidationError, "The value of GS1 AI 10 is too long"
+        ):
+            self._render_labels(report_action)
+
+    def test_quant_prints_one_label_per_unit(self):
+        product = self._create_product("Product", "2000000000015")
+        self._set_stock(product, self.stock_location, 2)
+        quant = self.env["stock.quant"].search(
+            [
+                ("product_id", "=", product.id),
+                ("location_id", "=", self.stock_location.id),
+            ]
+        )
+        report_action = self._print_labels(quant, self.config_gs1_128)
+        self.assertEqual(
+            self._get_label_texts(report_action),
+            ["(01)02000000000015", "(01)02000000000015"],
+        )
+
+    def test_ean13_code128_prints_the_product_and_the_lot_barcodes(self):
+        product = self._create_product("Product", "2000000000015", tracking="lot")
+        self._create_lot(product, "LOT-A")
+        report_action = self._print_labels(
+            product, self.config_ean13_code128, with_stock=False
+        )
+        self.assertEqual(
+            self._render_labels(report_action).xpath(
+                "//div[hasclass('bgp-barcode-img')]/img/@src"
+            ),
+            [
+                "/report/barcode/?barcode_type=EAN13&quiet=0&value=2000000000015"
+                "&height=80",
+                "/report/barcode/?barcode_type=Code128&quiet=0&value=LOT-A&height=80",
+            ],
+        )
+
+    def test_ean13_prints_the_product_barcode(self):
+        product = self._create_product("Product", "2000000000015")
+        report_action = self._print_labels(product, self.config_ean13, with_stock=False)
+        self.assertEqual(
+            self._render_labels(report_action).xpath(
+                "//div[hasclass('bgp-barcode-img')]/img/@src"
+            ),
+            [
+                "/report/barcode/?barcode_type=EAN13&quiet=0&value=2000000000015"
+                "&height=80"
+            ],
+        )
