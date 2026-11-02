@@ -1,0 +1,53 @@
+# Copyright 2026 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+
+import logging
+
+from odoo.exceptions import ValidationError
+
+from .test_common import TestCommon
+
+_logger = logging.getLogger(__name__)
+
+
+class TestStockQuant(TestCommon):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+
+    def test_unique_lot_constraint_at_flowable_location(self):
+        """
+        Test that having more than one positive lot quant at a flowable location
+        raises a ValidationError.
+
+        A user who does two successive inventory adjustments at the same
+        flowable location with different lots should be blocked on the second.
+
+        PRE:    - A flowable location with stock from a first lot (via inventory)
+        ACT:    - Perform a second inventory adjustment adding a different lot
+        POST:   - ValidationError is raised about duplicate lots
+        """
+        # ARRANGE — first lot via inventory adjustment
+        lot_1 = self._create_lot(self.product_flowable_1, "QUANT-LOT-1")
+        self._create_inventory_adjustment(
+            self.location_flowable_1, self.product_flowable_1, lot_1, 100
+        )
+
+        # ACT — second lot via inventory adjustment
+        lot_2 = self._create_lot(self.product_flowable_1, "QUANT-LOT-2")
+
+        # ASSERT
+        with self.assertRaises(ValidationError) as error:
+            self.env["stock.quant"].with_context(inventory_mode=True).create(
+                {
+                    "product_id": self.product_flowable_1.id,
+                    "location_id": self.location_flowable_1.id,
+                    "lot_id": lot_2.id,
+                    "inventory_quantity": 50,
+                }
+            ).action_apply_inventory()
+
+        msg_error = "You cannot have more than one lot in the same location."
+        msg_error = self.get_error_message_regex(msg_error)
+        self.assertRegex(error.exception.args[0], msg_error)
