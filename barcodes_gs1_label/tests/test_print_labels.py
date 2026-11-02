@@ -429,3 +429,34 @@ class TestPrintLabels(TestCommon):
                 product.ids,
                 data={"barcode_type": "gs1-128"},
             )
+
+    def test_gs1_128_label_with_nothing_to_encode_shows_the_product(self):
+        product = self._create_product("Product C", False, default_code="REF-C")
+        report_action = self._print_labels(
+            product, self.config_gs1_128, with_stock=False
+        )
+        cells = self._render_labels(report_action).xpath("//div[hasclass('bgp-cell')]")
+        label = cells[0]
+        self.assertEqual(
+            [
+                " ".join(label.xpath(f"string(.//div[hasclass('{css}')])").split())
+                for css in ("bgp-sku", "bgp-description")
+            ],
+            ["REF-C", "Product C"],
+        )
+        self.assertFalse(label.xpath(".//div[hasclass('bgp-barcode')]"))
+
+    def test_gs1_datamatrix_label_with_nothing_to_encode_shows_the_product(self):
+        product = self._create_product("Product C", False, default_code="REF-C")
+        config = self._create_config("gs1-datamatrix", 70, 37)
+        report_action = self._print_labels(product, config, with_stock=False)
+        cells = self._render_labels(report_action).xpath("//div[hasclass('bgp-cell')]")
+        label = cells[0]
+        self.assertEqual(
+            [
+                " ".join(label.xpath(f"string(.//div[hasclass('{css}')])").split())
+                for css in ("bgp-sku", "bgp-description")
+            ],
+            ["REF-C", "Product C"],
+        )
+        self.assertFalse(label.xpath(".//div[hasclass('bgp-barcode')]"))

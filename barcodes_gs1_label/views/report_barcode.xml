@@ -2,6 +2,7 @@
 <!-- Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
      Copyright 2025-2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
      Copyright 2025 NuoBiT Solutions SL - Bijaya Kumal <bkumal@nuobit.com>
+     Copyright 2020 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <!-- ========================== COMMON ============================== -->
@@ -197,16 +198,14 @@
                                         <t
                                             t-if="barcode_type in ('gs1-datamatrix', 'gs1-128')"
                                         >
-                                            <t t-if="barcode_values">
-                                                <t
-                                                    t-if="barcode_type == 'gs1-datamatrix'"
-                                                    t-call="barcodes_gs1_label.layout_gs1datamatrix1"
-                                                />
-                                                <t
-                                                    t-if="barcode_type == 'gs1-128'"
-                                                    t-call="barcodes_gs1_label.layout_gs1code128"
-                                                />
-                                            </t>
+                                            <t
+                                                t-if="barcode_type == 'gs1-datamatrix'"
+                                                t-call="barcodes_gs1_label.layout_gs1datamatrix1"
+                                            />
+                                            <t
+                                                t-if="barcode_type == 'gs1-128'"
+                                                t-call="barcodes_gs1_label.layout_gs1code128"
+                                            />
                                         </t>
                                         <t
                                             t-if="barcode_type == 'ean13-code128'"
