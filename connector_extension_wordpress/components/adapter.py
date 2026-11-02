@@ -62,10 +62,17 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
         return res_data
 
     def _exec_wp_call(self, op, resource, *args, **kwargs):
-        url = self.backend_record.url + "/wp-json/wp/v2/" + resource
+        backend = self._get_wordpress_backend()
+        url = backend.url + "/wp-json/wp/v2/" + resource
         func = getattr(requests, op)
         try:
-            res = func(url, *args, **kwargs)
+            res = func(
+                url,
+                *args,
+                auth=(backend.username, backend.application_password),
+                verify=backend.verify_ssl,
+                **kwargs,
+            )
             res_data = res.json()
             res_data = self._manage_error_codes(
                 op, res_data, res, resource, *args, **kwargs
@@ -101,16 +108,7 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
         params = self._domain_to_normalized_dict(real_domain)
         # TODO: make an optimization to get the total items and use the result
         params["per_page"] = 1
-        result = self._exec_wp_call(
-            "get",
-            resource,
-            auth=(
-                self.backend_record.username,
-                self.backend_record.application_password,
-            ),
-            params=params,
-            verify=self.backend_record.verify_ssl,
-        )
+        result = self._exec_wp_call("get", resource, params=params)
 
         total_items_header = result["headers"]._store.get("x-wp-total")
         if total_items_header:
@@ -125,17 +123,7 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
     # TODO: REVIEW: Unify with connector_extension_woocommerce
     def _exec_get(self, resource, *args, **kwargs):
         if resource == "system_status":
-            return self._exec_wp_call(
-                "get",
-                resource,
-                *args,
-                auth=(
-                    self.backend_record.username,
-                    self.backend_record.application_password,
-                ),
-                verify=self.backend_record.verify_ssl,
-                **kwargs,
-            )
+            return self._exec_wp_call("get", resource, *args, **kwargs)
         # WooCommerce has the parameter next on the response headers
         # to get the next page but we can't use it because if we use
         # the offset, the next page will have the same items as the first page.
@@ -152,25 +140,15 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
             limit = self.get_total_items(resource, domain)
         # An offset clause of the domain wins over the offset argument
         params.setdefault("offset", kwargs.pop("offset", 0))
-        # A per_page clause of the domain wins over the backend's page size
-        page_size = self.backend_record.page_size
+        # A per_page clause of the domain wins over the page size of the
+        # backend the call reaches
+        page_size = self._get_wordpress_backend().page_size
         per_page = params.setdefault("per_page", page_size if page_size > 0 else 100)
         data = []
         while len(data) < limit:
             if per_page > limit - len(data):
                 params["per_page"] = limit - len(data)
-            res = self._exec_wp_call(
-                "get",
-                resource,
-                *args,
-                params=params,
-                auth=(
-                    self.backend_record.username,
-                    self.backend_record.application_password,
-                ),
-                verify=self.backend_record.verify_ssl,
-                **kwargs,
-            )
+            res = self._exec_wp_call("get", resource, *args, params=params, **kwargs)
             # WooCommerce returns a dict if the response is a single item
             if not isinstance(res["data"], list):
                 res["data"] = [res["data"]]
@@ -182,9 +160,10 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
             params["offset"] += len(res["data"])
         return self._filter(data, common_domain)
 
-    def _get_auth(self):
-        """The credentials POST and PUT send: those of the linked WordPress
-        backend when one is set, else the backend's own."""
+    def _get_wordpress_backend(self):
+        """The backend every call reaches, with its site, its credentials and
+        its SSL check: the linked WordPress backend when one is set, else the
+        backend itself."""
         backend = self.backend_record
         if "wordpress_backend_id" in backend and backend.wordpress_backend_id:
             backend = backend.wordpress_backend_id
@@ -196,10 +175,9 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
                 )
                 % {"backend": backend.display_name}
             )
-        return (backend.username, backend.application_password)
+        return backend
 
     def _exec_post(self, resource, *args, **kwargs):
-        auth = self._get_auth()
         data_aux = kwargs.pop("data", {})
         headers = data_aux.pop("headers", {})
         data = data_aux.pop("data", {})
@@ -209,14 +187,11 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
             data=data,
             params=data_aux,
             headers=headers,
-            auth=auth,
-            verify=self.backend_record.verify_ssl,
         )
 
         return res["data"]
 
     def _exec_put(self, resource, *args, **kwargs):
-        auth = self._get_auth()
         data_aux = kwargs.pop("data", {})
         headers = data_aux.pop("headers", {})
         data = data_aux.pop("data", {})
@@ -227,8 +202,6 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
             data=data,
             params=data_aux,
             headers=headers,
-            auth=auth,
-            verify=self.backend_record.verify_ssl,
             **kwargs,
         )
         return res["data"]
