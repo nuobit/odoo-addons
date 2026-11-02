@@ -86,7 +86,56 @@ class TestLabelConfig(TestCommon):
         self.assertEqual(wizard_form.label_config_id, config)
 
     def test_configuration_name_shows_its_format_and_barcode_type(self):
-        self.assertEqual(
-            self.config_gs1_128.display_name,
-            "GS1-128 - A4 portrait labels (70 x 37 mm) [24] - gs1-128",
+        config = self.env["barcodes.gs1.label.options.config"].create(
+            {
+                "name": "Shelf labels",
+                "format_id": self.label_format.id,
+                "barcode_type": "ean13-code128",
+            }
         )
+        self.assertEqual(
+            config.display_name,
+            "Shelf labels - A4 portrait labels (70 x 37 mm) [24] - EAN13 + Code128",
+        )
+
+    def test_configuration_name_follows_its_paper(self):
+        config = self.env["barcodes.gs1.label.options.config"].create(
+            {
+                "name": "Shelf labels",
+                "format_id": self.label_format.id,
+                "barcode_type": "ean13-code128",
+            }
+        )
+        self.assertEqual(
+            config.display_name,
+            "Shelf labels - A4 portrait labels (70 x 37 mm) [24] - EAN13 + Code128",
+        )
+        self.label_format.paperformat_id.name = "A4 shelf labels"
+        self.assertEqual(
+            config.display_name,
+            "Shelf labels - A4 shelf labels (70 x 37 mm) [24] - EAN13 + Code128",
+        )
+
+    def test_configuration_name_follows_its_barcode_type(self):
+        config = self.env["barcodes.gs1.label.options.config"].create(
+            {
+                "name": "Shelf labels",
+                "format_id": self.label_format.id,
+                "barcode_type": "ean13-code128",
+            }
+        )
+        self.assertEqual(
+            config.display_name,
+            "Shelf labels - A4 portrait labels (70 x 37 mm) [24] - EAN13 + Code128",
+        )
+        config.barcode_type = "ean13"
+        self.assertEqual(
+            config.display_name,
+            "Shelf labels - A4 portrait labels (70 x 37 mm) [24] - EAN13",
+        )
+
+    def test_new_configuration_name_shows_only_what_is_set(self):
+        config = self.env["barcodes.gs1.label.options.config"].new(
+            {"name": "Shelf labels"}
+        )
+        self.assertEqual(config.display_name, "Shelf labels")

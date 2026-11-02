@@ -74,9 +74,21 @@ class BarcodesGS1LabelOptionsConfig(models.Model):
         "format_id.page_max_labels",
     )
     def _compute_display_name(self):
+        barcode_type_labels = dict(
+            self._fields["barcode_type"]._description_selection(self.env)
+        )
         for rec in self:
-            rec.display_name = (
-                f"{rec.name} - {rec.format_id.paperformat_id.name} "
-                f"({rec.format_id.label_width:g} x {rec.format_id.label_height:g} mm) "
-                f"[{rec.format_id.page_max_labels}] - {rec.barcode_type}"
+            label_format = rec.format_id
+            format_part = (
+                f"{label_format.paperformat_id.name} "
+                f"({label_format.label_width:g} x {label_format.label_height:g} mm) "
+                f"[{label_format.page_max_labels}]"
+                if label_format
+                else None
+            )
+            barcode_type_part = (
+                barcode_type_labels[rec.barcode_type] if rec.barcode_type else None
+            )
+            rec.display_name = " - ".join(
+                part for part in (rec.name, format_part, barcode_type_part) if part
             )
