@@ -29,32 +29,53 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
         self, op, res_data, res, resource, *args, raise_on_error=True, **kwargs
     ):
         if not res.ok:
-            error_message = None
-            if res.status_code == 404:
-                if res_data.get("code") == "rest_post_invalid_id":
+            # WordPress answers an error with an object that holds its code
+            # and its message
+            if (
+                isinstance(res_data, dict)
+                and "code" in res_data
+                and "message" in res_data
+            ):
+                if (
+                    res.status_code == 404
+                    and res_data["code"] == "rest_post_invalid_id"
+                ):
                     error_message = _(
                         "Error: '%(message)s'. Probably the %(resource)s has been "
                         "removed from WordPress. "
                         "If it's the case, try to remove the binding of the %(model)s."
                     ) % {
-                        "message": res_data.get("message"),
+                        "message": res_data["message"],
                         "resource": resource,
                         "model": self.model._name,
                     }
-            elif res.status_code == 500:
-                if res_data.get("code") == "rest_upload_sideload_error":
+                elif (
+                    res.status_code == 500
+                    and res_data["code"] == "rest_upload_sideload_error"
+                ):
                     error_message = _(
                         "Error: '%(message)s'. Probably the image or document "
                         "is uploaded with bad format. "
                         "Please, review on database: %(resource)s"
                     ) % {
                         "message": res_data["message"],
-                        "resource": kwargs["headers"],
+                        "resource": ", ".join(
+                            f"{name}: {value}"
+                            for name, value in kwargs["headers"].items()
+                        ),
                     }
-            if not error_message:
-                error_message = _("Error: %(message)s, Resource: %(resource)s") % {
-                    "message": res_data,
+                else:
+                    error_message = _(
+                        "WordPress error %(code)s on %(resource)s: %(message)s"
+                    ) % {
+                        "code": res_data["code"],
+                        "message": res_data["message"],
+                        "resource": resource,
+                    }
+            else:
+                error_message = _("WordPress error on %(resource)s: %(answer)s") % {
                     "resource": resource,
+                    "answer": res.text,
                 }
             if raise_on_error:
                 raise ValidationError(error_message)

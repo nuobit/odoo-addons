@@ -602,33 +602,53 @@ class TestWordpressAdapter(TransactionComponentRegistryCase):
                 "message": "Sorry, this file type is not permitted.",
             },
         )
-        headers = {"Content-Disposition": "attachment; filename=a.png"}
+        headers = {
+            "Content-Disposition": "attachment; filename=a.png",
+            "Content-Type": "image/png",
+        }
         with mock.patch.object(requests, "post", return_value=answer):
-            with self.assertRaisesRegex(
-                ValidationError,
-                r"file type is not permitted.*bad format.*filename=a\.png",
-            ):
+            with self.assertRaises(ValidationError) as error:
                 self.adapter()._exec(
                     "post", "media", data={"headers": headers, "data": b"bytes"}
                 )
+        self.assertEqual(
+            str(error.exception),
+            "Error: 'Sorry, this file type is not permitted.'. Probably the image "
+            "or document is uploaded with bad format. Please, review on database: "
+            "Content-Disposition: attachment; filename=a.png, Content-Type: image/png",
+        )
 
-    def test_other_errors_report_the_answer_and_the_resource(self):
+    def test_other_errors_report_the_code_and_the_message(self):
         answer = wordpress_response(
             400, {"code": "rest_invalid_param", "message": "Invalid parameter(s)."}
         )
         with mock.patch.object(requests, "get", return_value=answer):
-            with self.assertRaisesRegex(
-                ValidationError, r"rest_invalid_param.*Resource: posts"
-            ):
+            with self.assertRaises(ValidationError) as error:
                 self.adapter()._exec("get", "posts", limit=1)
+        self.assertEqual(
+            str(error.exception),
+            "WordPress error rest_invalid_param on posts: Invalid parameter(s).",
+        )
+
+    def test_an_answer_that_is_not_a_wordpress_error_shows_its_text(self):
+        answer = wordpress_response(404, ["Not found"])
+        with mock.patch.object(requests, "get", return_value=answer):
+            with self.assertRaises(ValidationError) as error:
+                self.adapter()._exec("get", "posts", limit=1)
+        self.assertEqual(
+            str(error.exception), 'WordPress error on posts: ["Not found"]'
+        )
 
     def test_an_error_is_returned_as_text_when_not_raising(self):
-        answer = wordpress_response(400, {"code": "rest_invalid_param"})
+        answer = wordpress_response(
+            400, {"code": "rest_invalid_param", "message": "Invalid parameter(s)."}
+        )
         message = self.adapter()._manage_error_codes(
             "get", answer.json(), answer, "posts", raise_on_error=False
         )
         self.assertEqual(
-            message, "Error: {'code': 'rest_invalid_param'}, Resource: posts"
+            message,
+            "WordPress error rest_invalid_param on posts: Invalid parameter(s).",
         )
 
     def test_an_unreachable_site_is_retried_later(self):

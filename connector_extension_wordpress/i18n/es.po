@@ -34,12 +34,6 @@ msgstr ""
 #. module: connector_extension_wordpress
 #. odoo-python
 #: code:addons/connector_extension_wordpress/components/adapter.py:0
-msgid "Error: %(message)s, Resource: %(resource)s"
-msgstr "Error: %(message)s, Recurso: %(resource)s"
-
-#. module: connector_extension_wordpress
-#. odoo-python
-#: code:addons/connector_extension_wordpress/components/adapter.py:0
 msgid ""
 "Error: '%(message)s'. Probably the %(resource)s has been removed from "
 "WordPress. If it's the case, try to remove the binding of the %(model)s."
@@ -67,6 +61,18 @@ msgid ""
 msgstr ""
 "El backend %(backend)s no puede hacer llamadas a WordPress hasta que se le "
 "elija un backend de WordPress."
+
+#. module: connector_extension_wordpress
+#. odoo-python
+#: code:addons/connector_extension_wordpress/components/adapter.py:0
+msgid "WordPress error %(code)s on %(resource)s: %(message)s"
+msgstr "Error %(code)s de WordPress en el recurso %(resource)s: %(message)s"
+
+#. module: connector_extension_wordpress
+#. odoo-python
+#: code:addons/connector_extension_wordpress/components/adapter.py:0
+msgid "WordPress error on %(resource)s: %(answer)s"
+msgstr "Error de WordPress en el recurso %(resource)s: %(answer)s"
 
 #. module: connector_extension_wordpress
 #. odoo-python
