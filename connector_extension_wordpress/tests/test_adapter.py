@@ -178,6 +178,32 @@ class TestWordpressAdapter(TransactionComponentRegistryCase):
         self.assertEqual(posts, [{"id": 2}, {"id": 3}])
         self.assertEqual(wordpress.queries, [{"offset": 1, "per_page": 2}])
 
+    def test_get_from_the_domain_offset_asks_no_page_past_the_end(self):
+        wordpress = FakeWordpressPosts([{"id": 1}, {"id": 2}, {"id": 3}])
+        with mock.patch.object(requests, "get", side_effect=wordpress.get):
+            posts = self.adapter()._exec("get", "posts", domain=[("offset", "=", 1)])
+        self.assertEqual(posts, [{"id": 2}, {"id": 3}])
+        self.assertEqual(
+            wordpress.queries,
+            [
+                {"offset": 1, "per_page": 1},
+                {"offset": 1, "per_page": 2},
+            ],
+        )
+
+    def test_get_from_the_offset_argument_asks_no_page_past_the_end(self):
+        wordpress = FakeWordpressPosts([{"id": 1}, {"id": 2}, {"id": 3}])
+        with mock.patch.object(requests, "get", side_effect=wordpress.get):
+            posts = self.adapter()._exec("get", "posts", offset=1)
+        self.assertEqual(posts, [{"id": 2}, {"id": 3}])
+        self.assertEqual(
+            wordpress.queries,
+            [
+                {"per_page": 1},
+                {"offset": 1, "per_page": 2},
+            ],
+        )
+
     def test_get_starts_at_the_offset_argument(self):
         wordpress = FakeWordpressPosts([{"id": 1}, {"id": 2}, {"id": 3}])
         with mock.patch.object(requests, "get", side_effect=wordpress.get) as get:

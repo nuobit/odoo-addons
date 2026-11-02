@@ -134,12 +134,13 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
         search_fields = self._get_search_fields()
         real_domain, common_domain = self._extract_domain_clauses(domain, search_fields)
         params = self._domain_to_normalized_dict(real_domain)
+        # An offset clause of the domain wins over the offset argument
+        params.setdefault("offset", kwargs.pop("offset", 0))
         if "limit" in kwargs:
             limit = kwargs.pop("limit")
         else:
-            limit = self.get_total_items(resource, domain)
-        # An offset clause of the domain wins over the offset argument
-        params.setdefault("offset", kwargs.pop("offset", 0))
+            # WordPress counts every item of the query, whatever its offset
+            limit = self.get_total_items(resource, domain) - params["offset"]
         # A per_page clause of the domain wins over the page size of the
         # backend the call reaches
         page_size = self._get_wordpress_backend().page_size
