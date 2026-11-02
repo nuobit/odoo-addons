@@ -119,26 +119,6 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
                             .mapped("location_id")
                         )
                     wizard.stock_location_ids = locations
-                elif model == "stock.location":
-                    locations = self.env["stock.location"]
-                    for doc in (
-                        self.env[model]
-                        .browse(ids)
-                        .sorted(lambda x: x.parent_path or "")
-                    ):
-                        locations |= (
-                            self.env["stock.quant"]
-                            .search(
-                                [
-                                    ("location_id.usage", "=", "internal"),
-                                    ("location_id", "child_of", doc.ids),
-                                    ("quantity", ">", 0),
-                                    ("company_id", "=", self.env.company.id),
-                                ]
-                            )
-                            .mapped("location_id")
-                        )
-                    wizard.stock_location_ids = locations
                 else:
                     wizard.stock_location_ids = all_locs
             else:
