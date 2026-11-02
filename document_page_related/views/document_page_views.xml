@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="view_wiki_form_related" model="ir.ui.view">
+        <field name="name">document.page.form.related</field>
+        <field name="model">document.page</field>
+        <field name="inherit_id" ref="document_page.view_wiki_form" />
+        <!-- applied after the views that add their tab with the default priority -->
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page
+                    name="related_documents"
+                    string="Related Documents"
+                    groups="knowledge.group_document_user"
+                    attrs="{'invisible': [('type', '!=', 'content')]}"
+                >
+                    <field name="related_page_ids" options="{'no_create': True}">
+                        <tree>
+                            <field name="name" />
+                            <field name="parent_id" />
+                            <button
+                                name="action_open_page"
+                                type="object"
+                                icon="fa-arrow-right"
+                                string="Open"
+                            />
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
