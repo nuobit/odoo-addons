@@ -181,7 +181,9 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
             params["offset"] += len(res["data"])
         return self._filter(data, common_domain)
 
-    def _exec_post(self, resource, *args, **kwargs):
+    def _get_auth(self):
+        """The credentials POST and PUT send: those of the linked WordPress
+        backend when one is set, else the backend's own."""
         auth = (self.backend_record.username, self.backend_record.application_password)
         if (
             "wordpress_backend_id" in self.backend_record
@@ -189,6 +191,10 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
         ):
             backend = self.backend_record.wordpress_backend_id
             auth = (backend.username, backend.application_password)
+        return auth
+
+    def _exec_post(self, resource, *args, **kwargs):
+        auth = self._get_auth()
         data_aux = kwargs.pop("data", {})
         headers = data_aux.pop("headers", {})
         data = data_aux.pop("data", {})
@@ -205,13 +211,7 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
         return res["data"]
 
     def _exec_put(self, resource, *args, **kwargs):
-        auth = (self.backend_record.username, self.backend_record.application_password)
-        if (
-            "wordpress_backend_id" in self.backend_record
-            and self.backend_record.wordpress_backend_id
-        ):
-            backend = self.backend_record.wordpress_backend_id
-            auth = (backend.username, backend.application_password)
+        auth = self._get_auth()
         data_aux = kwargs.pop("data", {})
         headers = data_aux.pop("headers", {})
         data = data_aux.pop("data", {})
