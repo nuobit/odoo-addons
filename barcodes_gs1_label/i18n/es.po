@@ -128,13 +128,6 @@ msgid "Dynamic Ratio"
 msgstr "Relación dinámica"
 
 #. module: barcodes_gs1_label
-#. odoo-python
-#: code:addons/barcodes_gs1_label/report/report_barcode_gs1.py:0
-#, python-format
-msgid "Expected data to be passed to the report"
-msgstr "Se esperaba que se pasaran datos al informe"
-
-#. module: barcodes_gs1_label
 #: model:ir.actions.act_window,name:barcodes_gs1_label.barcodes_gs1_label_options_format_action
 #: model:ir.ui.menu,name:barcodes_gs1_label.barcodes_gs1_label_options_format_menu
 msgid "Formats"
@@ -341,6 +334,17 @@ msgstr "La fila inicial debe estar entre %(min_row)i y %(max_row)i"
 #, python-format
 msgid "The GS1 AI %s is not defined in GS1 AI format"
 msgstr "El AI GS1 %s no está definido en el formato AI GS1"
+
+#. module: barcodes_gs1_label
+#. odoo-python
+#: code:addons/barcodes_gs1_label/report/report_barcode_gs1.py:0
+#, python-format
+msgid ""
+"The labels are printed with the options of the print wizard: open it from "
+"the records and choose the label options."
+msgstr ""
+"Las etiquetas se imprimen con las opciones del asistente de impresión: "
+"ábralo desde los registros y elija las opciones de la etiqueta."
 
 #. module: barcodes_gs1_label
 #. odoo-python

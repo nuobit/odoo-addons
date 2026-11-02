@@ -407,3 +407,25 @@ class TestPrintLabels(TestCommon):
                 "&height=80"
             ],
         )
+
+    def test_labels_report_without_the_print_wizard_raises(self):
+        product = self._create_product("Product", "2000000000015")
+        with self.assertRaisesRegex(
+            UserError,
+            "The labels are printed with the options of the print wizard: "
+            "open it from the records and choose the label options.",
+        ):
+            self.env["ir.actions.report"].with_user(self.user)._render_qweb_pdf(
+                "barcodes_gs1_label.action_report_product_gs1_barcodes", product.ids
+            )
+
+    def test_labels_report_with_options_not_from_the_print_wizard_raises(self):
+        product = self._create_product("Product", "2000000000015")
+        with self.assertRaisesRegex(
+            UserError, "The labels are printed with the options of the print wizard"
+        ):
+            self.env["ir.actions.report"].with_user(self.user)._render_qweb_pdf(
+                "barcodes_gs1_label.action_report_product_gs1_barcodes",
+                product.ids,
+                data={"barcode_type": "gs1-128"},
+            )

@@ -224,6 +224,7 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
         padding_height_mm = self.label_config_id.format_id.sheet_height - max_height_mm
 
         data = {
+            "from_print_wizard": True,
             "ids": self.env.context.get("active_ids"),
             "model": model,
             "lang_id": 1,

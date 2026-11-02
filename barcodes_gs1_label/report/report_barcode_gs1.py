@@ -383,8 +383,15 @@ class ReportGS1Barcode(models.AbstractModel):
 
     @api.model  # noqa: C901
     def _get_report_values(self, docids, data=None):  # noqa: C901
-        if not data:
-            raise UserError(_("Expected data to be passed to the report"))
+        # Odoo always adds the report type to the data; the label options come
+        # only from the print wizard, which marks them
+        if not data or "from_print_wizard" not in data:
+            raise UserError(
+                _(
+                    "The labels are printed with the options of the print wizard: "
+                    "open it from the records and choose the label options."
+                )
+            )
 
         # format params
         barcode_type = data["barcode_type"]
