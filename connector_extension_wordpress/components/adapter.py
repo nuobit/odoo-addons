@@ -92,6 +92,8 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
         return ["modified_after", "offset", "per_page", "page"]
 
     def get_total_items(self, resource, domain=None):
+        if domain is None:
+            domain = []
         filters_values = self._get_search_fields()
         real_domain, common_domain = self._extract_domain_clauses(
             domain, filters_values

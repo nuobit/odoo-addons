@@ -173,6 +173,13 @@ class TestWordpressAdapter(TransactionComponentRegistryCase):
             ],
         )
 
+    def test_total_items_without_a_domain_count_every_post(self):
+        wordpress = FakeWordpressPosts([{"id": 1}, {"id": 2}, {"id": 3}])
+        with mock.patch.object(requests, "get", side_effect=wordpress.get):
+            total = self.adapter().get_total_items("posts")
+        self.assertEqual(total, 3)
+        self.assertEqual(wordpress.queries, [{"per_page": 1}])
+
     def test_version_names_the_wordpress_site(self):
         settings = wordpress_response(200, {"title": "Test Site"})
         with mock.patch.object(requests, "get", return_value=settings):
