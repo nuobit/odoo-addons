@@ -279,9 +279,23 @@ class TestPrintLabels(TestCommon):
             product, self.config_gs1_128, with_stock=False, weight=1234.567
         )
         with self.assertRaisesRegex(
-            UserError, "The weight specified '1234.567' is too large"
+            UserError, "The weight 1234.567 kg has more digits than the 6"
         ):
             self._render_labels(report_action)
+
+    def test_weight_with_five_decimals_prints_them(self):
+        product = self._create_product(
+            "Product",
+            "2000000000015",
+            uom_id=self.uom_kg.id,
+            uom_po_id=self.uom_kg.id,
+        )
+        report_action = self._print_labels(
+            product, self.config_gs1_128, with_stock=False, weight=0.00005
+        )
+        self.assertEqual(
+            self._get_label_texts(report_action), ["(01)02000000000015(3105)000005"]
+        )
 
     def test_weight_with_six_decimals_raises(self):
         product = self._create_product(
@@ -291,12 +305,22 @@ class TestPrintLabels(TestCommon):
             uom_po_id=self.uom_kg.id,
         )
         report_action = self._print_labels(
-            product, self.config_gs1_128, with_stock=False, weight=0.123456
+            product, self.config_gs1_128, with_stock=False, weight=0.000123
         )
         with self.assertRaisesRegex(
-            ValidationError, "The GS1 AI 3106 is not defined in GS1 AI format"
+            UserError, "The weight 0.000123 kg has more decimals than the 5"
         ):
             self._render_labels(report_action)
+
+    def test_weight_with_seven_decimals_raises(self):
+        # a weight with more decimals than the precisions of Odoo give, so
+        # that only the encoding can see them
+        with self.assertRaisesRegex(
+            UserError, "The weight 1.0000001 kg has more decimals than the 5"
+        ):
+            self.env["report.barcodes_gs1_label.report_gs1_barcode"]._get_weight_ai31(
+                1.0000001
+            )
 
     def test_lot_print_wizard_proposes_the_locations_with_stock(self):
         product = self._create_product("Product", "2000000000015", tracking="lot")

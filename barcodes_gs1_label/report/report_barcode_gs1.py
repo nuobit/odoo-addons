@@ -3,6 +3,8 @@
 # Copyright 2025 NuoBiT Solutions SL - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
+from decimal import Decimal
+
 import requests.utils
 
 from odoo import _, api, models
@@ -302,25 +304,35 @@ class ReportGS1Barcode(models.AbstractModel):
         return docs
 
     @api.model
+    def _get_weight_text(self, weight):
+        """A weight in fixed point: str() writes a small one as 1e-05"""
+        return format(Decimal(repr(weight)), "f")
+
+    @api.model
     def _get_weight_ai31(self, weight):
         max_ai31_length = 6
-        weight_rounded = round(weight, max_ai31_length)
-        f_str = str(weight_rounded)
-        f_str_parts = f_str.split(".")
-        whole_str = f_str_parts[0].lstrip("0")
-        if len(f_str_parts) == 1:
-            decimal_str = ""
-        else:
-            decimal_str = f_str_parts[1].rstrip("0")
+        max_ai31_decimals = 5
+        # every digit of the weight, so that none is rounded away unseen
+        weight_text = self._get_weight_text(weight)
+        whole_str, _dot, decimal_str = weight_text.partition(".")
+        whole_str = whole_str.lstrip("0")
+        decimal_str = decimal_str.rstrip("0")
+        if len(decimal_str) > max_ai31_decimals:
+            raise UserError(
+                _(
+                    "The weight %(weight)s kg has more decimals than the 5 a GS1 "
+                    "label holds. Correct it."
+                )
+                % {"weight": weight_text}
+            )
         weight_flat_str = whole_str + decimal_str
         if len(weight_flat_str) > max_ai31_length:
             raise UserError(
                 _(
-                    "The weight specified '%(weight)s' is too large to be represented "
-                    "in GS1 standard. Maximum is 6 digits counting both the "
-                    "integer and decimal digits. Please correct it."
+                    "The weight %(weight)s kg has more digits than the 6 a GS1 label "
+                    "holds, whole and decimal together. Correct it."
                 )
-                % {"weight": weight}
+                % {"weight": weight_text}
             )
         weight_ai = f"310{len(decimal_str)}"
         weight_value = f"{weight_flat_str}".rjust(max_ai31_length, "0")

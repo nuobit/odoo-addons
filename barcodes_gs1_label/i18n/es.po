@@ -415,15 +415,22 @@ msgstr ""
 #. module: barcodes_gs1_label
 #. odoo-python
 #: code:addons/barcodes_gs1_label/report/report_barcode_gs1.py:0
-#, python-format
 msgid ""
-"The weight specified '%(weight)g' is too large to be represented in GS1 "
-"standard. Maximum is 6 digits counting both the integer and decimal digits. "
-"Please correct it."
+"The weight %(weight)s kg has more decimals than the 5 a GS1 label holds. "
+"Correct it."
 msgstr ""
-"El peso especificado '%(weight)g' es demasiado grande para ser representado "
-"en el estándar GS1. El máximo es 6 dígitos contando tanto los dígitos "
-"enteros como los decimales. Por favor, corríjalo."
+"El peso %(weight)s kg tiene más decimales que los 5 que admite una etiqueta "
+"GS1. Corríjalo."
+
+#. module: barcodes_gs1_label
+#. odoo-python
+#: code:addons/barcodes_gs1_label/report/report_barcode_gs1.py:0
+msgid ""
+"The weight %(weight)s kg has more digits than the 6 a GS1 label holds, whole"
+" and decimal together. Correct it."
+msgstr ""
+"El peso %(weight)s kg tiene más dígitos que los 6 que admite una etiqueta "
+"GS1, entre enteros y decimales. Corríjalo."
 
 #. module: barcodes_gs1_label
 #. odoo-python
