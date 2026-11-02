@@ -150,9 +150,8 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
             limit = kwargs.pop("limit")
         else:
             limit = self.get_total_items(resource, domain)
-        params["offset"] = (
-            kwargs.pop("offset") if "offset" in kwargs and "offset" not in params else 0
-        )
+        # An offset clause of the domain wins over the offset argument
+        params.setdefault("offset", kwargs.pop("offset", 0))
         page_size = self.backend_record.page_size
         params["per_page"] = page_size if page_size > 0 else 100
         data = []

@@ -167,6 +167,32 @@ class TestWordpressAdapter(TransactionComponentRegistryCase):
         self.assertEqual(posts, [{"id": 1}, {"id": 2}])
         self.assertEqual(wordpress.queries, [{"offset": 0, "per_page": 2}])
 
+    def test_get_starts_at_the_offset_of_the_domain(self):
+        wordpress = FakeWordpressPosts([{"id": 1}, {"id": 2}, {"id": 3}])
+        with mock.patch.object(requests, "get", side_effect=wordpress.get):
+            posts = self.adapter()._exec(
+                "get", "posts", domain=[("offset", "=", 1)], limit=2
+            )
+        self.assertEqual(posts, [{"id": 2}, {"id": 3}])
+        self.assertEqual(wordpress.queries, [{"offset": 1, "per_page": 2}])
+
+    def test_get_starts_at_the_offset_argument(self):
+        wordpress = FakeWordpressPosts([{"id": 1}, {"id": 2}, {"id": 3}])
+        with mock.patch.object(requests, "get", side_effect=wordpress.get) as get:
+            posts = self.adapter()._exec("get", "posts", offset=1, limit=2)
+        self.assertEqual(posts, [{"id": 2}, {"id": 3}])
+        self.assertEqual(wordpress.queries, [{"offset": 1, "per_page": 2}])
+        self.assertNotIn("offset", get.call_args.kwargs)
+
+    def test_get_prefers_the_offset_of_the_domain_to_the_argument(self):
+        wordpress = FakeWordpressPosts([{"id": 1}, {"id": 2}, {"id": 3}])
+        with mock.patch.object(requests, "get", side_effect=wordpress.get) as get:
+            posts = self.adapter()._exec(
+                "get", "posts", domain=[("offset", "=", 1)], offset=2, limit=2
+            )
+        self.assertEqual(posts, [{"id": 2}, {"id": 3}])
+        self.assertNotIn("offset", get.call_args.kwargs)
+
     def test_get_without_a_page_size_reads_pages_of_100(self):
         self.backend.page_size = 0
         wordpress = FakeWordpressPosts([{"id": 1}, {"id": 2}, {"id": 3}])
