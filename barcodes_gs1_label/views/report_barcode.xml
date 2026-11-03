@@ -17,9 +17,11 @@
                     </div>
                     <div class="bgp-price" style="float: right;">
                         <p
+                            t-if="show_price_currency"
                             t-field="wc[1]['product'].lst_price"
                             t-options="{'widget': 'monetary', 'display_currency': wc[1]['product'].currency_id}"
                         />
+                        <p t-else="" t-field="wc[1]['product'].lst_price" />
                     </div>
                 </div>
                 <div class="text-left bgp-description">

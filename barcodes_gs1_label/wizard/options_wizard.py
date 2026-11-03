@@ -212,7 +212,10 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
             "with_stock": self.with_stock,
             "stock_location_ids": self.stock_location_ids.ids,
             "show_price": self.label_config_id.show_price,
-            "show_price_currency": self.label_config_id.show_price_currency,
+            "show_price_currency": (
+                self.label_config_id.show_price_currency
+                or not self.label_config_id.currency_optional
+            ),
             "barcode_type": self.label_config_id.barcode_type,
             "weight": self.weight,
             "layout": {

@@ -64,6 +64,17 @@ class BarcodesGS1LabelOptionsConfig(models.Model):
 
     show_price = fields.Boolean(string="Show price")
     show_price_currency = fields.Boolean(string="Show currency")
+    # EAN13 labels print the price with or without its currency, as the
+    # configuration says; GS1 labels always print the currency
+    currency_optional = fields.Boolean(
+        string="Currency optional",
+        compute="_compute_currency_optional",
+    )
+
+    @api.depends("barcode_type")
+    def _compute_currency_optional(self):
+        for rec in self:
+            rec.currency_optional = rec.barcode_type in ("ean13-code128", "ean13")
 
     @api.depends(
         "name",

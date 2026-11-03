@@ -111,6 +111,11 @@ msgid "Created on"
 msgstr "Creado el"
 
 #. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_config__currency_optional
+msgid "Currency optional"
+msgstr "Moneda opcional"
+
+#. module: barcodes_gs1_label
 #: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_config__default
 msgid "Default"
 msgstr "Por defecto"

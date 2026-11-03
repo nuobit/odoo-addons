@@ -433,6 +433,46 @@ class TestPrintLabels(TestCommon):
             ],
         )
 
+    def _get_prices(self, report_action):
+        return [
+            "".join(price.text_content().split())
+            for price in self._render_labels(report_action).xpath(
+                "//div[hasclass('bgp-price')]"
+            )
+        ]
+
+    def test_ean13_label_without_the_currency_option_prints_the_bare_price(self):
+        self.config_ean13.show_price = True
+        product = self._create_product("Product", "2000000000015", list_price=12.5)
+        report_action = self._print_labels(product, self.config_ean13, with_stock=False)
+        self.assertEqual(self._get_prices(report_action), ["12.50"])
+
+    def test_ean13_code128_label_without_the_option_prints_the_bare_price(self):
+        self.config_ean13_code128.show_price = True
+        product = self._create_product("Product", "2000000000015", list_price=12.5)
+        report_action = self._print_labels(
+            product, self.config_ean13_code128, with_stock=False
+        )
+        self.assertEqual(self._get_prices(report_action), ["12.50"])
+
+    def test_ean13_label_with_the_currency_option_prints_the_currency(self):
+        self.config_ean13.write({"show_price": True, "show_price_currency": True})
+        product = self._create_product("Product", "2000000000015", list_price=12.5)
+        # the label prints the product's currency, given here a known symbol
+        product.currency_id.write({"symbol": "¤", "position": "after"})
+        report_action = self._print_labels(product, self.config_ean13, with_stock=False)
+        self.assertEqual(self._get_prices(report_action), ["12.50¤"])
+
+    def test_gs1_label_prints_the_currency_without_the_option(self):
+        self.config_gs1_128.show_price = True
+        product = self._create_product("Product", "2000000000015", list_price=12.5)
+        # the label prints the product's currency, given here a known symbol
+        product.currency_id.write({"symbol": "¤", "position": "after"})
+        report_action = self._print_labels(
+            product, self.config_gs1_128, with_stock=False
+        )
+        self.assertEqual(self._get_prices(report_action), ["12.50¤"])
+
     def test_labels_report_without_the_print_wizard_raises(self):
         product = self._create_product("Product", "2000000000015")
         with self.assertRaisesRegex(

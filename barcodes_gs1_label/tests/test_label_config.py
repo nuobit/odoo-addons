@@ -1,8 +1,12 @@
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
+from lxml import etree
+
 from odoo.exceptions import UserError
 from odoo.tests import Form, new_test_user
+from odoo.tools.safe_eval import safe_eval
+from odoo.tools.view_validation import get_expression_field_names
 
 from .common import TestCommon
 
@@ -195,3 +199,61 @@ class TestLabelConfig(TestCommon):
             {"name": "Shelf labels"}
         )
         self.assertEqual(config.display_name, "Shelf labels")
+
+    def _new_config_form(self, barcode_type, show_price):
+        config_form = Form(self.env["barcodes.gs1.label.options.config"])
+        config_form.name = "Labels"
+        config_form.format_id = self.label_format
+        config_form.barcode_type = barcode_type
+        config_form.show_price = show_price
+        return config_form
+
+    def test_configuration_offers_the_currency_option_on_priced_ean13_labels(self):
+        config_form = self._new_config_form("ean13", show_price=True)
+        config_form.show_price_currency = True
+        self.assertTrue(config_form.save().show_price_currency)
+
+    def test_configuration_hides_the_currency_option_without_the_price(self):
+        config_form = self._new_config_form("ean13", show_price=False)
+        with self.assertRaisesRegex(
+            AssertionError, "can't write on invisible field 'show_price_currency'"
+        ):
+            config_form.show_price_currency = True
+
+    def test_configuration_hides_the_currency_option_on_gs1_labels(self):
+        config_form = self._new_config_form("gs1-128", show_price=True)
+        with self.assertRaisesRegex(
+            AssertionError, "can't write on invisible field 'show_price_currency'"
+        ):
+            config_form.show_price_currency = True
+
+    def _create_row(self, barcode_type, show_price):
+        return self.env["barcodes.gs1.label.options.config"].create(
+            {
+                "name": "Labels",
+                "format_id": self.label_format.id,
+                "barcode_type": barcode_type,
+                "show_price": show_price,
+            }
+        )
+
+    def _list_shows(self, row, field_name):
+        # a list has no Form helper: evaluate the column's invisible expression
+        # on the row's values, as the web client does for each row
+        arch = row.get_views([(False, "list")])["views"]["list"]["arch"]
+        (column,) = etree.fromstring(arch).xpath(f"//field[@name='{field_name}']")
+        invisible = column.get("invisible", "False")
+        values = {name: row[name] for name in get_expression_field_names(invisible)}
+        return not safe_eval(invisible, values)
+
+    def test_configuration_list_shows_the_currency_option_on_priced_ean13_rows(self):
+        row = self._create_row("ean13", show_price=True)
+        self.assertTrue(self._list_shows(row, "show_price_currency"))
+
+    def test_configuration_list_hides_the_currency_option_on_unpriced_rows(self):
+        row = self._create_row("ean13", show_price=False)
+        self.assertFalse(self._list_shows(row, "show_price_currency"))
+
+    def test_configuration_list_hides_the_currency_option_on_gs1_rows(self):
+        row = self._create_row("gs1-128", show_price=True)
+        self.assertFalse(self._list_shows(row, "show_price_currency"))

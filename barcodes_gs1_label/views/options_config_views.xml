@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions SL - Frank Cespedes <fcespedes@nuobit.com>
      Copyright NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="barcodes_gs1_label_options_config_view_form" model="ir.ui.view">
@@ -32,7 +33,7 @@
                             <field name="show_price" />
                             <field
                                 name="show_price_currency"
-                                invisible="[(show_price, '=', False)]"
+                                invisible="not show_price or not currency_optional"
                             />
                         </group>
                     </group>
@@ -50,7 +51,10 @@
                 <field name="barcode_type" />
                 <field name="format_id" />
                 <field name="show_price" />
-                <field name="show_price_currency" />
+                <field
+                    name="show_price_currency"
+                    invisible="not show_price or not currency_optional"
+                />
                 <field name="default" />
             </list>
         </field>
