@@ -677,6 +677,23 @@ class TestWordpressAdapter(TransactionComponentRegistryCase):
             "Content-Disposition: attachment; filename=a.png, Content-Type: image/png",
         )
 
+    def test_a_read_answered_with_an_upload_error_shows_its_code(self):
+        answer = wordpress_response(
+            500,
+            {
+                "code": "rest_upload_sideload_error",
+                "message": "Sorry, this file type is not permitted.",
+            },
+        )
+        with mock.patch.object(requests, "get", return_value=answer):
+            with self.assertRaises(ValidationError) as error:
+                self.adapter()._exec("get", "posts", limit=1)
+        self.assertEqual(
+            str(error.exception),
+            "WordPress error rest_upload_sideload_error on posts: "
+            "Sorry, this file type is not permitted.",
+        )
+
     def test_other_errors_report_the_code_and_the_message(self):
         answer = wordpress_response(
             400, {"code": "rest_invalid_param", "message": "Invalid parameter(s)."}

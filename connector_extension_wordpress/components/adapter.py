@@ -52,6 +52,8 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
                 elif (
                     res.status_code == 500
                     and res_data["code"] == "rest_upload_sideload_error"
+                    # only an upload sends the headers this message shows
+                    and op in ("post", "put")
                 ):
                     error_message = _(
                         "Error: '%(message)s'. Probably the image or document "
