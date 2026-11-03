@@ -129,6 +129,32 @@ class TestPrintLabels(TestCommon):
         self.assertEqual(wizards[0].stock_location_ids, shelf)
         self.assertEqual(wizards[1].stock_location_ids, warehouse.lot_stock_id + shelf)
 
+    def test_print_wizards_keep_their_own_records_to_propose_locations(self):
+        product_1 = self._create_product("Product 1", "2000000000015")
+        product_2 = self._create_product("Product 2", "2000000000022")
+        shelf_1 = self.env["stock.location"].create(
+            {"name": "Shelf 1", "location_id": self.stock_location.id}
+        )
+        shelf_2 = self.env["stock.location"].create(
+            {"name": "Shelf 2", "location_id": self.stock_location.id}
+        )
+        self._set_stock(product_1, shelf_1, 1)
+        self._set_stock(product_2, shelf_2, 1)
+        wizard_1 = (
+            self.env["barcodes.gs1.label.options.wizard"]
+            .with_context(active_model="product.product", active_ids=product_1.ids)
+            .create({"label_config_id": self.config_gs1_128.id, "with_stock": False})
+        )
+        wizard_2 = (
+            self.env["barcodes.gs1.label.options.wizard"]
+            .with_context(active_model="product.product", active_ids=product_2.ids)
+            .create({"label_config_id": self.config_gs1_128.id, "with_stock": False})
+        )
+        # switched on together, away from the action that opened each of them
+        (wizard_1 + wizard_2).write({"with_stock": True})
+        self.assertEqual(wizard_1.stock_location_ids, shelf_1)
+        self.assertEqual(wizard_2.stock_location_ids, shelf_2)
+
     def test_products_print_in_internal_reference_order(self):
         product_b = self._create_product(
             "Product B", "2000000000022", default_code="REF-B"

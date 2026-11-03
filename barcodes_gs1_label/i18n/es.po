@@ -203,6 +203,11 @@ msgid "Max rows per page"
 msgstr "Máximo de filas por página"
 
 #. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard__res_model
+msgid "Model"
+msgstr "Modelo"
+
+#. module: barcodes_gs1_label
 #: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_config__name
 #: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_format__name
 msgid "Name"
@@ -255,6 +260,11 @@ msgstr "Variante de producto"
 #: model:ir.model,name:barcodes_gs1_label.model_stock_quant
 msgid "Quants"
 msgstr "Cuantos"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard__res_ids
+msgid "Records"
+msgstr "Registros"
 
 #. module: barcodes_gs1_label
 #: model:ir.model,name:barcodes_gs1_label.model_report_barcodes_gs1_label_report_gs1_barcode

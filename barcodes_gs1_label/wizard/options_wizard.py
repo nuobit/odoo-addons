@@ -23,6 +23,14 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
             "action_report_mrp_production_gs1_barcodes",
         }
 
+    # the records the wizard was opened on, kept from the action that opened it
+    res_model = fields.Char(
+        string="Model", default=lambda self: self.env.context.get("active_model")
+    )
+    res_ids = fields.Json(
+        string="Records", default=lambda self: self.env.context.get("active_ids")
+    )
+
     start_row = fields.Integer(string="Start row", default=1)
     start_col = fields.Integer(string="Start column", default=1)
     with_stock = fields.Boolean(string="With stock only", default=True)
@@ -55,13 +63,13 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
         readonly=False,
     )
 
-    @api.depends("with_stock")
+    @api.depends("with_stock", "res_model", "res_ids")
     def _compute_stock_location_ids(self):
         all_locs = self.all_location_ids()
         for wizard in self:
             if wizard.with_stock:
-                ids = self.env.context.get("active_ids")
-                model = self.env.context.get("active_model")
+                ids = wizard.res_ids
+                model = wizard.res_model
                 if model == "product.product":
                     locations = self.env["stock.location"]
                     for doc in (
@@ -177,7 +185,7 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
         if self.label_copies < 1:
             raise UserError(_("The number of copies must be greater than 0"))
 
-        model = self.env.context.get("active_model")
+        model = self.res_model
         mm_px_rate = (
             self.label_config_id.format_id.paperformat_id.dpi
             / MMS_PER_DPI
@@ -214,7 +222,7 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
 
         data = {
             "from_print_wizard": True,
-            "ids": self.env.context.get("active_ids"),
+            "ids": self.res_ids,
             "model": model,
             "lang_id": 1,
             "with_stock": self.with_stock,
