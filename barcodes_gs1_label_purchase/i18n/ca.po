@@ -1,0 +1,53 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* barcodes_gs1_label_purchase
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-03 11:30+0000\n"
+"PO-Revision-Date: 2026-11-03 11:30+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: barcodes_gs1_label_purchase
+#. odoo-python
+#: code:addons/barcodes_gs1_label_purchase/report/report_barcode_gs1.py:0
+msgid ""
+"All the lines must have the same UoM category in a picking to print labels. "
+"The line with the product: %(product)s has multiple lots with different "
+"units of measure"
+msgstr ""
+"Totes les línies han de tenir la mateixa categoria d'UoM en un albarà per "
+"imprimir etiquetes. La línia amb el producte %(product)s té diversos lots "
+"amb unitats de mesura diferents"
+
+#. module: barcodes_gs1_label_purchase
+#: model:ir.model.fields,field_description:barcodes_gs1_label_purchase.field_uom_uom__dynamic_ratio
+msgid "Dynamic Ratio"
+msgstr "Ràtio dinàmica"
+
+#. module: barcodes_gs1_label_purchase
+#: model:ir.model,name:barcodes_gs1_label_purchase.model_uom_uom
+msgid "Product Unit of Measure"
+msgstr "Unitat de mesura del producte"
+
+#. module: barcodes_gs1_label_purchase
+#: model:ir.model,name:barcodes_gs1_label_purchase.model_report_barcodes_gs1_label_report_gs1_barcode
+msgid "Report GS1 Barcode"
+msgstr "Informe de codi de barres GS1"
+
+#. module: barcodes_gs1_label_purchase
+#. odoo-python
+#: code:addons/barcodes_gs1_label_purchase/report/report_barcode_gs1.py:0
+msgid ""
+"The quantity of the product %(product)s in the picking line is not a "
+"multiple of the weight unit of measure %(uom_ratio)s. Please correct it."
+msgstr ""
+"La quantitat del producte %(product)s a la línia de l'albarà no és un "
+"múltiple de la unitat de mesura de pes %(uom_ratio)s. Corregiu-la."
