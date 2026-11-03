@@ -135,10 +135,15 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
         if total_items_header:
             total_items_header = int(total_items_header[1])
         else:
-            # WordPress returns a dict if the response is a single item
-            if not isinstance(result["data"], list):
-                result["data"] = [result["data"]]
-            total_items_header = len(result["data"])
+            data = result["data"]
+            if not data:
+                # an empty answer, whatever its JSON type
+                total_items_header = 0
+            elif isinstance(data, list):
+                total_items_header = len(data)
+            else:
+                # WordPress returns a dict if the response is a single item
+                total_items_header = 1
         return total_items_header
 
     # TODO: REVIEW: Unify with connector_extension_woocommerce
@@ -171,13 +176,14 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
             if per_page > limit - len(data):
                 params["per_page"] = limit - len(data)
             res = self._exec_wp_call("get", resource, *args, params=params, **kwargs)
+            if not res["data"]:
+                # Fewer items than expected: some were deleted after the
+                # count, or the limit is above the total; an empty answer of
+                # any JSON type
+                break
             # WooCommerce returns a dict if the response is a single item
             if not isinstance(res["data"], list):
                 res["data"] = [res["data"]]
-            if not res["data"]:
-                # Fewer items than expected: some were deleted after the
-                # count, or the limit is above the total
-                break
             data += res["data"]
             params["offset"] += len(res["data"])
         return self._filter(data, common_domain)

@@ -162,6 +162,24 @@ class TestWordpressAdapter(TransactionComponentRegistryCase):
         self.assertEqual(posts, [{"id": 1}, {"id": 2}])
         self.assertEqual(get.call_count, 3)
 
+    def test_get_with_a_limit_reads_a_null_answer_as_an_empty_page(self):
+        answers = [
+            wordpress_response(200, None),
+            AssertionError("a page was asked for after an empty one"),
+        ]
+        with mock.patch.object(requests, "get", side_effect=answers):
+            posts = self.adapter()._exec("get", "posts", limit=2)
+        self.assertEqual(posts, [])
+
+    def test_get_with_a_limit_reads_an_empty_object_as_an_empty_page(self):
+        answers = [
+            wordpress_response(200, {}),
+            AssertionError("a page was asked for after an empty one"),
+        ]
+        with mock.patch.object(requests, "get", side_effect=answers):
+            posts = self.adapter()._exec("get", "posts", limit=2)
+        self.assertEqual(posts, [])
+
     def test_get_with_a_limit_reads_without_counting(self):
         wordpress = FakeWordpressPosts([{"id": 1}, {"id": 2}, {"id": 3}])
         with mock.patch.object(requests, "get", side_effect=wordpress.get):
@@ -304,6 +322,18 @@ class TestWordpressAdapter(TransactionComponentRegistryCase):
         with mock.patch.object(requests, "get", return_value=settings):
             with self.assertRaisesRegex(ValidationError, "Wordpress not connected"):
                 self.adapter().get_version()
+
+    def test_version_of_a_site_that_answers_nothing_is_not_connected(self):
+        settings = wordpress_response(200, None)
+        with mock.patch.object(requests, "get", return_value=settings):
+            with self.assertRaisesRegex(ValidationError, "Wordpress not connected"):
+                self.adapter().get_version()
+
+    def test_total_items_of_an_empty_answer_without_a_total_are_zero(self):
+        answer = wordpress_response(200, {})
+        with mock.patch.object(requests, "get", return_value=answer):
+            total = self.adapter().get_total_items("posts")
+        self.assertEqual(total, 0)
 
     def test_post_sends_the_payload_and_returns_the_answer(self):
         answer = wordpress_response(201, {"id": 15})
