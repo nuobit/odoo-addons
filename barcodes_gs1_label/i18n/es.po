@@ -449,6 +449,22 @@ msgstr ""
 
 #. module: barcodes_gs1_label
 #. odoo-python
+#: code:addons/barcodes_gs1_label/wizard/options_wizard.py:0
+msgid "The weight cannot be negative."
+msgstr "El peso no puede ser negativo."
+
+#. module: barcodes_gs1_label
+#. odoo-python
+#: code:addons/barcodes_gs1_label/report/report_barcode_gs1.py:0
+msgid ""
+"The weight of %(product)s is negative: a GS1 label cannot show it. Correct "
+"the weight of the product."
+msgstr ""
+"El peso de %(product)s es negativo: una etiqueta GS1 no lo puede mostrar. "
+"Corrija el peso del producto."
+
+#. module: barcodes_gs1_label
+#. odoo-python
 #: code:addons/barcodes_gs1_label/report/report_barcode_gs1.py:0
 #, python-format
 msgid "There are no done move lines"

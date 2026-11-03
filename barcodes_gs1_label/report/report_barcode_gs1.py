@@ -337,6 +337,14 @@ class ReportGS1Barcode(models.AbstractModel):
         kg = self.env.ref("uom.product_uom_kgm")
         if qty is None or uom.category_id != kg.category_id:
             return None
+        if qty < 0:
+            raise UserError(
+                _(
+                    "The weight of %(product)s is negative: a GS1 label cannot "
+                    "show it. Correct the weight of the product."
+                )
+                % {"product": data["product"].display_name}
+            )
         if uom == kg:
             # encoded as it is given: the AI refuses what it cannot hold
             exact = weight = qty

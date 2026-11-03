@@ -162,6 +162,12 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
                     )
                 )
 
+    @api.constrains("weight")
+    def _check_weight(self):
+        for wizard in self:
+            if wizard.weight < 0:
+                raise ValidationError(_("The weight cannot be negative."))
+
     @api.constrains("show_borders", "border_color")
     def _check_border_color(self):
         for wizard in self:

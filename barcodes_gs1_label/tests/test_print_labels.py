@@ -340,6 +340,14 @@ class TestPrintLabels(TestCommon):
             self._get_label_texts(report_action), ["(01)02000000000015(3105)000005"]
         )
 
+    def test_print_wizard_with_a_negative_weight_raises(self):
+        self.config_gs1_128.show_weight = True
+        product = self._create_product("Product", "2000000000015")
+        with self.assertRaisesRegex(ValidationError, "The weight cannot be negative"):
+            self._print_labels(
+                product, self.config_gs1_128, with_stock=False, weight=-5
+            )
+
     def test_weight_with_six_decimals_raises(self):
         self.config_gs1_128.show_weight = True
         product = self._create_product(

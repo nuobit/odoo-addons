@@ -203,6 +203,13 @@ class TestPrintPickingLabels(TestCommon):
             self._get_label_texts(report_action), ["(01)02000000000015(3104)000001"]
         )
 
+    def test_receipt_of_a_product_with_a_negative_weight_raises(self):
+        product = self._create_product("Product", "2000000000015", weight=-2.5)
+        receipt = self._receive(product, 1, self.uom_unit)
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        with self.assertRaisesRegex(UserError, "The weight of Product is negative"):
+            self._render_labels(report_action)
+
     def test_receipt_in_units_prints_a_weight_in_pounds_in_kg(self):
         self.env["ir.config_parameter"].set_param("product.weight_in_lbs", "1")
         product = self._create_product("Product", "2000000000015", weight=1)
