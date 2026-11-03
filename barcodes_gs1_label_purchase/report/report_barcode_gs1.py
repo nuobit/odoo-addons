@@ -12,15 +12,10 @@ class ReportGS1Barcode(models.AbstractModel):
 
     @api.model
     def _get_picking_line_labels(self, ml):
-        # compute po uom qty prorated for rhe current move line
+        # a line bought in a dynamic unit prints one label per unit bought
         uom_po = ml.move_id.purchase_line_id.product_uom
         if not uom_po.dynamic_ratio:
             return super()._get_picking_line_labels(ml)
-        weight_uom = self.env.ref("uom.product_uom_categ_kgm")
-        # the unit of the products' weight field: kg, or lb when so configured
-        product_weight_uom = self.env[
-            "product.template"
-        ]._get_weight_uom_id_from_ir_config_parameter()
 
         uom_po_ratio = 1
         all_move_lines = (
@@ -68,23 +63,22 @@ class ReportGS1Barcode(models.AbstractModel):
                     "uom_ratio": float_round(uom_po_ratio, precision_rounding=rounding),
                 }
             )
-        # each label carries one unit bought: its quantity when the line is
-        # in a weight unit, and the weight of what it holds otherwise
-        if ml.product_uom_category_id == weight_uom:
-            qty_per_doc = float_round(uom_po_ratio, precision_rounding=rounding)
-        else:
-            qty_per_doc = float_round(
+        # each label carries one unit bought: its quantity in the product's
+        # unit when that is a weight unit, and otherwise the weight of what it
+        # holds, in the unit of the products' weight field (kg, or lb)
+        if ml.product_uom_category_id == self.env.ref("uom.product_uom_categ_kgm"):
+            return (
+                expand_qty,
+                ml.product_id.uom_id,
+                float_round(uom_po_ratio, precision_rounding=rounding),
+            )
+        return (
+            expand_qty,
+            self.env["product.template"]._get_weight_uom_id_from_ir_config_parameter(),
+            float_round(
                 uom_po_ratio * ml.product_id.weight,
                 precision_digits=self.env["decimal.precision"].precision_get(
                     "Stock Weight"
                 ),
-            )
-
-        # a line in a weight unit carries its quantity in the product's unit;
-        # any other line carries the weight of its product
-        uom = (
-            ml.product_id.uom_id
-            if ml.product_uom_category_id == weight_uom
-            else product_weight_uom
+            ),
         )
-        return int(expand_qty), uom, qty_per_doc
