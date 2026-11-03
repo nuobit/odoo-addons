@@ -237,23 +237,14 @@ class ReportGS1Barcode(models.AbstractModel):
         product_weight_uom = self.env[
             "product.template"
         ]._get_weight_uom_id_from_ir_config_parameter()
-
-        expand_qty = 1
-        qty_per_doc = ml.quantity * ml.product_id.weight
         if ml.product_uom_category_id == unit_uom:
-            expand_qty = ml.quantity
-            qty_per_doc = ml.product_id.weight
-        elif ml.product_uom_category_id == weight_uom:
-            qty_per_doc = ml.quantity
-
-        # a line in a weight unit carries its own quantity; any other
-        # line carries the weight of its product
-        uom = (
-            ml.product_uom_id
-            if ml.product_uom_category_id == weight_uom
-            else product_weight_uom
-        )
-        return int(expand_qty), uom, qty_per_doc
+            # a label per unit, each with the weight of its product
+            return int(ml.quantity), product_weight_uom, ml.product_id.weight
+        if ml.product_uom_category_id == weight_uom:
+            # one label with the weight received, in the unit of the line
+            return 1, ml.product_uom_id, ml.quantity
+        # one label with the weight of what the line holds
+        return 1, product_weight_uom, ml.quantity * ml.product_id.weight
 
     @api.model
     def _get_weight_text(self, weight):
