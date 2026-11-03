@@ -13,6 +13,10 @@
                     <page string="General">
                         <group col="2">
                             <field name="label_config_id" />
+                            <!-- the model printed reaches the computes that
+                                 depend on it, on the form's first onchange,
+                                 only as a field of the view -->
+                            <field name="res_model" invisible="1" />
                         </group>
                         <group col="4">
                             <group colspan="2">
@@ -23,10 +27,7 @@
                                 <field name="label_copies" />
                             </group>
                         </group>
-                        <group
-                            col="4"
-                            invisible="res_model not in ('product.product', 'stock.lot')"
-                        >
+                        <group col="4" invisible="not prints_products_or_lots">
                             <group colspan="2">
                                 <field name="with_stock" />
                             </group>
@@ -39,10 +40,7 @@
                                 />
                             </group>
                         </group>
-                        <group
-                            col="2"
-                            invisible="res_model not in ('product.product', 'stock.lot')"
-                        >
+                        <group col="2" invisible="not prints_products_or_lots">
                             <field name="weight" invisible="not show_weight" />
                         </group>
                     </page>

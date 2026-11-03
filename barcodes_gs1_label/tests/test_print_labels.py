@@ -129,6 +129,17 @@ class TestPrintLabels(TestCommon):
         self.assertEqual(wizards[0].stock_location_ids, shelf)
         self.assertEqual(wizards[1].stock_location_ids, warehouse.lot_stock_id + shelf)
 
+    def test_print_with_stock_but_no_location_is_refused_on_save(self):
+        # no stock anywhere, so no location to propose
+        product = self._create_product("Product", "2000000000015")
+        with self.assertRaisesRegex(
+            ValidationError,
+            'Choose the locations whose stock is printed, or untick "With stock only"',
+        ):
+            self.env["barcodes.gs1.label.options.wizard"].with_context(
+                active_model="product.product", active_ids=product.ids
+            ).create({"label_config_id": self.config_gs1_128.id, "with_stock": True})
+
     def test_print_wizards_keep_their_own_records_to_propose_locations(self):
         product_1 = self._create_product("Product 1", "2000000000015")
         product_2 = self._create_product("Product 2", "2000000000022")
@@ -354,6 +365,25 @@ class TestPrintLabels(TestCommon):
             self.env["report.barcodes_gs1_label.report_gs1_barcode"]._get_weight_ai31(
                 1.0000001
             )
+
+    def test_quant_print_wizard_saves_without_locations(self):
+        product = self._create_product("Product", "2000000000015")
+        self._set_stock(product, self.stock_location, 2)
+        quant = self.env["stock.quant"].search(
+            [
+                ("product_id", "=", product.id),
+                ("location_id", "=", self.stock_location.id),
+            ]
+        )
+        wizard = (
+            self.env["barcodes.gs1.label.options.wizard"]
+            .with_user(self.user)
+            .with_context(active_model="stock.quant", active_ids=quant.ids)
+            .create({"label_config_id": self.config_gs1_128.id})
+        )
+        # quants print themselves: their form shows no stock options
+        wizard.stock_location_ids = False
+        self.assertFalse(wizard.stock_location_ids)
 
     def test_lot_print_wizard_proposes_the_locations_with_stock(self):
         product = self._create_product("Product", "2000000000015", tracking="lot")

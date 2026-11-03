@@ -3,7 +3,7 @@
 
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 MMS_PER_DPI = 25.4
 
@@ -30,6 +30,17 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
     res_ids = fields.Json(
         string="Records", default=lambda self: self.env.context.get("active_ids")
     )
+    prints_products_or_lots = fields.Boolean(compute="_compute_prints_products_or_lots")
+
+    @api.depends("res_model")
+    def _compute_prints_products_or_lots(self):
+        # products and lots print with their stock and the weight asked here;
+        # the other records print the quantities they hold
+        for wizard in self:
+            wizard.prints_products_or_lots = wizard.res_model in (
+                "product.product",
+                "stock.lot",
+            )
 
     start_row = fields.Integer(string="Start row", default=1)
     start_col = fields.Integer(string="Start column", default=1)
@@ -135,6 +146,29 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
     )
     show_borders = fields.Boolean(string="Show borders", default=False)
     border_color = fields.Char(string="Border color", default="#e5e5e5")
+
+    @api.constrains("with_stock", "stock_location_ids")
+    def _check_stock_location_ids(self):
+        for wizard in self:
+            if (
+                wizard.prints_products_or_lots
+                and wizard.with_stock
+                and not wizard.stock_location_ids
+            ):
+                raise ValidationError(
+                    _(
+                        "Choose the locations whose stock is printed, or untick "
+                        '"With stock only".'
+                    )
+                )
+
+    @api.constrains("show_borders", "border_color")
+    def _check_border_color(self):
+        for wizard in self:
+            if wizard.show_borders and not wizard.border_color:
+                raise ValidationError(
+                    _("Choose the color of the borders, or do not show them.")
+                )
 
     def print_product_barcodes(self):
         # checks

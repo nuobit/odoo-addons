@@ -176,6 +176,20 @@ class TestPrintLayout(TestCommon):
                 border_color=False,
             )
 
+    def test_borders_without_a_color_are_refused_on_save(self):
+        product = self._create_product("Product", "2000000000015")
+        with self.assertRaisesRegex(ValidationError, "color of the borders"):
+            self.env["barcodes.gs1.label.options.wizard"].with_context(
+                active_model="product.product", active_ids=product.ids
+            ).create(
+                {
+                    "label_config_id": self.config_gs1_128.id,
+                    "with_stock": False,
+                    "show_borders": True,
+                    "border_color": False,
+                }
+            )
+
     def test_border_color_is_hidden_without_borders(self):
         product = self._create_product("Product", "2000000000015")
         with self.assertRaisesRegex(

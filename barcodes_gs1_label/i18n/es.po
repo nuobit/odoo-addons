@@ -68,6 +68,20 @@ msgid "Cancel"
 msgstr "Cancelar"
 
 #. module: barcodes_gs1_label
+#. odoo-python
+#: code:addons/barcodes_gs1_label/wizard/options_wizard.py:0
+msgid "Choose the color of the borders, or do not show them."
+msgstr "Elija el color de los bordes, o no los muestre."
+
+#. module: barcodes_gs1_label
+#. odoo-python
+#: code:addons/barcodes_gs1_label/wizard/options_wizard.py:0
+msgid ""
+"Choose the locations whose stock is printed, or untick \"With stock only\"."
+msgstr ""
+"Elija las ubicaciones cuyo stock se imprime, o desmarque \"Solo con stock\"."
+
+#. module: barcodes_gs1_label
 #: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_config__company_id
 msgid "Company"
 msgstr "Compañía"
