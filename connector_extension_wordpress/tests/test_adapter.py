@@ -134,11 +134,40 @@ class TestWordpressAdapter(TransactionComponentRegistryCase):
             },
         )
 
+    def test_system_status_reads_arguments_given_as_none_as_not_given(self):
+        answer = wordpress_response(200, {"environment": {"version": "6.5"}})
+        with mock.patch.object(requests, "get", return_value=answer) as get:
+            self.adapter()._exec(
+                "get", "system_status", domain=None, offset=None, limit=None
+            )
+        get.assert_called_once_with(
+            "https://wordpress.example.com/wp-json/wp/v2/system_status",
+            auth=("wp_user_test", "app_password_test"),
+            verify=True,
+        )
+
     def test_get_reads_every_page_up_to_the_total(self):
         self.backend.page_size = 2
         wordpress = FakeWordpressPosts([{"id": 1}, {"id": 2}, {"id": 3}])
         with mock.patch.object(requests, "get", side_effect=wordpress.get):
             posts = self.adapter()._exec("get", "posts")
+        self.assertEqual(posts, [{"id": 1}, {"id": 2}, {"id": 3}])
+        self.assertEqual(
+            wordpress.queries,
+            [
+                {"per_page": 1},
+                {"offset": 0, "per_page": 2},
+                {"offset": 2, "per_page": 1},
+            ],
+        )
+
+    def test_get_reads_arguments_given_as_none_as_not_given(self):
+        self.backend.page_size = 2
+        wordpress = FakeWordpressPosts([{"id": 1}, {"id": 2}, {"id": 3}])
+        with mock.patch.object(requests, "get", side_effect=wordpress.get):
+            posts = self.adapter()._exec(
+                "get", "posts", domain=None, offset=None, limit=None
+            )
         self.assertEqual(posts, [{"id": 1}, {"id": 2}, {"id": 3}])
         self.assertEqual(
             wordpress.queries,

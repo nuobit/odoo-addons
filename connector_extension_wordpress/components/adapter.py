@@ -148,23 +148,24 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
 
     # TODO: REVIEW: Unify with connector_extension_woocommerce
     def _exec_get(self, resource, *args, **kwargs):
+        # an argument given as None is an argument not given
+        for name in ("domain", "offset", "limit"):
+            if name in kwargs and kwargs[name] is None:
+                del kwargs[name]
         if resource == "system_status":
             return self._exec_wp_call("get", resource, *args, **kwargs)
         # WooCommerce has the parameter next on the response headers
         # to get the next page but we can't use it because if we use
         # the offset, the next page will have the same items as the first page.
         # It looks like a bug in WooCommerce API.
-        domain = []
-        if "domain" in kwargs:
-            domain = kwargs.pop("domain")
+        domain = kwargs.pop("domain", [])
         search_fields = self._get_search_fields()
         real_domain, common_domain = self._extract_domain_clauses(domain, search_fields)
         params = self._domain_to_normalized_dict(real_domain)
         # An offset clause of the domain wins over the offset argument
         params.setdefault("offset", kwargs.pop("offset", 0))
-        if "limit" in kwargs:
-            limit = kwargs.pop("limit")
-        else:
+        limit = kwargs.pop("limit", None)
+        if limit is None:
             # WordPress counts every item of the query, whatever its offset
             limit = self.get_total_items(resource, domain) - params["offset"]
         # A per_page clause of the domain wins over the page size of the
