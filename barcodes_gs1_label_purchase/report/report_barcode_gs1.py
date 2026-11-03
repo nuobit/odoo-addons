@@ -46,7 +46,7 @@ class ReportGS1Barcode(models.AbstractModel):
                 % {"product": ml.move_id.product_id.display_name}
             )
         total_po_moves_qty = sum(all_move_lines.mapped("quantity"))
-        uom_po_qty = ml.move_id.purchase_line_id.product_uom_qty
+        uom_po_qty = ml.move_id.purchase_line_id.product_qty
         if uom_po_qty > 0:
             uom_po_ratio = total_po_moves_qty / uom_po_qty
         if ml.quantity % uom_po_ratio:

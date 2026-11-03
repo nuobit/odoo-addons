@@ -34,14 +34,14 @@ class TestPrintPickingLabels(TestCommon):
         purchase.button_confirm()
         return purchase.picking_ids
 
-    def _create_dynamic_uom(self):
+    def _create_dynamic_uom(self, name="Piece", ratio=1):
         # its kilos per unit are known only when the goods are received
         return self.env["uom.uom"].create(
             {
-                "name": "Piece",
+                "name": name,
                 "category_id": self.uom_kg.category_id.id,
                 "uom_type": "bigger",
-                "ratio": 1,
+                "ratio": ratio,
                 "dynamic_ratio": True,
             }
         )
@@ -76,6 +76,55 @@ class TestPrintPickingLabels(TestCommon):
                 "(01)02000000000015(10)LOT-A(3101)000025",
                 "(01)02000000000015(10)LOT-A(3101)000025",
                 "(01)02000000000015(10)LOT-A(3101)000025",
+            ],
+        )
+
+    def test_purchase_of_25_kg_units_prints_one_label_per_unit_bought(self):
+        uom_sack = self._create_dynamic_uom("Sack", 25)
+        product = self._create_product(
+            "Product",
+            "2000000000015",
+            tracking="lot",
+            uom_id=self.uom_kg.id,
+            uom_po_id=uom_sack.id,
+        )
+        receipt = self._purchase(product, 4, uom_sack)
+        receipt.move_ids.move_line_ids.lot_name = "LOT-A"
+        receipt.button_validate()
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        self.assertEqual(
+            self._get_label_texts(report_action),
+            [
+                "(01)02000000000015(10)LOT-A(3100)000025",
+                "(01)02000000000015(10)LOT-A(3100)000025",
+                "(01)02000000000015(10)LOT-A(3100)000025",
+                "(01)02000000000015(10)LOT-A(3100)000025",
+            ],
+        )
+
+    def test_short_receipt_of_25_kg_units_shares_the_kilos_received(self):
+        uom_sack = self._create_dynamic_uom("Sack", 25)
+        product = self._create_product(
+            "Product",
+            "2000000000015",
+            tracking="lot",
+            uom_id=self.uom_kg.id,
+            uom_po_id=uom_sack.id,
+        )
+        receipt = self._purchase(product, 4, uom_sack)
+        receipt.move_ids.move_line_ids.write({"quantity": 98, "lot_name": "LOT-A"})
+        receipt.with_context(
+            skip_backorder=True, picking_ids_not_to_backorder=receipt.ids
+        ).button_validate()
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        # 98 kg for the 4 sacks bought is 24.5 kg a sack
+        self.assertEqual(
+            self._get_label_texts(report_action),
+            [
+                "(01)02000000000015(10)LOT-A(3101)000245",
+                "(01)02000000000015(10)LOT-A(3101)000245",
+                "(01)02000000000015(10)LOT-A(3101)000245",
+                "(01)02000000000015(10)LOT-A(3101)000245",
             ],
         )
 
