@@ -201,7 +201,7 @@ class ReportGS1Barcode(models.AbstractModel):
     def _prepare_stock_picking_values(self, params):
         model, ids = params["model"], params["ids"]
 
-        # sort by product and lot
+        # the done lines, grouped by product and lot
         move_lines_tracking = {}
         for m in self.env[model].browse(ids).mapped("move_ids_without_package"):
             move_lines = m.move_line_ids.filtered(lambda x: x.state == "done")
@@ -211,9 +211,16 @@ class ReportGS1Barcode(models.AbstractModel):
                 key = (ml.product_id, ml.lot_id)
                 move_lines_tracking.setdefault(key, []).append(ml)
 
+        def by_reference_and_lot(item):
+            # as the products print: by internal reference, then by lot
+            (product, lot), _move_lines = item
+            return product.default_code or "", product.id, lot.name or ""
+
         # prepare the final list of labels
         docs = []
-        for _dummy, move_lines in dict(sorted(move_lines_tracking.items())).items():
+        for _key, move_lines in sorted(
+            move_lines_tracking.items(), key=by_reference_and_lot
+        ):
             for ml in move_lines:
                 if ml.quantity > 0:
                     expand_qty, uom, qty_per_doc = self._get_picking_line_labels(ml)

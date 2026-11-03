@@ -232,6 +232,42 @@ class TestPrintPickingLabels(TestCommon):
         report_action = self._print_labels(receipt, self.config_gs1_128)
         self.assertEqual(self._get_label_texts(report_action), ["(01)02000000000015"])
 
+    def test_receipt_prints_in_internal_reference_order(self):
+        product_b = self._create_product(
+            "Product B", "2000000000022", default_code="REF-B"
+        )
+        product_a = self._create_product(
+            "Product A", "2000000000015", default_code="REF-A"
+        )
+        receipt = self.env["stock.picking"].create(
+            {
+                "picking_type_id": self.warehouse.in_type_id.id,
+                "location_id": self.supplier_location.id,
+                "location_dest_id": self.stock_location.id,
+                "move_ids": [
+                    Command.create(
+                        {
+                            "name": product.name,
+                            "product_id": product.id,
+                            "product_uom_qty": 1,
+                            "product_uom": self.uom_unit.id,
+                            "location_id": self.supplier_location.id,
+                            "location_dest_id": self.stock_location.id,
+                        }
+                    )
+                    # received in the reverse order of their references
+                    for product in (product_b, product_a)
+                ],
+            }
+        )
+        receipt.action_confirm()
+        receipt.button_validate()
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        self.assertEqual(
+            self._get_label_texts(report_action),
+            ["(01)02000000000015", "(01)02000000000022"],
+        )
+
     def test_receipt_not_done_raises(self):
         product = self._create_product("Product", "2000000000015")
         receipt = self.env["stock.picking"].create(
