@@ -33,7 +33,6 @@ msgstr "Informe de código de barras GS1"
 #. module: barcodes_gs1_label_purchase
 #. odoo-python
 #: code:addons/barcodes_gs1_label_purchase/report/report_barcode_gs1.py:0
-#, python-format
 msgid ""
 "The quantity of the product %(product)s in the picking line is not a "
 "multiple of %(uom_ratio)s, the quantity of each unit bought. Please correct "
