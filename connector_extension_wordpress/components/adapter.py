@@ -162,8 +162,6 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
         for name in ("domain", "offset", "limit"):
             if name in kwargs and kwargs[name] is None:
                 del kwargs[name]
-        if resource == "system_status":
-            return self._exec_wp_call("get", resource, *args, **kwargs)
         # WooCommerce has the parameter next on the response headers
         # to get the next page but we can't use it because if we use
         # the offset, the next page will have the same items as the first page.

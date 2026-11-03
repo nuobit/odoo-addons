@@ -107,43 +107,27 @@ class TestWordpressAdapter(TransactionComponentRegistryCase):
 
     def test_calls_reach_the_rest_api_with_the_backend_credentials(self):
         self.backend.verify_ssl = False
-        answer = wordpress_response(200, {"environment": {"version": "6.5"}})
-        with mock.patch.object(requests, "get", return_value=answer) as get:
-            self.adapter()._exec("get", "system_status")
-        get.assert_called_once_with(
-            "https://wordpress.example.com/wp-json/wp/v2/system_status",
-            auth=("wp_user_test", "app_password_test"),
-            verify=False,
-        )
-
-    def test_system_status_returns_the_whole_answer(self):
-        answer = wordpress_response(
-            200,
-            {"environment": {"version": "6.5"}},
-            headers={"Content-Type": "application/json; charset=UTF-8"},
-        )
-        with mock.patch.object(requests, "get", return_value=answer):
-            status = self.adapter()._exec("get", "system_status")
+        wordpress = FakeWordpressPosts([{"id": 1}])
+        with mock.patch.object(requests, "get", side_effect=wordpress.get) as get:
+            self.adapter()._exec("get", "posts")
         self.assertEqual(
-            status,
-            {
-                "ok": True,
-                "status_code": 200,
-                "headers": {"Content-Type": "application/json; charset=UTF-8"},
-                "data": {"environment": {"version": "6.5"}},
-            },
-        )
-
-    def test_system_status_reads_arguments_given_as_none_as_not_given(self):
-        answer = wordpress_response(200, {"environment": {"version": "6.5"}})
-        with mock.patch.object(requests, "get", return_value=answer) as get:
-            self.adapter()._exec(
-                "get", "system_status", domain=None, offset=None, limit=None
-            )
-        get.assert_called_once_with(
-            "https://wordpress.example.com/wp-json/wp/v2/system_status",
-            auth=("wp_user_test", "app_password_test"),
-            verify=True,
+            get.call_args_list,
+            [
+                # The count of the posts
+                mock.call(
+                    "https://wordpress.example.com/wp-json/wp/v2/posts",
+                    params=mock.ANY,
+                    auth=("wp_user_test", "app_password_test"),
+                    verify=False,
+                ),
+                # The page of posts
+                mock.call(
+                    "https://wordpress.example.com/wp-json/wp/v2/posts",
+                    params=mock.ANY,
+                    auth=("wp_user_test", "app_password_test"),
+                    verify=False,
+                ),
+            ],
         )
 
     def test_get_reads_every_page_up_to_the_total(self):
@@ -510,27 +494,6 @@ class TestWordpressAdapter(TransactionComponentRegistryCase):
             ],
         )
 
-    def test_system_status_calls_the_linked_wordpress(self):
-        self.backend.verify_ssl = False
-        shop = self.env["connector.extension.wordpress.test.shop.backend"].create(
-            {
-                "name": "Shop Test",
-                "lang_ids": [Command.set(self.env.ref("base.lang_en").ids)],
-                "url": "https://shop.example.com",
-                "username": "shop_user_test",
-                "application_password": "shop_password_test",
-                "wordpress_backend_id": self.backend.id,
-            }
-        )
-        answer = wordpress_response(200, {"environment": {"version": "6.5"}})
-        with mock.patch.object(requests, "get", return_value=answer) as get:
-            self.adapter(shop)._exec("get", "system_status")
-        get.assert_called_once_with(
-            "https://wordpress.example.com/wp-json/wp/v2/system_status",
-            auth=("wp_user_test", "app_password_test"),
-            verify=False,
-        )
-
     def test_post_without_a_linked_wordpress_calls_its_own_site(self):
         shop = self.env["connector.extension.wordpress.test.shop.backend"].create(
             {
@@ -767,7 +730,7 @@ class TestWordpressAdapter(TransactionComponentRegistryCase):
         refused = requests.exceptions.ConnectionError("Connection refused")
         with mock.patch.object(requests, "get", side_effect=refused):
             with self.assertRaises(RetryableJobError):
-                self.adapter()._exec("get", "system_status")
+                self.adapter()._exec("get", "posts")
 
     def test_an_answer_that_is_not_json_is_reported_with_its_text(self):
         answer = requests.Response()
@@ -778,7 +741,7 @@ class TestWordpressAdapter(TransactionComponentRegistryCase):
                 ValidationError,
                 r"(?s)Error decoding json WordPress response.*Site under maintenance",
             ):
-                self.adapter()._exec("get", "system_status")
+                self.adapter()._exec("get", "posts")
 
     def test_an_error_answer_that_is_not_json_is_reported_with_its_text(self):
         answer = requests.Response()
@@ -789,4 +752,4 @@ class TestWordpressAdapter(TransactionComponentRegistryCase):
                 ValidationError,
                 r"(?s)Error decoding json WordPress response.*Bad gateway",
             ):
-                self.adapter()._exec("get", "system_status")
+                self.adapter()._exec("get", "posts")
