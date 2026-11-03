@@ -1,0 +1,38 @@
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+
+from odoo import fields, models
+from odoo.tools import is_html_empty
+
+
+class DocumentPage(models.Model):
+    _inherit = "document.page"
+
+    editable_content = fields.Html(
+        string="Editables",
+        groups="document_page_editable_file.group_document_editable_file,"
+        "document_page.group_document_manager",
+    )
+
+    def _create_history(self, vals):
+        # The version that a save creates takes the editable content of the
+        # document, as it takes its content. Read as superuser: whoever changes the
+        # content may be outside the group, and the version keeps it all the same
+        editable_content = self.sudo().editable_content
+        if not is_html_empty(editable_content):
+            vals = dict(vals, editable_content=editable_content)
+        return super()._create_history(vals)
+
+    def write(self, vals):
+        if "editable_content" not in vals:
+            return super().write(vals)
+        versions = self.env["document.page.history"]
+        old_versions = versions.search([("page_id", "in", self.ids)])
+        res = super().write(vals)
+        new_versions = versions.search([("page_id", "in", self.ids)]) - old_versions
+        # A save that creates no version puts the editable content in the current
+        # one, as the name and the summary of the revision do
+        for page in self - new_versions.page_id:
+            if not is_html_empty(page.editable_content):
+                page.history_head.editable_content = page.editable_content
+        return res

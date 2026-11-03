@@ -1,0 +1,58 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* document_page_editable_file
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-04 11:40+0000\n"
+"PO-Revision-Date: 2026-11-04 11:40+0000\n"
+"Last-Translator: Deniz Gallo <dgallo@nuobit.com>\n"
+"Language-Team: Catalan\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: document_page_editable_file
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page__display_name
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page_history__display_name
+msgid "Display Name"
+msgstr "Nom a mostrar"
+
+#. module: document_page_editable_file
+#: model:ir.model,name:document_page_editable_file.model_document_page
+msgid "Document Page"
+msgstr "Pàgina de document"
+
+#. module: document_page_editable_file
+#: model:ir.model,name:document_page_editable_file.model_document_page_history
+msgid "Document Page History"
+msgstr "Historial de pàgina del document"
+
+#. module: document_page_editable_file
+#: model:res.groups,name:document_page_editable_file.group_document_editable_file
+msgid "Editable files"
+msgstr "Fitxers editables"
+
+#. module: document_page_editable_file
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page__editable_content
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page_history__editable_content
+#: model_terms:ir.ui.view,arch_db:document_page_editable_file.view_wiki_form
+#: model_terms:ir.ui.view,arch_db:document_page_editable_file.wiki_history_form
+msgid "Editables"
+msgstr "Editables"
+
+#. module: document_page_editable_file
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page__id
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page_history__id
+msgid "ID"
+msgstr "ID"
+
+#. module: document_page_editable_file
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page____last_update
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page_history____last_update
+msgid "Last Modified on"
+msgstr "Última modificació el"
