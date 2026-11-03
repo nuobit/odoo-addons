@@ -438,6 +438,18 @@ msgstr ""
 #. module: barcodes_gs1_label
 #. odoo-python
 #: code:addons/barcodes_gs1_label/report/report_barcode_gs1.py:0
+msgid ""
+"The weight %(weight)s kg is too small for a GS1 label, which shows at most 5"
+" decimals of a kg. Correct it, or print with a label configuration that does"
+" not show the weight."
+msgstr ""
+"El peso %(weight)s kg es demasiado pequeño para una etiqueta GS1, que "
+"muestra como máximo 5 decimales de kg. Corríjalo, o imprima con una "
+"configuración de etiquetas que no muestre el peso."
+
+#. module: barcodes_gs1_label
+#. odoo-python
+#: code:addons/barcodes_gs1_label/report/report_barcode_gs1.py:0
 #, python-format
 msgid "There are no done move lines"
 msgstr "No hay líneas de movimiento finalizadas"

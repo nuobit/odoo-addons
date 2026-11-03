@@ -9,7 +9,7 @@ import requests.utils
 
 from odoo import _, api, models
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_round
+from odoo.tools import float_is_zero, float_round
 
 
 def chunks(li, n, padding=False):
@@ -238,13 +238,30 @@ class ReportGS1Barcode(models.AbstractModel):
             "product.template"
         ]._get_weight_uom_id_from_ir_config_parameter()
         if ml.product_uom_category_id == unit_uom:
-            # a label per unit, each with the weight of its product
-            return int(ml.quantity), product_weight_uom, ml.product_id.weight
+            # a label per unit of the line, each with the weight of one
+            return int(ml.quantity), product_weight_uom, self._get_line_weight(ml, 1)
         if ml.product_uom_category_id == weight_uom:
             # one label with the weight received, in the unit of the line
             return 1, ml.product_uom_id, ml.quantity
         # one label with the weight of what the line holds
-        return 1, product_weight_uom, ml.quantity * ml.product_id.weight
+        return 1, product_weight_uom, self._get_line_weight(ml, ml.quantity)
+
+    @api.model
+    def _get_line_weight(self, ml, quantity):
+        """The weight of a quantity in the unit of a picking line, from its
+        product's weight, in the unit of the products' weight field, or None
+        when the product has no weight: the product's weight is given for one
+        unit of the product"""
+        product = ml.product_id
+        # a weight of 0 is none: the products' weight field reads 0 when unset
+        if not product.weight:
+            return None
+        # worked out here, so rounded to the five decimals the GS1 AI holds
+        return float_round(
+            ml.product_uom_id._compute_quantity(quantity, product.uom_id, round=False)
+            * product.weight,
+            precision_digits=5,
+        )
 
     @api.model
     def _get_weight_text(self, weight):
@@ -305,26 +322,38 @@ class ReportGS1Barcode(models.AbstractModel):
                 res["21"] = lot.name
 
         weight = self._get_label_weight(data)
-        if weight:
+        if weight is not None:
             weight_ai, weight_value = self._get_weight_ai31(weight)
             res[weight_ai] = weight_value
         return res
 
     @api.model
     def _get_label_weight(self, data):
-        """The label's net weight in kg, 0 when it has none.
+        """The label's net weight in kg, None when it has none.
 
         GS1 writes the weight in kg: a weight in another unit is converted,
         then rounded to the five decimals the AI holds."""
         uom, qty = data.get("uom"), data.get("qty")
         kg = self.env.ref("uom.product_uom_kgm")
-        if not uom or not qty or uom.category_id != kg.category_id:
-            return 0
+        if qty is None or uom.category_id != kg.category_id:
+            return None
         if uom == kg:
-            return qty
-        return float_round(
-            uom._compute_quantity(qty, kg, round=False), precision_digits=5
-        )
+            # encoded as it is given: the AI refuses what it cannot hold
+            exact = weight = qty
+        else:
+            # converted, so rounded to the five decimals the AI holds
+            exact = uom._compute_quantity(qty, kg, round=False)
+            weight = float_round(exact, precision_digits=5)
+        if float_is_zero(exact, precision_digits=5):
+            raise UserError(
+                _(
+                    "The weight %(weight)s kg is too small for a GS1 label, "
+                    "which shows at most 5 decimals of a kg. Correct it, or print "
+                    "with a label configuration that does not show the weight."
+                )
+                % {"weight": self._get_weight_text(exact)}
+            )
+        return weight
 
     def _get_gs1_barcode_string(self, gs1_barcode, barcode_type):
         fnc1 = self.FNC1[barcode_type]

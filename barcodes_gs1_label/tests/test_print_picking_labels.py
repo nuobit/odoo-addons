@@ -124,6 +124,85 @@ class TestPrintPickingLabels(TestCommon):
             self._get_label_texts(report_action), ["(01)02000000000015(3101)000025"]
         )
 
+    def test_receipt_in_dozens_prints_the_weight_of_a_dozen_on_each_label(self):
+        product = self._create_product("Product", "2000000000015", weight=0.5)
+        receipt = self._receive(product, 2, self.env.ref("uom.product_uom_dozen"))
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        # a label per dozen received, each with 12 units of 0.5 kg
+        self.assertEqual(
+            self._get_label_texts(report_action),
+            ["(01)02000000000015(3100)000006", "(01)02000000000015(3100)000006"],
+        )
+
+    def test_receipt_in_millilitres_prints_the_weight_of_what_it_holds(self):
+        uom_millilitre = self.env["uom.uom"].create(
+            {
+                "name": "Millilitre Test",
+                "category_id": self.env.ref("uom.product_uom_categ_vol").id,
+                "uom_type": "smaller",
+                "factor": 1000,
+            }
+        )
+        product = self._create_product(
+            "Product",
+            "2000000000015",
+            uom_id=self.env.ref("uom.product_uom_litre").id,
+            uom_po_id=self.env.ref("uom.product_uom_litre").id,
+            weight=1,
+        )
+        receipt = self._receive(product, 500, uom_millilitre)
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        # half a litre of a product that weighs 1 kg a litre
+        self.assertEqual(
+            self._get_label_texts(report_action), ["(01)02000000000015(3101)000005"]
+        )
+
+    def test_receipt_in_milligrams_too_small_for_a_label_raises(self):
+        uom_milligram = self.env["uom.uom"].create(
+            {
+                "name": "Milligram Test",
+                "category_id": self.env.ref("uom.product_uom_categ_kgm").id,
+                "uom_type": "smaller",
+                "factor": 1000000,
+            }
+        )
+        product = self._create_product(
+            "Product",
+            "2000000000015",
+            uom_id=uom_milligram.id,
+            uom_po_id=uom_milligram.id,
+        )
+        receipt = self._receive(product, 1, uom_milligram)
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        with self.assertRaisesRegex(
+            UserError, "The weight 0.000001 kg is too small for a GS1 label"
+        ):
+            self._render_labels(report_action)
+
+    def test_receipt_of_a_light_line_prints_its_weight_to_five_decimals(self):
+        uom_millilitre = self.env["uom.uom"].create(
+            {
+                "name": "Millilitre Test",
+                "category_id": self.env.ref("uom.product_uom_categ_vol").id,
+                "uom_type": "smaller",
+                "factor": 1000,
+            }
+        )
+        product = self._create_product(
+            "Product",
+            "2000000000015",
+            uom_id=uom_millilitre.id,
+            uom_po_id=uom_millilitre.id,
+            weight=0.01,
+        )
+        receipt = self._receive(product, 0.01, uom_millilitre)
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        # 0.01 mL of a product that weighs 0.01 kg a millilitre: 0.0001 kg,
+        # below the hundredths the weights are kept in
+        self.assertEqual(
+            self._get_label_texts(report_action), ["(01)02000000000015(3104)000001"]
+        )
+
     def test_receipt_in_units_prints_a_weight_in_pounds_in_kg(self):
         self.env["ir.config_parameter"].set_param("product.weight_in_lbs", "1")
         product = self._create_product("Product", "2000000000015", weight=1)
