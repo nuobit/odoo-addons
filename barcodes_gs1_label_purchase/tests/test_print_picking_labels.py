@@ -57,6 +57,21 @@ class TestPrintPickingLabels(TestCommon):
             ["(01)02000000000015(10)LOT-A", "(01)02000000000015(10)LOT-A"],
         )
 
+    def test_purchase_receipt_in_kg_prints_one_label_with_the_weight_received(self):
+        product = self._create_product(
+            "Product",
+            "2000000000015",
+            uom_id=self.uom_kg.id,
+            uom_po_id=self.uom_kg.id,
+        )
+        receipt = self._purchase(product, 12.5, self.uom_kg)
+        receipt.button_validate()
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        # a unit that is not dynamic prints as the base module does
+        self.assertEqual(
+            self._get_label_texts(report_action), ["(01)02000000000015(3101)000125"]
+        )
+
     def test_purchase_in_a_dynamic_unit_prints_one_label_per_purchased_unit(self):
         uom_piece = self._create_dynamic_uom()
         product = self._create_product(
