@@ -52,20 +52,28 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
                 elif (
                     res.status_code == 500
                     and res_data["code"] == "rest_upload_sideload_error"
-                    # only an upload sends the headers this message shows
+                    # only POST and PUT upload a file
                     and op in ("post", "put")
                 ):
-                    error_message = _(
-                        "Error: '%(message)s'. Probably the image or document "
-                        "is uploaded with bad format. "
-                        "Please, review on database: %(resource)s"
-                    ) % {
-                        "message": res_data["message"],
-                        "resource": ", ".join(
-                            f"{name}: {value}"
-                            for name, value in kwargs["headers"].items()
-                        ),
-                    }
+                    headers = kwargs["headers"]
+                    # an upload sent without headers, None or empty, has none
+                    # to show
+                    if headers:
+                        error_message = _(
+                            "WordPress refused the uploaded file: %(message)s "
+                            "Check that WordPress accepts its format. "
+                            "Request headers: %(headers)s"
+                        ) % {
+                            "message": res_data["message"],
+                            "headers": ", ".join(
+                                f"{name}: {value}" for name, value in headers.items()
+                            ),
+                        }
+                    else:
+                        error_message = _(
+                            "WordPress refused the uploaded file: %(message)s "
+                            "Check that WordPress accepts its format."
+                        ) % {"message": res_data["message"]}
                 else:
                     error_message = _(
                         "WordPress error %(code)s on %(resource)s: %(message)s"

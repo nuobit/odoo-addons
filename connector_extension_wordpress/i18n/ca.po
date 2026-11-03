@@ -45,16 +45,6 @@ msgstr ""
 #. odoo-python
 #: code:addons/connector_extension_wordpress/components/adapter.py:0
 msgid ""
-"Error: '%(message)s'. Probably the image or document is uploaded with bad "
-"format. Please, review on database: %(resource)s"
-msgstr ""
-"Error: '%(message)s'. Probablement la imatge o el document s'ha pujat amb un"
-" format incorrecte. Si us plau, revisa a la base de dades: %(resource)s"
-
-#. module: connector_extension_wordpress
-#. odoo-python
-#: code:addons/connector_extension_wordpress/components/adapter.py:0
-msgid ""
 "The backend %(backend)s cannot call WordPress until a WordPress backend is "
 "chosen on it."
 msgstr ""
@@ -72,6 +62,26 @@ msgstr "Error %(code)s de WordPress al recurs %(resource)s: %(message)s"
 #: code:addons/connector_extension_wordpress/components/adapter.py:0
 msgid "WordPress error on %(resource)s: %(answer)s"
 msgstr "Error de WordPress al recurs %(resource)s: %(answer)s"
+
+#. module: connector_extension_wordpress
+#. odoo-python
+#: code:addons/connector_extension_wordpress/components/adapter.py:0
+msgid ""
+"WordPress refused the uploaded file: %(message)s Check that WordPress "
+"accepts its format."
+msgstr ""
+"WordPress ha refusat el fitxer pujat: %(message)s Comproveu que WordPress "
+"n'accepti el format."
+
+#. module: connector_extension_wordpress
+#. odoo-python
+#: code:addons/connector_extension_wordpress/components/adapter.py:0
+msgid ""
+"WordPress refused the uploaded file: %(message)s Check that WordPress "
+"accepts its format. Request headers: %(headers)s"
+msgstr ""
+"WordPress ha refusat el fitxer pujat: %(message)s Comproveu que WordPress "
+"n'accepti el format. Capçaleres de la petició: %(headers)s"
 
 #. module: connector_extension_wordpress
 #. odoo-python

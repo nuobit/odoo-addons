@@ -672,9 +672,45 @@ class TestWordpressAdapter(TransactionComponentRegistryCase):
                 )
         self.assertEqual(
             str(error.exception),
-            "Error: 'Sorry, this file type is not permitted.'. Probably the image "
-            "or document is uploaded with bad format. Please, review on database: "
+            "WordPress refused the uploaded file: Sorry, this file type is not "
+            "permitted. Check that WordPress accepts its format. Request headers: "
             "Content-Disposition: attachment; filename=a.png, Content-Type: image/png",
+        )
+
+    def test_a_rejected_upload_without_headers_lists_none(self):
+        answer = wordpress_response(
+            500,
+            {
+                "code": "rest_upload_sideload_error",
+                "message": "Sorry, this file type is not permitted.",
+            },
+        )
+        with mock.patch.object(requests, "post", return_value=answer):
+            with self.assertRaises(ValidationError) as error:
+                self.adapter()._exec("post", "media", data={"data": b"bytes"})
+        self.assertEqual(
+            str(error.exception),
+            "WordPress refused the uploaded file: Sorry, this file type is not "
+            "permitted. Check that WordPress accepts its format.",
+        )
+
+    def test_a_rejected_upload_with_headers_given_as_none_lists_none(self):
+        answer = wordpress_response(
+            500,
+            {
+                "code": "rest_upload_sideload_error",
+                "message": "Sorry, this file type is not permitted.",
+            },
+        )
+        with mock.patch.object(requests, "post", return_value=answer):
+            with self.assertRaises(ValidationError) as error:
+                self.adapter()._exec(
+                    "post", "media", data={"headers": None, "data": b"bytes"}
+                )
+        self.assertEqual(
+            str(error.exception),
+            "WordPress refused the uploaded file: Sorry, this file type is not "
+            "permitted. Check that WordPress accepts its format.",
         )
 
     def test_a_read_answered_with_an_upload_error_shows_its_code(self):
