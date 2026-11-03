@@ -9,6 +9,7 @@ import requests.utils
 
 from odoo import _, api, models
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_round
 
 
 def chunks(li, n, padding=False):
@@ -116,9 +117,10 @@ class ReportGS1Barcode(models.AbstractModel):
                 )
             for pd in self._get_product_lot(product, quants, with_stock):
                 if weight > 0:
+                    # the wizard asks the weight in kg, whatever the product's unit
                     pd.update(
                         {
-                            "uom": product.uom_id,
+                            "uom": self.env.ref("uom.product_uom_kgm"),
                             "qty": weight,
                         }
                     )
@@ -158,9 +160,10 @@ class ReportGS1Barcode(models.AbstractModel):
                 "lot": lot,
             }
             if weight > 0:
+                # the wizard asks the weight in kg, whatever the product's unit
                 values.update(
                     {
-                        "uom": lot.product_id.uom_id,
+                        "uom": self.env.ref("uom.product_uom_kgm"),
                         "qty": weight,
                     }
                 )
@@ -199,6 +202,10 @@ class ReportGS1Barcode(models.AbstractModel):
         model, ids = params["model"], params["ids"]
         unit_uom = self.env.ref("uom.product_uom_categ_unit")
         weight_uom = self.env.ref("uom.product_uom_categ_kgm")
+        # the unit of the products' weight field: kg, or lb when so configured
+        product_weight_uom = self.env[
+            "product.template"
+        ]._get_weight_uom_id_from_ir_config_parameter()
 
         # Add po qty proportional to each move line
         uom_po_moves = []
@@ -293,11 +300,17 @@ class ReportGS1Barcode(models.AbstractModel):
                         elif ml.product_uom_category_id == weight_uom:
                             qty_per_doc = ml.quantity
 
+                    # a line in a weight unit carries its own quantity; any other
+                    # line carries the weight of its product
                     docs += [
                         {
                             "product": ml.product_id,
                             "lot": ml.lot_id or None,
-                            "uom": ml.product_uom_id,
+                            "uom": (
+                                ml.product_uom_id
+                                if ml.product_uom_category_id == weight_uom
+                                else product_weight_uom
+                            ),
                             "qty": qty_per_doc,
                         }
                     ] * int(expand_qty)
@@ -361,14 +374,27 @@ class ReportGS1Barcode(models.AbstractModel):
                     res["10"] = lot.ref
                 res["21"] = lot.name
 
-        uom = data.get("uom")
-        if uom:
-            if uom == self.env.ref("uom.product_uom_kgm"):
-                weight = data.get("qty", 0)
-                if weight:
-                    weight_ai, weight_value = self._get_weight_ai31(weight)
-                    res[weight_ai] = weight_value
+        weight = self._get_label_weight(data)
+        if weight:
+            weight_ai, weight_value = self._get_weight_ai31(weight)
+            res[weight_ai] = weight_value
         return res
+
+    @api.model
+    def _get_label_weight(self, data):
+        """The label's net weight in kg, 0 when it has none.
+
+        GS1 writes the weight in kg: a weight in another unit is converted,
+        then rounded to the five decimals the AI holds."""
+        uom, qty = data.get("uom"), data.get("qty")
+        kg = self.env.ref("uom.product_uom_kgm")
+        if not uom or not qty or uom.category_id != kg.category_id:
+            return 0
+        if uom == kg:
+            return qty
+        return float_round(
+            uom._compute_quantity(qty, kg, round=False), precision_digits=5
+        )
 
     def _get_gs1_barcode_string(self, gs1_barcode, barcode_type):
         fnc1 = self.FNC1[barcode_type]

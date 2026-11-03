@@ -261,12 +261,14 @@ class TestPrintLabels(TestCommon):
             self._get_label_texts(report_action), ["(01)02000000000015(3100)000010"]
         )
 
-    def test_product_in_units_ignores_the_weight_of_the_wizard(self):
+    def test_product_in_units_prints_the_weight_of_the_wizard(self):
         product = self._create_product("Product", "2000000000015")
         report_action = self._print_labels(
             product, self.config_gs1_128, with_stock=False, weight=10
         )
-        self.assertEqual(self._get_label_texts(report_action), ["(01)02000000000015"])
+        self.assertEqual(
+            self._get_label_texts(report_action), ["(01)02000000000015(3100)000010"]
+        )
 
     def test_weight_of_more_than_six_digits_raises(self):
         product = self._create_product(
@@ -369,6 +371,17 @@ class TestPrintLabels(TestCommon):
             uom_id=self.uom_kg.id,
             uom_po_id=self.uom_kg.id,
         )
+        lot = self._create_lot(product, "LOT-A")
+        report_action = self._print_labels(
+            lot, self.config_gs1_128, with_stock=False, weight=0.75
+        )
+        self.assertEqual(
+            self._get_label_texts(report_action),
+            ["(01)02000000000015(10)LOT-A(3102)000075"],
+        )
+
+    def test_lot_in_units_prints_the_weight_of_the_wizard(self):
+        product = self._create_product("Product", "2000000000015", tracking="lot")
         lot = self._create_lot(product, "LOT-A")
         report_action = self._print_labels(
             lot, self.config_gs1_128, with_stock=False, weight=0.75

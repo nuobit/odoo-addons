@@ -89,6 +89,61 @@ class TestPrintPickingLabels(TestCommon):
             self._get_label_texts(report_action), ["(01)02000000000015(3101)000125"]
         )
 
+    def _receive(self, product, quantity, uom):
+        receipt = self.env["stock.picking"].create(
+            {
+                "picking_type_id": self.warehouse.in_type_id.id,
+                "location_id": self.supplier_location.id,
+                "location_dest_id": self.stock_location.id,
+                "move_ids": [
+                    Command.create(
+                        {
+                            "name": product.name,
+                            "product_id": product.id,
+                            "product_uom_qty": quantity,
+                            "product_uom": uom.id,
+                            "location_id": self.supplier_location.id,
+                            "location_dest_id": self.stock_location.id,
+                        }
+                    )
+                ],
+            }
+        )
+        receipt.action_confirm()
+        receipt.button_validate()
+        return receipt
+
+    def test_receipt_in_grams_prints_the_received_weight_in_kg(self):
+        product = self._create_product(
+            "Product",
+            "2000000000015",
+            uom_id=self.uom_gram.id,
+            uom_po_id=self.uom_gram.id,
+        )
+        receipt = self._receive(product, 500, self.uom_gram)
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        self.assertEqual(
+            self._get_label_texts(report_action), ["(01)02000000000015(3101)000005"]
+        )
+
+    def test_receipt_in_units_prints_the_weight_of_the_product(self):
+        product = self._create_product("Product", "2000000000015", weight=2.5)
+        receipt = self._receive(product, 1, self.uom_unit)
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        self.assertEqual(
+            self._get_label_texts(report_action), ["(01)02000000000015(3101)000025"]
+        )
+
+    def test_receipt_in_units_prints_a_weight_in_pounds_in_kg(self):
+        self.env["ir.config_parameter"].set_param("product.weight_in_lbs", "1")
+        product = self._create_product("Product", "2000000000015", weight=1)
+        receipt = self._receive(product, 1, self.uom_unit)
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        # 1 lb in kg, rounded to the five decimals the AI holds
+        self.assertEqual(
+            self._get_label_texts(report_action), ["(01)02000000000015(3105)045359"]
+        )
+
     def test_receipt_not_done_raises(self):
         product = self._create_product("Product", "2000000000015")
         receipt = self.env["stock.picking"].create(
