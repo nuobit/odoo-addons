@@ -22,7 +22,6 @@ class ReportGS1Barcode(models.AbstractModel):
             "product.template"
         ]._get_weight_uom_id_from_ir_config_parameter()
 
-        qty_per_doc = ml.quantity * ml.product_id.weight
         uom_po_ratio = 1
         all_move_lines = (
             self.env["stock.move"]
@@ -60,7 +59,7 @@ class ReportGS1Barcode(models.AbstractModel):
                 _(
                     "The quantity of the product %(product)s"
                     " in the picking line is not a multiple "
-                    "of the weight unit of measure %(uom_ratio)s. "
+                    "of %(uom_ratio)s, the quantity of each unit bought. "
                     "Please correct it."
                 )
                 % {
@@ -68,8 +67,17 @@ class ReportGS1Barcode(models.AbstractModel):
                     "uom_ratio": float_round(uom_po_ratio, precision_rounding=rounding),
                 }
             )
+        # each label carries one unit bought: its quantity when the line is
+        # in a weight unit, and the weight of what it holds otherwise
         if ml.product_uom_category_id == weight_uom:
             qty_per_doc = float_round(uom_po_ratio, precision_rounding=rounding)
+        else:
+            qty_per_doc = float_round(
+                uom_po_ratio * ml.product_id.weight,
+                precision_digits=self.env["decimal.precision"].precision_get(
+                    "Stock Weight"
+                ),
+            )
 
         # a line in a weight unit carries its own quantity; any other
         # line carries the weight of its product

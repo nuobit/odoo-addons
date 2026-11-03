@@ -175,6 +175,33 @@ class TestPrintPickingLabels(TestCommon):
             ],
         )
 
+    def test_purchase_in_a_dynamic_box_prints_the_weight_of_one_box(self):
+        # its units per box are known only when the goods are received
+        uom_box = self.env["uom.uom"].create(
+            {
+                "name": "Box",
+                "category_id": self.uom_unit.category_id.id,
+                "uom_type": "bigger",
+                "ratio": 1,
+                "dynamic_ratio": True,
+            }
+        )
+        product = self._create_product(
+            "Product", "2000000000015", tracking="lot", weight=0.5, uom_po_id=uom_box.id
+        )
+        receipt = self._purchase(product, 2, uom_box)
+        receipt.move_ids.move_line_ids.write({"quantity": 10, "lot_name": "LOT-A"})
+        receipt.button_validate()
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        # 10 units for the 2 boxes bought is 5 units of 0.5 kg a box
+        self.assertEqual(
+            self._get_label_texts(report_action),
+            [
+                "(01)02000000000015(10)LOT-A(3101)000025",
+                "(01)02000000000015(10)LOT-A(3101)000025",
+            ],
+        )
+
     def test_purchase_in_a_dynamic_unit_with_a_line_of_part_of_a_unit_raises(self):
         uom_piece = self._create_dynamic_uom()
         product = self._create_product(
@@ -206,7 +233,7 @@ class TestPrintPickingLabels(TestCommon):
         report_action = self._print_labels(receipt, self.config_gs1_128)
         # 7.5 kg for 3 pieces is 2.5 kg a piece: 3 kg is not a whole number of them
         with self.assertRaisesRegex(
-            UserError, "is not a multiple of the weight unit of measure 2.5"
+            UserError, "is not a multiple of 2.5, the quantity of each unit bought"
         ):
             self._render_labels(report_action)
 
