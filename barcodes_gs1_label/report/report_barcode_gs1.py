@@ -240,58 +240,11 @@ class ReportGS1Barcode(models.AbstractModel):
 
         expand_qty = 1
         qty_per_doc = ml.quantity * ml.product_id.weight
-        # compute po uom qty prorated for rhe current move line
-        uom_po = ml.move_id.purchase_line_id.product_uom
-        if uom_po.dynamic_ratio:
-            uom_po_ratio = 1
-            all_move_lines = (
-                self.env["stock.move"]
-                .search(
-                    [
-                        ("picking_id", "=", ml.move_id.picking_id.id),
-                        ("purchase_line_id", "=", ml.move_id.purchase_line_id.id),
-                        ("state", "=", "done"),
-                    ]
-                )
-                .move_line_ids
-            )
-            if len(all_move_lines.product_uom_id) != 1:
-                raise UserError(
-                    _(
-                        "All the lines must have the same UoM category "
-                        "in a picking to print labels. "
-                        "The line with the product: %(product)s has "
-                        "multiple lots with different units of measure"
-                    )
-                    % {"product": ml.move_id.product_id.display_name}
-                )
-            total_po_moves_qty = sum(all_move_lines.mapped("quantity"))
-            uom_po_qty = ml.move_id.purchase_line_id.product_uom_qty
-            if uom_po_qty > 0:
-                uom_po_ratio = total_po_moves_qty / uom_po_qty
-            if ml.quantity % uom_po_ratio:
-                raise UserError(
-                    _(
-                        "The quantity of the product %(product)s"
-                        " in the picking line is not a multiple "
-                        "of the weight unit of measure %(uom_ratio)s. "
-                        "Please correct it."
-                    )
-                    % {
-                        "product": ml.product_id.display_name,
-                        "uom_ratio": uom_po_ratio,
-                    }
-                )
-            uom_po_qty = ml.quantity / uom_po_ratio
-            expand_qty = uom_po_qty
-            if ml.product_uom_category_id == weight_uom:
-                qty_per_doc = uom_po_ratio
-        else:
-            if ml.product_uom_category_id == unit_uom:
-                expand_qty = ml.quantity
-                qty_per_doc = ml.product_id.weight
-            elif ml.product_uom_category_id == weight_uom:
-                qty_per_doc = ml.quantity
+        if ml.product_uom_category_id == unit_uom:
+            expand_qty = ml.quantity
+            qty_per_doc = ml.product_id.weight
+        elif ml.product_uom_category_id == weight_uom:
+            qty_per_doc = ml.quantity
 
         # a line in a weight unit carries its own quantity; any other
         # line carries the weight of its product

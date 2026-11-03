@@ -33,19 +33,6 @@ msgid "Advanced"
 msgstr "Avanzado"
 
 #. module: barcodes_gs1_label
-#. odoo-python
-#: code:addons/barcodes_gs1_label/report/report_barcode_gs1.py:0
-#, python-format
-msgid ""
-"All the lines must have the same UoM category in a picking to print labels. "
-"The line with the product: %(product)s has multiple lots with different "
-"units of measure"
-msgstr ""
-"Todas las líneas deben tener la misma categoría de UoM en un albarán para "
-"imprimir etiquetas. La línea con el producto: %(product)s tiene múltiples "
-"lotes con diferentes unidades de medida"
-
-#. module: barcodes_gs1_label
 #: model:ir.ui.menu,name:barcodes_gs1_label.barcodes_gs1_label_options_menu
 msgid "Barcode Labels"
 msgstr "Etiquetas de código de barras"
@@ -126,11 +113,6 @@ msgstr "Por defecto"
 #: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard__display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
-
-#. module: barcodes_gs1_label
-#: model:ir.model.fields,field_description:barcodes_gs1_label.field_uom_uom__dynamic_ratio
-msgid "Dynamic Ratio"
-msgstr "Relación dinámica"
 
 #. module: barcodes_gs1_label
 #: model:ir.actions.act_window,name:barcodes_gs1_label.barcodes_gs1_label_options_format_action
@@ -265,11 +247,6 @@ msgid "Print barcodes"
 msgstr "Imprimir códigos de barras"
 
 #. module: barcodes_gs1_label
-#: model:ir.model,name:barcodes_gs1_label.model_uom_uom
-msgid "Product Unit of Measure"
-msgstr "Unidad de medida del producto"
-
-#. module: barcodes_gs1_label
 #: model:ir.model,name:barcodes_gs1_label.model_product_product
 msgid "Product Variant"
 msgstr "Variante de producto"
@@ -402,17 +379,6 @@ msgid ""
 msgstr ""
 "El formato de papel '%(paper_format)s' es personalizado y no tiene ancho o "
 "alto. Indique su ancho y su alto o elija otro formato de papel."
-
-#. module: barcodes_gs1_label
-#. odoo-python
-#: code:addons/barcodes_gs1_label/report/report_barcode_gs1.py:0
-#, python-format
-msgid ""
-"The quantity of the product %(product)s in the picking line is not a "
-"multiple of the weight unit of measure %(uom_ratio)s. Please correct it."
-msgstr ""
-"La cantidad del producto %(product)s en la línea de traslado no es un "
-"múltiplo de la unidad de medida de peso %(uom_ratio)s. Por favor, corríjalo."
 
 #. module: barcodes_gs1_label
 #. odoo-python

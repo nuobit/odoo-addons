@@ -14,7 +14,6 @@
     "website": "https://github.com/NuoBiT/odoo-addons",
     "depends": [
         "stock",
-        "purchase_stock",
         "base_report_gs1_barcode",
         "base_report_pdf_css_reset",
     ],
@@ -29,7 +28,6 @@
         "views/stock_picking_views.xml",
         "views/options_config_views.xml",
         "views/options_format_views.xml",
-        "views/uom_uom_views.xml",
         "views/menu.xml",
     ],
     "assets": {
