@@ -76,6 +76,18 @@ class BarcodesGS1LabelOptionsConfig(models.Model):
         for rec in self:
             rec.currency_optional = rec.barcode_type in ("ean13-code128", "ean13")
 
+    show_weight = fields.Boolean(string="Show weight")
+    # GS1 labels can carry the net weight; EAN13 labels cannot
+    weight_available = fields.Boolean(
+        string="Weight available",
+        compute="_compute_weight_available",
+    )
+
+    @api.depends("barcode_type")
+    def _compute_weight_available(self):
+        for rec in self:
+            rec.weight_available = rec.barcode_type in ("gs1-128", "gs1-datamatrix")
+
     @api.depends(
         "name",
         "barcode_type",

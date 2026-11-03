@@ -35,6 +35,10 @@
                                 name="show_price_currency"
                                 invisible="not show_price or not currency_optional"
                             />
+                            <field
+                                name="show_weight"
+                                invisible="not weight_available"
+                            />
                         </group>
                     </group>
                 </sheet>
@@ -55,6 +59,7 @@
                     name="show_price_currency"
                     invisible="not show_price or not currency_optional"
                 />
+                <field name="show_weight" invisible="not weight_available" />
                 <field name="default" />
             </list>
         </field>

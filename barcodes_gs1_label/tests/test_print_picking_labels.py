@@ -14,6 +14,8 @@ class TestPrintPickingLabels(TestCommon):
         cls.vendor = cls.env["res.partner"].create({"name": "Vendor"})
         cls.supplier_location = cls.env.ref("stock.stock_location_suppliers")
         cls.uom_gram = cls.env.ref("uom.product_uom_gram")
+        # receipt labels print the weight received
+        cls.config_gs1_128.show_weight = True
 
     def _purchase(self, product, quantity, uom):
         purchase = self.env["purchase.order"].create(
@@ -143,6 +145,18 @@ class TestPrintPickingLabels(TestCommon):
         self.assertEqual(
             self._get_label_texts(report_action), ["(01)02000000000015(3105)045359"]
         )
+
+    def test_receipt_in_kg_without_the_weight_option_prints_no_weight(self):
+        self.config_gs1_128.show_weight = False
+        product = self._create_product(
+            "Product",
+            "2000000000015",
+            uom_id=self.uom_kg.id,
+            uom_po_id=self.uom_kg.id,
+        )
+        receipt = self._receive(product, 12.5, self.uom_kg)
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        self.assertEqual(self._get_label_texts(report_action), ["(01)02000000000015"])
 
     def test_receipt_not_done_raises(self):
         product = self._create_product("Product", "2000000000015")

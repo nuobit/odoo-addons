@@ -227,6 +227,18 @@ class TestLabelConfig(TestCommon):
         ):
             config_form.show_price_currency = True
 
+    def test_configuration_offers_the_weight_option_on_gs1_labels(self):
+        config_form = self._new_config_form("gs1-datamatrix", show_price=False)
+        config_form.show_weight = True
+        self.assertTrue(config_form.save().show_weight)
+
+    def test_configuration_hides_the_weight_option_on_ean13_labels(self):
+        config_form = self._new_config_form("ean13", show_price=False)
+        with self.assertRaisesRegex(
+            AssertionError, "can't write on invisible field 'show_weight'"
+        ):
+            config_form.show_weight = True
+
     def _create_row(self, barcode_type, show_price):
         return self.env["barcodes.gs1.label.options.config"].create(
             {
@@ -257,3 +269,11 @@ class TestLabelConfig(TestCommon):
     def test_configuration_list_hides_the_currency_option_on_gs1_rows(self):
         row = self._create_row("gs1-128", show_price=True)
         self.assertFalse(self._list_shows(row, "show_price_currency"))
+
+    def test_configuration_list_shows_the_weight_option_on_gs1_rows(self):
+        row = self._create_row("gs1-datamatrix", show_price=False)
+        self.assertTrue(self._list_shows(row, "show_weight"))
+
+    def test_configuration_list_hides_the_weight_option_on_ean13_rows(self):
+        row = self._create_row("ean13", show_price=False)
+        self.assertFalse(self._list_shows(row, "show_weight"))

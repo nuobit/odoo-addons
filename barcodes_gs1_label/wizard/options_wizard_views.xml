@@ -43,7 +43,7 @@
                             col="2"
                             invisible="context.get('active_model') not in ('product.product', 'stock.lot')"
                         >
-                            <field name="weight" />
+                            <field name="weight" invisible="not show_weight" />
                         </group>
                     </page>
                     <page string="Advanced">

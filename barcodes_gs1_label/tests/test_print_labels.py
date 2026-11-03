@@ -248,6 +248,7 @@ class TestPrintLabels(TestCommon):
         )
 
     def test_product_in_kg_prints_the_weight_of_the_wizard(self):
+        self.config_gs1_128.show_weight = True
         product = self._create_product(
             "Product",
             "2000000000015",
@@ -262,6 +263,7 @@ class TestPrintLabels(TestCommon):
         )
 
     def test_product_in_units_prints_the_weight_of_the_wizard(self):
+        self.config_gs1_128.show_weight = True
         product = self._create_product("Product", "2000000000015")
         report_action = self._print_labels(
             product, self.config_gs1_128, with_stock=False, weight=10
@@ -271,6 +273,7 @@ class TestPrintLabels(TestCommon):
         )
 
     def test_weight_of_more_than_six_digits_raises(self):
+        self.config_gs1_128.show_weight = True
         product = self._create_product(
             "Product",
             "2000000000015",
@@ -286,6 +289,7 @@ class TestPrintLabels(TestCommon):
             self._render_labels(report_action)
 
     def test_weight_with_five_decimals_prints_them(self):
+        self.config_gs1_128.show_weight = True
         product = self._create_product(
             "Product",
             "2000000000015",
@@ -300,6 +304,7 @@ class TestPrintLabels(TestCommon):
         )
 
     def test_weight_with_six_decimals_raises(self):
+        self.config_gs1_128.show_weight = True
         product = self._create_product(
             "Product",
             "2000000000015",
@@ -364,6 +369,7 @@ class TestPrintLabels(TestCommon):
         )
 
     def test_lot_in_kg_prints_the_weight_of_the_wizard(self):
+        self.config_gs1_128.show_weight = True
         product = self._create_product(
             "Product",
             "2000000000015",
@@ -381,6 +387,7 @@ class TestPrintLabels(TestCommon):
         )
 
     def test_lot_in_units_prints_the_weight_of_the_wizard(self):
+        self.config_gs1_128.show_weight = True
         product = self._create_product("Product", "2000000000015", tracking="lot")
         lot = self._create_lot(product, "LOT-A")
         report_action = self._print_labels(
@@ -390,6 +397,23 @@ class TestPrintLabels(TestCommon):
             self._get_label_texts(report_action),
             ["(01)02000000000015(10)LOT-A(3102)000075"],
         )
+
+    def test_print_wizard_hides_the_weight_without_the_option(self):
+        product = self._create_product("Product", "2000000000015")
+        with self.assertRaisesRegex(
+            AssertionError, "can't write on invisible field 'weight'"
+        ):
+            self._print_labels(
+                product, self.config_gs1_128, with_stock=False, weight=10
+            )
+
+    def test_print_wizard_hides_the_weight_on_ean13_labels(self):
+        self.config_ean13.show_weight = True
+        product = self._create_product("Product", "2000000000015")
+        with self.assertRaisesRegex(
+            AssertionError, "can't write on invisible field 'weight'"
+        ):
+            self._print_labels(product, self.config_ean13, with_stock=False, weight=10)
 
     def test_lot_name_longer_than_twenty_characters_raises(self):
         product = self._create_product("Product", "2000000000015", tracking="lot")

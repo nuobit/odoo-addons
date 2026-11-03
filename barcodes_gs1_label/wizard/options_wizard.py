@@ -28,6 +28,14 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
     with_stock = fields.Boolean(string="With stock only", default=True)
 
     weight = fields.Float(string="Weight (Kg)", digits=(6, 6))
+    show_weight = fields.Boolean(string="Show weight", compute="_compute_show_weight")
+
+    @api.depends("label_config_id.show_weight", "label_config_id.weight_available")
+    def _compute_show_weight(self):
+        for rec in self:
+            rec.show_weight = (
+                rec.label_config_id.show_weight and rec.label_config_id.weight_available
+            )
 
     label_copies = fields.Integer(string="Copies", default=1, required=True)
 
@@ -217,6 +225,7 @@ class BarcodesGS1PrintOptionsWizard(models.TransientModel):
                 or not self.label_config_id.currency_optional
             ),
             "barcode_type": self.label_config_id.barcode_type,
+            "show_weight": self.show_weight,
             "weight": self.weight,
             "layout": {
                 "container_top": int(padding_height_mm * mm_px_rate / 2),

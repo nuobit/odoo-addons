@@ -310,6 +310,12 @@ msgid "Show price"
 msgstr "Mostrar precio"
 
 #. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_config__show_weight
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard__show_weight
+msgid "Show weight"
+msgstr "Mostrar peso"
+
+#. module: barcodes_gs1_label
 #: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard__start_col
 msgid "Start column"
 msgstr "Columna inicial"
@@ -462,6 +468,11 @@ msgstr "Tipo de código de barras desconocido %s"
 #: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard__weight
 msgid "Weight (Kg)"
 msgstr "Peso (Kg)"
+
+#. module: barcodes_gs1_label
+#: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_config__weight_available
+msgid "Weight available"
+msgstr "Peso disponible"
 
 #. module: barcodes_gs1_label
 #: model:ir.model.fields,field_description:barcodes_gs1_label.field_barcodes_gs1_label_options_wizard__with_stock

@@ -460,6 +460,12 @@ class ReportGS1Barcode(models.AbstractModel):
                 % {"model": model}
             )
         docs1 = func(data_params)
+        # a configuration that shows no weight prints its labels without one
+        if not data["show_weight"]:
+            docs1 = [
+                {key: value for key, value in doc.items() if key not in ("uom", "qty")}
+                for doc in docs1
+            ]
 
         # generate label data
         docs = []
