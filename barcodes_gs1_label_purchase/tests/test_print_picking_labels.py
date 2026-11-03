@@ -128,6 +128,53 @@ class TestPrintPickingLabels(TestCommon):
             ],
         )
 
+    def test_purchase_in_a_dynamic_unit_splits_a_decimal_quantity(self):
+        uom_piece = self._create_dynamic_uom()
+        product = self._create_product(
+            "Product",
+            "2000000000015",
+            tracking="lot",
+            uom_id=self.uom_kg.id,
+            uom_po_id=uom_piece.id,
+        )
+        receipt = self._purchase(product, 5, uom_piece)
+        receipt.move_ids.move_line_ids.write({"quantity": 1234.5, "lot_name": "LOT-A"})
+        receipt.button_validate()
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        self.assertEqual(
+            self._get_label_texts(report_action),
+            [
+                "(01)02000000000015(10)LOT-A(3101)002469",
+                "(01)02000000000015(10)LOT-A(3101)002469",
+                "(01)02000000000015(10)LOT-A(3101)002469",
+                "(01)02000000000015(10)LOT-A(3101)002469",
+                "(01)02000000000015(10)LOT-A(3101)002469",
+            ],
+        )
+
+    def test_purchase_in_a_dynamic_unit_rounds_each_share_to_the_unit(self):
+        uom_piece = self._create_dynamic_uom()
+        product = self._create_product(
+            "Product",
+            "2000000000015",
+            tracking="lot",
+            uom_id=self.uom_kg.id,
+            uom_po_id=uom_piece.id,
+        )
+        receipt = self._purchase(product, 3, uom_piece)
+        receipt.move_ids.move_line_ids.write({"quantity": 100, "lot_name": "LOT-A"})
+        receipt.button_validate()
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        # a third of 100 kg, at the 0.01 kg rounding of the kg
+        self.assertEqual(
+            self._get_label_texts(report_action),
+            [
+                "(01)02000000000015(10)LOT-A(3102)003333",
+                "(01)02000000000015(10)LOT-A(3102)003333",
+                "(01)02000000000015(10)LOT-A(3102)003333",
+            ],
+        )
+
     def test_purchase_in_a_dynamic_unit_with_a_line_of_part_of_a_unit_raises(self):
         uom_piece = self._create_dynamic_uom()
         product = self._create_product(

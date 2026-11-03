@@ -4,6 +4,7 @@
 
 from odoo import _, api, models
 from odoo.exceptions import UserError
+from odoo.tools import float_compare, float_round
 
 
 class ReportGS1Barcode(models.AbstractModel):
@@ -21,7 +22,6 @@ class ReportGS1Barcode(models.AbstractModel):
             "product.template"
         ]._get_weight_uom_id_from_ir_config_parameter()
 
-        expand_qty = 1
         qty_per_doc = ml.quantity * ml.product_id.weight
         uom_po_ratio = 1
         all_move_lines = (
@@ -49,7 +49,13 @@ class ReportGS1Barcode(models.AbstractModel):
         uom_po_qty = ml.move_id.purchase_line_id.product_qty
         if uom_po_qty > 0:
             uom_po_ratio = total_po_moves_qty / uom_po_qty
-        if ml.quantity % uom_po_ratio:
+        # the line holds a whole number of the units bought, and each label
+        # carries one of them, both at the precision of the line's unit
+        rounding = ml.product_uom_id.rounding
+        expand_qty = round(ml.quantity / uom_po_ratio)
+        if float_compare(
+            expand_qty * uom_po_ratio, ml.quantity, precision_rounding=rounding
+        ):
             raise UserError(
                 _(
                     "The quantity of the product %(product)s"
@@ -59,13 +65,11 @@ class ReportGS1Barcode(models.AbstractModel):
                 )
                 % {
                     "product": ml.product_id.display_name,
-                    "uom_ratio": uom_po_ratio,
+                    "uom_ratio": float_round(uom_po_ratio, precision_rounding=rounding),
                 }
             )
-        uom_po_qty = ml.quantity / uom_po_ratio
-        expand_qty = uom_po_qty
         if ml.product_uom_category_id == weight_uom:
-            qty_per_doc = uom_po_ratio
+            qty_per_doc = float_round(uom_po_ratio, precision_rounding=rounding)
 
         # a line in a weight unit carries its own quantity; any other
         # line carries the weight of its product
