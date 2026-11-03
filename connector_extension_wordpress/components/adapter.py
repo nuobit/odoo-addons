@@ -192,7 +192,7 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
                 # count, or the limit is above the total; an empty answer of
                 # any JSON type
                 break
-            # WooCommerce returns a dict if the response is a single item
+            # WordPress returns a dict if the response is a single item
             if not isinstance(res["data"], list):
                 res["data"] = [res["data"]]
             data += res["data"]
