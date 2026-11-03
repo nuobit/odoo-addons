@@ -198,23 +198,19 @@
                                             t-value="wc[1]['barcode_values']"
                                         />
                                         <t
-                                            t-if="barcode_type in ('gs1-datamatrix', 'gs1-128')"
-                                        >
-                                            <t
-                                                t-if="barcode_type == 'gs1-datamatrix'"
-                                                t-call="barcodes_gs1_label.layout_gs1datamatrix1"
-                                            />
-                                            <t
-                                                t-if="barcode_type == 'gs1-128'"
-                                                t-call="barcodes_gs1_label.layout_gs1code128"
-                                            />
-                                        </t>
+                                            t-if="barcode_type == 'gs1-datamatrix'"
+                                            t-call="barcodes_gs1_label.layout_gs1datamatrix1"
+                                        />
                                         <t
-                                            t-if="barcode_type == 'ean13-code128'"
+                                            t-elif="barcode_type == 'gs1-128'"
+                                            t-call="barcodes_gs1_label.layout_gs1code128"
+                                        />
+                                        <t
+                                            t-elif="barcode_type == 'ean13-code128'"
                                             t-call="barcodes_gs1_label.layout_ean13code1281"
                                         />
                                         <t
-                                            t-if="barcode_type == 'ean13'"
+                                            t-elif="barcode_type == 'ean13'"
                                             t-call="barcodes_gs1_label.layout_ean13"
                                         />
                                     </t>
