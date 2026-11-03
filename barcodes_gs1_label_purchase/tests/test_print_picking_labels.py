@@ -237,7 +237,7 @@ class TestPrintPickingLabels(TestCommon):
         ):
             self._render_labels(report_action)
 
-    def test_purchase_in_a_dynamic_unit_received_in_two_units_raises(self):
+    def test_purchase_in_a_dynamic_unit_received_in_two_units_splits_both(self):
         uom_piece = self._create_dynamic_uom()
         product = self._create_product(
             "Product",
@@ -267,7 +267,59 @@ class TestPrintPickingLabels(TestCommon):
         )
         receipt.button_validate()
         report_action = self._print_labels(receipt, self.config_gs1_128)
-        with self.assertRaisesRegex(
-            UserError, "All the lines must have the same UoM category"
-        ):
-            self._render_labels(report_action)
+        # 7.5 kg for 3 pieces is 2.5 kg a piece: one in LOT-A, two in LOT-B
+        self.assertEqual(
+            self._get_label_texts(report_action),
+            [
+                "(01)02000000000015(10)LOT-A(3101)000025",
+                "(01)02000000000015(10)LOT-B(3101)000025",
+                "(01)02000000000015(10)LOT-B(3101)000025",
+            ],
+        )
+
+    def test_purchase_in_a_dynamic_unit_shares_lines_in_grams_exactly(self):
+        uom_piece = self._create_dynamic_uom()
+        product = self._create_product(
+            "Product",
+            "2000000000015",
+            tracking="lot",
+            uom_id=self.uom_kg.id,
+            uom_po_id=uom_piece.id,
+        )
+        receipt = self._purchase(product, 4, uom_piece)
+        receipt.move_ids.move_line_ids.write(
+            {"product_uom_id": self.uom_gram.id, "quantity": 255, "lot_name": "LOT-A"}
+        )
+        receipt.move_ids.write(
+            {
+                "move_line_ids": [
+                    Command.create(
+                        {
+                            "picking_id": receipt.id,
+                            "product_id": product.id,
+                            "product_uom_id": self.uom_gram.id,
+                            "location_id": receipt.location_id.id,
+                            "location_dest_id": receipt.location_dest_id.id,
+                            "quantity": quantity,
+                            "lot_name": lot_name,
+                        }
+                    )
+                    for quantity, lot_name in ((255, "LOT-B"), (510, "LOT-C"))
+                ]
+            }
+        )
+        receipt.with_context(
+            skip_backorder=True, picking_ids_not_to_backorder=receipt.ids
+        ).button_validate()
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        # 1020 g for 4 pieces is 255 g a piece, and each line holds whole pieces;
+        # each line rounded to the 0.01 kg of the kg would read 1030 g instead
+        self.assertEqual(
+            self._get_label_texts(report_action),
+            [
+                "(01)02000000000015(10)LOT-A(3102)000026",
+                "(01)02000000000015(10)LOT-B(3102)000026",
+                "(01)02000000000015(10)LOT-C(3102)000026",
+                "(01)02000000000015(10)LOT-C(3102)000026",
+            ],
+        )

@@ -34,26 +34,27 @@ class ReportGS1Barcode(models.AbstractModel):
             )
             .move_line_ids
         )
-        if len(all_move_lines.product_uom_id) != 1:
-            raise UserError(
-                _(
-                    "All the lines must have the same UoM category "
-                    "in a picking to print labels. "
-                    "The line with the product: %(product)s has "
-                    "multiple lots with different units of measure"
-                )
-                % {"product": ml.move_id.product_id.display_name}
+        # the lines may be in different units: each is converted to the
+        # product's without rounding, since quantity_product_uom is rounded
+        # line by line
+        quantities = {
+            line: line.product_uom_id._compute_quantity(
+                line.quantity, line.product_id.uom_id, round=False
             )
-        total_po_moves_qty = sum(all_move_lines.mapped("quantity"))
+            for line in all_move_lines
+        }
+        total_po_moves_qty = sum(quantities.values())
         uom_po_qty = ml.move_id.purchase_line_id.product_qty
         if uom_po_qty > 0:
             uom_po_ratio = total_po_moves_qty / uom_po_qty
         # the line holds a whole number of the units bought, and each label
-        # carries one of them, both at the precision of the line's unit
-        rounding = ml.product_uom_id.rounding
-        expand_qty = round(ml.quantity / uom_po_ratio)
+        # carries one of them, both at the precision of the product's unit
+        rounding = ml.product_id.uom_id.rounding
+        expand_qty = round(quantities[ml] / uom_po_ratio)
         if float_compare(
-            expand_qty * uom_po_ratio, ml.quantity, precision_rounding=rounding
+            expand_qty * uom_po_ratio,
+            quantities[ml],
+            precision_rounding=rounding,
         ):
             raise UserError(
                 _(
@@ -79,10 +80,10 @@ class ReportGS1Barcode(models.AbstractModel):
                 ),
             )
 
-        # a line in a weight unit carries its own quantity; any other
-        # line carries the weight of its product
+        # a line in a weight unit carries its quantity in the product's unit;
+        # any other line carries the weight of its product
         uom = (
-            ml.product_uom_id
+            ml.product_id.uom_id
             if ml.product_uom_category_id == weight_uom
             else product_weight_uom
         )

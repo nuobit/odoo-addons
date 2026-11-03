@@ -16,18 +16,6 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: barcodes_gs1_label_purchase
-#. odoo-python
-#: code:addons/barcodes_gs1_label_purchase/report/report_barcode_gs1.py:0
-msgid ""
-"All the lines must have the same UoM category in a picking to print labels. "
-"The line with the product: %(product)s has multiple lots with different "
-"units of measure"
-msgstr ""
-"Totes les línies han de tenir la mateixa categoria d'UoM en un albarà per "
-"imprimir etiquetes. La línia amb el producte %(product)s té diversos lots "
-"amb unitats de mesura diferents"
-
-#. module: barcodes_gs1_label_purchase
 #: model:ir.model.fields,field_description:barcodes_gs1_label_purchase.field_uom_uom__dynamic_ratio
 msgid "Dynamic Ratio"
 msgstr "Ràtio dinàmica"
