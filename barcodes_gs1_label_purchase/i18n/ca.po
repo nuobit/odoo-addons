@@ -111,6 +111,20 @@ msgstr ""
 "de manera que ja no les proposa."
 
 #. module: barcodes_gs1_label_purchase
+#: model:ir.model.fields,help:barcodes_gs1_label_purchase.field_uom_uom__dynamic_ratio
+msgid ""
+"The quantity of this unit is known only when the goods are received, such as"
+" a crate of produce weighed on arrival: its ratio is only an estimate. A "
+"receipt line bought in this unit records its purchase units received, and "
+"its labels share the quantity received among them."
+msgstr ""
+"La quantitat d'aquesta unitat només es coneix en rebre la mercaderia, com "
+"una caixa de fruita que es pesa en arribar: la seva ràtio només és una "
+"estimació. Una línia d'albarà comprada en aquesta unitat registra les seves "
+"unitats de compra rebudes, i les seves etiquetes reparteixen entre elles la "
+"quantitat rebuda."
+
+#. module: barcodes_gs1_label_purchase
 #. odoo-python
 #: code:addons/barcodes_gs1_label_purchase/report/report_barcode_gs1.py:0
 msgid ""

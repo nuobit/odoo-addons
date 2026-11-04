@@ -9,4 +9,9 @@ class UoM(models.Model):
 
     dynamic_ratio = fields.Boolean(
         default=False,
+        help="The quantity of this unit is known only when the goods are "
+        "received, such as a crate of produce weighed on arrival: its ratio is "
+        "only an estimate. A receipt line bought in this unit records its "
+        "purchase units received, and its labels share the quantity received "
+        "among them.",
     )
