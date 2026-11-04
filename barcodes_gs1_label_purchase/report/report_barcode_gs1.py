@@ -12,23 +12,18 @@ class ReportGS1Barcode(models.AbstractModel):
 
     @api.model
     def _get_picking_line_labels(self, ml):
-        # a line bought in a dynamic unit prints one label per unit bought; a
-        # return sends kilos back to the vendor, and prints as any line
-        uom_po = ml.move_id.purchase_line_id.product_uom
-        if not uom_po.dynamic_ratio or ml.move_id._is_purchase_return():
+        # a receipt line bought in a dynamic unit prints one label per unit it
+        # brings; any other line, a return included, prints as the base module
+        # does
+        if not ml.move_id.is_dynamic_receipt:
             return super()._get_picking_line_labels(ml)
 
-        uom_po_ratio = 1
-        all_move_lines = (
-            self.env["stock.move"]
-            .search(
-                [
-                    ("picking_id", "=", ml.move_id.picking_id.id),
-                    ("purchase_line_id", "=", ml.move_id.purchase_line_id.id),
-                    ("state", "=", "done"),
-                ]
-            )
-            .move_line_ids
+        moves = self.env["stock.move"].search(
+            [
+                ("picking_id", "=", ml.move_id.picking_id.id),
+                ("purchase_line_id", "=", ml.move_id.purchase_line_id.id),
+                ("state", "=", "done"),
+            ]
         )
         # the lines may be in different units: each is converted to the
         # product's without rounding, since quantity_product_uom is rounded
@@ -37,16 +32,41 @@ class ReportGS1Barcode(models.AbstractModel):
             line: line.product_uom_id._compute_quantity(
                 line.quantity, line.product_id.uom_id, round=False
             )
-            for line in all_move_lines
+            for line in moves.move_line_ids
         }
         total_po_moves_qty = sum(quantities.values())
-        uom_po_qty = ml.move_id.purchase_line_id.product_qty
-        if uom_po_qty > 0:
-            uom_po_ratio = total_po_moves_qty / uom_po_qty
-        # the line holds a whole number of the units bought, and each label
+        # the receipt shares what it received among the units it brings; a
+        # receipt done before this module records none
+        units_received = sum(moves.mapped("purchase_uom_qty"))
+        if units_received == 0:
+            raise UserError(
+                _(
+                    "The receipt has no purchase units received of the product "
+                    "%(product)s to share the quantity received among. Unlock it "
+                    "(Lock/Unlock) and enter them on the product's line."
+                )
+                % {"product": ml.product_id.display_name}
+            )
+        uom_po_ratio = total_po_moves_qty / units_received
+        # the line holds a whole number of the units received, and each label
         # carries one of them, both at the precision of the product's unit
         rounding = ml.product_id.uom_id.rounding
         expand_qty = round(quantities[ml] / uom_po_ratio)
+        # a line that holds no whole unit would print no label at all; it may
+        # read as none at the precision of the product's unit, so it names its
+        # own quantity
+        if expand_qty == 0:
+            raise UserError(
+                _(
+                    "A line of the receipt holds %(quantity)s %(uom)s of the product "
+                    "%(product)s, less than one of its units received. Correct it."
+                )
+                % {
+                    "quantity": ml.quantity,
+                    "uom": ml.product_uom_id.name,
+                    "product": ml.product_id.display_name,
+                }
+            )
         if float_compare(
             expand_qty * uom_po_ratio,
             quantities[ml],
@@ -54,17 +74,40 @@ class ReportGS1Barcode(models.AbstractModel):
         ):
             raise UserError(
                 _(
-                    "The quantity of the product %(product)s"
-                    " in the picking line is not a multiple "
-                    "of %(uom_ratio)s, the quantity of each unit bought. "
-                    "Please correct it."
+                    "A line of the receipt holds %(quantity)s %(uom)s of the product "
+                    "%(product)s, which is not a multiple of %(share)s %(uom)s, the "
+                    "quantity of each unit received. Correct it."
                 )
                 % {
+                    "quantity": float_round(
+                        quantities[ml], precision_rounding=rounding
+                    ),
+                    "uom": ml.product_id.uom_id.name,
                     "product": ml.product_id.display_name,
-                    "uom_ratio": float_round(uom_po_ratio, precision_rounding=rounding),
+                    "share": float_round(uom_po_ratio, precision_rounding=rounding),
                 }
             )
-        # each label carries one unit bought: its quantity in the product's
+        # and the lines together hold the units received: a part of a unit in
+        # each line can round up to a whole one at that precision
+        units_held = sum(
+            round(quantity / uom_po_ratio) for quantity in quantities.values()
+        )
+        if units_held != units_received:
+            raise UserError(
+                _(
+                    "The lines of the receipt hold %(units_held)s units of %(share)s "
+                    "%(uom)s of the product %(product)s, but %(units_received)s "
+                    "purchase units were received. Correct them."
+                )
+                % {
+                    "units_held": units_held,
+                    "share": float_round(uom_po_ratio, precision_rounding=rounding),
+                    "uom": ml.product_id.uom_id.name,
+                    "product": ml.product_id.display_name,
+                    "units_received": units_received,
+                }
+            )
+        # each label carries one unit received: its quantity in the product's
         # unit when that is a weight unit, and otherwise the weight of what it
         # holds, in the unit of the products' weight field (kg, or lb)
         if ml.product_uom_category_id == self.env.ref("uom.product_uom_categ_kgm"):

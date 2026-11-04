@@ -27,8 +27,9 @@ measure whose quantity is known only when the goods are received, such
 as a crate of produce that is weighed on arrival. The *Dynamic Ratio*
 checkbox on the unit's form marks such a unit.
 
-Each unit bought gets its own label, which carries its share of the
-quantity received.
+Each receipt line in such a unit records its *Purchase Units Received*:
+how many of the units bought it brings. Each of them gets its own label,
+which carries its share of the quantity the receipt received.
 
 **Table of contents**
 
@@ -45,6 +46,24 @@ defines, and installing this module takes that column up again. Outside
 OpenUpgrade, an update of ``barcodes_gs1_label`` drops that column, and
 with it the units it marked, unless this module is installed in that
 same update or before it.
+
+Usage
+=====
+
+1. Tick *Dynamic Ratio* on the purchase unit, for instance *Crate*, and
+   give it the quantity it usually holds as its ratio: a receipt expects
+   that estimate.
+2. Buy in that unit.
+3. On the receipt, enter the quantity received and the *Purchase Units
+   Received*, which the line proposes: the units of the purchase line
+   still to come. A partial receipt leaves the rest on its backorder,
+   which proposes the units still to come once the receipt is done.
+4. Print the receipt's labels: each unit received gets a label with its
+   share of the quantity received.
+
+A receipt done before this module was installed has no purchase units
+received: unlock it (*Lock/Unlock*) and enter them before printing its
+labels.
 
 Bug Tracker
 ===========

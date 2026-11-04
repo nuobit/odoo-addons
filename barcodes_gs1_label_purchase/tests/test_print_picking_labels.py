@@ -185,6 +185,83 @@ class TestPrintPickingLabels(TestPurchaseCommon):
             ],
         )
 
+    def test_partial_receipt_shares_its_kilos_among_the_units_it_brings(self):
+        uom_palot = self._create_dynamic_uom("Palot", 25)
+        product = self._create_product(
+            "Garlic",
+            "2000000000015",
+            tracking="lot",
+            uom_id=self.uom_kg.id,
+            uom_po_id=uom_palot.id,
+        )
+        receipt = self._purchase(product, 4, uom_palot)
+        # a first truck brings 2 palots of 26 kg, and the rest comes later
+        receipt.move_ids.move_line_ids.write({"quantity": 52, "lot_name": "LOT-A"})
+        receipt.move_ids.purchase_uom_qty = 2
+        receipt.with_context(skip_backorder=True).button_validate()
+        # a second truck brings the other 2, of 24 kg
+        backorder = receipt.backorder_ids
+        backorder.move_ids.move_line_ids.write({"quantity": 48, "lot_name": "LOT-B"})
+        backorder.button_validate()
+        self.assertEqual(
+            self._get_label_texts(self._print_labels(receipt, self.config_gs1_128)),
+            [
+                "(01)02000000000015(10)LOT-A(3100)000026",
+                "(01)02000000000015(10)LOT-A(3100)000026",
+            ],
+        )
+        self.assertEqual(
+            self._get_label_texts(self._print_labels(backorder, self.config_gs1_128)),
+            [
+                "(01)02000000000015(10)LOT-B(3100)000024",
+                "(01)02000000000015(10)LOT-B(3100)000024",
+            ],
+        )
+
+    def test_receipt_keeps_its_labels_once_the_order_drops_its_units(self):
+        uom_piece = self._create_dynamic_uom()
+        product = self._create_product(
+            "Product",
+            "2000000000015",
+            tracking="lot",
+            uom_id=self.uom_kg.id,
+            uom_po_id=uom_piece.id,
+        )
+        receipt = self._purchase(product, 3, uom_piece)
+        receipt.move_ids.move_line_ids.write({"quantity": 7.5, "lot_name": "LOT-A"})
+        receipt.button_validate()
+        # all of it goes back to the vendor, and the order then buys nothing
+        self._return_to_vendor(receipt, 7.5)
+        receipt.move_ids.purchase_line_id.product_qty = 0
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        # the receipt brought its 3 pieces all the same
+        self.assertEqual(
+            self._get_label_texts(report_action),
+            [
+                "(01)02000000000015(10)LOT-A(3101)000025",
+                "(01)02000000000015(10)LOT-A(3101)000025",
+                "(01)02000000000015(10)LOT-A(3101)000025",
+            ],
+        )
+
+    def test_receipt_without_purchase_units_received_refuses_its_labels(self):
+        uom_piece = self._create_dynamic_uom()
+        product = self._create_product(
+            "Product",
+            "2000000000015",
+            tracking="lot",
+            uom_id=self.uom_kg.id,
+            uom_po_id=uom_piece.id,
+        )
+        receipt = self._purchase(product, 3, uom_piece)
+        receipt.move_ids.move_line_ids.write({"quantity": 7.5, "lot_name": "LOT-A"})
+        receipt.button_validate()
+        # as a receipt done before this module was installed
+        receipt.move_ids.purchase_uom_qty = 0
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        with self.assertRaisesRegex(UserError, "has no purchase units received"):
+            self._render_labels(report_action)
+
     def test_purchase_in_a_dynamic_unit_with_a_line_of_part_of_a_unit_raises(self):
         uom_piece = self._create_dynamic_uom()
         product = self._create_product(
@@ -216,7 +293,87 @@ class TestPrintPickingLabels(TestPurchaseCommon):
         report_action = self._print_labels(receipt, self.config_gs1_128)
         # 7.5 kg for 3 pieces is 2.5 kg a piece: 3 kg is not a whole number of them
         with self.assertRaisesRegex(
-            UserError, "is not a multiple of 2.5, the quantity of each unit bought"
+            UserError,
+            r"holds 3\.0 kg of the product .+, which is not a multiple of 2\.5 kg, "
+            "the quantity of each unit received",
+        ):
+            self._render_labels(report_action)
+
+    def test_receipt_lines_holding_more_units_than_received_raise(self):
+        uom_piece = self._create_dynamic_uom()
+        product = self._create_product(
+            "Product",
+            "2000000000015",
+            tracking="lot",
+            uom_id=self.uom_kg.id,
+            uom_po_id=uom_piece.id,
+        )
+        receipt = self._purchase(product, 3, uom_piece)
+        receipt.move_ids.move_line_ids.write({"quantity": 0.01, "lot_name": "LOT-A"})
+        receipt.move_ids.write(
+            {
+                "move_line_ids": [
+                    Command.create(
+                        {
+                            "picking_id": receipt.id,
+                            "product_id": product.id,
+                            "location_id": receipt.location_id.id,
+                            "location_dest_id": receipt.location_dest_id.id,
+                            "quantity": 0.01,
+                            "lot_name": "LOT-B",
+                        }
+                    )
+                ]
+            }
+        )
+        receipt.with_context(
+            skip_backorder=True, picking_ids_not_to_backorder=receipt.ids
+        ).button_validate()
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        # 0.02 kg for 3 pieces: each line of 0.01 kg rounds to 2 of them, and
+        # the kg precision sees both as whole, which would print 4 labels
+        with self.assertRaisesRegex(
+            UserError,
+            r"hold 4 units of 0\.01 kg of the product .+, but 3 purchase units "
+            "were received",
+        ):
+            self._render_labels(report_action)
+
+    def test_receipt_line_holding_less_than_a_unit_raises(self):
+        uom_sack = self._create_dynamic_uom("Sack", 25)
+        product = self._create_product(
+            "Product",
+            "2000000000015",
+            tracking="lot",
+            uom_id=self.uom_kg.id,
+            uom_po_id=uom_sack.id,
+        )
+        receipt = self._purchase(product, 1, uom_sack)
+        receipt.move_ids.move_line_ids.write({"quantity": 25, "lot_name": "LOT-A"})
+        receipt.move_ids.write(
+            {
+                "move_line_ids": [
+                    Command.create(
+                        {
+                            "picking_id": receipt.id,
+                            "product_id": product.id,
+                            "product_uom_id": self.uom_gram.id,
+                            "location_id": receipt.location_id.id,
+                            "location_dest_id": receipt.location_dest_id.id,
+                            "quantity": 3,
+                            "lot_name": "LOT-B",
+                        }
+                    )
+                ]
+            }
+        )
+        receipt.button_validate()
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        # 3 g is no whole sack, and at the 0.01 kg precision it reads as none:
+        # the line would print no label
+        with self.assertRaisesRegex(
+            UserError,
+            r"holds 3\.0 g of the product .+, less than one of its units received",
         ):
             self._render_labels(report_action)
 

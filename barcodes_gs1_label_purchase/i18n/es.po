@@ -16,6 +16,28 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: barcodes_gs1_label_purchase
+#. odoo-python
+#: code:addons/barcodes_gs1_label_purchase/report/report_barcode_gs1.py:0
+msgid ""
+"A line of the receipt holds %(quantity)s %(uom)s of the product %(product)s,"
+" less than one of its units received. Correct it."
+msgstr ""
+"Una línea del albarán tiene %(quantity)s %(uom)s del producto %(product)s, "
+"menos de una de sus unidades recibidas. Corríjala."
+
+#. module: barcodes_gs1_label_purchase
+#. odoo-python
+#: code:addons/barcodes_gs1_label_purchase/report/report_barcode_gs1.py:0
+msgid ""
+"A line of the receipt holds %(quantity)s %(uom)s of the product %(product)s,"
+" which is not a multiple of %(share)s %(uom)s, the quantity of each unit "
+"received. Correct it."
+msgstr ""
+"Una línea del albarán tiene %(quantity)s %(uom)s del producto %(product)s, "
+"que no es un múltiplo de %(share)s %(uom)s, la cantidad de cada unidad "
+"recibida. Corríjala."
+
+#. module: barcodes_gs1_label_purchase
 #: model:ir.model.fields,field_description:barcodes_gs1_label_purchase.field_uom_uom__dynamic_ratio
 msgid "Dynamic Ratio"
 msgstr "Relación dinámica"
@@ -63,6 +85,18 @@ msgid "Stock Move"
 msgstr "Movimiento de stock"
 
 #. module: barcodes_gs1_label_purchase
+#. odoo-python
+#: code:addons/barcodes_gs1_label_purchase/report/report_barcode_gs1.py:0
+msgid ""
+"The lines of the receipt hold %(units_held)s units of %(share)s %(uom)s of "
+"the product %(product)s, but %(units_received)s purchase units were "
+"received. Correct them."
+msgstr ""
+"Las líneas del albarán tienen %(units_held)s unidades de %(share)s %(uom)s "
+"del producto %(product)s, pero se han recibido %(units_received)s unidades "
+"de compra. Corríjalas."
+
+#. module: barcodes_gs1_label_purchase
 #: model:ir.model.constraint,message:barcodes_gs1_label_purchase.constraint_stock_move_purchase_uom_qty_not_negative
 msgid "The purchase units received cannot be negative."
 msgstr "Las unidades de compra recibidas no pueden ser negativas."
@@ -80,10 +114,10 @@ msgstr ""
 #. odoo-python
 #: code:addons/barcodes_gs1_label_purchase/report/report_barcode_gs1.py:0
 msgid ""
-"The quantity of the product %(product)s in the picking line is not a "
-"multiple of %(uom_ratio)s, the quantity of each unit bought. Please correct "
-"it."
+"The receipt has no purchase units received of the product %(product)s to "
+"share the quantity received among. Unlock it (Lock/Unlock) and enter them on"
+" the product's line."
 msgstr ""
-"La cantidad del producto %(product)s en la línea de traslado no es un "
-"múltiplo de %(uom_ratio)s, la cantidad de cada unidad comprada. Por favor, "
-"corríjalo."
+"El albarán no tiene unidades de compra recibidas del producto %(product)s "
+"entre las que repartir la cantidad recibida. Desbloquéelo "
+"(Bloquear/Desbloquear) e introdúzcalas en la línea del producto."
