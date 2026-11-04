@@ -158,6 +158,25 @@ class TestPrintPickingLabels(TestPurchaseCommon):
             ],
         )
 
+    def test_purchase_in_a_dynamic_unit_with_a_share_below_the_kg_rounding_raises(self):
+        uom_piece = self._create_dynamic_uom()
+        product = self._create_product(
+            "Product",
+            "2000000000015",
+            tracking="lot",
+            uom_id=self.uom_kg.id,
+            uom_po_id=uom_piece.id,
+        )
+        receipt = self._purchase(product, 300, uom_piece)
+        receipt.move_ids.move_line_ids.write({"quantity": 1, "lot_name": "LOT-A"})
+        receipt.with_context(
+            skip_backorder=True, picking_ids_not_to_backorder=receipt.ids
+        ).button_validate()
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        # 1 kg for 300 pieces is 0.0033 kg a piece, none at the 0.01 kg rounding
+        with self.assertRaisesRegex(UserError, "is too small for a GS1 label"):
+            self._render_labels(report_action)
+
     def test_purchase_in_a_dynamic_box_prints_the_weight_of_one_box(self):
         # its units per box are known only when the goods are received
         uom_box = self.env["uom.uom"].create(
@@ -183,6 +202,68 @@ class TestPrintPickingLabels(TestPurchaseCommon):
                 "(01)02000000000015(10)LOT-A(3101)000025",
                 "(01)02000000000015(10)LOT-A(3101)000025",
             ],
+        )
+
+    def _purchase_dynamic_boxes(self, quantity, weight):
+        # its units per box are known only when the goods are received
+        uom_box = self.env["uom.uom"].create(
+            {
+                "name": "Box",
+                "category_id": self.uom_unit.category_id.id,
+                "uom_type": "bigger",
+                "ratio": 1,
+                "dynamic_ratio": True,
+            }
+        )
+        product = self._create_product(
+            "Product",
+            "2000000000015",
+            tracking="lot",
+            weight=weight,
+            uom_po_id=uom_box.id,
+        )
+        return self._purchase(product, quantity, uom_box)
+
+    def test_purchase_in_a_dynamic_box_weighs_its_share_to_five_decimals(self):
+        receipt = self._purchase_dynamic_boxes(3, 0.4)
+        receipt.move_ids.move_line_ids.write({"quantity": 35, "lot_name": "LOT-A"})
+        receipt.button_validate()
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        # 35 units for the 3 boxes is 11.67 units of 0.4 kg a box, 4.66667 kg:
+        # the three labels add up to the 14 kg received
+        self.assertEqual(
+            self._get_label_texts(report_action),
+            [
+                "(01)02000000000015(10)LOT-A(3105)466667",
+                "(01)02000000000015(10)LOT-A(3105)466667",
+                "(01)02000000000015(10)LOT-A(3105)466667",
+            ],
+        )
+
+    def test_purchase_in_a_dynamic_box_weighs_its_share_in_pounds(self):
+        # the products' weight field holds pounds
+        self.env["ir.config_parameter"].sudo().set_param("product.weight_in_lbs", "1")
+        receipt = self._purchase_dynamic_boxes(2, 1)
+        receipt.move_ids.move_line_ids.write({"quantity": 10, "lot_name": "LOT-A"})
+        receipt.button_validate()
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        # 5 units of 1 lb a box is 5 / 2.20462 = 2.26796 kg
+        self.assertEqual(
+            self._get_label_texts(report_action),
+            [
+                "(01)02000000000015(10)LOT-A(3105)226796",
+                "(01)02000000000015(10)LOT-A(3105)226796",
+            ],
+        )
+
+    def test_purchase_in_a_dynamic_box_of_a_product_without_weight_prints_none(self):
+        receipt = self._purchase_dynamic_boxes(2, 0)
+        receipt.move_ids.move_line_ids.write({"quantity": 10, "lot_name": "LOT-A"})
+        receipt.button_validate()
+        report_action = self._print_labels(receipt, self.config_gs1_128)
+        self.assertEqual(
+            self._get_label_texts(report_action),
+            ["(01)02000000000015(10)LOT-A", "(01)02000000000015(10)LOT-A"],
         )
 
     def test_partial_receipt_shares_its_kilos_among_the_units_it_brings(self):

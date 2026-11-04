@@ -109,7 +109,10 @@ class ReportGS1Barcode(models.AbstractModel):
             )
         # each label carries one unit received: its quantity in the product's
         # unit when that is a weight unit, and otherwise the weight of what it
-        # holds, in the unit of the products' weight field (kg, or lb)
+        # holds, in the unit of the products' weight field (kg, or lb). That
+        # weight is the base module's weight of a line, none without a product
+        # weight; its share is not rounded to the product's unit, so that the
+        # labels add up to the weight received
         if ml.product_uom_category_id == self.env.ref("uom.product_uom_categ_kgm"):
             return (
                 expand_qty,
@@ -119,10 +122,10 @@ class ReportGS1Barcode(models.AbstractModel):
         return (
             expand_qty,
             self.env["product.template"]._get_weight_uom_id_from_ir_config_parameter(),
-            float_round(
-                uom_po_ratio * ml.product_id.weight,
-                precision_digits=self.env["decimal.precision"].precision_get(
-                    "Stock Weight"
+            self._get_line_weight(
+                ml,
+                ml.product_id.uom_id._compute_quantity(
+                    uom_po_ratio, ml.product_uom_id, round=False
                 ),
             ),
         )
