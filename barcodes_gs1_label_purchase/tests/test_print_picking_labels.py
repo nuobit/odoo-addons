@@ -3,66 +3,16 @@
 
 from odoo import Command
 from odoo.exceptions import UserError
-from odoo.tests import Form
 
-from odoo.addons.barcodes_gs1_label.tests.common import TestCommon
+from .common import TestPurchaseCommon
 
 
-class TestPrintPickingLabels(TestCommon):
+class TestPrintPickingLabels(TestPurchaseCommon):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.vendor = cls.env["res.partner"].create({"name": "Vendor"})
-        cls.uom_gram = cls.env.ref("uom.product_uom_gram")
         # receipt labels print the weight received
         cls.config_gs1_128.show_weight = True
-
-    def _purchase(self, product, quantity, uom):
-        purchase = self.env["purchase.order"].create(
-            {
-                "partner_id": self.vendor.id,
-                "order_line": [
-                    Command.create(
-                        {
-                            "product_id": product.id,
-                            "product_qty": quantity,
-                            "product_uom": uom.id,
-                        }
-                    )
-                ],
-            }
-        )
-        purchase.button_confirm()
-        return purchase.picking_ids
-
-    def _create_dynamic_uom(self, name="Piece", ratio=1):
-        # its kilos per unit are known only when the goods are received
-        return self.env["uom.uom"].create(
-            {
-                "name": name,
-                "category_id": self.uom_kg.category_id.id,
-                "uom_type": "bigger",
-                "ratio": ratio,
-                "dynamic_ratio": True,
-            }
-        )
-
-    def _return_to_vendor(self, receipt, quantity):
-        return_wizard = Form(
-            self.env["stock.return.picking"].with_context(
-                active_ids=receipt.ids,
-                active_id=receipt.id,
-                active_model="stock.picking",
-            )
-        ).save()
-        return_wizard.product_return_moves.write(
-            {"quantity": quantity, "to_refund": True}
-        )
-        return_picking = self.env["stock.picking"].browse(
-            return_wizard.action_create_returns()["res_id"]
-        )
-        return_picking.button_validate()
-        return return_picking
 
     def test_purchase_receipt_in_units_prints_one_label_per_unit(self):
         product = self._create_product("Product", "2000000000015", tracking="lot")
