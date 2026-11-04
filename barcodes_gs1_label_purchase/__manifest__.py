@@ -15,6 +15,7 @@
         "purchase_stock",
     ],
     "data": [
+        "views/stock_picking_views.xml",
         "views/uom_uom_views.xml",
     ],
     "development_status": "Beta",

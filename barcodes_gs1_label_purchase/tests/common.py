@@ -44,7 +44,7 @@ class TestPurchaseCommon(TestCommon):
             }
         )
 
-    def _return_to_vendor(self, receipt, quantity):
+    def _create_return(self, receipt, quantity):
         return_wizard = Form(
             self.env["stock.return.picking"].with_context(
                 active_ids=receipt.ids,
@@ -55,8 +55,11 @@ class TestPurchaseCommon(TestCommon):
         return_wizard.product_return_moves.write(
             {"quantity": quantity, "to_refund": True}
         )
-        return_picking = self.env["stock.picking"].browse(
+        return self.env["stock.picking"].browse(
             return_wizard.action_create_returns()["res_id"]
         )
+
+    def _return_to_vendor(self, receipt, quantity):
+        return_picking = self._create_return(receipt, quantity)
         return_picking.button_validate()
         return return_picking

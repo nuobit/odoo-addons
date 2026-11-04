@@ -21,14 +21,60 @@ msgid "Dynamic Ratio"
 msgstr "Relación dinámica"
 
 #. module: barcodes_gs1_label_purchase
+#: model:ir.model.fields,help:barcodes_gs1_label_purchase.field_stock_move__purchase_uom_qty
+msgid ""
+"How many units of the purchase line this receipt line brings, when they are "
+"bought in a unit whose quantity is known only on receipt: the labels share "
+"the quantity received among them. It proposes the units still to come."
+msgstr ""
+"Cuántas unidades de la línea de compra trae esta línea del albarán, cuando "
+"se compran en una unidad cuya cantidad solo se conoce al recibirlas: las "
+"etiquetas reparten entre ellas la cantidad recibida. Propone las unidades "
+"que aún faltan por llegar."
+
+#. module: barcodes_gs1_label_purchase
 #: model:ir.model,name:barcodes_gs1_label_purchase.model_uom_uom
 msgid "Product Unit of Measure"
 msgstr "Unidad de medida del producto"
 
 #. module: barcodes_gs1_label_purchase
+#: model:ir.model.fields,field_description:barcodes_gs1_label_purchase.field_stock_move__purchase_uom_qty_entered
+msgid "Purchase Units Entered"
+msgstr "Unidades de compra introducidas"
+
+#. module: barcodes_gs1_label_purchase
+#: model:ir.model.fields,field_description:barcodes_gs1_label_purchase.field_stock_move__purchase_uom_qty
+msgid "Purchase Units Received"
+msgstr "Unidades de compra recibidas"
+
+#. module: barcodes_gs1_label_purchase
+#: model:ir.model.fields,field_description:barcodes_gs1_label_purchase.field_stock_move__is_dynamic_receipt
+msgid "Receipt in a Dynamic Unit"
+msgstr "Recepción en una unidad dinámica"
+
+#. module: barcodes_gs1_label_purchase
 #: model:ir.model,name:barcodes_gs1_label_purchase.model_report_barcodes_gs1_label_report_gs1_barcode
 msgid "Report GS1 Barcode"
 msgstr "Informe de código de barras GS1"
+
+#. module: barcodes_gs1_label_purchase
+#: model:ir.model,name:barcodes_gs1_label_purchase.model_stock_move
+msgid "Stock Move"
+msgstr "Movimiento de stock"
+
+#. module: barcodes_gs1_label_purchase
+#: model:ir.model.constraint,message:barcodes_gs1_label_purchase.constraint_stock_move_purchase_uom_qty_not_negative
+msgid "The purchase units received cannot be negative."
+msgstr "Las unidades de compra recibidas no pueden ser negativas."
+
+#. module: barcodes_gs1_label_purchase
+#: model:ir.model.fields,help:barcodes_gs1_label_purchase.field_stock_move__purchase_uom_qty_entered
+msgid ""
+"The purchase units received of this receipt line were entered, so it no "
+"longer proposes them."
+msgstr ""
+"Las unidades de compra recibidas de esta línea del albarán se han "
+"introducido, por lo que ya no las propone."
 
 #. module: barcodes_gs1_label_purchase
 #. odoo-python
