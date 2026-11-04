@@ -12,9 +12,10 @@ class ReportGS1Barcode(models.AbstractModel):
 
     @api.model
     def _get_picking_line_labels(self, ml):
-        # a line bought in a dynamic unit prints one label per unit bought
+        # a line bought in a dynamic unit prints one label per unit bought; a
+        # return sends kilos back to the vendor, and prints as any line
         uom_po = ml.move_id.purchase_line_id.product_uom
-        if not uom_po.dynamic_ratio:
+        if not uom_po.dynamic_ratio or ml.move_id._is_purchase_return():
             return super()._get_picking_line_labels(ml)
 
         uom_po_ratio = 1

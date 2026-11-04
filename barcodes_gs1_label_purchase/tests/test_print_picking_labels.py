@@ -3,6 +3,7 @@
 
 from odoo import Command
 from odoo.exceptions import UserError
+from odoo.tests import Form
 
 from odoo.addons.barcodes_gs1_label.tests.common import TestCommon
 
@@ -45,6 +46,23 @@ class TestPrintPickingLabels(TestCommon):
                 "dynamic_ratio": True,
             }
         )
+
+    def _return_to_vendor(self, receipt, quantity):
+        return_wizard = Form(
+            self.env["stock.return.picking"].with_context(
+                active_ids=receipt.ids,
+                active_id=receipt.id,
+                active_model="stock.picking",
+            )
+        ).save()
+        return_wizard.product_return_moves.write(
+            {"quantity": quantity, "to_refund": True}
+        )
+        return_picking = self.env["stock.picking"].browse(
+            return_wizard.action_create_returns()["res_id"]
+        )
+        return_picking.button_validate()
+        return return_picking
 
     def test_purchase_receipt_in_units_prints_one_label_per_unit(self):
         product = self._create_product("Product", "2000000000015", tracking="lot")
@@ -290,6 +308,26 @@ class TestPrintPickingLabels(TestCommon):
                 "(01)02000000000015(10)LOT-B(3101)000025",
                 "(01)02000000000015(10)LOT-B(3101)000025",
             ],
+        )
+
+    def test_return_of_a_dynamic_unit_prints_as_any_line(self):
+        uom_piece = self._create_dynamic_uom()
+        product = self._create_product(
+            "Product",
+            "2000000000015",
+            tracking="lot",
+            uom_id=self.uom_kg.id,
+            uom_po_id=uom_piece.id,
+        )
+        receipt = self._purchase(product, 3, uom_piece)
+        receipt.move_ids.move_line_ids.write({"quantity": 7.5, "lot_name": "LOT-A"})
+        receipt.button_validate()
+        return_picking = self._return_to_vendor(receipt, 7.5)
+        report_action = self._print_labels(return_picking, self.config_gs1_128)
+        # a return sends kilos back: one label with the weight it sends
+        self.assertEqual(
+            self._get_label_texts(report_action),
+            ["(01)02000000000015(10)LOT-A(3101)000075"],
         )
 
     def test_purchase_in_a_dynamic_unit_shares_lines_in_grams_exactly(self):
