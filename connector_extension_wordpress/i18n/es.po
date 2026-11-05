@@ -1,0 +1,80 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* connector_extension_wordpress
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-29 09:28+0000\n"
+"PO-Revision-Date: 2024-10-22 12:54+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: connector_extension_wordpress
+#. odoo-python
+#: code:addons/connector_extension_wordpress/components/adapter.py:0
+msgid "Error connecting to WordPress: %s"
+msgstr "Error al conectar con WordPress: %s"
+
+#. module: connector_extension_wordpress
+#. odoo-python
+#: code:addons/connector_extension_wordpress/components/adapter.py:0
+msgid ""
+"Error decoding json WordPress response: %(message)s\n"
+"%(response)s"
+msgstr ""
+"Error al decodificar la respuesta json de WordPress: %(message)s\n"
+"%(response)s"
+
+#. module: connector_extension_wordpress
+#. odoo-python
+#: code:addons/connector_extension_wordpress/components/adapter.py:0
+msgid ""
+"Error: '%(message)s'. Probably the %(resource)s has been removed from "
+"WordPress. If it's the case, try to remove the binding of the %(model)s."
+msgstr ""
+"Error: '%(message)s'. Probablemente el %(resource)s ha sido eliminado de "
+"WordPress. Si es el caso, intente eliminar la vinculación del %(model)s."
+
+#. module: connector_extension_wordpress
+#. odoo-python
+#: code:addons/connector_extension_wordpress/components/adapter.py:0
+msgid "WordPress error %(code)s on %(resource)s: %(message)s"
+msgstr "Error %(code)s de WordPress en el recurso %(resource)s: %(message)s"
+
+#. module: connector_extension_wordpress
+#. odoo-python
+#: code:addons/connector_extension_wordpress/components/adapter.py:0
+msgid "WordPress error on %(resource)s: %(answer)s"
+msgstr "Error de WordPress en el recurso %(resource)s: %(answer)s"
+
+#. module: connector_extension_wordpress
+#. odoo-python
+#: code:addons/connector_extension_wordpress/components/adapter.py:0
+msgid ""
+"WordPress refused the uploaded file: %(message)s Check that WordPress "
+"accepts its format."
+msgstr ""
+"WordPress ha rechazado el archivo subido: %(message)s Compruebe que "
+"WordPress acepte su formato."
+
+#. module: connector_extension_wordpress
+#. odoo-python
+#: code:addons/connector_extension_wordpress/components/adapter.py:0
+msgid ""
+"WordPress refused the uploaded file: %(message)s Check that WordPress "
+"accepts its format. Request headers: %(headers)s"
+msgstr ""
+"WordPress ha rechazado el archivo subido: %(message)s Compruebe que "
+"WordPress acepte su formato. Cabeceras de la petición: %(headers)s"
+
+#. module: connector_extension_wordpress
+#. odoo-python
+#: code:addons/connector_extension_wordpress/components/adapter.py:0
+msgid "Wordpress not connected"
+msgstr "WordPress no conectado"
