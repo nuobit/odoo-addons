@@ -44,16 +44,6 @@ msgstr ""
 #. module: connector_extension_wordpress
 #. odoo-python
 #: code:addons/connector_extension_wordpress/components/adapter.py:0
-msgid ""
-"The backend %(backend)s cannot call WordPress until a WordPress backend is "
-"chosen on it."
-msgstr ""
-"El backend %(backend)s no pot fer crides a WordPress fins que no s'hi triï "
-"un backend de WordPress."
-
-#. module: connector_extension_wordpress
-#. odoo-python
-#: code:addons/connector_extension_wordpress/components/adapter.py:0
 msgid "WordPress error %(code)s on %(resource)s: %(message)s"
 msgstr "Error %(code)s de WordPress al recurs %(resource)s: %(message)s"
 

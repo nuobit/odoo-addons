@@ -57,17 +57,9 @@ class TestWordpressAdapter(TransactionComponentRegistryCase):
         super().setUpClass()
         cls.loader = FakeModelLoader(cls.env, cls.__module__)
         cls.loader.backup_registry()
-        from .fake_models import (
-            ConnectorExtensionWordpressTestBackend,
-            ConnectorExtensionWordpressTestShopBackend,
-            ConnectorExtensionWordpressTestStoreBackend,
-        )
+        from .fake_models import ConnectorExtensionWordpressTestBackend
 
-        fake_models = (
-            ConnectorExtensionWordpressTestBackend,
-            ConnectorExtensionWordpressTestShopBackend,
-            ConnectorExtensionWordpressTestStoreBackend,
-        )
+        fake_models = (ConnectorExtensionWordpressTestBackend,)
         cls.loader.update_registry(fake_models)
         # Odoo's TransactionCase.check_attrs (odoo/tests/common.py) fails each
         # test after which a model class has an attribute its attrs_before entry
@@ -97,10 +89,9 @@ class TestWordpressAdapter(TransactionComponentRegistryCase):
         cls.loader.restore_registry()
         super().tearDownClass()
 
-    def adapter(self, backend=None):
-        """The adapter of partners on ``backend``, by default the WordPress
-        test backend."""
-        with (backend if backend is not None else self.backend).work_on(
+    def adapter(self):
+        """The adapter of partners on the WordPress test backend."""
+        with self.backend.work_on(
             "res.partner", components_registry=self.comp_registry
         ) as work:
             return work.component(usage="adapter")
@@ -385,216 +376,6 @@ class TestWordpressAdapter(TransactionComponentRegistryCase):
             auth=("wp_user_test", "app_password_test"),
             verify=True,
         )
-
-    def test_post_calls_the_linked_wordpress(self):
-        self.backend.verify_ssl = False
-        shop = self.env["connector.extension.wordpress.test.shop.backend"].create(
-            {
-                "name": "Shop Test",
-                "lang_ids": [Command.set(self.env.ref("base.lang_en").ids)],
-                "url": "https://shop.example.com",
-                "username": "shop_user_test",
-                "application_password": "shop_password_test",
-                "wordpress_backend_id": self.backend.id,
-            }
-        )
-        answer = wordpress_response(201, {"id": 15})
-        with mock.patch.object(requests, "post", return_value=answer) as post:
-            self.adapter(shop)._exec("post", "media", data={"data": b"bytes"})
-        post.assert_called_once_with(
-            "https://wordpress.example.com/wp-json/wp/v2/media",
-            data=b"bytes",
-            params={},
-            headers={},
-            auth=("wp_user_test", "app_password_test"),
-            verify=False,
-        )
-
-    def test_put_calls_the_linked_wordpress(self):
-        self.backend.verify_ssl = False
-        shop = self.env["connector.extension.wordpress.test.shop.backend"].create(
-            {
-                "name": "Shop Test",
-                "lang_ids": [Command.set(self.env.ref("base.lang_en").ids)],
-                "url": "https://shop.example.com",
-                "username": "shop_user_test",
-                "application_password": "shop_password_test",
-                "wordpress_backend_id": self.backend.id,
-            }
-        )
-        answer = wordpress_response(200, {"id": 15})
-        with mock.patch.object(requests, "put", return_value=answer) as put:
-            self.adapter(shop)._exec("put", "media/15", data={"data": b"bytes"})
-        put.assert_called_once_with(
-            "https://wordpress.example.com/wp-json/wp/v2/media/15",
-            data=b"bytes",
-            params={},
-            headers={},
-            auth=("wp_user_test", "app_password_test"),
-            verify=False,
-        )
-
-    def test_a_read_calls_the_linked_wordpress(self):
-        self.backend.verify_ssl = False
-        shop = self.env["connector.extension.wordpress.test.shop.backend"].create(
-            {
-                "name": "Shop Test",
-                "lang_ids": [Command.set(self.env.ref("base.lang_en").ids)],
-                "url": "https://shop.example.com",
-                "username": "shop_user_test",
-                "application_password": "shop_password_test",
-                "wordpress_backend_id": self.backend.id,
-            }
-        )
-        wordpress = FakeWordpressPosts([{"id": 1}])
-        with mock.patch.object(requests, "get", side_effect=wordpress.get) as get:
-            posts = self.adapter(shop)._exec("get", "posts")
-        self.assertEqual(posts, [{"id": 1}])
-        self.assertEqual(
-            get.call_args_list,
-            [
-                # The count of the posts
-                mock.call(
-                    "https://wordpress.example.com/wp-json/wp/v2/posts",
-                    params=mock.ANY,
-                    auth=("wp_user_test", "app_password_test"),
-                    verify=False,
-                ),
-                # The page of posts
-                mock.call(
-                    "https://wordpress.example.com/wp-json/wp/v2/posts",
-                    params=mock.ANY,
-                    auth=("wp_user_test", "app_password_test"),
-                    verify=False,
-                ),
-            ],
-        )
-
-    def test_a_read_through_a_linked_wordpress_takes_its_page_size(self):
-        self.backend.page_size = 2
-        store = self.env["connector.extension.wordpress.test.store.backend"].create(
-            {
-                "name": "Store Test",
-                "lang_ids": [Command.set(self.env.ref("base.lang_en").ids)],
-                "url": "https://store.example.com",
-                "page_size": 50,
-                "wordpress_backend_id": self.backend.id,
-            }
-        )
-        wordpress = FakeWordpressPosts([{"id": 1}, {"id": 2}, {"id": 3}])
-        with mock.patch.object(requests, "get", side_effect=wordpress.get):
-            posts = self.adapter(store)._exec("get", "posts")
-        self.assertEqual(posts, [{"id": 1}, {"id": 2}, {"id": 3}])
-        self.assertEqual(
-            wordpress.queries,
-            [
-                {"per_page": 1},
-                {"offset": 0, "per_page": 2},
-                {"offset": 2, "per_page": 1},
-            ],
-        )
-
-    def test_post_without_a_linked_wordpress_calls_its_own_site(self):
-        shop = self.env["connector.extension.wordpress.test.shop.backend"].create(
-            {
-                "name": "Shop Test",
-                "lang_ids": [Command.set(self.env.ref("base.lang_en").ids)],
-                "url": "https://shop.example.com",
-                "username": "shop_user_test",
-                "application_password": "shop_password_test",
-                "verify_ssl": False,
-            }
-        )
-        answer = wordpress_response(201, {"id": 15})
-        with mock.patch.object(requests, "post", return_value=answer) as post:
-            self.adapter(shop)._exec("post", "media", data={"data": b"bytes"})
-        post.assert_called_once_with(
-            "https://shop.example.com/wp-json/wp/v2/media",
-            data=b"bytes",
-            params={},
-            headers={},
-            auth=("shop_user_test", "shop_password_test"),
-            verify=False,
-        )
-
-    def test_put_without_a_linked_wordpress_calls_its_own_site(self):
-        shop = self.env["connector.extension.wordpress.test.shop.backend"].create(
-            {
-                "name": "Shop Test",
-                "lang_ids": [Command.set(self.env.ref("base.lang_en").ids)],
-                "url": "https://shop.example.com",
-                "username": "shop_user_test",
-                "application_password": "shop_password_test",
-                "verify_ssl": False,
-            }
-        )
-        answer = wordpress_response(200, {"id": 15})
-        with mock.patch.object(requests, "put", return_value=answer) as put:
-            self.adapter(shop)._exec("put", "media/15", data={"data": b"bytes"})
-        put.assert_called_once_with(
-            "https://shop.example.com/wp-json/wp/v2/media/15",
-            data=b"bytes",
-            params={},
-            headers={},
-            auth=("shop_user_test", "shop_password_test"),
-            verify=False,
-        )
-
-    def test_post_without_credentials_of_its_own_calls_the_linked_wordpress(self):
-        self.backend.verify_ssl = False
-        store = self.env["connector.extension.wordpress.test.store.backend"].create(
-            {
-                "name": "Store Test",
-                "lang_ids": [Command.set(self.env.ref("base.lang_en").ids)],
-                "url": "https://store.example.com",
-                "wordpress_backend_id": self.backend.id,
-            }
-        )
-        answer = wordpress_response(201, {"id": 15})
-        with mock.patch.object(requests, "post", return_value=answer) as post:
-            self.adapter(store)._exec("post", "media", data={"data": b"bytes"})
-        post.assert_called_once_with(
-            "https://wordpress.example.com/wp-json/wp/v2/media",
-            data=b"bytes",
-            params={},
-            headers={},
-            auth=("wp_user_test", "app_password_test"),
-            verify=False,
-        )
-
-    def test_a_read_without_credentials_nor_a_linked_wordpress_is_refused(self):
-        store = self.env["connector.extension.wordpress.test.store.backend"].create(
-            {
-                "name": "Store Test",
-                "lang_ids": [Command.set(self.env.ref("base.lang_en").ids)],
-                "url": "https://store.example.com",
-            }
-        )
-        with mock.patch.object(requests, "get") as get:
-            with self.assertRaisesRegex(
-                ValidationError,
-                "The backend Store Test cannot call WordPress until a WordPress "
-                "backend is chosen on it",
-            ):
-                self.adapter(store)._exec("get", "posts")
-        get.assert_not_called()
-
-    def test_post_without_credentials_nor_a_linked_wordpress_is_refused(self):
-        store = self.env["connector.extension.wordpress.test.store.backend"].create(
-            {
-                "name": "Store Test",
-                "lang_ids": [Command.set(self.env.ref("base.lang_en").ids)],
-                "url": "https://store.example.com",
-            }
-        )
-        with mock.patch.object(requests, "post") as post:
-            with self.assertRaisesRegex(
-                ValidationError,
-                "The backend Store Test cannot call WordPress until a WordPress "
-                "backend is chosen on it",
-            ):
-                self.adapter(store)._exec("post", "media", data={"data": b"bytes"})
-        post.assert_not_called()
 
     def test_delete_is_not_supported(self):
         with self.assertRaises(NotImplementedError):

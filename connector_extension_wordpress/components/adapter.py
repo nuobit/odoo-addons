@@ -93,7 +93,7 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
         return res_data
 
     def _exec_wp_call(self, op, resource, *args, **kwargs):
-        backend = self._get_wordpress_backend()
+        backend = self.backend_record
         url = backend.url + "/wp-json/wp/v2/" + resource
         func = getattr(requests, op)
         try:
@@ -176,9 +176,8 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
         if limit is None:
             # WordPress counts every item of the query, whatever its offset
             limit = self.get_total_items(resource, domain) - params["offset"]
-        # A per_page clause of the domain wins over the page size of the
-        # backend the call reaches
-        page_size = self._get_wordpress_backend().page_size
+        # A per_page clause of the domain wins over the backend's page size
+        page_size = self.backend_record.page_size
         per_page = params.setdefault("per_page", page_size if page_size > 0 else 100)
         data = []
         while len(data) < limit:
@@ -196,23 +195,6 @@ class ConnectorExtensionWordpressAdapterCRUD(AbstractComponent):
             data += res["data"]
             params["offset"] += len(res["data"])
         return self._filter(data, common_domain)
-
-    def _get_wordpress_backend(self):
-        """The backend every call reaches, with its site, its credentials and
-        its SSL check: the linked WordPress backend when one is set, else the
-        backend itself."""
-        backend = self.backend_record
-        if "wordpress_backend_id" in backend and backend.wordpress_backend_id:
-            backend = backend.wordpress_backend_id
-        if "username" not in backend or "application_password" not in backend:
-            raise ValidationError(
-                _(
-                    "The backend %(backend)s cannot call WordPress until a "
-                    "WordPress backend is chosen on it."
-                )
-                % {"backend": backend.display_name}
-            )
-        return backend
 
     def _exec_post(self, resource, *args, **kwargs):
         data_aux = kwargs.pop("data", {})
