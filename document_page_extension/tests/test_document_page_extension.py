@@ -1,0 +1,134 @@
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+
+import base64
+
+from odoo.tests import TransactionCase, tagged
+
+
+@tagged("post_install", "-at_install")
+class TestDocumentPageExtension(TransactionCase):
+    def setUp(self):
+        super().setUp()
+        self.DocumentPage = self.env["document.page"]
+        group_user = self.env.ref("base.group_user")
+        group_system = self.env.ref("base.group_system")
+        group_reader = self.env.ref("knowledge.group_document_user")
+        group_editor = self.env.ref("document_page.group_document_editor")
+        group_manager = self.env.ref("document_page.group_document_manager")
+        # With an email, as the users of the tests of Odoo: Odoo posts no message
+        # without the email of its author
+        users = self.env["res.users"].with_context(no_reset_password=True)
+        self.reader = users.create(
+            {
+                "name": "Reader",
+                "login": "reader_dpe_test",
+                "email": "reader_dpe_test@example.com",
+                "groups_id": [(6, 0, [group_reader.id])],
+            }
+        )
+        self.editor = users.create(
+            {
+                "name": "Editor",
+                "login": "editor_dpe_test",
+                "email": "editor_dpe_test@example.com",
+                "groups_id": [(6, 0, [group_editor.id])],
+            }
+        )
+        # An internal user with no role in Knowledge, who cannot read the pages
+        self.outsider = users.create(
+            {
+                "name": "Outsider",
+                "login": "outsider_dpe_test",
+                "email": "outsider_dpe_test@example.com",
+                "groups_id": [(6, 0, [group_user.id])],
+            }
+        )
+        self.administrator = users.create(
+            {
+                "name": "Administrator",
+                "login": "administrator_dpe_test",
+                "email": "administrator_dpe_test@example.com",
+                "groups_id": [(6, 0, [group_system.id, group_manager.id])],
+            }
+        )
+        self.category = self.DocumentPage.create(
+            {"name": "Procedures", "type": "category"}
+        )
+        self.page = self.DocumentPage.create(
+            {
+                "name": "Procedure",
+                "type": "content",
+                "parent_id": self.category.id,
+                "draft_name": "1.0",
+                "draft_summary": "First version",
+                "content": "<p>Version one</p>",
+            }
+        )
+
+    def _upload(self, user, res_model, res_id=False):
+        # What the editor does when the user inserts a file: an attachment of the
+        # record of the form, of no record while the form is not saved, with an
+        # access token for its link
+        attachment = (
+            self.env["ir.attachment"]
+            .with_user(user)
+            .create(
+                {
+                    "name": "annex.pdf",
+                    "datas": base64.b64encode(b"PDF file"),
+                    "res_model": res_model,
+                    "res_id": res_id,
+                }
+            )
+        )
+        attachment.generate_access_token()
+        return attachment.with_env(self.env)
+
+    def _download(self, user, attachment):
+        # What the link of the file gets. As in the tests of Odoo, the cache, filled
+        # as superuser, is emptied first, so that the access of the user is checked
+        attachment.flush()
+        attachment.invalidate_cache()
+        status, _headers, _content = (
+            self.env["ir.http"]
+            .with_user(user)
+            .binary_content(id=attachment.id, access_token=attachment.access_token)
+        )
+        return status
+
+    def test_reader_downloads_a_file_of_the_page(self):
+        upload = self._upload(self.editor, "document.page", self.page.id)
+        self.assertEqual(self._download(self.reader, upload), 200)
+
+    def test_outsider_cannot_download_a_file_of_the_page(self):
+        # With the access token of the link all the same, which alone opens the file
+        # to anyone. The link answers "Not found" to this 403
+        upload = self._upload(self.editor, "document.page", self.page.id)
+        self.assertEqual(self._download(self.outsider, upload), 403)
+
+    def test_uploader_downloads_a_file_of_a_page_not_saved_yet(self):
+        upload = self._upload(self.editor, "document.page")
+        self.assertEqual(self._download(self.editor, upload), 200)
+
+    def test_reader_cannot_download_a_file_of_a_page_not_saved_yet(self):
+        upload = self._upload(self.editor, "document.page")
+        self.assertEqual(self._download(self.reader, upload), 403)
+
+    def test_administrator_downloads_a_file_of_a_page_not_saved_yet(self):
+        upload = self._upload(self.editor, "document.page")
+        self.assertEqual(self._download(self.administrator, upload), 200)
+
+    def test_file_of_another_model_is_left_to_odoo(self):
+        # Its access token opens it to anyone, as Odoo does with any file
+        partner = self.env["res.partner"].create({"name": "Supplier"})
+        attachment = self.env["ir.attachment"].create(
+            {
+                "name": "contract.pdf",
+                "datas": base64.b64encode(b"PDF file"),
+                "res_model": "res.partner",
+                "res_id": partner.id,
+            }
+        )
+        attachment.generate_access_token()
+        self.assertEqual(self._download(self.outsider, attachment), 200)
