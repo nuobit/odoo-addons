@@ -1,0 +1,3 @@
+odoo-addon-base_report_pdf_css_reset@git+https://github.com/nuobit/odoo-addons.git@refs/pull/641/head#subdirectory=base_report_pdf_css_reset
+odoo-addon-base_report_gs1_barcode@git+https://github.com/nuobit/odoo-addons.git@refs/pull/642/head#subdirectory=base_report_gs1_barcode
+odoo-addon-barcodes_gs1_label@git+https://github.com/nuobit/odoo-addons.git@refs/pull/643/head#subdirectory=barcodes_gs1_label

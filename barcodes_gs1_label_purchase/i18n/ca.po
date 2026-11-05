@@ -1,0 +1,137 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* barcodes_gs1_label_purchase
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-03 11:30+0000\n"
+"PO-Revision-Date: 2026-11-03 11:30+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: barcodes_gs1_label_purchase
+#. odoo-python
+#: code:addons/barcodes_gs1_label_purchase/report/report_barcode_gs1.py:0
+msgid ""
+"A line of the receipt holds %(quantity)s %(uom)s of the product %(product)s,"
+" less than one of its units received. Correct it."
+msgstr ""
+"Una línia de l'albarà té %(quantity)s %(uom)s del producte %(product)s, "
+"menys d'una de les seves unitats rebudes. Corregiu-la."
+
+#. module: barcodes_gs1_label_purchase
+#. odoo-python
+#: code:addons/barcodes_gs1_label_purchase/report/report_barcode_gs1.py:0
+msgid ""
+"A line of the receipt holds %(quantity)s %(uom)s of the product %(product)s,"
+" which is not a multiple of %(share)s %(uom)s, the quantity of each unit "
+"received. Correct it."
+msgstr ""
+"Una línia de l'albarà té %(quantity)s %(uom)s del producte %(product)s, que "
+"no és un múltiple de %(share)s %(uom)s, la quantitat de cada unitat rebuda. "
+"Corregiu-la."
+
+#. module: barcodes_gs1_label_purchase
+#: model:ir.model.fields,field_description:barcodes_gs1_label_purchase.field_uom_uom__dynamic_ratio
+msgid "Dynamic Ratio"
+msgstr "Ràtio dinàmica"
+
+#. module: barcodes_gs1_label_purchase
+#: model:ir.model.fields,help:barcodes_gs1_label_purchase.field_stock_move__purchase_uom_qty
+msgid ""
+"How many units of the purchase line this receipt line brings, when they are "
+"bought in a unit whose quantity is known only on receipt: the labels share "
+"the quantity received among them. It proposes the units still to come."
+msgstr ""
+"Quantes unitats de la línia de compra porta aquesta línia de l'albarà, quan "
+"es compren en una unitat la quantitat de la qual només es coneix en rebre-"
+"les: les etiquetes reparteixen entre elles la quantitat rebuda. Proposa les "
+"unitats que encara han d'arribar."
+
+#. module: barcodes_gs1_label_purchase
+#: model:ir.model,name:barcodes_gs1_label_purchase.model_uom_uom
+msgid "Product Unit of Measure"
+msgstr "Unitat de mesura del producte"
+
+#. module: barcodes_gs1_label_purchase
+#: model:ir.model.fields,field_description:barcodes_gs1_label_purchase.field_stock_move__purchase_uom_qty_entered
+msgid "Purchase Units Entered"
+msgstr "Unitats de compra introduïdes"
+
+#. module: barcodes_gs1_label_purchase
+#: model:ir.model.fields,field_description:barcodes_gs1_label_purchase.field_stock_move__purchase_uom_qty
+msgid "Purchase Units Received"
+msgstr "Unitats de compra rebudes"
+
+#. module: barcodes_gs1_label_purchase
+#: model:ir.model.fields,field_description:barcodes_gs1_label_purchase.field_stock_move__is_dynamic_receipt
+msgid "Receipt in a Dynamic Unit"
+msgstr "Recepció en una unitat dinàmica"
+
+#. module: barcodes_gs1_label_purchase
+#: model:ir.model,name:barcodes_gs1_label_purchase.model_report_barcodes_gs1_label_report_gs1_barcode
+msgid "Report GS1 Barcode"
+msgstr "Informe de codi de barres GS1"
+
+#. module: barcodes_gs1_label_purchase
+#: model:ir.model,name:barcodes_gs1_label_purchase.model_stock_move
+msgid "Stock Move"
+msgstr "Moviment d'estoc"
+
+#. module: barcodes_gs1_label_purchase
+#. odoo-python
+#: code:addons/barcodes_gs1_label_purchase/report/report_barcode_gs1.py:0
+msgid ""
+"The lines of the receipt hold %(units_held)s units of %(share)s %(uom)s of "
+"the product %(product)s, but %(units_received)s purchase units were "
+"received. Correct them."
+msgstr ""
+"Les línies de l'albarà tenen %(units_held)s unitats de %(share)s %(uom)s del"
+" producte %(product)s, però se n'han rebut %(units_received)s unitats de "
+"compra. Corregiu-les."
+
+#. module: barcodes_gs1_label_purchase
+#: model:ir.model.constraint,message:barcodes_gs1_label_purchase.constraint_stock_move_purchase_uom_qty_not_negative
+msgid "The purchase units received cannot be negative."
+msgstr "Les unitats de compra rebudes no poden ser negatives."
+
+#. module: barcodes_gs1_label_purchase
+#: model:ir.model.fields,help:barcodes_gs1_label_purchase.field_stock_move__purchase_uom_qty_entered
+msgid ""
+"The purchase units received of this receipt line were entered, so it no "
+"longer proposes them."
+msgstr ""
+"Les unitats de compra rebudes d'aquesta línia de l'albarà s'han introduït, "
+"de manera que ja no les proposa."
+
+#. module: barcodes_gs1_label_purchase
+#: model:ir.model.fields,help:barcodes_gs1_label_purchase.field_uom_uom__dynamic_ratio
+msgid ""
+"The quantity of this unit is known only when the goods are received, such as"
+" a crate of produce weighed on arrival: its ratio is only an estimate. A "
+"receipt line bought in this unit records its purchase units received, and "
+"its labels share the quantity received among them."
+msgstr ""
+"La quantitat d'aquesta unitat només es coneix en rebre la mercaderia, com "
+"una caixa de fruita que es pesa en arribar: la seva ràtio només és una "
+"estimació. Una línia d'albarà comprada en aquesta unitat registra les seves "
+"unitats de compra rebudes, i les seves etiquetes reparteixen entre elles la "
+"quantitat rebuda."
+
+#. module: barcodes_gs1_label_purchase
+#. odoo-python
+#: code:addons/barcodes_gs1_label_purchase/report/report_barcode_gs1.py:0
+msgid ""
+"The receipt has no purchase units received of the product %(product)s to "
+"share the quantity received among. Unlock it (Lock/Unlock) and enter them on"
+" the product's line."
+msgstr ""
+"L'albarà no té unitats de compra rebudes del producte %(product)s entre les "
+"quals repartir la quantitat rebuda. Desbloquegeu-lo (Bloquejar/desbloquejar)"
+" i introduïu-les a la línia del producte."
