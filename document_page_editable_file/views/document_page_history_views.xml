@@ -11,7 +11,7 @@
         <field name="priority">17</field>
         <field
             name="groups_id"
-            eval="[(6, 0, [ref('group_document_editable_file'), ref('document_page.group_document_manager')])]"
+            eval="[(6, 0, [ref('document_page.group_document_editor')])]"
         />
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">

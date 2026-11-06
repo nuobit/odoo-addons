@@ -14,9 +14,6 @@ class TestDocumentPageEditable(TransactionCase):
     def setUp(self):
         super().setUp()
         self.DocumentPage = self.env["document.page"]
-        group_editable = self.env.ref(
-            "document_page_editable_file.group_document_editable_file"
-        )
         group_reader = self.env.ref("knowledge.group_document_user")
         group_editor = self.env.ref("document_page.group_document_editor")
         group_manager = self.env.ref("document_page.group_document_manager")
@@ -25,22 +22,6 @@ class TestDocumentPageEditable(TransactionCase):
         # without the email of its author, and a module such as
         # document_page_approval posts one when a version is saved
         users = self.env["res.users"].with_context(no_reset_password=True)
-        self.member = users.create(
-            {
-                "name": "Member",
-                "login": "member_dpef_test",
-                "email": "member_dpef_test@example.com",
-                "groups_id": [(6, 0, [group_editable.id])],
-            }
-        )
-        self.editor_member = users.create(
-            {
-                "name": "Editor Member",
-                "login": "editor_member_dpef_test",
-                "email": "editor_member_dpef_test@example.com",
-                "groups_id": [(6, 0, [group_editable.id, group_editor.id])],
-            }
-        )
         self.editor = users.create(
             {
                 "name": "Editor",
@@ -135,25 +116,13 @@ class TestDocumentPageEditable(TransactionCase):
         )
         return status
 
-    def test_knowledge_role_picker_stays_a_selection(self):
-        # A group of its own in the category of Knowledge ties with Editor, and the
-        # form of the user then shows the roles of Knowledge as checkboxes
-        knowledge = self.env.ref("knowledge.module_category_knowledge")
-        kinds = {
-            application: kind
-            for application, kind, _groups, _name in self.env[
-                "res.groups"
-            ].get_groups_by_application()
-        }
-        self.assertEqual(kinds[knowledge], "selection")
-
     def test_reader_form_has_no_editables_tab(self):
         arch = self._page_form_arch(self.reader)
         self.assertFalse(arch.xpath("//page[@name='editable_files']"))
         self.assertFalse(arch.xpath("//field[@name='editable_content']"))
 
-    def test_member_form_has_editable_content_in_tab(self):
-        arch = self._page_form_arch(self.member)
+    def test_editor_form_has_editable_content_in_tab(self):
+        arch = self._page_form_arch(self.editor)
         self.assertTrue(
             arch.xpath("//page[@name='editable_files']/field[@name='editable_content']")
         )
@@ -177,10 +146,10 @@ class TestDocumentPageEditable(TransactionCase):
         arch = self._version_form_arch(self.reader)
         self.assertFalse(arch.xpath("//page[@name='editable_files']"))
 
-    def test_member_version_form_has_editables_tab_last(self):
+    def test_editor_version_form_has_editables_tab_last(self):
         # document_page_distribution, when it is installed, adds its tab at the end
         # of the notebook too: ours goes after it
-        arch = self._version_form_arch(self.member)
+        arch = self._version_form_arch(self.editor)
         self.assertEqual(
             arch.xpath("//notebook/page[last()]/@name"), ["editable_files"]
         )
@@ -198,9 +167,9 @@ class TestDocumentPageEditable(TransactionCase):
         with self.assertRaises(AccessError):
             page.read(["editable_content"])
 
-    def test_editor_member_saves_editable_content_with_the_document(self):
+    def test_editor_saves_editable_content_with_the_document(self):
         form = Form(
-            self.page.with_user(self.editor_member),
+            self.page.with_user(self.editor),
             view="document_page.view_wiki_form",
         )
         form.editable_content = "<p>procedure_v2.docx</p>"
@@ -210,7 +179,7 @@ class TestDocumentPageEditable(TransactionCase):
     def test_new_version_keeps_the_editable_content_saved_with_it(self):
         first_version = self.page.history_head
         form = Form(
-            self.page.with_user(self.editor_member),
+            self.page.with_user(self.editor),
             view="document_page.view_wiki_form",
         )
         form.content = "<p>Version two</p>"
@@ -223,7 +192,7 @@ class TestDocumentPageEditable(TransactionCase):
     def test_editable_content_saved_alone_goes_to_the_current_version(self):
         version = self.page.history_head
         form = Form(
-            self.page.with_user(self.editor_member),
+            self.page.with_user(self.editor),
             view="document_page.view_wiki_form",
         )
         form.editable_content = "<p>procedure_v2.docx</p>"
@@ -231,13 +200,8 @@ class TestDocumentPageEditable(TransactionCase):
         self.assertEqual(self.page.history_head, version)
         self.assertIn("procedure_v2.docx", version.editable_content)
 
-    def test_editor_saves_a_new_version_with_the_editable_content(self):
-        # The editor cannot read the editable content, and the new version keeps it
-        # all the same. The page created in setUp is in the cache of every
-        # environment: without emptying it, the save would not check the groups of
-        # the field
+    def test_content_saved_alone_makes_a_version_with_the_editable_content(self):
         first_version = self.page.history_head
-        self.page.invalidate_cache()
         form = Form(
             self.page.with_user(self.editor),
             view="document_page.view_wiki_form",
@@ -248,9 +212,9 @@ class TestDocumentPageEditable(TransactionCase):
         self.assertIn("procedure.docx", self.page.history_head.editable_content)
 
     def test_file_inserted_in_a_new_page_becomes_an_editable_file(self):
-        upload = self._upload(self.editor_member, "document.page")
+        upload = self._upload(self.editor, "document.page")
         form = Form(
-            self.DocumentPage.with_user(self.editor_member),
+            self.DocumentPage.with_user(self.editor),
             view="document_page.view_wiki_form",
         )
         form.name = "New procedure"
@@ -267,9 +231,9 @@ class TestDocumentPageEditable(TransactionCase):
         self.assertEqual(upload.res_field, "editable_content")
 
     def test_file_inserted_in_the_page_becomes_an_editable_file(self):
-        upload = self._upload(self.editor_member, "document.page", self.page.id)
+        upload = self._upload(self.editor, "document.page", self.page.id)
         form = Form(
-            self.page.with_user(self.editor_member),
+            self.page.with_user(self.editor),
             view="document_page.view_wiki_form",
         )
         form.editable_content = (
@@ -282,7 +246,7 @@ class TestDocumentPageEditable(TransactionCase):
     def test_file_inserted_by_another_user_is_left_as_it_is(self):
         upload = self._upload(self.manager, "document.page", self.page.id)
         form = Form(
-            self.page.with_user(self.editor_member),
+            self.page.with_user(self.editor),
             view="document_page.view_wiki_form",
         )
         form.editable_content = (
@@ -293,7 +257,7 @@ class TestDocumentPageEditable(TransactionCase):
         self.assertFalse(upload.res_field)
 
     def test_administrator_saves_a_file_inserted_by_another_user(self):
-        upload = self._upload(self.editor_member, "document.page", self.page.id)
+        upload = self._upload(self.editor, "document.page", self.page.id)
         form = Form(
             self.page.with_user(self.administrator),
             view="document_page.view_wiki_form",
@@ -313,9 +277,9 @@ class TestDocumentPageEditable(TransactionCase):
                 "parent_id": self.category.id,
             }
         )
-        upload = self._upload(self.editor_member, "document.page", other_page.id)
+        upload = self._upload(self.editor, "document.page", other_page.id)
         form = Form(
-            self.page.with_user(self.editor_member),
+            self.page.with_user(self.editor),
             view="document_page.view_wiki_form",
         )
         form.editable_content = (
@@ -329,10 +293,10 @@ class TestDocumentPageEditable(TransactionCase):
     def test_file_inserted_in_a_new_version_becomes_an_editable_file_of_its_page(
         self,
     ):
-        upload = self._upload(self.editor_member, "document.page.history")
+        upload = self._upload(self.editor, "document.page.history")
         form = Form(
             self.env["document.page.history"]
-            .with_user(self.editor_member)
+            .with_user(self.editor)
             .with_context(default_page_id=self.page.id),
             view="document_page.wiki_history_form",
         )
@@ -347,9 +311,9 @@ class TestDocumentPageEditable(TransactionCase):
 
     def test_file_inserted_in_a_version_becomes_an_editable_file_of_its_page(self):
         version = self.page.history_head
-        upload = self._upload(self.editor_member, "document.page.history", version.id)
+        upload = self._upload(self.editor, "document.page.history", version.id)
         form = Form(
-            version.with_user(self.editor_member),
+            version.with_user(self.editor),
             view="document_page.wiki_history_form",
         )
         form.editable_content = (
@@ -361,10 +325,10 @@ class TestDocumentPageEditable(TransactionCase):
         self.assertEqual(upload.res_id, self.page.id)
         self.assertEqual(upload.res_field, "editable_content")
 
-    def test_member_downloads_an_editable_file(self):
-        upload = self._upload(self.editor_member, "document.page", self.page.id)
+    def test_editor_downloads_an_editable_file(self):
+        upload = self._upload(self.manager, "document.page", self.page.id)
         form = Form(
-            self.page.with_user(self.editor_member),
+            self.page.with_user(self.manager),
             view="document_page.view_wiki_form",
         )
         form.editable_content = (
@@ -372,14 +336,14 @@ class TestDocumentPageEditable(TransactionCase):
             % upload.id
         )
         form.save()
-        self.assertEqual(self._download(self.member, upload), 200)
+        self.assertEqual(self._download(self.editor, upload), 200)
 
     def test_reader_cannot_download_an_editable_file(self):
         # With the access token of the link all the same. The link answers
         # "Not found" to this 403, as to a file that does not exist
-        upload = self._upload(self.editor_member, "document.page", self.page.id)
+        upload = self._upload(self.editor, "document.page", self.page.id)
         form = Form(
-            self.page.with_user(self.editor_member),
+            self.page.with_user(self.editor),
             view="document_page.view_wiki_form",
         )
         form.editable_content = (

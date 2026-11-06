@@ -4,7 +4,7 @@
 {
     "name": "Document Page Editable File",
     "summary": "Keep the editable file (Word) of a document next to its PDF, "
-    "visible to a restricted group only, with the history of its versions.",
+    "visible to the Knowledge editors only, with the history of its versions.",
     "version": "14.0.1.0.0",
     "license": "AGPL-3",
     "author": "NuoBiT Solutions, S.L.",
@@ -16,7 +16,6 @@
         "document_page_extension",
     ],
     "data": [
-        "security/security.xml",
         "views/document_page_history_views.xml",
         "views/document_page_views.xml",
     ],

@@ -33,8 +33,8 @@ file its PDF comes from.
 * The tab has one field, which works like the content of the document: the files
   are inserted with the editor, the same way as the PDF in the content, and they
   are saved with the document.
-* Only the members of the *Editable files* group and the Knowledge managers see
-  the tab and its field.
+* Only the users who can edit the documents, the Knowledge editors and
+  managers, see the tab and its field.
 * Each version of the document keeps the editable files that the document had
   while that version was the current one, in an *Editables* tab of its own form.
 * A file saved in the tab belongs to the tab: it does not show among the
@@ -61,10 +61,8 @@ The module depends on ``document_page_access_group`` and
 Usage
 =====
 
-To give a user access to the *Editables* tab, add the user to the *Editable files*
-group, in the *Other* section of the user's access rights. The Knowledge
-managers do not need it. To change the field, the user must also be able to edit
-the documents, as a Knowledge editor or manager.
+The *Editables* tab is for the users who can edit the documents: the Knowledge
+editors and managers. A user who only reads the documents does not see it.
 
 To store the editable files of a document, edit the document, go to the
 *Editables* tab, insert the files the same way as in the content and save the
@@ -80,10 +78,10 @@ Known issues / Roadmap
   inserted it, or a system administrator, saves it there. A file inserted and
   then discarded stays an ordinary attachment of the document, or of the
   version, and every user who reads the document can download it.
-* A user who reads the documents but is not in the group can still filter the
-  documents by the text of their *Editables* through the API: Odoo 14 does not
-  apply the groups of a field to a search filter. The user learns which
-  documents match, but gets neither the field nor its files.
+* A user who only reads the documents can still filter the documents by the
+  text of their *Editables* through the API: Odoo 14 does not apply the groups
+  of a field to a search filter. The user learns which documents match, but
+  gets neither the field nor its files.
 * The information inside the Word file, such as the author, the tracked changes
   or the comments, is not cleaned.
 

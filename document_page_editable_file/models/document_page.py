@@ -16,8 +16,7 @@ class DocumentPage(models.Model):
 
     editable_content = fields.Html(
         string="Editables",
-        groups="document_page_editable_file.group_document_editable_file,"
-        "document_page.group_document_manager",
+        groups="document_page.group_document_editor",
     )
 
     @api.model
@@ -69,7 +68,8 @@ class DocumentPage(models.Model):
     def _create_history(self, vals):
         # The version that a save creates takes the editable content of the
         # document, as it takes its content. Read as superuser: whoever changes the
-        # content may be outside the group, and the version keeps it all the same
+        # content may lack the groups of this field, and the version keeps it all
+        # the same
         editable_content = self.sudo().editable_content
         if not is_html_empty(editable_content):
             vals = dict(vals, editable_content=editable_content)

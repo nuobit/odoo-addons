@@ -33,11 +33,6 @@ msgid "Document Page History"
 msgstr "Historial de pàgina del document"
 
 #. module: document_page_editable_file
-#: model:res.groups,name:document_page_editable_file.group_document_editable_file
-msgid "Editable files"
-msgstr "Fitxers editables"
-
-#. module: document_page_editable_file
 #: model:ir.model.fields,field_description:document_page_editable_file.field_document_page__editable_content
 #: model:ir.model.fields,field_description:document_page_editable_file.field_document_page_history__editable_content
 #: model_terms:ir.ui.view,arch_db:document_page_editable_file.view_wiki_form
