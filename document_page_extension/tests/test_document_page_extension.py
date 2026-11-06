@@ -144,3 +144,55 @@ class TestDocumentPageExtension(TransactionCase):
             self.editor, "document.page.history", self.page.history_head.id
         )
         self.assertEqual(self._download(self.outsider, upload), 403)
+
+    def test_file_inserted_in_a_new_version_becomes_a_file_of_the_version(self):
+        upload = self._upload(self.editor, "document.page.history")
+        version = (
+            self.env["document.page.history"]
+            .with_user(self.editor)
+            .create(
+                {
+                    "page_id": self.page.id,
+                    "content": '<p><a href="/web/content/%d?download=true">'
+                    "annex.pdf</a></p>" % upload.id,
+                }
+            )
+        )
+        self.assertEqual(upload.res_id, version.id)
+
+    def test_file_inserted_by_another_user_is_left_as_it_is(self):
+        upload = self._upload(self.administrator, "document.page.history")
+        self.env["document.page.history"].with_user(self.editor).create(
+            {
+                "page_id": self.page.id,
+                "content": '<p><a href="/web/content/%d?download=true">'
+                "annex.pdf</a></p>" % upload.id,
+            }
+        )
+        self.assertFalse(upload.res_id)
+
+    def test_administrator_saves_a_file_inserted_by_another_user(self):
+        upload = self._upload(self.editor, "document.page.history")
+        version = (
+            self.env["document.page.history"]
+            .with_user(self.administrator)
+            .create(
+                {
+                    "page_id": self.page.id,
+                    "content": '<p><a href="/web/content/%d?download=true">'
+                    "annex.pdf</a></p>" % upload.id,
+                }
+            )
+        )
+        self.assertEqual(upload.res_id, version.id)
+
+    def test_file_linked_when_editing_a_version_becomes_a_file_of_the_version(self):
+        version = self.page.history_head
+        upload = self._upload(self.editor, "document.page.history")
+        version.with_user(self.editor).write(
+            {
+                "content": '<p><a href="/web/content/%d?download=true">'
+                "annex.pdf</a></p>" % upload.id,
+            }
+        )
+        self.assertEqual(upload.res_id, version.id)

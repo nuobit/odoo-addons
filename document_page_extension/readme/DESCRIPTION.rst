@@ -15,3 +15,5 @@ It holds the protection of the files of a document:
   only to whoever can read that field as well.
 * A file of a document not saved yet goes only to its uploader and the system
   administrators, as Odoo does with any file of no record.
+* A file inserted in a version before its first save becomes a file of the
+  version when the version is saved, so the readers of the document get it too.
