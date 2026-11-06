@@ -9,6 +9,8 @@ It holds the protection of the files of a document:
 * With this module, a file of a document goes only to whoever can read the
   document, with the token or without it. Anyone else gets *Not found*, as for
   any file Odoo does not serve.
+* The same holds for a file of a version of the document, such as one inserted
+  in a change request.
 * A file kept in a field of the document that is restricted to some groups goes
   only to whoever can read that field as well.
 * A file of a document not saved yet goes only to its uploader and the system

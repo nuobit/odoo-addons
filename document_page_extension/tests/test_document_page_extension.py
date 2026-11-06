@@ -132,3 +132,15 @@ class TestDocumentPageExtension(TransactionCase):
         )
         attachment.generate_access_token()
         self.assertEqual(self._download(self.outsider, attachment), 200)
+
+    def test_reader_downloads_a_file_of_a_version(self):
+        upload = self._upload(
+            self.editor, "document.page.history", self.page.history_head.id
+        )
+        self.assertEqual(self._download(self.reader, upload), 200)
+
+    def test_outsider_cannot_download_a_file_of_a_version(self):
+        upload = self._upload(
+            self.editor, "document.page.history", self.page.history_head.id
+        )
+        self.assertEqual(self._download(self.outsider, upload), 403)

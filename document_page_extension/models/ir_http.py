@@ -23,14 +23,15 @@ class IrHttp(models.AbstractModel):
     ):
         # The HTML editor puts an access token in the link of every file it
         # inserts, and the token alone opens the file to anyone who has the link.
-        # A file of a document page goes only to whoever can read the page, with
-        # the token or without it
+        # A file of a document page, or of one of its versions, goes only to
+        # whoever can read the page, with the token or without it
         if model == "ir.attachment" and id and not xmlid:
             attachment = self.env["ir.attachment"].browse(int(id))
-            if (
-                attachment.sudo().exists().res_model == "document.page"
-                and not attachment._document_page_file_readable()
-            ):
+            document_file = attachment.sudo().exists().res_model in (
+                "document.page",
+                "document.page.history",
+            )
+            if document_file and not attachment._document_page_file_readable():
                 return 403, [], None
         return super().binary_content(
             xmlid=xmlid,
