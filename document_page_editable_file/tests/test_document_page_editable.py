@@ -1,6 +1,8 @@
 # Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+import base64
+
 from lxml import etree
 
 from odoo.exceptions import AccessError
@@ -18,6 +20,7 @@ class TestDocumentPageEditable(TransactionCase):
         group_reader = self.env.ref("knowledge.group_document_user")
         group_editor = self.env.ref("document_page.group_document_editor")
         group_manager = self.env.ref("document_page.group_document_manager")
+        group_system = self.env.ref("base.group_system")
         # With an email, as the users of the tests of Odoo: Odoo posts no message
         # without the email of its author, and a module such as
         # document_page_approval posts one when a version is saved
@@ -52,6 +55,14 @@ class TestDocumentPageEditable(TransactionCase):
                 "login": "manager_dpef_test",
                 "email": "manager_dpef_test@example.com",
                 "groups_id": [(6, 0, [group_manager.id])],
+            }
+        )
+        self.administrator = users.create(
+            {
+                "name": "Administrator",
+                "login": "administrator_dpef_test",
+                "email": "administrator_dpef_test@example.com",
+                "groups_id": [(6, 0, [group_system.id, group_manager.id])],
             }
         )
         self.reader = users.create(
@@ -92,6 +103,37 @@ class TestDocumentPageEditable(TransactionCase):
             .fields_view_get(view_id=view.id, view_type="form")
         )
         return etree.fromstring(result["arch"])
+
+    def _upload(self, user, res_model, res_id=False):
+        # What the editor does when the user inserts a file: an attachment of the
+        # record of the form, of no record while the form is not saved, with an
+        # access token for its link
+        attachment = (
+            self.env["ir.attachment"]
+            .with_user(user)
+            .create(
+                {
+                    "name": "procedure.docx",
+                    "datas": base64.b64encode(b"Word file"),
+                    "res_model": res_model,
+                    "res_id": res_id,
+                }
+            )
+        )
+        attachment.generate_access_token()
+        return attachment.with_env(self.env)
+
+    def _download(self, user, attachment):
+        # What the link of the file gets. As in the tests of Odoo, the cache, filled
+        # as superuser, is emptied first, so that the access of the user is checked
+        attachment.flush()
+        attachment.invalidate_cache()
+        status, _headers, _content = (
+            self.env["ir.http"]
+            .with_user(user)
+            .binary_content(id=attachment.id, access_token=attachment.access_token)
+        )
+        return status
 
     def test_knowledge_role_picker_stays_a_selection(self):
         # A group of its own in the category of Knowledge ties with Editor, and the
@@ -204,3 +246,145 @@ class TestDocumentPageEditable(TransactionCase):
         form.save()
         self.assertNotEqual(self.page.history_head, first_version)
         self.assertIn("procedure.docx", self.page.history_head.editable_content)
+
+    def test_file_inserted_in_a_new_page_becomes_an_editable_file(self):
+        upload = self._upload(self.editor_member, "document.page")
+        form = Form(
+            self.DocumentPage.with_user(self.editor_member),
+            view="document_page.view_wiki_form",
+        )
+        form.name = "New procedure"
+        form.parent_id = self.category
+        form.draft_name = "1.0"
+        form.draft_summary = "First version"
+        form.content = "<p>Version one</p>"
+        form.editable_content = (
+            '<p><a href="/web/content/%d?download=true">procedure.docx</a></p>'
+            % upload.id
+        )
+        page = form.save()
+        self.assertEqual(upload.res_id, page.id)
+        self.assertEqual(upload.res_field, "editable_content")
+
+    def test_file_inserted_in_the_page_becomes_an_editable_file(self):
+        upload = self._upload(self.editor_member, "document.page", self.page.id)
+        form = Form(
+            self.page.with_user(self.editor_member),
+            view="document_page.view_wiki_form",
+        )
+        form.editable_content = (
+            '<p><a href="/web/content/%d?download=true">procedure.docx</a></p>'
+            % upload.id
+        )
+        form.save()
+        self.assertEqual(upload.res_field, "editable_content")
+
+    def test_file_inserted_by_another_user_is_left_as_it_is(self):
+        upload = self._upload(self.manager, "document.page", self.page.id)
+        form = Form(
+            self.page.with_user(self.editor_member),
+            view="document_page.view_wiki_form",
+        )
+        form.editable_content = (
+            '<p><a href="/web/content/%d?download=true">procedure.docx</a></p>'
+            % upload.id
+        )
+        form.save()
+        self.assertFalse(upload.res_field)
+
+    def test_administrator_saves_a_file_inserted_by_another_user(self):
+        upload = self._upload(self.editor_member, "document.page", self.page.id)
+        form = Form(
+            self.page.with_user(self.administrator),
+            view="document_page.view_wiki_form",
+        )
+        form.editable_content = (
+            '<p><a href="/web/content/%d?download=true">procedure.docx</a></p>'
+            % upload.id
+        )
+        form.save()
+        self.assertEqual(upload.res_field, "editable_content")
+
+    def test_file_of_another_page_is_left_as_it_is(self):
+        other_page = self.DocumentPage.create(
+            {
+                "name": "Other procedure",
+                "type": "content",
+                "parent_id": self.category.id,
+            }
+        )
+        upload = self._upload(self.editor_member, "document.page", other_page.id)
+        form = Form(
+            self.page.with_user(self.editor_member),
+            view="document_page.view_wiki_form",
+        )
+        form.editable_content = (
+            '<p><a href="/web/content/%d?download=true">procedure.docx</a></p>'
+            % upload.id
+        )
+        form.save()
+        self.assertEqual(upload.res_id, other_page.id)
+        self.assertFalse(upload.res_field)
+
+    def test_file_inserted_in_a_new_version_becomes_an_editable_file_of_its_page(
+        self,
+    ):
+        upload = self._upload(self.editor_member, "document.page.history")
+        form = Form(
+            self.env["document.page.history"]
+            .with_user(self.editor_member)
+            .with_context(default_page_id=self.page.id),
+            view="document_page.wiki_history_form",
+        )
+        form.editable_content = (
+            '<p><a href="/web/content/%d?download=true">procedure.docx</a></p>'
+            % upload.id
+        )
+        form.save()
+        self.assertEqual(upload.res_model, "document.page")
+        self.assertEqual(upload.res_id, self.page.id)
+        self.assertEqual(upload.res_field, "editable_content")
+
+    def test_file_inserted_in_a_version_becomes_an_editable_file_of_its_page(self):
+        version = self.page.history_head
+        upload = self._upload(self.editor_member, "document.page.history", version.id)
+        form = Form(
+            version.with_user(self.editor_member),
+            view="document_page.wiki_history_form",
+        )
+        form.editable_content = (
+            '<p><a href="/web/content/%d?download=true">procedure.docx</a></p>'
+            % upload.id
+        )
+        form.save()
+        self.assertEqual(upload.res_model, "document.page")
+        self.assertEqual(upload.res_id, self.page.id)
+        self.assertEqual(upload.res_field, "editable_content")
+
+    def test_member_downloads_an_editable_file(self):
+        upload = self._upload(self.editor_member, "document.page", self.page.id)
+        form = Form(
+            self.page.with_user(self.editor_member),
+            view="document_page.view_wiki_form",
+        )
+        form.editable_content = (
+            '<p><a href="/web/content/%d?download=true">procedure.docx</a></p>'
+            % upload.id
+        )
+        form.save()
+        self.assertEqual(self._download(self.member, upload), 200)
+
+    def test_reader_cannot_download_an_editable_file(self):
+        # With the access token of the link all the same. The link answers
+        # "Not found" to this 403, as to a file that does not exist
+        upload = self._upload(self.editor_member, "document.page", self.page.id)
+        form = Form(
+            self.page.with_user(self.editor_member),
+            view="document_page.view_wiki_form",
+        )
+        form.editable_content = (
+            '<p><a href="/web/content/%d?download=true">procedure.docx</a></p>'
+            % upload.id
+        )
+        form.save()
+        self.assertEqual(self._download(self.reader, upload), 403)

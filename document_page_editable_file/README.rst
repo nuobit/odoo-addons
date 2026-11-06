@@ -37,6 +37,9 @@ file its PDF comes from.
   the tab and its field.
 * Each version of the document keeps the editable files that the document had
   while that version was the current one, in an *Editables* tab of its own form.
+* A file saved in the tab belongs to the tab: it does not show among the
+  attachments of the document, and only whoever sees the tab can download it,
+  even with its link.
 
 **Table of contents**
 
@@ -46,10 +49,14 @@ file its PDF comes from.
 Installation
 ============
 
-The module depends on ``document_page_access_group``, which is installed with
-it. That module adds the *Security* tab to the documents, where a manager picks
-the groups that can see each document. A document with no groups is visible to
-every Knowledge reader, as before.
+The module depends on ``document_page_access_group`` and
+``document_page_extension``, which are installed with it.
+
+* ``document_page_access_group`` adds the *Security* tab to the documents, where
+  a manager picks the groups that can see each document. A document with no
+  groups is visible to every Knowledge reader, as before.
+* ``document_page_extension`` gives a file of a document only to whoever can read
+  the document, even with the link of the file.
 
 Usage
 =====
@@ -69,10 +76,14 @@ To see the editable files of an earlier version, open the version from the
 Known issues / Roadmap
 ======================
 
-* The files inserted in the field are attachments of the document, like the ones
-  of its content: every user who reads the document can open them, and a search
-  in the attachments of the documents, such as the one of
-  ``document_page_attachment_search``, can find them.
+* A file inserted in the *Editables* tab belongs to the tab once the user who
+  inserted it, or a system administrator, saves it there. A file inserted and
+  then discarded stays an ordinary attachment of the document, or of the
+  version, and every user who reads the document can download it.
+* A user who reads the documents but is not in the group can still filter the
+  documents by the text of their *Editables* through the API: Odoo 14 does not
+  apply the groups of a field to a search filter. The user learns which
+  documents match, but gets neither the field nor its files.
 * The information inside the Word file, such as the author, the tracked changes
   or the comments, is not cleaned.
 

@@ -386,6 +386,9 @@ are saved with the document.</li>
 the tab and its field.</li>
 <li>Each version of the document keeps the editable files that the document had
 while that version was the current one, in an <em>Editables</em> tab of its own form.</li>
+<li>A file saved in the tab belongs to the tab: it does not show among the
+attachments of the document, and only whoever sees the tab can download it,
+even with its link.</li>
 </ul>
 <p><strong>Table of contents</strong></p>
 <div class="contents local topic" id="contents">
@@ -404,10 +407,15 @@ while that version was the current one, in an <em>Editables</em> tab of its own 
 </div>
 <div class="section" id="installation">
 <h2><a class="toc-backref" href="#toc-entry-1">Installation</a></h2>
-<p>The module depends on <tt class="docutils literal">document_page_access_group</tt>, which is installed with
-it. That module adds the <em>Security</em> tab to the documents, where a manager picks
-the groups that can see each document. A document with no groups is visible to
-every Knowledge reader, as before.</p>
+<p>The module depends on <tt class="docutils literal">document_page_access_group</tt> and
+<tt class="docutils literal">document_page_extension</tt>, which are installed with it.</p>
+<ul class="simple">
+<li><tt class="docutils literal">document_page_access_group</tt> adds the <em>Security</em> tab to the documents, where
+a manager picks the groups that can see each document. A document with no
+groups is visible to every Knowledge reader, as before.</li>
+<li><tt class="docutils literal">document_page_extension</tt> gives a file of a document only to whoever can read
+the document, even with the link of the file.</li>
+</ul>
 </div>
 <div class="section" id="usage">
 <h2><a class="toc-backref" href="#toc-entry-2">Usage</a></h2>
@@ -424,10 +432,14 @@ document.</p>
 <div class="section" id="known-issues-roadmap">
 <h2><a class="toc-backref" href="#toc-entry-3">Known issues / Roadmap</a></h2>
 <ul class="simple">
-<li>The files inserted in the field are attachments of the document, like the ones
-of its content: every user who reads the document can open them, and a search
-in the attachments of the documents, such as the one of
-<tt class="docutils literal">document_page_attachment_search</tt>, can find them.</li>
+<li>A file inserted in the <em>Editables</em> tab belongs to the tab once the user who
+inserted it, or a system administrator, saves it there. A file inserted and
+then discarded stays an ordinary attachment of the document, or of the
+version, and every user who reads the document can download it.</li>
+<li>A user who reads the documents but is not in the group can still filter the
+documents by the text of their <em>Editables</em> through the API: Odoo 14 does not
+apply the groups of a field to a search filter. The user learns which
+documents match, but gets neither the field nor its files.</li>
 <li>The information inside the Word file, such as the author, the tracked changes
 or the comments, is not cleaned.</li>
 </ul>

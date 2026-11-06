@@ -13,6 +13,7 @@
     "depends": [
         "document_page",
         "document_page_access_group",
+        "document_page_extension",
     ],
     "data": [
         "security/security.xml",

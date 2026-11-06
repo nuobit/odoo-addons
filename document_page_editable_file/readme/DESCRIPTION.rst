@@ -9,3 +9,6 @@ file its PDF comes from.
   the tab and its field.
 * Each version of the document keeps the editable files that the document had
   while that version was the current one, in an *Editables* tab of its own form.
+* A file saved in the tab belongs to the tab: it does not show among the
+  attachments of the document, and only whoever sees the tab can download it,
+  even with its link.
