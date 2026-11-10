@@ -1,13 +1,7 @@
 # Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-import re
-
-from lxml import etree, html
-
 from odoo import api, models
-
-FILE_URL_RE = re.compile(r"/web/(?:content|image)/(\d+)")
 
 
 class DocumentPageHistory(models.Model):
@@ -19,22 +13,6 @@ class DocumentPageHistory(models.Model):
     # a file of the version, as those inserted once it exists, so whoever can
     # read its page gets it
 
-    @api.model
-    def _linked_file_ids(self, content):
-        """Ids of the files that the links of the HTML ``content`` point to."""
-        if not content:
-            return set()
-        try:
-            tree = html.fragment_fromstring(content, create_parent=True)
-        except (etree.ParserError, ValueError):
-            return set()
-        linked_ids = set()
-        for url in tree.xpath(".//@href | .//@src"):
-            match = FILE_URL_RE.search(url)
-            if match:
-                linked_ids.add(int(match.group(1)))
-        return linked_ids
-
     def _keep_uploaded_files(self, content):
         """Make files of this version the files that ``content``, the content being
         saved, links and that the current user uploaded on a version not saved yet
@@ -44,7 +22,7 @@ class DocumentPageHistory(models.Model):
         files = (
             self.env["ir.attachment"]
             .sudo()
-            .browse(sorted(self._linked_file_ids(content)))
+            .browse(sorted(self.env["document.page"]._linked_file_ids(content)))
             .exists()
             .filtered(
                 lambda a: a.res_model == self._name
