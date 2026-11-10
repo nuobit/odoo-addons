@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
 <odoo>
     <template
         id="report_invoice_document"
@@ -6,7 +8,7 @@
         priority="99"
     >
         <xpath expr="//th[@name='th_description']" position="replace">
-            <th name="th_description" class="text-start"><span>Name</span></th>
+            <th name="th_description" class="text-start"><span>Product</span></th>
         </xpath>
         <xpath expr="//td[@name='account_invoice_line_name']" position="replace">
             <td name="account_invoice_line_name"><span
