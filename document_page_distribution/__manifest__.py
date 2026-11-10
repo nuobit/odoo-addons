@@ -5,7 +5,7 @@
     "name": "Document Page Distribution",
     "summary": "Distribute the current version of a document page to the users "
     "with read access and keep an auditable per-recipient distribution log.",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.0.1",
     "category": "Knowledge Management",
     "author": "NuoBiT Solutions, S.L.",
     "website": "https://github.com/nuobit/odoo-addons",
