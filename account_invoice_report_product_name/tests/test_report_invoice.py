@@ -34,9 +34,29 @@ class TestReportInvoice(AccountTestInvoicingCommon):
         ]
         return headers, cells
 
+    def _load_language(self, lang):
+        self.env["res.lang"]._activate_lang(lang)
+        self.env["ir.module.module"]._load_module_terms(
+            ["account_invoice_report_product_name"], [lang]
+        )
+
     def test_invoice_product_column(self):
         headers, cells = self._render_description_column(self.invoice)
         self.assertEqual(headers, ["Product"])
+        self.assertEqual(cells, ["Rose bouquet"])
+
+    def test_invoice_product_column_spanish_customer(self):
+        self._load_language("es_ES")
+        self.partner_a.lang = "es_ES"
+        headers, cells = self._render_description_column(self.invoice)
+        self.assertEqual(headers, ["Producto"])
+        self.assertEqual(cells, ["Rose bouquet"])
+
+    def test_invoice_product_column_catalan_customer(self):
+        self._load_language("ca_ES")
+        self.partner_a.lang = "ca_ES"
+        headers, cells = self._render_description_column(self.invoice)
+        self.assertEqual(headers, ["Producte"])
         self.assertEqual(cells, ["Rose bouquet"])
 
     def test_invoice_standard_column_without_view(self):
