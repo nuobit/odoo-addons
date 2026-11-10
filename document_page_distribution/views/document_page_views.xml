@@ -25,7 +25,7 @@
             >
                 <field name="distribution_summary" string="Distribution" />
             </xpath>
-            <xpath expr="//notebook" position="inside">
+            <xpath expr="//page[@name='info']" position="after">
                 <page
                     name="distribution"
                     string="Distribution"
@@ -64,6 +64,11 @@
                         </tree>
                     </field>
                 </page>
+            </xpath>
+            <!-- The Security tab of document_page_access_group, whose groups give
+                 the recipients of a distribution, goes right after this one -->
+            <xpath expr="//page[@name='history']" position="before">
+                <xpath expr="//page[@name='security']" position="move" />
             </xpath>
         </field>
     </record>
