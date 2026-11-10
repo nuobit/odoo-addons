@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template
+        id="report_invoice_document"
+        inherit_id="account.report_invoice_document"
+        priority="99"
+    >
+        <xpath expr="//th[@name='th_description']" position="replace">
+            <th name="th_description" class="text-start"><span>Name</span></th>
+        </xpath>
+        <xpath expr="//td[@name='account_invoice_line_name']" position="replace">
+            <td name="account_invoice_line_name"><span
+                    t-field="line.product_id.name"
+                    t-options="{'widget': 'text'}"
+                >Bacon Burger</span></td>
+        </xpath>
+    </template>
+</odoo>
