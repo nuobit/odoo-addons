@@ -299,6 +299,44 @@ class TestReportInvoice(AccountTestInvoicingCommon):
         self.assertEqual(headers, ["Product"])
         self.assertEqual(cells, ["Rose bouquet", "Delivery"])
 
+    def test_invoice_line_without_product_or_label_prints_nothing(self):
+        invoice = self.init_invoice("out_invoice", products=self.product)
+        invoice.write({"invoice_line_ids": [Command.create({"price_unit": 10.0})]})
+        invoice.action_post()
+        headers, cells = self._render_description_column(invoice)
+        self.assertEqual(headers, ["Product"])
+        self.assertEqual(cells, ["Rose bouquet", ""])
+
+    def test_invoice_section_and_note_rows_print_their_text(self):
+        invoice = self.init_invoice("out_invoice", products=self.product)
+        invoice.write(
+            {
+                "invoice_line_ids": [
+                    Command.create(
+                        {"display_type": "line_section", "name": "Bouquets"}
+                    ),
+                    Command.create(
+                        {"display_type": "line_note", "name": "Handle with care"}
+                    ),
+                ]
+            }
+        )
+        invoice.action_post()
+        content = self._render_invoice(invoice)
+        rows = [
+            " ".join(row.text_content().split())
+            for row in content.xpath(
+                "//tr[contains(@class, 'o_line_section')"
+                " or contains(@class, 'o_line_note')]"
+            )
+        ]
+        self.assertEqual(rows, ["Bouquets", "Handle with care"])
+        cells = [
+            " ".join(cell.text_content().split())
+            for cell in content.xpath("//td[@name='account_invoice_line_name']")
+        ]
+        self.assertEqual(cells, ["Rose bouquet"])
+
     def test_invoice_product_column_keeps_what_another_module_adds(self):
         # A view of another module adds a text inside the description cell, as
         # pos_sale does with the products of a point of sale down payment
@@ -322,6 +360,35 @@ class TestReportInvoice(AccountTestInvoicingCommon):
         headers, cells = self._render_description_column(self.invoice)
         self.assertEqual(headers, ["Product"])
         self.assertEqual(cells, ["Rose bouquet and its extra text"])
+
+    def test_invoice_product_line_prints_only_its_product_name(self):
+        invoice = self.init_invoice("out_invoice", products=self.product)
+        invoice.invoice_line_ids.name = "[BQ01] Rose bouquet\nWith a ribbon"
+        invoice.action_post()
+        headers, cells = self._render_description_column(invoice)
+        self.assertEqual(headers, ["Product"])
+        self.assertEqual(cells, ["Rose bouquet"])
+
+    def test_invoice_line_without_product_keeps_the_lines_of_its_label(self):
+        invoice = self.init_invoice("out_invoice", products=self.product)
+        invoice.write(
+            {
+                "invoice_line_ids": [
+                    Command.create(
+                        {"name": "Delivery\nto the church", "price_unit": 10.0}
+                    )
+                ]
+            }
+        )
+        invoice.action_post()
+        cells = self._render_invoice(invoice).xpath(
+            "//td[@name='account_invoice_line_name']"
+        )
+        self.assertEqual(
+            [" ".join(cell.text_content().split()) for cell in cells],
+            ["Rose bouquet", "Delivery to the church"],
+        )
+        self.assertEqual([len(cell.xpath(".//br")) for cell in cells], [0, 1])
 
     def test_invoice_later_view_on_the_label_span_keeps_the_section_title(self):
         # A view applied after this module's that replaces the label's span, as
