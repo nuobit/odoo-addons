@@ -8,8 +8,9 @@
         inherit_id="account.report_invoice_document"
         priority="99"
     >
-        <xpath expr="//th[@name='th_description']" position="replace">
-            <th name="th_description" class="text-start"><span>Product</span></th>
+        <!-- The header's text can only change by replacing its span -->
+        <xpath expr="//th[@name='th_description']/span" position="replace">
+            <span>Product</span>
         </xpath>
         <xpath
             expr="//td[@name='account_invoice_line_name']/span[@t-field='line.name']"
