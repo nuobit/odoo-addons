@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <template
+        id="report_invoice_document"
+        inherit_id="account.report_invoice_document"
+        priority="99"
+    >
+        <!-- The header's text can only change by replacing its span -->
+        <xpath expr="//th[@name='th_description']/span" position="replace">
+            <span>Product</span>
+        </xpath>
+        <xpath
+            expr="//td[@name='account_invoice_line_name']/span[@t-field='line.name']"
+            position="attributes"
+        >
+            <attribute name="t-if">line.product_id.name or line.name</attribute>
+            <attribute name="t-field" />
+            <attribute name="t-out">line.product_id.name or line.name</attribute>
+        </xpath>
+    </template>
+</odoo>
