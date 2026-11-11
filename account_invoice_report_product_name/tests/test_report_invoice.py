@@ -54,17 +54,19 @@ class TestReportInvoice(AccountTestInvoicingCommon):
 
     def test_invoice_product_column_spanish_customer(self):
         self._load_language("es_ES")
+        self.product.with_context(lang="es_ES").name = "Ramo de rosas"
         self.partner_a.lang = "es_ES"
         headers, cells = self._render_description_column(self.invoice)
         self.assertEqual(headers, ["Producto"])
-        self.assertEqual(cells, ["Rose bouquet"])
+        self.assertEqual(cells, ["Ramo de rosas"])
 
     def test_invoice_product_column_catalan_customer(self):
         self._load_language("ca_ES")
+        self.product.with_context(lang="ca_ES").name = "Ram de roses"
         self.partner_a.lang = "ca_ES"
         headers, cells = self._render_description_column(self.invoice)
         self.assertEqual(headers, ["Producte"])
-        self.assertEqual(cells, ["Rose bouquet"])
+        self.assertEqual(cells, ["Ram de roses"])
 
     def test_invoice_standard_column_without_view(self):
         # Without the view of this module the invoice prints Odoo's own column
