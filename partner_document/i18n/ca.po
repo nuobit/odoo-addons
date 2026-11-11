@@ -181,8 +181,10 @@ msgid "Document types"
 msgstr "Tipus de documents"
 
 #. module: partner_document
+#: model:ir.actions.act_window,name:partner_document.action_partner_document_partner
 #: model:ir.model.fields,field_description:partner_document.field_res_partner__document_ids
 #: model:ir.model.fields,field_description:partner_document.field_res_users__document_ids
+#: model_terms:ir.ui.view,arch_db:partner_document.view_partner_documents_form
 #: model_terms:ir.ui.view,arch_db:partner_document.view_partner_form
 msgid "Documents"
 msgstr "Documents"
