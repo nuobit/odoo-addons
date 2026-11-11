@@ -14,6 +14,8 @@ class TestReportInvoice(AccountTestInvoicingCommon):
     @classmethod
     def setUpClass(cls, chart_template_ref=None):
         super().setUpClass(chart_template_ref=chart_template_ref)
+        cls.env = cls.env(context=dict(cls.env.context, lang="en_US"))
+        cls.partner_a.lang = "en_US"
         cls.product = cls.env["product.product"].create(
             {"name": "Rose bouquet", "default_code": "BQ01"}
         )
