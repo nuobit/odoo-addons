@@ -1,0 +1,136 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* mail_dictation_openai
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-11 20:43+0000\n"
+"PO-Revision-Date: 2026-11-11 20:43+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: mail_dictation_openai
+#: model_terms:ir.ui.view,arch_db:mail_dictation_openai.res_config_settings_view_form
+msgid "Address"
+msgstr ""
+
+#. module: mail_dictation_openai
+#: model:ir.model.fields,help:mail_dictation_openai.field_res_config_settings__mail_dictation_address
+msgid ""
+"Address of the OpenAI-compatible transcription API: the voice is sent to "
+"this address followed by /audio/transcriptions."
+msgstr ""
+
+#. module: mail_dictation_openai
+#: model:ir.model,name:mail_dictation_openai.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: mail_dictation_openai
+#: model:ir.model.fields,field_description:mail_dictation_openai.field_res_config_settings__mail_dictation_model
+msgid "Dictation Model"
+msgstr ""
+
+#. module: mail_dictation_openai
+#: model:ir.model.fields,field_description:mail_dictation_openai.field_res_config_settings__mail_dictation_address
+msgid "Dictation Service Address"
+msgstr ""
+
+#. module: mail_dictation_openai
+#: model:ir.model.fields,field_description:mail_dictation_openai.field_res_config_settings__mail_dictation_api_key
+msgid "Dictation Service Key"
+msgstr ""
+
+#. module: mail_dictation_openai
+#. odoo-python
+#: code:addons/mail_dictation_openai/models/mail_dictation_openai.py:0
+#, python-format
+msgid ""
+"Dictation is not configured: an administrator must enter the transcription "
+"service key in Settings > Discuss."
+msgstr ""
+
+#. module: mail_dictation_openai
+#: model:ir.model,name:mail_dictation_openai.model_mail_dictation_openai
+msgid "Dictation through an OpenAI-compatible service"
+msgstr ""
+
+#. module: mail_dictation_openai
+#: model_terms:ir.ui.view,arch_db:mail_dictation_openai.res_config_settings_view_form
+msgid "Key"
+msgstr ""
+
+#. module: mail_dictation_openai
+#: model:ir.model.fields,help:mail_dictation_openai.field_res_config_settings__mail_dictation_api_key
+msgid "Key of the transcription service, sent as a bearer token."
+msgstr ""
+
+#. module: mail_dictation_openai
+#: model_terms:ir.ui.view,arch_db:mail_dictation_openai.res_config_settings_view_form
+msgid "Model"
+msgstr ""
+
+#. module: mail_dictation_openai
+#: model:ir.model.fields.selection,name:mail_dictation_openai.selection__res_config_settings__mail_dictation_provider__openai
+msgid "OpenAI-compatible service"
+msgstr ""
+
+#. module: mail_dictation_openai
+#: model:ir.model.fields,help:mail_dictation_openai.field_res_config_settings__mail_dictation_provider
+msgid "Service that turns the dictated voice into text."
+msgstr ""
+
+#. module: mail_dictation_openai
+#. odoo-python
+#: code:addons/mail_dictation_openai/models/mail_dictation_openai.py:0
+#, python-format
+msgid ""
+"The dictation quota is used up: an administrator must add credit or raise "
+"the spending limit at the transcription service."
+msgstr ""
+
+#. module: mail_dictation_openai
+#. odoo-python
+#: code:addons/mail_dictation_openai/models/mail_dictation_openai.py:0
+#, python-format
+msgid "The transcription service could not be reached. Try again in a moment."
+msgstr ""
+
+#. module: mail_dictation_openai
+#. odoo-python
+#: code:addons/mail_dictation_openai/models/mail_dictation_openai.py:0
+#, python-format
+msgid "The transcription service failed. Try again in a moment."
+msgstr ""
+
+#. module: mail_dictation_openai
+#. odoo-python
+#: code:addons/mail_dictation_openai/models/mail_dictation_openai.py:0
+#, python-format
+msgid "The transcription service is busy. Try again in a moment."
+msgstr ""
+
+#. module: mail_dictation_openai
+#. odoo-python
+#: code:addons/mail_dictation_openai/models/mail_dictation_openai.py:0
+#, python-format
+msgid ""
+"The transcription service refused the key: an administrator must check it in"
+" Settings > Discuss."
+msgstr ""
+
+#. module: mail_dictation_openai
+#: model:ir.model.fields,field_description:mail_dictation_openai.field_res_config_settings__mail_dictation_provider
+msgid "Transcription Service"
+msgstr ""
+
+#. module: mail_dictation_openai
+#: model:ir.model.fields,help:mail_dictation_openai.field_res_config_settings__mail_dictation_model
+msgid "Transcription model of the service that turns the voice into text."
+msgstr ""
