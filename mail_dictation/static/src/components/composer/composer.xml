@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright 2026 Xplordoo SL - Eric Antones <eantones@xplordoo.com>
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl). -->
+<templates xml:space="preserve">
+    <t
+        t-name="mail_dictation.Composer"
+        t-inherit="mail.Composer"
+        t-inherit-mode="extension"
+        owl="1"
+    >
+        <xpath expr="//*[hasclass('o_Composer_buttonAttachment')]" position="after">
+            <button
+                class="o_Composer_button o_Composer_buttonDictation o_Composer_toolButton btn btn-light border-0 rounded-pill"
+                t-att-class="{
+                    'o-isDeviceSmall': messaging.device.isSmall,
+                    'o-isRecording': composerView.dictationState === 'recording',
+                }"
+                t-attf-class="{{ composerView.messageViewInEditing ? 'my-1' : 'mx-1' }}"
+                t-att-title="composerView.dictationTitle"
+                t-att-aria-label="composerView.dictationTitle"
+                t-att-disabled="composerView.isDictationBusy"
+                type="button"
+                t-on-click="composerView.onClickDictation"
+            >
+                <t t-if="composerView.dictationState === 'recording'">
+                    <i class="fa fa-microphone" role="img" />
+                    <span
+                        class="o_Composer_dictationTime ms-1"
+                        t-esc="composerView.dictationTime"
+                    />
+                </t>
+                <t t-elif="composerView.dictationState === 'transcribing'">
+                    <i class="fa fa-circle-o-notch fa-spin" role="img" />
+                </t>
+                <t t-else="">
+                    <i class="fa fa-microphone" role="img" />
+                </t>
+            </button>
+        </xpath>
+    </t>
+</templates>

@@ -1,0 +1,11 @@
+// Copyright 2026 Xplordoo SL - Eric Antones <eantones@xplordoo.com>
+// License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
+
+.o_Composer_buttonDictation.o-isRecording {
+    color: $danger;
+}
+
+.o_Composer_dictationTime {
+    // The digits keep their width, so the button does not shake every second.
+    font-variant-numeric: tabular-nums;
+}

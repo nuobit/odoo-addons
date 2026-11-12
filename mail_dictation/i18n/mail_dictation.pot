@@ -1,0 +1,175 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* mail_dictation
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-11 20:43+0000\n"
+"PO-Revision-Date: 2026-11-11 20:43+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: mail_dictation
+#: model_terms:ir.ui.view,arch_db:mail_dictation.res_config_settings_view_form
+msgid "<span class=\"o_form_label\">Voice Dictation</span>"
+msgstr ""
+
+#. module: mail_dictation
+#: model:ir.model,name:mail_dictation.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: mail_dictation
+#. odoo-javascript
+#: code:addons/mail_dictation/static/src/models/composer_view.esm.js:0
+#, python-format
+msgid "Dictate"
+msgstr ""
+
+#. module: mail_dictation
+#: model_terms:ir.ui.view,arch_db:mail_dictation.res_config_settings_view_form
+msgid ""
+"Dictate messages in the chat: a transcription service turns the voice into "
+"text."
+msgstr ""
+
+#. module: mail_dictation
+#: model:ir.model,name:mail_dictation.model_mail_dictation
+msgid "Dictation"
+msgstr ""
+
+#. module: mail_dictation
+#. odoo-python
+#: code:addons/mail_dictation/models/mail_dictation.py:0
+#, python-format
+msgid ""
+"Dictation is not configured: an administrator must choose the transcription "
+"service in Settings > Discuss."
+msgstr ""
+
+#. module: mail_dictation
+#. odoo-javascript
+#: code:addons/mail_dictation/static/src/models/composer_view.esm.js:0
+#, python-format
+msgid ""
+"Dictation needs the microphone: allow it for this site in the browser and "
+"try again."
+msgstr ""
+
+#. module: mail_dictation
+#. odoo-javascript
+#: code:addons/mail_dictation/static/src/models/composer_view.esm.js:0
+#, python-format
+msgid "No words were heard in the recording."
+msgstr ""
+
+#. module: mail_dictation
+#. odoo-python
+#: code:addons/mail_dictation/controllers/main.py:0
+#, python-format
+msgid "Only internal users can dictate."
+msgstr ""
+
+#. module: mail_dictation
+#: model_terms:ir.ui.view,arch_db:mail_dictation.res_config_settings_view_form
+msgid "Service"
+msgstr ""
+
+#. module: mail_dictation
+#: model:ir.model.fields,help:mail_dictation.field_res_config_settings__mail_dictation_provider
+msgid "Service that turns the dictated voice into text."
+msgstr ""
+
+#. module: mail_dictation
+#. odoo-javascript
+#: code:addons/mail_dictation/static/src/models/composer_view.esm.js:0
+#, python-format
+msgid "Stop and transcribe (Esc discards the recording)"
+msgstr ""
+
+#. module: mail_dictation
+#. odoo-javascript
+#: code:addons/mail_dictation/static/src/models/composer_view.esm.js:0
+#, python-format
+msgid "The conversation closed before the text arrived; nothing was inserted."
+msgstr ""
+
+#. module: mail_dictation
+#. odoo-javascript
+#: code:addons/mail_dictation/static/src/models/composer_view.esm.js:0
+#, python-format
+msgid "The dictated text was added to the conversation where you recorded it."
+msgstr ""
+
+#. module: mail_dictation
+#. odoo-javascript
+#: code:addons/mail_dictation/static/src/models/composer_view.esm.js:0
+#, python-format
+msgid ""
+"The microphone could not be started: check that one is connected and not in "
+"use by another program."
+msgstr ""
+
+#. module: mail_dictation
+#. odoo-python
+#: code:addons/mail_dictation/controllers/main.py:0
+#, python-format
+msgid "The recording is too long to be transcribed."
+msgstr ""
+
+#. module: mail_dictation
+#. odoo-python
+#: code:addons/mail_dictation/controllers/main.py:0
+#, python-format
+msgid "The request carries no recording."
+msgstr ""
+
+#. module: mail_dictation
+#. odoo-javascript
+#: code:addons/mail_dictation/static/src/models/composer_view.esm.js:0
+#, python-format
+msgid "The server could not be reached. Try again in a moment."
+msgstr ""
+
+#. module: mail_dictation
+#. odoo-javascript
+#: code:addons/mail_dictation/static/src/models/composer_view.esm.js:0
+#, python-format
+msgid ""
+"The server could not transcribe the recording: reload the page and try "
+"again."
+msgstr ""
+
+#. module: mail_dictation
+#. odoo-javascript
+#: code:addons/mail_dictation/static/src/models/composer_view.esm.js:0
+#, python-format
+msgid ""
+"This browser cannot record audio here: dictation needs a recent browser and "
+"a secure (https) connection."
+msgstr ""
+
+#. module: mail_dictation
+#. odoo-javascript
+#: code:addons/mail_dictation/static/src/models/composer_view.esm.js:0
+#, python-format
+msgid "Transcribing"
+msgstr ""
+
+#. module: mail_dictation
+#: model:ir.model.fields,field_description:mail_dictation.field_res_config_settings__mail_dictation_provider
+msgid "Transcription Service"
+msgstr ""
+
+#. module: mail_dictation
+#. odoo-javascript
+#: code:addons/mail_dictation/static/src/models/composer_view.esm.js:0
+#, python-format
+msgid "Waiting for the microphone"
+msgstr ""

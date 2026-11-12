@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 Xplordoo SL - Eric Antones <eantones@xplordoo.com>
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl). -->
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field
+            name="name"
+        >res.config.settings.view.form.inherit.mail.dictation.openai</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="mail_dictation.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <div id="mail_dictation_service_settings" position="inside">
+                <div
+                    class="row"
+                    attrs="{'invisible': [('mail_dictation_provider', '!=', 'openai')]}"
+                >
+                    <label
+                        for="mail_dictation_address"
+                        string="Address"
+                        class="col-lg-3 o_light_label"
+                    />
+                    <field name="mail_dictation_address" />
+                </div>
+                <div
+                    class="row"
+                    attrs="{'invisible': [('mail_dictation_provider', '!=', 'openai')]}"
+                >
+                    <label
+                        for="mail_dictation_api_key"
+                        string="Key"
+                        class="col-lg-3 o_light_label"
+                    />
+                    <field name="mail_dictation_api_key" password="True" />
+                </div>
+                <div
+                    class="row"
+                    attrs="{'invisible': [('mail_dictation_provider', '!=', 'openai')]}"
+                >
+                    <label
+                        for="mail_dictation_model"
+                        string="Model"
+                        class="col-lg-3 o_light_label"
+                    />
+                    <field name="mail_dictation_model" />
+                </div>
+            </div>
+        </field>
+    </record>
+</odoo>
