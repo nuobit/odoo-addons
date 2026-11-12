@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 Xplordoo SL - Eric Antones <eantones@xplordoo.com>
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl). -->
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.mail.dictation</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="mail.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <div id="emails" position="inside">
+                <div class="col-12 col-lg-6 o_setting_box" id="mail_dictation_setting">
+                    <div class="o_setting_right_pane">
+                        <span class="o_form_label">Voice Dictation</span>
+                        <div class="text-muted">
+                            Dictate messages in the chat: a transcription service turns the voice into text.
+                        </div>
+                        <!-- Each service's module adds its own settings here. -->
+                        <div class="content-group" id="mail_dictation_service_settings">
+                            <div class="row mt16">
+                                <label
+                                    for="mail_dictation_provider"
+                                    string="Service"
+                                    class="col-lg-3 o_light_label"
+                                />
+                                <field name="mail_dictation_provider" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </field>
+    </record>
+</odoo>
