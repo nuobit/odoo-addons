@@ -202,6 +202,24 @@ class TestOrderImport(TransactionCase):
         self.assertFalse(self._get_order("TEST-4"))
         self.assertFalse(self._get_buyer_partners())
 
+    def test_empty_name_error_states_order_age_and_anonymization(self):
+        """A first import with no contact name anywhere also states the
+        order date and age and explains that on old orders the likely
+        cause is marketplace anonymization (GDPR), unrecoverable from
+        Lengow -- the reader judges from the age."""
+        self.marketplace_map.name_source = "full_name"
+        empty = {"full_name": "", "first_name": "", "last_name": ""}
+        payload = self._order_payload("TEST-11", empty, empty)
+        payload["marketplace_order_date"] = "2024-04-16T10:00:00Z"
+        with self.assertRaisesRegex(ValidationError, "Contact name source") as cm:
+            self._run_import(payload)
+        self.assertIn("2024-04-16", str(cm.exception))
+        self.assertIn("days ago", str(cm.exception))
+        self.assertIn("(GDPR)", str(cm.exception))
+        self.assertIn("cannot be recovered", str(cm.exception))
+        self.assertFalse(self._get_order("TEST-11"))
+        self.assertFalse(self._get_buyer_partners())
+
     def test_reconfigure_and_reimport_heals(self):
         """The remediation the error message instructs: wrong source ->
         the job fails with the hint -> fix the mapping -> import the order
@@ -243,6 +261,49 @@ class TestOrderImport(TransactionCase):
                 trap.perform_enqueued_jobs()
         self.assertFalse(self._get_order("TEST-7"))
         self.assertFalse(self._get_buyer_partners())
+
+    def test_anonymized_resync_keeps_partners(self):
+        """A late re-sync of an already-imported order whose contact names
+        were erased upstream (GDPR anonymization) must not fail the job:
+        the update proceeds and the order keeps the partners of the
+        original import. Nobody can bring the erased name back, so a
+        failure here would stay red forever."""
+        person = {"full_name": "", "first_name": "Jane", "last_name": "Doe"}
+        self._run_import(self._order_payload("TEST-9", person, person))
+        binding = self._get_order("TEST-9")
+        self.assertEqual(len(binding), 1)
+        order = binding.odoo_id
+        partners_before = self._get_buyer_partners()
+        shipping_before = order.partner_shipping_id
+        invoice_before = order.partner_invoice_id
+        erased = {"full_name": "", "first_name": "", "last_name": ""}
+        payload = self._order_payload("TEST-9", erased, erased)
+        payload["marketplace_status"] = "closed"
+        self._run_import(payload)
+        # the re-sync went through: the status update landed...
+        self.assertEqual(binding.marketplace_status, "closed")
+        # ...and the partners stayed exactly as originally imported
+        self.assertEqual(order.partner_shipping_id, shipping_before)
+        self.assertEqual(order.partner_invoice_id, invoice_before)
+        self.assertEqual(self._get_buyer_partners(), partners_before)
+
+    def test_partially_anonymized_resync(self):
+        """Each address is judged on its own: a re-sync erasing only the
+        delivery contact name skips only that partner; the billing one
+        follows the normal flow."""
+        person = {"full_name": "", "first_name": "Jane", "last_name": "Doe"}
+        self._run_import(self._order_payload("TEST-10", person, person))
+        binding = self._get_order("TEST-10")
+        self.assertEqual(len(binding), 1)
+        order = binding.odoo_id
+        partners_before = self._get_buyer_partners()
+        shipping_before = order.partner_shipping_id
+        invoice_before = order.partner_invoice_id
+        erased = {"full_name": "", "first_name": "", "last_name": ""}
+        self._run_import(self._order_payload("TEST-10", person, erased))
+        self.assertEqual(order.partner_shipping_id, shipping_before)
+        self.assertEqual(order.partner_invoice_id, invoice_before)
+        self.assertEqual(self._get_buyer_partners(), partners_before)
 
     def test_import_record_without_external_data_reads_backend(self):
         """import_record without external_data falls back to the adapter
