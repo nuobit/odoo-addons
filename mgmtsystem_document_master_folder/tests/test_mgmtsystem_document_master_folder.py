@@ -226,17 +226,15 @@ class TestMgmtsystemDocumentMasterFolder(TransactionCase):
                 }
             )
 
-    def test_archived_master_folder_keeps_its_mark(self):
-        """An archived master folder still holds the mark of its menu."""
-        self.folder_a.active = False
+    def test_master_folder_cannot_be_archived(self):
+        """A category cannot be archived while it is the master folder of a menu."""
+        values = {"active": False}
+        # document_page_archive_reason, when installed in the same database,
+        # refuses to archive a page without a reason
+        if "archive_reason" in self.folder_a._fields:
+            values["archive_reason"] = "Replaced by another folder"
         with self.assertRaisesRegex(
-            ValidationError, "Procedures of A"
+            ValidationError, 'Clear its "Master Folder Of" field'
         ), self.cr.savepoint():
-            self.page_model.create(
-                {
-                    "name": "New procedures of A",
-                    "type": "category",
-                    "company_id": self.company_a.id,
-                    "mgmtsystem_master_folder": "procedure",
-                }
-            )
+            self.folder_a.write(values)
+        self.assertTrue(self.folder_a.active)

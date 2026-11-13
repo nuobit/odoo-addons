@@ -24,7 +24,7 @@ class DocumentPage(models.Model):
         "selected company has none.",
     )
 
-    @api.constrains("type", "company_id", "mgmtsystem_master_folder")
+    @api.constrains("type", "company_id", "mgmtsystem_master_folder", "active")
     def _check_mgmtsystem_master_folder(self):
         for page in self.filtered("mgmtsystem_master_folder"):
             if page.type != "category":
@@ -35,22 +35,29 @@ class DocumentPage(models.Model):
                         page.name,
                     )
                 )
-            # sudo: the category that already has the mark may belong to a
-            # company the user has not selected; an archived one keeps it too
-            other_folders = (
-                self.sudo()
-                .with_context(active_test=False)
-                .search(
-                    [
-                        ("id", "!=", page.id),
-                        (
-                            "mgmtsystem_master_folder",
-                            "=",
-                            page.mgmtsystem_master_folder,
+            if not page.active:
+                raise ValidationError(
+                    _(
+                        'The category "%(folder)s" is the master folder of %(menu)s. '
+                        'Clear its "Master Folder Of" field before archiving it.',
+                        folder=page.name,
+                        menu=page._get_mgmtsystem_master_folder_label(
+                            page.mgmtsystem_master_folder
                         ),
-                        ("company_id", "=", page.company_id.id),
-                    ]
+                    )
                 )
+            # sudo: the category that already has the mark may belong to a
+            # company the user has not selected
+            other_folders = self.sudo().search(
+                [
+                    ("id", "!=", page.id),
+                    (
+                        "mgmtsystem_master_folder",
+                        "=",
+                        page.mgmtsystem_master_folder,
+                    ),
+                    ("company_id", "=", page.company_id.id),
+                ]
             )
             if other_folders:
                 menu = page._get_mgmtsystem_master_folder_label(

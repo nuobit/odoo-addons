@@ -104,6 +104,16 @@ msgstr ""
 #. module: mgmtsystem_document_master_folder
 #: code:addons/mgmtsystem_document_master_folder/models/document_page.py:0
 #, python-format
+msgid ""
+"The category \"%(folder)s\" is the master folder of %(menu)s. Clear its"
+" \"Master Folder Of\" field before archiving it."
+msgstr ""
+"La categoria \"%(folder)s\" és la carpeta mestra de %(menu)s. Buideu el seu "
+"camp \"Carpeta mestra de\" abans d'arxivar-la."
+
+#. module: mgmtsystem_document_master_folder
+#: code:addons/mgmtsystem_document_master_folder/models/document_page.py:0
+#, python-format
 msgid "The company \"%(company)s\" has no master folder of %(menu)s."
 msgstr "L'empresa \"%(company)s\" no té carpeta mestra de %(menu)s."
 
