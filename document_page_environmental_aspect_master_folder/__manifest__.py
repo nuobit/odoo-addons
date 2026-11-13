@@ -17,5 +17,6 @@
         "data/document_page_data.xml",
         "views/document_page_actions.xml",
     ],
+    "uninstall_hook": "uninstall_hook",
     "auto_install": True,
 }
