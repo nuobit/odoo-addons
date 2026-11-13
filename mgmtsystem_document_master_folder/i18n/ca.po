@@ -1,0 +1,131 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* mgmtsystem_document_master_folder
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-12 12:38+0000\n"
+"PO-Revision-Date: 2026-11-12 12:38+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: mgmtsystem_document_master_folder
+#: model:ir.model.fields,field_description:mgmtsystem_document_master_folder.field_document_page__display_name
+msgid "Display Name"
+msgstr "Nom mostrat"
+
+#. module: mgmtsystem_document_master_folder
+#: model:ir.model,name:mgmtsystem_document_master_folder.model_document_page
+msgid "Document Page"
+msgstr "Pàgina de document"
+
+#. module: mgmtsystem_document_master_folder
+#: model:ir.model.fields.selection,name:mgmtsystem_document_master_folder.selection__document_page__mgmtsystem_master_folder__environmental_aspect
+msgid "Environmental Aspects"
+msgstr "Aspectes mediambientals"
+
+#. module: mgmtsystem_document_master_folder
+#: model:ir.model.fields,field_description:mgmtsystem_document_master_folder.field_document_page__id
+msgid "ID"
+msgstr "ID"
+
+#. module: mgmtsystem_document_master_folder
+#: model:ir.model.fields,field_description:mgmtsystem_document_master_folder.field_document_page____last_update
+msgid "Last Modified on"
+msgstr "Última modificació el"
+
+#. module: mgmtsystem_document_master_folder
+#: model:ir.model.fields,help:mgmtsystem_document_master_folder.field_document_page__mgmtsystem_master_folder
+msgid ""
+"Management system menu that lists the pages of this category. Each company "
+"has at most one master folder per menu, plus at most one without company. "
+"The Create button of the menu files the new page in the master folder of the"
+" selected company, or in the one without company when the selected company "
+"has none."
+msgstr ""
+"Menú del sistema de gestió que llista les pàgines d'aquesta categoria. Cada "
+"empresa té com a molt una carpeta mestra per menú, i com a molt n'hi ha una "
+"sense empresa. El botó Crear del menú desa la pàgina nova a la carpeta "
+"mestra de l'empresa seleccionada, o a la que no té empresa quan l'empresa "
+"seleccionada no en té cap."
+
+#. module: mgmtsystem_document_master_folder
+#: model:ir.model.fields.selection,name:mgmtsystem_document_master_folder.selection__document_page__mgmtsystem_master_folder__manual
+msgid "Manuals"
+msgstr "Manuals"
+
+#. module: mgmtsystem_document_master_folder
+#: model:ir.model.fields,field_description:mgmtsystem_document_master_folder.field_document_page__mgmtsystem_master_folder
+msgid "Master Folder Of"
+msgstr "Carpeta mestra de"
+
+#. module: mgmtsystem_document_master_folder
+#: model:ir.model.fields.selection,name:mgmtsystem_document_master_folder.selection__document_page__mgmtsystem_master_folder__procedure
+msgid "Procedures"
+msgstr "Procediments"
+
+#. module: mgmtsystem_document_master_folder
+#: code:addons/mgmtsystem_document_master_folder/models/document_page.py:0
+#, python-format
+msgid ""
+"Several categories are the master folder of %(menu)s: %(folders)s. Leave the"
+" mark on only one per company."
+msgstr ""
+"Diverses categories són la carpeta mestra de %(menu)s: %(folders)s. Deixeu "
+"la marca només en una per empresa."
+
+#. module: mgmtsystem_document_master_folder
+#: code:addons/mgmtsystem_document_master_folder/models/document_page.py:0
+#, python-format
+msgid ""
+"The category \"%(folder)s\" is already the master folder of %(menu)s for the"
+" company \"%(company)s\"."
+msgstr ""
+"La categoria \"%(folder)s\" ja és la carpeta mestra de %(menu)s de l'empresa "
+"\"%(company)s\"."
+
+#. module: mgmtsystem_document_master_folder
+#: code:addons/mgmtsystem_document_master_folder/models/document_page.py:0
+#, python-format
+msgid ""
+"The category \"%(folder)s\" is already the master folder of %(menu)s without"
+" company."
+msgstr ""
+"La categoria \"%(folder)s\" ja és la carpeta mestra de %(menu)s sense "
+"empresa."
+
+#. module: mgmtsystem_document_master_folder
+#: code:addons/mgmtsystem_document_master_folder/models/document_page.py:0
+#, python-format
+msgid ""
+"The category \"%(folder)s\" is the master folder of %(menu)s. Clear its"
+" \"Master Folder Of\" field before archiving it."
+msgstr ""
+"La categoria \"%(folder)s\" és la carpeta mestra de %(menu)s. Buideu el seu "
+"camp \"Carpeta mestra de\" abans d'arxivar-la."
+
+#. module: mgmtsystem_document_master_folder
+#: code:addons/mgmtsystem_document_master_folder/models/document_page.py:0
+#, python-format
+msgid "The company \"%(company)s\" has no master folder of %(menu)s."
+msgstr "L'empresa \"%(company)s\" no té carpeta mestra de %(menu)s."
+
+#. module: mgmtsystem_document_master_folder
+#: code:addons/mgmtsystem_document_master_folder/models/document_page.py:0
+#, python-format
+msgid "The page \"%s\" is not a category: only a category can be a master folder."
+msgstr ""
+"La pàgina \"%s\" no és una categoria: només una categoria pot ser carpeta "
+"mestra."
+
+#. module: mgmtsystem_document_master_folder
+#: model:ir.model.fields.selection,name:mgmtsystem_document_master_folder.selection__document_page__mgmtsystem_master_folder__work_instruction
+msgid "Work Instructions"
+msgstr "Instruccions de treball"
