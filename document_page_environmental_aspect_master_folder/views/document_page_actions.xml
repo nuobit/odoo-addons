@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dev1@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+
+    <!-- Not noupdate: updating document_page_environmental_aspect rewrites the
+         domain and the context of its action, and this module, which depends
+         on it, is updated right after it -->
+
+    <record
+        id="document_page_environmental_aspect.action_environmental_aspects"
+        model="ir.actions.act_window"
+    >
+        <field
+            name="domain"
+        >[('parent_id.mgmtsystem_master_folder', '=', 'environmental_aspect')]</field>
+        <field
+            name="context"
+        >{'mgmtsystem_master_folder_menu': 'environmental_aspect'}</field>
+    </record>
+
+</odoo>
