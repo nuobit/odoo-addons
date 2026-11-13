@@ -1,0 +1,12 @@
+This module makes the *Manuals* menu of the management system (module
+``mgmtsystem_manual``) follow the master folders of
+``mgmtsystem_document_master_folder``: it lists the pages in the master folders
+of the active companies, and *Create* files the new page in the master folder
+of the selected company.
+
+On installation, the category of ``mgmtsystem_manual`` becomes the master
+folder of the menu, whatever it is called and with the company it has, so the
+menu works as before until a company gets its own master folder.
+
+It is installed automatically when ``mgmtsystem_manual`` and
+``mgmtsystem_document_master_folder`` are both installed.

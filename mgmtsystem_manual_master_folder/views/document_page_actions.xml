@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dev1@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+
+    <!-- Not noupdate: updating mgmtsystem_manual rewrites the domain and the
+         context of its action, and this module, which depends on it, is
+         updated right after it -->
+
+    <record id="mgmtsystem_manual.action_manuals" model="ir.actions.act_window">
+        <field
+            name="domain"
+        >[('parent_id.mgmtsystem_master_folder', '=', 'manual')]</field>
+        <field name="context">{'mgmtsystem_master_folder_menu': 'manual'}</field>
+    </record>
+
+</odoo>
