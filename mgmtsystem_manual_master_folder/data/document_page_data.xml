@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dev1@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo noupdate="1">
+
+    <!-- The OCA category stays the master folder of the menu, with the company
+         it has, until each company gets its own -->
+
+    <record id="mgmtsystem_manual.manuals" model="document.page" forcecreate="0">
+        <field name="mgmtsystem_master_folder">manual</field>
+    </record>
+
+</odoo>
