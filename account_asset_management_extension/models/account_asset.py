@@ -45,7 +45,7 @@ class AccountAsset(models.Model):
     def _get_asset_unit_price(self, amount, quantity):
         if not quantity:
             amount = 0
-        elif abs(quantity) >= 1:
+        elif abs(quantity) > 1:
             prec = self.env["decimal.precision"].precision_get(
                 "Product Unit of Measure"
             )
