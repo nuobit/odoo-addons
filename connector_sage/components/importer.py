@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -88,6 +89,12 @@ class SageImporter(AbstractComponent):
         """
         return
 
+    def _validate_update(self, binding, values):
+        """Hook called on an existing binding before writing the update.
+
+        Raise an exception to abort the import of the current record.
+        """
+
     def run(self, external_id):
         # get_data
         # this one knows how to speak to sage
@@ -119,9 +126,9 @@ class SageImporter(AbstractComponent):
         # if not force and self._is_uptodate(binding):
         #     return _('Already up-to-date.')
         if binding:
-            binding.with_company(self.backend_record.company_id).write(
-                internal_data.values()
-            )
+            values = internal_data.values()
+            self._validate_update(binding, values)
+            binding.with_company(self.backend_record.company_id).write(values)
             _logger.debug("%d updated from Sage %s", binding, external_id)
         else:
             # or we create it
