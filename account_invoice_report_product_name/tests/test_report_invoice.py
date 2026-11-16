@@ -19,12 +19,15 @@ class TestReportInvoice(AccountTestInvoicingCommon):
         )
         cls.invoice = cls.init_invoice("out_invoice", products=cls.product, post=True)
 
-    def _render_description_column(self, invoice):
-        content = html.document_fromstring(
+    def _render_invoice(self, invoice):
+        return html.document_fromstring(
             self.env["ir.actions.report"]._render_qweb_html(
                 "account.account_invoices", invoice.ids
             )[0]
         )
+
+    def _render_description_column(self, invoice):
+        content = self._render_invoice(invoice)
         headers = [
             " ".join(header.text_content().split())
             for header in content.xpath("//th[@name='th_description']")
