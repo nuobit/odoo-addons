@@ -12,7 +12,11 @@
         priority="1"
     >
         <xpath expr="//table[@name='invoice_line_table']" position="before">
-            <t t-set="product_column_header">Product</t>
+            <t
+                t-set="print_product_name"
+                t-value="o.is_sale_document(include_receipts=True)"
+            />
+            <t t-if="print_product_name" t-set="product_column_header">Product</t>
         </xpath>
         <!-- Odoo's header span has no name, and its text is already translated
              when views are combined, so the anchor is the header's first span.
@@ -21,19 +25,19 @@
         <xpath expr="//th[@name='th_description']/span" position="attributes">
             <attribute name="t-out">product_column_header</attribute>
         </xpath>
-        <!-- The option makes the field converter print the product's name in the
-             label's span (models/ir_qweb_field.py). The span keeps Odoo's
-             condition, so a product line without a label prints nothing, as in
-             Odoo. The option is inside t-options, so that a view that drops
-             t-options drops it too: a t-out left with an option and no widget
-             fails to print. -->
+        <!-- On a customer document, the option makes the field converter print
+             the product's name in the label's span (models/ir_qweb_field.py).
+             The span keeps Odoo's condition, so a product line without a label
+             prints nothing, as in Odoo. The option is inside t-options, so that
+             a view that drops t-options drops it too: a t-out left with an
+             option and no widget fails to print. -->
         <xpath
             expr="//td[@name='account_invoice_line_name']/span[@t-field='line.name']"
             position="attributes"
         >
             <attribute
                 name="t-options"
-            >{'widget': 'text', 'print_product_name': True}</attribute>
+            >{'widget': 'text', 'print_product_name': print_product_name}</attribute>
         </xpath>
     </template>
 </odoo>
