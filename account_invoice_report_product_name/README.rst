@@ -71,6 +71,9 @@ Known issues / Roadmap
   header prints its own text instead of "Product", and what a view adds
   inside that span does not print on a customer document, where the span
   prints "Product" instead.
+- A company of a Gulf country prints its invoices with the Arabic and
+  English template of ``l10n_gcc_invoice``, which this module leaves as
+  it is.
 
 Bug Tracker
 ===========
