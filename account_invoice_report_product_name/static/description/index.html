@@ -370,12 +370,15 @@ ul.auto-toc {
 !! source digest: sha256:b240dd43489d4bbb1852bdb9a6fc882b836dbb0d56eaf6f0556193a0186d5e20
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 <p><a class="reference external image-reference" href="https://odoo-community.org/page/development-status"><img alt="Beta" src="https://img.shields.io/badge/maturity-Beta-yellow.png" /></a> <a class="reference external image-reference" href="http://www.gnu.org/licenses/agpl-3.0-standalone.html"><img alt="License: AGPL-3" src="https://img.shields.io/badge/licence-AGPL--3-blue.png" /></a> <a class="reference external image-reference" href="https://github.com/NuoBiT/odoo-addons/tree/17.0/account_invoice_report_product_name"><img alt="NuoBiT/odoo-addons" src="https://img.shields.io/badge/github-NuoBiT%2Fodoo--addons-lightgray.png?logo=github" /></a></p>
-<p>In the PDF of an invoice, the description column prints the name of each
-line’s product under the header “Product”: without the product’s
-internal reference and without the rest of the line’s label. A line
-without a product prints its own label. A product line whose label is
-empty prints nothing, as in Odoo. What other modules add to the column
-still prints, except in the cases listed under Known issues / Roadmap.</p>
+<p>On a customer invoice, a customer credit note or a sales receipt,
+printed or shown on the customer portal, the description column prints
+the name of each line’s product under the header “Product”: without the
+product’s internal reference and without the rest of the line’s label. A
+line without a product prints its own label. A product line whose label
+is empty prints nothing, as in Odoo. What other modules add to the
+column still prints, except in the cases listed under Known issues /
+Roadmap. Vendor bills, vendor credit notes and purchase receipts keep
+Odoo’s own column.</p>
 <p><strong>Table of contents</strong></p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
@@ -416,13 +419,13 @@ applies first: a span it puts ahead of the header’s span prints
 “Product” instead of its own text, the options it gives the span of
 the line’s label give way to this module’s, and if it removes that
 span, this module’s view no longer finds it.</li>
-<li>A product line whose own label has more than 31 lines still keeps the
-header of the table from repeating on each page: Odoo decides it from
-every line’s label, printed or not.</li>
+<li>On a customer document, a product line whose own label has more than
+31 lines still keeps the header of the table from repeating on each
+page: Odoo decides it from every line’s label, printed or not.</li>
 <li>A view applied after this module’s that replaces Odoo’s span of the
 header prints its own text instead of “Product”, and what a view adds
-inside that span does not print, because the span prints “Product”
-instead.</li>
+inside that span does not print on a customer document, where the span
+prints “Product” instead.</li>
 </ul>
 </div>
 <div class="section" id="bug-tracker">

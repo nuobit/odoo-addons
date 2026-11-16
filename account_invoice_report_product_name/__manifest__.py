@@ -2,7 +2,10 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 {
     "name": "Account Invoice Report Product Name",
-    "summary": "Invoice PDF: the product name instead of the line label",
+    "summary": (
+        "Customer invoices, customer credit notes and sales receipts print"
+        " the product name instead of the line label"
+    ),
     "version": "17.0.1.0.0",
     "category": "Accounting",
     "author": "NuoBiT Solutions SL",

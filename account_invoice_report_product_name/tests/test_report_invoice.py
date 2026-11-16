@@ -77,6 +77,44 @@ class TestReportInvoice(AccountTestInvoicingCommon):
         self.assertEqual(headers, ["Description"])
         self.assertEqual(cells, ["[BQ01] Rose bouquet"])
 
+    def test_credit_note_product_column(self):
+        credit_note = self.init_invoice("out_refund", products=self.product, post=True)
+        headers, cells = self._render_description_column(credit_note)
+        self.assertEqual(headers, ["Product"])
+        self.assertEqual(cells, ["Rose bouquet"])
+
+    def test_receipt_product_column(self):
+        receipt = self.init_invoice("out_receipt", products=self.product, post=True)
+        headers, cells = self._render_description_column(receipt)
+        self.assertEqual(headers, ["Product"])
+        self.assertEqual(cells, ["Rose bouquet"])
+
+    def test_vendor_bill_standard_column(self):
+        bill = self.init_invoice("in_invoice", products=self.product, post=True)
+        headers, cells = self._render_description_column(bill)
+        self.assertEqual(headers, ["Description"])
+        self.assertEqual(cells, ["[BQ01] Rose bouquet"])
+
+    def test_vendor_credit_note_standard_column(self):
+        refund = self.init_invoice("in_refund", products=self.product, post=True)
+        headers, cells = self._render_description_column(refund)
+        self.assertEqual(headers, ["Description"])
+        self.assertEqual(cells, ["[BQ01] Rose bouquet"])
+
+    def test_purchase_receipt_standard_column(self):
+        receipt = self.init_invoice("in_receipt", products=self.product, post=True)
+        headers, cells = self._render_description_column(receipt)
+        self.assertEqual(headers, ["Description"])
+        self.assertEqual(cells, ["[BQ01] Rose bouquet"])
+
+    def test_invoice_and_vendor_bill_printed_together(self):
+        # Each document of a print decides its own column: a vendor bill printed
+        # after a customer invoice keeps Odoo's column
+        bill = self.init_invoice("in_invoice", products=self.product, post=True)
+        headers, cells = self._render_description_column(self.invoice + bill)
+        self.assertEqual(headers, ["Product", "Description"])
+        self.assertEqual(cells, ["Rose bouquet", "[BQ01] Rose bouquet"])
+
     def test_invoice_product_header_keeps_what_another_module_adds(self):
         # A view of another module adds a text inside the header of the column
         self.env["ir.ui.view"].create(
@@ -252,6 +290,31 @@ class TestReportInvoice(AccountTestInvoicingCommon):
         headers, cells = self._render_description_column(self.invoice)
         self.assertEqual(headers, ["Product"])
         self.assertEqual(cells, ["Rose bouquet"])
+
+    def test_vendor_bill_header_prints_a_later_text_inside_its_span(self):
+        # The same view on a vendor bill, whose header's span prints what it
+        # holds
+        self.env["ir.ui.view"].create(
+            {
+                "name": "test.report_invoice_document.inside_header_span",
+                "type": "qweb",
+                "inherit_id": self.env.ref("account.report_invoice_document").id,
+                "arch": """
+                    <data>
+                        <xpath
+                            expr="//th[@name='th_description']/span"
+                            position="inside"
+                        >
+                            <span> (extra)</span>
+                        </xpath>
+                    </data>
+                """,
+            }
+        )
+        bill = self.init_invoice("in_invoice", products=self.product, post=True)
+        headers, cells = self._render_description_column(bill)
+        self.assertEqual(headers, ["Description (extra)"])
+        self.assertEqual(cells, ["[BQ01] Rose bouquet"])
 
     def test_invoice_later_view_replacing_the_header_span_prints_its_text(self):
         # A view applied after this module's that replaces the header's span
