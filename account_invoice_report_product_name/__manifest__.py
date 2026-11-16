@@ -9,5 +9,5 @@
     "website": "https://github.com/NuoBiT/odoo-addons",
     "license": "AGPL-3",
     "depends": ["account"],
-    "data": ["report/account_report.xml"],
+    "data": ["views/report_invoice.xml"],
 }
