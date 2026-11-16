@@ -61,6 +61,9 @@ Known issues / Roadmap
   "Product" instead of its own text, the options it gives the span of
   the line's label give way to this module's, and if it removes that
   span, this module's view no longer finds it.
+- A product line whose own label has more than 31 lines still keeps the
+  header of the table from repeating on each page: Odoo decides it from
+  every line's label, printed or not.
 - A view applied after this module's that replaces Odoo's span of the
   header prints its own text instead of "Product", and what a view adds
   inside that span does not print, because the span prints "Product"
