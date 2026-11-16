@@ -3,6 +3,7 @@
 
 from lxml import html
 
+from odoo import Command
 from odoo.tests import tagged
 
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
@@ -69,13 +70,18 @@ class TestReportInvoice(AccountTestInvoicingCommon):
         self.assertEqual(cells, ["[BQ01] Rose bouquet"])
 
     def test_invoice_line_without_product_prints_its_label(self):
-        # The amount adds a line without a product, labelled "test line"
-        invoice = self.init_invoice(
-            "out_invoice", products=self.product, amounts=[10.0], post=True
+        invoice = self.init_invoice("out_invoice", products=self.product)
+        invoice.write(
+            {
+                "invoice_line_ids": [
+                    Command.create({"name": "Delivery", "price_unit": 10.0})
+                ]
+            }
         )
+        invoice.action_post()
         headers, cells = self._render_description_column(invoice)
         self.assertEqual(headers, ["Product"])
-        self.assertEqual(cells, ["Rose bouquet", "test line"])
+        self.assertEqual(cells, ["Rose bouquet", "Delivery"])
 
     def test_invoice_product_column_keeps_what_another_module_adds(self):
         # A view of another module adds a text inside the description cell, as
@@ -85,9 +91,16 @@ class TestReportInvoice(AccountTestInvoicingCommon):
                 "name": "test.report_invoice_document.description_cell",
                 "type": "qweb",
                 "inherit_id": self.env.ref("account.report_invoice_document").id,
-                "arch": "<data><xpath"
-                " expr=\"//td[@name='account_invoice_line_name']\""
-                ' position="inside"><span> and its extra text</span></xpath></data>',
+                "arch": """
+                    <data>
+                        <xpath
+                            expr="//td[@name='account_invoice_line_name']"
+                            position="inside"
+                        >
+                            <span> and its extra text</span>
+                        </xpath>
+                    </data>
+                """,
             }
         )
         headers, cells = self._render_description_column(self.invoice)
