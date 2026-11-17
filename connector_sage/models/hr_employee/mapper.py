@@ -13,7 +13,8 @@ class HrEmployeeImportMapper(Component):
     _apply_on = "sage.hr.employee"
 
     direct = [
-        ("Email1", "work_email"),
+        # No ("Email1", "work_email"): Odoo writes the work email into the work
+        # contact, which can be a partner found by its VAT
         ("NumeroHijos", "children"),
         ("FechaNacimiento", "birthday"),
         ("CodigoEmpresa", "sage_codigo_empresa"),
@@ -74,9 +75,7 @@ class HrEmployeeImportMapper(Component):
         if record["Email1"] != record["Email2"]:
             return {"notes": record["Email2"]}
 
-    @only_create
-    @mapping
-    def work_contact_id(self, record):
+    def _work_contact(self, record):
         external_id = (record["CodigoEmpresa"], record["CodigoEmpleado"])
 
         binder = self.binder_for("sage.res.partner")
@@ -85,4 +84,30 @@ class HrEmployeeImportMapper(Component):
             f"customer_id {external_id} should have been imported in "
             "HrEmployeeImporter._import_dependencies"
         )
-        return {"work_contact_id": partner.id}
+        return partner
+
+    @only_create
+    @mapping
+    def work_contact_id(self, record):
+        return {"work_contact_id": self._work_contact(record).id}
+
+    @only_create
+    @mapping
+    def image_1920(self, record):
+        # Odoo copies the avatar it generates for a new employee without an
+        # image to the work contact (hr.employee.create). The work contact can
+        # be a partner found by its VAT, which keeps its image, so the employee
+        # gets one first: the contact's, or the avatar Odoo would generate,
+        # under the same access check.
+        work_contact = self._work_contact(record)
+        if work_contact.image_1920:
+            image = work_contact.image_1920
+        elif self.env["ir.ui.view"].sudo(False).has_access("write"):
+            image = (
+                self.env["hr.employee"]
+                .new({"name": self.names(record)["name"]})
+                ._avatar_generate_svg()
+            )
+        else:
+            image = False
+        return {"image_1920": image}

@@ -15,6 +15,11 @@ ADAPTER_READ = "odoo.addons.connector_sage.components.adapter.GenericAdapter.rea
 SAGE_COMPANY = 1
 CODE = 601
 VAT = "XXOWNER001A"
+# a 1x1 PNG
+IMAGE_PNG = (
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwAD"
+    "hgGAWjR9awAAAABJRU5ErkJggg=="
+)
 
 WORKER = {
     "CodigoEmpresa": SAGE_COMPANY,
@@ -82,7 +87,8 @@ class TestVatOwnerLookup(TransactionComponentCase):
     def test_company_with_contact_binds_company(self):
         """Odoo copies the company's VAT to its contact, but only the
         company owns it: the worker is bound to the company, which keeps
-        its data, and no partner is created."""
+        its data, its e-mail and its image included, and no partner is
+        created. The employee shows the company's e-mail."""
         supplier_account = (
             self.env["account.account"]
             .with_company(self.company)
@@ -105,11 +111,13 @@ class TestVatOwnerLookup(TransactionComponentCase):
                     "is_company": True,
                     "vat": VAT,
                     "email": "supplier@test.example.com",
+                    "image_1920": IMAGE_PNG,
                     "company_id": self.company.id,
                     "property_account_payable_id": supplier_account.id,
                 }
             )
         )
+        supplier_image = supplier.image_1920
         contact = self.env["res.partner"].create(
             {
                 "name": "SUPPLIER CONTACT",
@@ -125,6 +133,8 @@ class TestVatOwnerLookup(TransactionComponentCase):
         self.assertEqual(supplier.name, "SUPPLIER")
         self.assertTrue(supplier.is_company)
         self.assertEqual(supplier.email, "supplier@test.example.com")
+        self.assertEqual(supplier.image_1920, supplier_image)
+        self.assertEqual(employee.work_email, "supplier@test.example.com")
         self.assertFalse(supplier.ref)
         self.assertEqual(
             supplier.with_company(self.company).property_account_payable_id,
@@ -133,25 +143,34 @@ class TestVatOwnerLookup(TransactionComponentCase):
         self.assertEqual(self.env["res.partner"].search_count([]), partner_count)
 
     def test_individual_with_vat_is_bound(self):
-        """An individual who owns the VAT and has no contacts is bound."""
+        """An individual who owns the VAT and has no contacts is bound. The
+        import changes neither the e-mail nor the image the partner had: it
+        keeps its own e-mail and gets no avatar."""
         person = self.env["res.partner"].create(
             {
                 "name": "ANA MARTIN",
                 "vat": VAT,
+                "email": "ana.martin@personal.example.com",
                 "company_id": self.company.id,
             }
         )
         employee = self._import_record("sage.hr.employee", WORKER)
         self.assertEqual(person.sage_bind_ids.sage_codigo_empleado, CODE)
         self.assertEqual(employee.work_contact_id, person)
+        self.assertEqual(person.email, "ana.martin@personal.example.com")
+        self.assertFalse(person.image_1920)
 
     def test_vat_not_found_creates_partner(self):
-        """Nobody has the worker's VAT: the import creates the partner."""
+        """Nobody has the worker's VAT: the import creates the partner,
+        with the worker's e-mail, which the employee shows, and gives the
+        employee an avatar."""
         employee = self._import_record("sage.hr.employee", WORKER)
         partner = employee.work_contact_id
         self.assertEqual(partner.sage_bind_ids.sage_codigo_empleado, CODE)
         self.assertEqual(partner.name, "ANA MARTIN SOLER")
         self.assertEqual(partner.vat, VAT)
+        self.assertEqual(employee.work_email, "ana@test.example.com")
+        self.assertTrue(employee.image_1920)
 
     def test_two_owners_stop_import(self):
         """Two companies own the VAT: the import cannot choose between
