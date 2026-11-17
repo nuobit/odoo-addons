@@ -6,7 +6,9 @@ from unittest import mock
 import pymssql
 
 from odoo.exceptions import ValidationError
-from odoo.tests.common import SavepointCase, tagged
+from odoo.tests import tagged
+
+from odoo.addons.component.tests.common import TransactionComponentCase
 
 ADAPTER_READ = "odoo.addons.connector_sage.components.adapter.GenericAdapter.read"
 
@@ -23,27 +25,31 @@ WORKER = {
     "PrimerApellidoEmpleado": "MARTIN",
     "SegundoApellidoEmpleado": "SOLER",
     "NumeroHijos": 0,
-    "FechaNacimiento": False,
+    "FechaNacimiento": None,
     "Email1": "ana@test.example.com",
     "Email2": "ana@test.example.com",
 }
 
 
 @tagged("post_install", "-at_install")
-class TestVatOwnerLookup(SavepointCase):
+class TestVatOwnerLookup(TransactionComponentCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
         cls.env = cls.env(context=dict(cls.env.context, tracking_disable=True))
         cls.company = cls.env["res.company"].create({"name": "Sage Test Company"})
-        cls.account_payable = cls.env["account.account"].create(
-            {
-                "name": "Test Account Payable",
-                "code": "TESTPAY01",
-                "user_type_id": cls.env.ref("account.data_account_type_payable").id,
-                "reconcile": True,
-                "company_id": cls.company.id,
-            }
+        cls.account_payable = (
+            cls.env["account.account"]
+            .with_company(cls.company)
+            .create(
+                {
+                    "name": "Test Account Payable",
+                    "code": "TESTPAY01",
+                    "account_type": "liability_payable",
+                    "reconcile": True,
+                    "company_ids": [(6, 0, cls.company.ids)],
+                }
+            )
         )
         cls.backend = cls.env["sage.backend"].create(
             {
@@ -77,14 +83,18 @@ class TestVatOwnerLookup(SavepointCase):
         """Odoo copies the company's VAT to its contact, but only the
         company owns it: the worker is bound to the company, which keeps
         its data, and no partner is created."""
-        supplier_account = self.env["account.account"].create(
-            {
-                "name": "Supplier Account Payable",
-                "code": "TESTPAY02",
-                "user_type_id": self.env.ref("account.data_account_type_payable").id,
-                "reconcile": True,
-                "company_id": self.company.id,
-            }
+        supplier_account = (
+            self.env["account.account"]
+            .with_company(self.company)
+            .create(
+                {
+                    "name": "Supplier Account Payable",
+                    "code": "TESTPAY02",
+                    "account_type": "liability_payable",
+                    "reconcile": True,
+                    "company_ids": [(6, 0, self.company.ids)],
+                }
+            )
         )
         supplier = (
             self.env["res.partner"]
@@ -111,7 +121,7 @@ class TestVatOwnerLookup(SavepointCase):
         partner_count = self.env["res.partner"].search_count([])
         employee = self._import_record("sage.hr.employee", WORKER)
         self.assertEqual(supplier.sage_bind_ids.sage_codigo_empleado, CODE)
-        self.assertEqual(employee.address_home_id, supplier)
+        self.assertEqual(employee.work_contact_id, supplier)
         self.assertEqual(supplier.name, "SUPPLIER")
         self.assertTrue(supplier.is_company)
         self.assertEqual(supplier.email, "supplier@test.example.com")
@@ -133,12 +143,12 @@ class TestVatOwnerLookup(SavepointCase):
         )
         employee = self._import_record("sage.hr.employee", WORKER)
         self.assertEqual(person.sage_bind_ids.sage_codigo_empleado, CODE)
-        self.assertEqual(employee.address_home_id, person)
+        self.assertEqual(employee.work_contact_id, person)
 
     def test_vat_not_found_creates_partner(self):
         """Nobody has the worker's VAT: the import creates the partner."""
         employee = self._import_record("sage.hr.employee", WORKER)
-        partner = employee.address_home_id
+        partner = employee.work_contact_id
         self.assertEqual(partner.sage_bind_ids.sage_codigo_empleado, CODE)
         self.assertEqual(partner.name, "ANA MARTIN SOLER")
         self.assertEqual(partner.vat, VAT)
@@ -200,7 +210,7 @@ class TestVatOwnerLookup(SavepointCase):
         self.assertTrue(contact.active)
         self.assertEqual(contact.vat, VAT)
         employee = self._import_record("sage.hr.employee", WORKER)
-        partner = employee.address_home_id
+        partner = employee.work_contact_id
         self.assertEqual(partner.sage_bind_ids.sage_codigo_empleado, CODE)
         self.assertEqual(partner.name, "ANA MARTIN SOLER")
         self.assertFalse(contact.sage_bind_ids)
@@ -227,7 +237,7 @@ class TestVatOwnerLookup(SavepointCase):
         self.assertEqual(supplier.vat, VAT)
         employee = self._import_record("sage.hr.employee", WORKER)
         self.assertEqual(supplier.sage_bind_ids.sage_codigo_empleado, CODE)
-        self.assertEqual(employee.address_home_id, supplier)
+        self.assertEqual(employee.work_contact_id, supplier)
 
     def test_contact_with_own_vat_creates_partner(self):
         """A contact can be given a VAT of its own after it is created, but
@@ -250,7 +260,7 @@ class TestVatOwnerLookup(SavepointCase):
         contact.vat = VAT
         self.assertFalse(supplier.vat)
         employee = self._import_record("sage.hr.employee", WORKER)
-        partner = employee.address_home_id
+        partner = employee.work_contact_id
         self.assertEqual(partner.sage_bind_ids.sage_codigo_empleado, CODE)
         self.assertEqual(partner.name, "ANA MARTIN SOLER")
         self.assertFalse(contact.sage_bind_ids)
@@ -295,7 +305,7 @@ class TestVatOwnerLookup(SavepointCase):
                 ("sage_codigo_empleado", "=", CODE),
             ]
         )
-        partner = employee.address_home_id
+        partner = employee.work_contact_id
         self.assertEqual(partner.sage_bind_ids.sage_codigo_empleado, CODE)
         self.assertEqual(partner.name, "ANA MARTIN SOLER")
         self.assertFalse(supplier.sage_bind_ids)
