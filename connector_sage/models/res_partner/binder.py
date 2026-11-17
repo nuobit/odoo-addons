@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 from odoo import _
 from odoo.exceptions import ValidationError
@@ -30,21 +31,32 @@ class ResPartnerBinder(Component):
             raise ValidationError(_("The 'VAT' field is not found in mapper."))
         if values["vat"]:
             relation_model_name = self.model[odoo_id_field]._name
-            relation = (
+            partners = (
                 self.env[relation_model_name]
                 .with_company(self.backend_record.company_id)
                 .search([("vat", "=", values["vat"])])
             )
-            if len(relation) > 1:
+            # Odoo copies the VAT of a commercial partner to its contacts:
+            # only the partner that owns the VAT counts
+            owners = partners.filtered(
+                lambda partner: partner.commercial_partner_id == partner
+            )
+            if len(owners) > 1:
                 raise ValidationError(
-                    _("More than one partner with the same vat (%s) found")
-                    % values["vat"]
+                    _(
+                        "More than one partner owns this Tax ID "
+                        "(partner IDs: %(ids)s). "
+                        "Merge them, or correct the wrong Tax ID, and retry."
+                    )
+                    % {"ids": ", ".join(str(owner_id) for owner_id in owners.ids)}
                 )
-            if relation:
+            elif owners:
                 return self.model.create(
                     {
                         **internal_data.values(),
-                        odoo_id_field: relation.id,
+                        odoo_id_field: owners.id,
                     }
                 )
+            else:
+                return self.model
         return self.model
