@@ -1,8 +1,8 @@
 - A product variant prints only the name of its product, without its attributes.
 - The cell reads the product's current name every time the invoice is printed: an
   invoice printed again after its product is renamed shows the new name.
-- The rest of the line's description is not printed: the lines typed into it and
-  the product's sales description.
+- The rest of the line's label is not printed: the lines typed into it and the
+  product's sales description.
 - A view that finds the span of the line's label by its options no longer finds it,
   because this module changes them. A module with such a view and this one cannot both
   be installed: the one installed second fails. Odoo refuses such a view created in the

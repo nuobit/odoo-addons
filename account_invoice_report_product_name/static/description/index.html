@@ -372,9 +372,9 @@ ul.auto-toc {
 <p><a class="reference external image-reference" href="https://odoo-community.org/page/development-status"><img alt="Beta" src="https://img.shields.io/badge/maturity-Beta-yellow.png" /></a> <a class="reference external image-reference" href="http://www.gnu.org/licenses/agpl-3.0-standalone.html"><img alt="License: AGPL-3" src="https://img.shields.io/badge/licence-AGPL--3-blue.png" /></a> <a class="reference external image-reference" href="https://github.com/NuoBiT/odoo-addons/tree/17.0/account_invoice_report_product_name"><img alt="NuoBiT/odoo-addons" src="https://img.shields.io/badge/github-NuoBiT%2Fodoo--addons-lightgray.png?logo=github" /></a></p>
 <p>In the PDF of an invoice, the description column prints the name of each
 line’s product under the header “Product”: without the product’s
-internal reference and without the rest of the line’s description. A
-line without a product prints its own description. A product line whose
-description is empty prints nothing, as in Odoo.</p>
+internal reference and without the rest of the line’s label. A line
+without a product prints its own label. A product line whose label is
+empty prints nothing, as in Odoo.</p>
 <p><strong>Table of contents</strong></p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
@@ -396,8 +396,8 @@ attributes.</li>
 <li>The cell reads the product’s current name every time the invoice is
 printed: an invoice printed again after its product is renamed shows
 the new name.</li>
-<li>The rest of the line’s description is not printed: the lines typed
-into it and the product’s sales description.</li>
+<li>The rest of the line’s label is not printed: the lines typed into it
+and the product’s sales description.</li>
 <li>A view that finds the span of the line’s label by its options no
 longer finds it, because this module changes them. A module with such
 a view and this one cannot both be installed: the one installed second
