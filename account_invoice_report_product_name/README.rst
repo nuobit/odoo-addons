@@ -24,9 +24,9 @@ Account Invoice Report Product Name
 
 In the PDF of an invoice, the description column prints the name of each
 line's product under the header "Product": without the product's
-internal reference and without the rest of the line's description. A
-line without a product prints its own description. A product line whose
-description is empty prints nothing, as in Odoo.
+internal reference and without the rest of the line's label. A line
+without a product prints its own label. A product line whose label is
+empty prints nothing, as in Odoo.
 
 **Table of contents**
 
@@ -41,8 +41,8 @@ Known issues / Roadmap
 - The cell reads the product's current name every time the invoice is
   printed: an invoice printed again after its product is renamed shows
   the new name.
-- The rest of the line's description is not printed: the lines typed
-  into it and the product's sales description.
+- The rest of the line's label is not printed: the lines typed into it
+  and the product's sales description.
 - A view that finds the span of the line's label by its options no
   longer finds it, because this module changes them. A module with such
   a view and this one cannot both be installed: the one installed second
