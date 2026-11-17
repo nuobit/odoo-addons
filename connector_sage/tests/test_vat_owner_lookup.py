@@ -3,6 +3,8 @@
 
 from unittest import mock
 
+import pymssql
+
 from odoo.exceptions import ValidationError
 from odoo.tests.common import SavepointCase, tagged
 
@@ -297,3 +299,22 @@ class TestVatOwnerLookup(SavepointCase):
         self.assertEqual(partner.sage_bind_ids.sage_codigo_empleado, CODE)
         self.assertEqual(partner.name, "ANA MARTIN SOLER")
         self.assertFalse(supplier.sage_bind_ids)
+
+    def test_sage_read_error_stops_import(self):
+        """Sage cannot be read: the import stops with the database error,
+        and nothing is created."""
+        partner_count = self.env["res.partner"].search_count([])
+        with mock.patch(
+            ADAPTER_READ,
+            side_effect=pymssql.OperationalError("Unable to connect to Sage"),
+        ):
+            with self.assertRaisesRegex(
+                pymssql.OperationalError, "Unable to connect to Sage"
+            ):
+                self.env["sage.hr.employee"].import_record(
+                    self.backend, (SAGE_COMPANY, CODE)
+                )
+        self.assertFalse(
+            self.env["sage.hr.employee"].search([("sage_codigo_empleado", "=", CODE)])
+        )
+        self.assertEqual(self.env["res.partner"].search_count([]), partner_count)
