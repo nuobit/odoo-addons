@@ -1324,8 +1324,12 @@ msgstr ""
 #. module: connector_sage
 #. odoo-python
 #: code:addons/connector_sage/models/res_partner/binder.py:0
-msgid "More than one partner with the same vat (%s) found"
+msgid ""
+"More than one partner owns this Tax ID (partner IDs: %(ids)s). Merge them, "
+"or correct the wrong Tax ID, and retry."
 msgstr ""
+"Más de un contacto tiene este NIF (IDs de contacto: %(ids)s). Fusiónalos, o "
+"corrige el NIF incorrecto, y vuelve a intentarlo."
 
 #. module: connector_sage
 #: model:ir.model.fields,field_description:connector_sage.field_sage_hr_employee__my_activity_date_deadline
