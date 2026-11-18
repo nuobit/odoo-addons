@@ -1,22 +1,39 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
 <odoo>
+    <!-- Odoo applies a report's views by priority, then by id. Priority 1
+         applies this view before the views of a higher priority, so it
+         changes Odoo's own spans and those views find them changed. -->
     <template
         id="report_invoice_document"
         inherit_id="account.report_invoice_document"
-        priority="99"
+        priority="1"
     >
-        <xpath expr="//th[@name='th_description']" position="replace">
-            <th name="th_description" class="text-start"><span>Product</span></th>
+        <xpath expr="//table[@name='invoice_line_table']" position="before">
+            <t t-set="product_column_header">Product</t>
         </xpath>
+        <!-- Odoo's header span has no name, and its text is already translated
+             when views are combined, so the anchor is the header's first span.
+             The span then prints product_column_header, or its own text while
+             that is not set. -->
+        <xpath expr="//th[@name='th_description']/span" position="attributes">
+            <attribute name="t-out">product_column_header</attribute>
+        </xpath>
+        <!-- The option makes the field converter print the product's name in the
+             label's span (models/ir_qweb_field.py). The span keeps Odoo's
+             condition, so a product line without a label prints nothing, as in
+             Odoo. The option is inside t-options, so that a view that drops
+             t-options drops it too: a t-out left with an option and no widget
+             fails to print. -->
         <xpath
-            expr="//td[@name='account_invoice_line_name']/span"
+            expr="//td[@name='account_invoice_line_name']/span[@t-field='line.name']"
             position="attributes"
         >
-            <attribute name="t-if">line.product_id.name or line.name</attribute>
-            <attribute name="t-field" />
-            <attribute name="t-out">line.product_id.name or line.name</attribute>
+            <attribute
+                name="t-options"
+            >{'widget': 'text', 'print_product_name': True}</attribute>
         </xpath>
     </template>
 </odoo>
