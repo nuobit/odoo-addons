@@ -18,5 +18,5 @@ msgstr ""
 
 #. module: account_invoice_report_product_name
 #: model_terms:ir.ui.view,arch_db:account_invoice_report_product_name.report_invoice_document
-msgid "<span>Product</span>"
-msgstr "<span>Producte</span>"
+msgid "Product"
+msgstr "Producte"
