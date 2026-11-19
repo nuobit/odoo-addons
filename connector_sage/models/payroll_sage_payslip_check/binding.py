@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import fields, models
@@ -58,7 +59,7 @@ class PayslipCheckBinding(models.Model):
         }
 
         self.env["sage.payroll.sage.payslip.check"].import_batch(
-            backend=backend_record, filters=filters
+            backend=backend_record, filters=filters, payslip=payslip_id
         )
 
         return True
