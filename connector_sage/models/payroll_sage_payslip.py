@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, models
@@ -23,12 +24,10 @@ class Payslip(models.Model):
                 )
 
             # import lines and checks
-            backend.import_payslip_line_id = rec
             if rec.type == "transfer":
                 self.env[
                     "sage.payroll.sage.payslip.line.transfer"
                 ].with_delay().import_payslip_lines(rec, backend)
-                backend.import_payslip_check_id = rec
                 self.env[
                     "sage.payroll.sage.payslip.check"
                 ].with_delay().import_payslip_checks(rec, backend)
