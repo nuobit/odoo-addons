@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -20,11 +21,11 @@ class SageBinding(models.AbstractModel):
     )
 
     @api.model
-    def import_batch(self, backend, filters=None):
+    def import_batch(self, backend, filters=None, payslip=None):
         """Prepare the import of records modified on Sage"""
         if filters is None:
             filters = {}
-        with backend.work_on(self._name) as work:
+        with backend.work_on(self._name, payslip=payslip) as work:
             # TODO: jobs are created with the default company
             #  of the user instead of the current company of the user
             if work.env.company != self.env.company:
@@ -38,9 +39,9 @@ class SageBinding(models.AbstractModel):
             return importer.run(filters=filters)
 
     @api.model
-    def import_record(self, backend, external_id):
+    def import_record(self, backend, external_id, payslip=None):
         """Import a Sage record"""
-        with backend.work_on(self._name) as work:
+        with backend.work_on(self._name, payslip=payslip) as work:
             importer = work.component(usage="record.importer")
             return importer.run(external_id)
 
