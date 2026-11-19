@@ -2181,6 +2181,19 @@ msgid ""
 msgstr ""
 
 #. module: connector_sage
+#. odoo-python
+#: code:addons/connector_sage/models/payroll_sage_payslip_check/mapper.py:0
+#: code:addons/connector_sage/models/payroll_sage_payslip_line/mapper.py:0
+msgid ""
+"This job has no destination payslip, because it was queued without one or "
+"because its payslip was deleted. Cancel the job and, if the payslip still "
+"exists, import it again."
+msgstr ""
+"Este trabajo no tiene nómina de destino, porque se puso en la cola sin "
+"ninguna o porque su nómina se ha borrado. Cancela el trabajo y, si la nómina"
+" todavía existe, vuelve a importarla."
+
+#. module: connector_sage
 #: model:ir.model.fields,help:connector_sage.field_sage_res_partner__property_supplier_payment_term_id
 msgid ""
 "This payment term will be used instead of the default one for purchase "
