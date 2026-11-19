@@ -7,8 +7,9 @@ from unittest import mock
 import pymssql
 
 from odoo.exceptions import UserError
-from odoo.tests.common import SavepointCase, tagged
+from odoo.tests import tagged
 
+from odoo.addons.component.tests.common import TransactionComponentCase
 from odoo.addons.queue_job.job import Job
 from odoo.addons.queue_job.tests.common import trap_jobs
 
@@ -36,7 +37,7 @@ WORKER = {
     "PrimerApellidoEmpleado": "PUIG",
     "SegundoApellidoEmpleado": "ROCA",
     "NumeroHijos": 0,
-    "FechaNacimiento": False,
+    "FechaNacimiento": None,
     "Email1": "joan@test.example.com",
     "Email2": "joan@test.example.com",
 }
@@ -149,20 +150,24 @@ def sage_read(adapter, _id, attributes=None):
 
 
 @tagged("post_install", "-at_install")
-class TestPayslipDestination(SavepointCase):
+class TestPayslipDestination(TransactionComponentCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
         cls.env = cls.env(context=dict(cls.env.context, tracking_disable=True))
         cls.company = cls.env["res.company"].create({"name": "Sage Test Company"})
-        cls.account_payable = cls.env["account.account"].create(
-            {
-                "name": "Test Account Payable",
-                "code": "TESTPAY01",
-                "user_type_id": cls.env.ref("account.data_account_type_payable").id,
-                "reconcile": True,
-                "company_id": cls.company.id,
-            }
+        cls.account_payable = (
+            cls.env["account.account"]
+            .with_company(cls.company)
+            .create(
+                {
+                    "name": "Test Account Payable",
+                    "code": "TESTPAY01",
+                    "account_type": "liability_payable",
+                    "reconcile": True,
+                    "company_ids": [(6, 0, cls.company.ids)],
+                }
+            )
         )
         cls.backend = cls.env["sage.backend"].create(
             {
