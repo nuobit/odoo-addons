@@ -22,7 +22,7 @@ MRP Force Product
 
 |badge1| |badge2| |badge3|
 
--  Forces product on manufacturing orders based on operation type.
+- Forces product on manufacturing orders based on operation type.
 
 **Table of contents**
 
@@ -50,10 +50,10 @@ Authors
 Contributors
 ------------
 
--  `NuoBiT <https://www.nuobit.com>`__:
+- `NuoBiT <https://www.nuobit.com>`__:
 
-   -  Bijaya Kumal bkumal@nuobit.com
-   -  Eric Antones eantones@nuobit.com
+  - Bijaya Kumal bkumal@nuobit.com
+  - Eric Antones eantones@nuobit.com
 
 Maintainers
 -----------
