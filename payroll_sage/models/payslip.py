@@ -1,8 +1,9 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import _, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -331,6 +332,17 @@ class Payslip(models.Model):
 
         return super().unlink()
 
+    def _check_not_posted(self):
+        posted = self.filtered(lambda payslip: payslip.state == "posted")
+        if posted:
+            raise UserError(
+                _(
+                    "Lines and checks of a posted payslip cannot be created, "
+                    "changed or deleted (%s)."
+                )
+                % ", ".join(posted.mapped("display_name"))
+            )
+
 
 class PayslipLine(models.Model):
     _name = "payroll.sage.payslip.line"
@@ -351,6 +363,23 @@ class PayslipLine(models.Model):
         "payroll.sage.payslip", string="Payslip", required=True, ondelete="cascade"
     )
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        lines = super().create(vals_list)
+        lines.payslip_id._check_not_posted()
+        return lines
+
+    def write(self, vals):
+        payslips = self.payslip_id
+        if "payslip_id" in vals:
+            payslips |= self.env["payroll.sage.payslip"].browse(vals["payslip_id"])
+        payslips._check_not_posted()
+        return super().write(vals)
+
+    def unlink(self):
+        self.payslip_id._check_not_posted()
+        return super().unlink()
+
 
 class PayslipCheck(models.Model):
     _name = "payroll.sage.payslip.check"
@@ -365,6 +394,23 @@ class PayslipCheck(models.Model):
     payslip_id = fields.Many2one(
         "payroll.sage.payslip", string="Payslip", required=True, ondelete="cascade"
     )
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        checks = super().create(vals_list)
+        checks.payslip_id._check_not_posted()
+        return checks
+
+    def write(self, vals):
+        payslips = self.payslip_id
+        if "payslip_id" in vals:
+            payslips |= self.env["payroll.sage.payslip"].browse(vals["payslip_id"])
+        payslips._check_not_posted()
+        return super().write(vals)
+
+    def unlink(self):
+        self.payslip_id._check_not_posted()
+        return super().unlink()
 
 
 class PayslipWageType(models.Model):
