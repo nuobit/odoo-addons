@@ -1,10 +1,12 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
 
 from odoo import _
+from odoo.exceptions import UserError
 
 from odoo.addons.component.core import AbstractComponent
 from odoo.addons.connector.exception import IDMissingInBackend
@@ -181,3 +183,164 @@ class SageDelayedBatchImporter(AbstractComponent):
         """Delay the import of the records"""
         delayable = self.model.with_delay(**job_options or {})
         delayable.import_record(self.backend_record, external_id)
+
+
+class SagePayslipDelayedBatchImporter(AbstractComponent):
+    """Import the lines or the checks of a payslip as Sage has them.
+
+    The whole import is decided before anything is written: then the records
+    that Sage no longer has are deleted, and a job imports each record that
+    Sage has into the payslip.
+    """
+
+    _name = "sage.payslip.delayed.batch.importer"
+    _inherit = "sage.delayed.batch.importer"
+
+    def run(self, filters=None):
+        """Run the synchronization"""
+        self._apply(self._plan(filters))
+
+    def _plan(self, filters):
+        """Decide the import of the payslip without writing anything.
+
+        Refuse a posted payslip, a filter that no longer selects records that
+        the payslip holds and Sage still has, and records that belong to
+        another payslip. Return the payslip's bindings whose record Sage no
+        longer has, and the Sage ids to import.
+        """
+        payslip = self.work.payslip
+        payslip._check_can_import()
+        external_ids = self.backend_adapter.search(filters)
+        read = self.model.concat(
+            *(self.binder.to_internal(external_id) for external_id in external_ids)
+        )
+        held = self.model.search(
+            [
+                ("backend_id", "=", self.backend_record.id),
+                ("payslip_id", "=", payslip.id),
+            ]
+        )
+        unread = held - read
+        in_sage = self.model.concat(
+            *(
+                self.binder.to_internal(external_id)
+                for external_id in self.backend_adapter.search_existing(
+                    [self.binder.to_external(binding) for binding in unread]
+                )
+            )
+        )
+        if in_sage & unread:
+            raise UserError(
+                _(
+                    "Payslip %(payslip)s holds lines or checks that Sage still "
+                    "has but that its filter no longer selects. %(causes)s "
+                    "Nothing has been imported. Restore the filter, or set the "
+                    "payslip to draft, delete it and create it again."
+                )
+                % {
+                    "payslip": payslip.display_name,
+                    "causes": self._filter_change_causes(payslip),
+                }
+            )
+        others = read.payslip_id - payslip
+        if others:
+            raise UserError(
+                _(
+                    "The import of payslip %(payslip)s reads lines or checks that "
+                    "already belong to another payslip (%(others)s). Nothing has "
+                    "been imported. Change the filter of this payslip so that it "
+                    "does not select them, or, if they belong here and the other "
+                    "payslip is not posted, set the other payslip to draft, "
+                    "delete it and import this one again."
+                )
+                % {
+                    "payslip": payslip.display_name,
+                    "others": ", ".join(others.mapped("display_name")),
+                }
+            )
+        return unread, external_ids
+
+    def _filter_change_causes(self, payslip):
+        """Say what may have made the payslip's filter stop selecting what it
+        holds: only a transfer is filtered by its payment date"""
+        if payslip.type == "transfer":
+            causes = _(
+                "Its year, months, labour agreement, process or payment date "
+                "may have changed since it was imported, or Sage may have moved "
+                "a line to another payment date."
+            )
+        elif payslip.type == "payroll":
+            causes = _(
+                "Its year, months, labour agreement or process may have changed "
+                "since it was imported."
+            )
+        else:
+            raise UserError(_("Unexpected payslip type %s!") % payslip.type)
+        return causes
+
+    def _apply(self, plan):
+        """Delete the payslip's records that Sage no longer has, and queue the
+        import of the records that Sage has"""
+        to_delete, external_ids = plan
+        # their bindings go with them
+        to_delete.odoo_id.unlink()
+        for external_id in external_ids:
+            self._import_record(external_id)
+
+    def _import_record(self, external_id, job_options=None):
+        """Delay the import of the record into the payslip of this import"""
+        delayable = self.model.with_delay(**job_options or {})
+        delayable.import_record(
+            self.backend_record, external_id, payslip=self.work.payslip
+        )
+
+
+class SagePayslipImporter(AbstractComponent):
+    """Import a line or a check of a payslip"""
+
+    _name = "sage.payslip.importer"
+    _inherit = "sage.importer"
+
+    def run(self, external_id):
+        payslip = self.work.payslip
+        if payslip is not None:
+            binding = self.binder.to_internal(external_id)
+            if binding and binding.payslip_id != payslip:
+                # the payslip of a job may have been deleted since it was queued
+                if payslip.exists():
+                    message = _(
+                        "This line or check already belongs to another payslip "
+                        "(%(other)s): it is not imported into %(payslip)s. Check "
+                        "the filters of both payslips, then import %(payslip)s "
+                        "again and cancel this job."
+                    ) % {
+                        "other": binding.payslip_id.display_name,
+                        "payslip": payslip.display_name,
+                    }
+                else:
+                    message = (
+                        _(
+                            "This line or check already belongs to another "
+                            "payslip (%s), and the payslip of this job was "
+                            "deleted: it is not imported. Cancel this job."
+                        )
+                        % binding.payslip_id.display_name
+                    )
+                raise UserError(message)
+        return super().run(external_id)
+
+    def _import_dependencies(self):
+        # Sage returns no data for a record it no longer has
+        if not self.external_data:
+            raise UserError(
+                _(
+                    "This line or check is no longer in Sage. Import its payslip "
+                    "again and cancel this job."
+                )
+            )
+        external_id = (
+            self.external_data["CodigoEmpresa"],
+            self.external_data["CodigoEmpleado"],
+        )
+
+        self._import_dependency(external_id, "sage.hr.employee", always=False)

@@ -45,6 +45,27 @@ class SageBinding(models.AbstractModel):
             importer = work.component(usage="record.importer")
             return importer.run(external_id)
 
+    @api.model
+    def _job_store_values(self, job):
+        """Link the jobs of a payslip's import to the payslip, so that posting
+        it can wait for them"""
+        values = super()._job_store_values(job)
+        if job.method_name == "import_record":
+            payslip = job.kwargs.get("payslip")
+        elif job.method_name in (
+            "import_payslip_lines",
+            "import_payslip_checks",
+            "import_payslip_lines_and_checks",
+        ):
+            payslip = job.args[0]
+        else:
+            payslip = None
+        if payslip is not None:
+            # the job is stored again when it runs, and its payslip may have
+            # been deleted by then
+            values["sage_payslip_id"] = payslip.exists().id
+        return values
+
     def resync(self):
         for record in self:
             with record.backend_id.work_on(record._name) as work:

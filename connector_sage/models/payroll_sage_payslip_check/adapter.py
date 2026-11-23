@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -32,3 +33,41 @@ class PayslipCheckAdapter(Component):
         "IdEmpleado",
         "OrdenNom",
     )
+
+    # The checks follow the transfer lines: a filter on these columns of the
+    # transfer lines selects the checks of the employees with transfer lines
+    # that meet it in the same month and process
+    _transfer_line_columns = ("CodigoConvenio", "FechaRegistroCV", "FechaCobro")
+
+    def _get_where(self, filters):
+        where, values = super()._get_where(
+            {
+                column: value
+                for column, value in filters.items()
+                if column not in self._transfer_line_columns
+            }
+        )
+        line_filters = {
+            "l.%s" % column: value
+            for column, value in filters.items()
+            if column in self._transfer_line_columns
+        }
+        if line_filters:
+            line_adapter = self.component(
+                usage="backend.adapter",
+                model_name="sage.payroll.sage.payslip.line.transfer",
+            )
+            line_where, line_values = line_adapter._get_where(line_filters)
+            where.append(
+                "exists (select 1 from (%s) l "
+                "where l.CodigoEmpresa = t.CodigoEmpresa and "
+                "l.CodigoEmpleado = t.CodigoEmpleado and "
+                "l.Año = t.Año and l.MesD = t.MesD and "
+                "l.TipoProceso = t.TipoProceso and %s)"
+                % (
+                    line_adapter._sql % dict(schema=self.schema),
+                    " and ".join(line_where),
+                )
+            )
+            values += line_values
+        return where, values

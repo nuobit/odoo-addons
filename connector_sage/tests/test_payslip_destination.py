@@ -1,45 +1,40 @@
 # Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-from datetime import date, datetime
+from datetime import datetime
 from unittest import mock
 
 import pymssql
 
 from odoo.exceptions import UserError
-from odoo.tests.common import SavepointCase, tagged
+from odoo.tests.common import tagged
 
 from odoo.addons.queue_job.job import Job
 from odoo.addons.queue_job.tests.common import trap_jobs
 
-ADAPTER_SEARCH = "odoo.addons.connector_sage.components.adapter.GenericAdapter.search"
-ADAPTER_READ = "odoo.addons.connector_sage.components.adapter.GenericAdapter.read"
+from .common import (
+    ADAPTER_READ,
+    AGREEMENT_CODE,
+    AGREEMENT_DATE,
+    CHECK,
+    CODE,
+    CONCEPT,
+    PAYROLL_LINE,
+    PROCESS,
+    SAGE_COMPANY,
+    TRANSFER_LINE,
+    SagePayslipCase,
+)
 
-SAGE_COMPANY = 99
-CODE = 602
-AGREEMENT_CODE = 91
-AGREEMENT_DATE = datetime(2020, 1, 1)
-PROCESS = "TEST-DEST"
-CONCEPT = 901
 NO_PAYSLIP = (
     "This job has no destination payslip, because it was queued without one "
     "or because its payslip was deleted. Cancel the job and, if the payslip "
     "still exists, import it again."
 )
-
-WORKER = {
-    "CodigoEmpresa": SAGE_COMPANY,
-    "CodigoEmpleado": CODE,
-    "SiglaNacion": "XX",
-    "Dni": "WORKER02A",
-    "NombreEmpleado": "JOAN",
-    "PrimerApellidoEmpleado": "PUIG",
-    "SegundoApellidoEmpleado": "ROCA",
-    "NumeroHijos": 0,
-    "FechaNacimiento": False,
-    "Email1": "joan@test.example.com",
-    "Email2": "joan@test.example.com",
-}
+OTHER_PAYSLIP = (
+    r"The import of payslip Winter reads lines or checks that already belong "
+    r"to another payslip \(January\)\. Nothing has been imported\."
+)
 
 PAYROLL_LINES = [
     {
@@ -123,130 +118,15 @@ CHECKS = [
 ]
 
 SAGE = {
-    "sage.payroll.sage.payslip.line.payroll": PAYROLL_LINES,
-    "sage.payroll.sage.payslip.line.transfer": TRANSFER_LINES,
-    "sage.payroll.sage.payslip.check": CHECKS,
+    PAYROLL_LINE: PAYROLL_LINES,
+    TRANSFER_LINE: TRANSFER_LINES,
+    CHECK: CHECKS,
 }
 
 
-def sage_search(adapter, filters=None):
-    # The payslips of these tests differ only in their months, so Sage
-    # answers the month range of the filters.
-    month_from, month_to = filters["MesD"][1]
-    return [
-        tuple(record[field] for field in adapter._id)
-        for record in SAGE[adapter.model._name]
-        if month_from <= record["MesD"] <= month_to
-    ]
-
-
-def sage_read(adapter, _id, attributes=None):
-    records = {
-        tuple(record[field] for field in adapter._id): record
-        for record in SAGE[adapter.model._name]
-    }
-    return dict(records[tuple(_id)])
-
-
 @tagged("post_install", "-at_install")
-class TestPayslipDestination(SavepointCase):
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        cls.env = cls.env(context=dict(cls.env.context, tracking_disable=True))
-        cls.company = cls.env["res.company"].create({"name": "Sage Test Company"})
-        cls.account_payable = cls.env["account.account"].create(
-            {
-                "name": "Test Account Payable",
-                "code": "TESTPAY01",
-                "user_type_id": cls.env.ref("account.data_account_type_payable").id,
-                "reconcile": True,
-                "company_id": cls.company.id,
-            }
-        )
-        cls.backend = cls.env["sage.backend"].create(
-            {
-                "name": "Test Sage Backend",
-                "server": "localhost",
-                "port": 1433,
-                "database": "test",
-                "schema": "dbo",
-                "username": "test",
-                "password": "test",
-                "company_id": cls.company.id,
-                "sage_company_id": SAGE_COMPANY,
-                "import_employees_default_account_payable_id": cls.account_payable.id,
-            }
-        )
-        cls.journal = cls.env["account.journal"].create(
-            {
-                "name": "Test Payroll Journal",
-                "code": "TPAY",
-                "type": "general",
-                "company_id": cls.company.id,
-            }
-        )
-        cls.process = cls.env["payroll.sage.payslip.process"].create({"name": PROCESS})
-        cls.agreement = cls.env["sage.payroll.sage.labour.agreement"].create(
-            {
-                "backend_id": cls.backend.id,
-                "name": "TEST AGREEMENT",
-                "code": AGREEMENT_CODE,
-                "registration_date_cv": AGREEMENT_DATE,
-                "company_id": cls.company.id,
-                "sage_codigo_empresa": SAGE_COMPANY,
-                "sage_codigo_convenio": AGREEMENT_CODE,
-                "sage_fecha_registro_cv": AGREEMENT_DATE,
-            }
-        )
-        cls.env["sage.payroll.sage.labour.agreement.wage.type.line"].create(
-            {
-                "sage_labour_agreement_id": cls.agreement.id,
-                "name": "SALARIO BASE",
-                "short_name": "SALARIO",
-                "code": CONCEPT,
-                "positive": True,
-                "total_historical_record": "accrural",
-                "sage_codigo_empresa": SAGE_COMPANY,
-                "sage_codigo_convenio": AGREEMENT_CODE,
-                "sage_fecha_registro_cv": AGREEMENT_DATE,
-                "sage_codigo_concepto_nom": CONCEPT,
-            }
-        )
-        with mock.patch(ADAPTER_READ, return_value=dict(WORKER)):
-            cls.env["sage.hr.employee"].import_record(cls.backend, (SAGE_COMPANY, CODE))
-
-    def setUp(self):
-        super().setUp()
-        search = mock.patch(ADAPTER_SEARCH, autospec=True, side_effect=sage_search)
-        read = mock.patch(ADAPTER_READ, autospec=True, side_effect=sage_read)
-        search.start()
-        read.start()
-        self.addCleanup(search.stop)
-        self.addCleanup(read.stop)
-
-    def _create_payslip(self, payslip_type, month_from, month_to):
-        payslip = self.env["payroll.sage.payslip"].create(
-            {
-                "name": "Test Payslip",
-                "entry_date": date(2026, 3, 1),
-                "year": 2026,
-                "month_from": month_from,
-                "month_to": month_to,
-                "labour_agreement_id": self.agreement.odoo_id.id,
-                "company_id": self.company.id,
-                "journal_id": self.journal.id,
-                "type": payslip_type,
-                "process_id": self.process.id,
-            }
-        )
-        payslip.action_paysplip_validate()
-        return payslip
-
-    def _run_jobs(self, trap):
-        """Run the queued batch jobs, then the record jobs they queue."""
-        trap.perform_enqueued_jobs()
-        trap.perform_enqueued_jobs()
+class TestPayslipDestination(SagePayslipCase):
+    sage = SAGE
 
     def test_overlapping_imports_keep_their_payslips(self):
         """January is imported and, before its jobs run, February too: each
@@ -370,23 +250,26 @@ class TestPayslipDestination(SavepointCase):
         )
         self.assertFalse(february.payslip_check_ids)
 
-    def test_existing_line_keeps_its_payslip(self):
+    def test_line_of_another_payslip_refuses_the_import(self):
         """January's line is read again by the import of a payslip of January
-        and February: it is written in place and stays in January, and only
-        February's line is new."""
-        january = self._create_payslip("payroll", 1, 1)
+        and February: the import is refused naming January and queues no job,
+        so January's line keeps its amount although Sage has a new one, and
+        February's line is not imported."""
+        january = self._create_payslip("payroll", 1, 1, name="January")
         with trap_jobs() as trap:
             january.action_paysplip_import()
             self._run_jobs(trap)
         january_line = january.payslip_line_ids
-        winter = self._create_payslip("payroll", 1, 2)
-        with trap_jobs() as trap:
-            winter.action_paysplip_import()
-            self._run_jobs(trap)
+        winter = self._create_payslip("payroll", 1, 2, name="Winter")
+        with mock.patch.dict(PAYROLL_LINES[0], {"ImporteNom": 1500.0}):
+            with trap_jobs() as trap:
+                winter.action_paysplip_import()
+                with self.assertRaisesRegex(UserError, OTHER_PAYSLIP):
+                    trap.perform_enqueued_jobs()
+                trap.assert_jobs_count(0)
         self.assertEqual(january.payslip_line_ids, january_line)
-        self.assertEqual(
-            winter.payslip_line_ids.sage_payroll_bind_ids.mapped("sage_mesd"), [2]
-        )
+        self.assertEqual(january_line.amount, 1000.0)
+        self.assertFalse(winter.payslip_line_ids)
 
     def test_overlapping_transfer_imports_keep_their_payslips(self):
         """Two transfers are imported one after the other, before their jobs
@@ -445,23 +328,29 @@ class TestPayslipDestination(SavepointCase):
             )
         )
 
-    def test_existing_check_keeps_its_payslip(self):
-        """January's check is read again by the import of a transfer of
-        January and February: it is written in place and stays in January, and
-        only February's check is new."""
-        january = self._create_payslip("transfer", 1, 1)
+    def test_check_of_another_payslip_refuses_the_import(self):
+        """January holds only its check, imported from the backend, and the
+        check is read again by the import of a transfer of January and
+        February: the import is refused naming January and queues no job, so
+        January's check keeps its amount although Sage has a new one, and the
+        transfer gets neither lines nor checks."""
+        january = self._create_payslip("transfer", 1, 1, name="January")
+        self.backend.import_payslip_check_id = january
         with trap_jobs() as trap:
-            january.action_paysplip_import()
+            self.backend.import_payslip_checks()
             self._run_jobs(trap)
         january_check = january.payslip_check_ids
-        winter = self._create_payslip("transfer", 1, 2)
-        with trap_jobs() as trap:
-            winter.action_paysplip_import()
-            self._run_jobs(trap)
+        winter = self._create_payslip("transfer", 1, 2, name="Winter")
+        with mock.patch.dict(CHECKS[0], {"Importe": 1250.0}):
+            with trap_jobs() as trap:
+                winter.action_paysplip_import()
+                with self.assertRaisesRegex(UserError, OTHER_PAYSLIP):
+                    trap.perform_enqueued_jobs()
+                trap.assert_jobs_count(0)
         self.assertEqual(january.payslip_check_ids, january_check)
-        self.assertEqual(
-            winter.payslip_check_ids.sage_bind_ids.mapped("sage_mesd"), [2]
-        )
+        self.assertEqual(january_check.amount, 900.0)
+        self.assertFalse(winter.payslip_line_ids)
+        self.assertFalse(winter.payslip_check_ids)
 
     def test_existing_line_updated_without_payslip(self):
         """A job without a payslip, as an older version queued it or as the

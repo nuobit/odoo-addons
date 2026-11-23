@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -181,24 +182,7 @@ class GenericAdapter(AbstractComponent):
             sql_l.append("select %s from t" % (", ".join(fields_l),))
 
             if filters:
-                where = []
-                for k, v in filters.items():
-                    if isinstance(v, (tuple, list)):
-                        op, pars = v
-                        if op == "=":
-                            where.append("%s = %%s" % k)
-                            values.append(pars)
-                        elif op == "in":
-                            where.append("%s in %%s" % k)
-                            values.append(pars)
-                        elif op == "between":
-                            where.append("%s between %%s and %%s" % k)
-                            values += list(pars)
-                        else:
-                            raise Exception("Operator %s not implemented" % op)
-                    else:
-                        where.append("%s = %%s" % k)
-                        values.append(v)
+                where, values = self._get_where(filters)
                 sql_l.append("where %s" % (" and ".join(where),))
 
             sql = " ".join(sql_l)
@@ -209,6 +193,29 @@ class GenericAdapter(AbstractComponent):
             self._check_uniq(res)
 
         return res
+
+    def _get_where(self, filters):
+        """Return the conditions of the filters on the columns of the query,
+        named t, and their parameters"""
+        where, values = [], []
+        for k, v in filters.items():
+            if isinstance(v, (tuple, list)):
+                op, pars = v
+                if op == "=":
+                    where.append("%s = %%s" % k)
+                    values.append(pars)
+                elif op == "in":
+                    where.append("%s in %%s" % k)
+                    values.append(pars)
+                elif op == "between":
+                    where.append("%s between %%s and %%s" % k)
+                    values += list(pars)
+                else:
+                    raise Exception("Operator %s not implemented" % op)
+            else:
+                where.append("%s = %%s" % k)
+                values.append(v)
+        return where, values
 
     def _check_uniq(self, data):
         uniq = set()
@@ -235,6 +242,23 @@ class GenericAdapter(AbstractComponent):
         res = [tuple([x[f] for f in self._id]) for x in res]
 
         return res
+
+    def search_existing(self, external_ids):
+        """Search, in a single query, which of the given ids Sage still has.
+
+        Each column of the id is filtered by the values it takes in the given
+        ids, so the result may hold other ids too: the caller keeps its own
+        ones through the binder.
+
+        :rtype: list
+        """
+        if not external_ids:
+            return []
+        filters = {
+            field: ("in", tuple({external_id[i] for external_id in external_ids}))
+            for i, field in enumerate(self._id)
+        }
+        return self.search(filters)
 
     def read(self, _id, attributes=None):  # pylint: disable=W8106
         """Returns the information of a record
