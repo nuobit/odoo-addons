@@ -189,6 +189,33 @@ class TestDocumentPageRelated(TransactionCase):
         procedure_as_editor.write({"related_page_ids": [(6, 0, [guide.id])]})
         self.assertEqual(self._get_all_related_pages(procedure), guide | hidden_law)
 
+    def test_editor_edit_keeps_hidden_related_document_read_before_by_superuser(self):
+        procedure = self._create_page(name="Procedure")
+        hidden_law = self._create_page(
+            name="Hidden Law", company_id=self.other_company.id
+        )
+        guide = self._create_page(name="Guide")
+        procedure.write({"related_page_ids": [(4, hidden_law.id)]})
+        procedure_as_editor = self._as_user(self.editor, procedure)
+        # another module reads the list as superuser in the same transaction
+        self.assertEqual(procedure.sudo().related_page_ids, hidden_law)
+        procedure_as_editor.write({"related_page_ids": [(6, 0, [guide.id])]})
+        self.assertEqual(procedure_as_editor.related_page_ids, guide)
+        self.assertEqual(self._get_all_related_pages(procedure), guide | hidden_law)
+
+    def test_superuser_reads_hidden_related_document_after_editor_edit(self):
+        procedure = self._create_page(name="Procedure")
+        hidden_law = self._create_page(
+            name="Hidden Law", company_id=self.other_company.id
+        )
+        guide = self._create_page(name="Guide")
+        procedure.write({"related_page_ids": [(4, hidden_law.id)]})
+        self._as_user(self.editor, procedure).write(
+            {"related_page_ids": [(6, 0, [guide.id])]}
+        )
+        # another module reads the list as superuser in the same transaction
+        self.assertEqual(procedure.sudo().related_page_ids, guide | hidden_law)
+
     def test_editor_edit_leaves_hidden_related_document_unreadable(self):
         procedure = self._create_page(name="Procedure")
         hidden_law = self._create_page(
@@ -245,6 +272,19 @@ class TestDocumentPageRelated(TransactionCase):
         self.assertEqual(
             self._get_all_related_pages(procedure_copy), law | archived_law
         )
+
+    def test_copy_leaves_out_hidden_related_document_read_before_by_superuser(self):
+        procedure = self._create_page(name="Procedure")
+        law = self._create_page(name="Law")
+        hidden_law = self._create_page(
+            name="Hidden Law", company_id=self.other_company.id
+        )
+        procedure.write({"related_page_ids": [(6, 0, [law.id, hidden_law.id])]})
+        procedure_as_editor = self._as_user(self.editor, procedure)
+        # another module reads the list as superuser in the same transaction
+        self.assertEqual(procedure.sudo().related_page_ids, law | hidden_law)
+        procedure_copy = procedure_as_editor.copy()
+        self.assertEqual(self._get_all_related_pages(procedure_copy), law)
 
     def test_copy_of_related_document_is_not_related(self):
         procedure = self._create_page(name="Procedure")
