@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<templates id="template" xml:space="preserve">
+    <t t-inherit="point_of_sale.ReceiptHeader" t-inherit-mode="extension">
+        <!-- l10n_es_pos's customer block, the one whose condition leaves out
+             its generic partner: on a simplified invoice, only for a customer
+             with a tax ID (RD 1619/2012, art. 7.2 and 7.3), a single character
+             («/») standing for none, as Odoo takes it (base_vat). The block is
+             wrapped, so that whatever another module adds to its condition, ours
+             holds -->
+        <xpath
+            expr="//t[contains(@t-if, 'props.data.simplified_partner_id')]"
+            position="replace"
+        >
+            <t
+                t-if="!props.data.is_l10n_es_simplified_invoice or (partner and partner.vat and partner.vat.length > 1)"
+            >$0</t>
+        </xpath>
+    </t>
+</templates>
