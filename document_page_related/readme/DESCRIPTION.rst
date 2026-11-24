@@ -16,6 +16,6 @@ Behavior:
   not appear either; they appear again when they are unarchived.
 * The list is not part of the history of the document: changing it creates
   no new version and, with *Document Page Approval*, no change request.
-* A copy of a document keeps its related documents, except the archived ones
-  and those that the user making the copy cannot read. A copy of a related
-  document is not related to the documents that list the original.
+* A copy of a document keeps its related documents, the archived ones
+  included, except those that the user making the copy cannot read. A copy of
+  a related document is not related to the documents that list the original.
