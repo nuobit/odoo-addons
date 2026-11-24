@@ -24,11 +24,12 @@
                         <tree>
                             <field name="name" />
                             <field name="parent_id" />
+                            <!-- an icon only: in a list row the string would be shown beside it, the title is its tooltip -->
                             <button
                                 name="action_open_page"
                                 type="object"
                                 icon="fa-arrow-right"
-                                string="Open"
+                                title="Open"
                             />
                         </tree>
                     </field>

@@ -92,6 +92,20 @@ odoo.define("document_page_related.tour", function (require) {
                     // Only wait for it
                 },
             },
+            {
+                content: "the law's arrow shows only its icon, its title as tooltip",
+                trigger:
+                    list +
+                    ' .o_data_row:contains("Law") button[name="action_open_page"][title="Open"]:has(i.fa-arrow-right):not(:has(span))',
+            },
+            {
+                content: "the law opens in the same tab, with the way back",
+                trigger: '.breadcrumb-item.active:contains("Law")',
+                extra_trigger: '.breadcrumb-item:not(.active):contains("Procedure")',
+                run: function () {
+                    // Only wait for it
+                },
+            },
         ]
     );
 });

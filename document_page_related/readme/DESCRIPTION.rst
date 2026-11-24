@@ -10,7 +10,9 @@ Behavior:
   cannot be turned into a category.
 * The relation is one way: the tab of a document does not show the documents
   that list it.
-* The *Open* button of a line opens that document; the breadcrumbs lead back.
+* The arrow of a line opens that document in the same tab; the breadcrumbs
+  lead back. Like any button that runs on the server, it saves the document
+  first, its pending changes included.
 * Each user sees only the related documents they can read. The others do not
   appear, and editing the list does not remove them. Archived documents do
   not appear either; they appear again when they are unarchived.
