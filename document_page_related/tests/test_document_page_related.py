@@ -89,8 +89,7 @@ class TestDocumentPageRelated(TransactionCase):
         tabs = etree.fromstring(arch).xpath("//notebook/page")
         self.assertIn("later", [tab.get("name") for tab in tabs])
         self.assertEqual(tabs[-1].get("name"), "related_documents")
-        # In 14.0 a group the reader lacks hides the tab (invisible: true) instead of
-        # removing it: the tab shows on documents and hides on categories
+        # the tab shows on documents and hides on categories
         invisible = json.loads(tabs[-1].get("modifiers"))["invisible"]
         law = self._create_page(name="Law")
         self.assertFalse(law.filtered_domain(invisible))
