@@ -61,6 +61,24 @@ class DocumentPage(models.Model):
                     )
                 )
 
+    def write(self, vals):
+        if "related_page_ids" not in vals:
+            return super().write(vals)
+        # A new list replaces the links that the writer can read: the cache, which
+        # the users of a transaction share, may hold those that another user reads
+        self.invalidate_cache(["related_page_ids"], self.ids)
+        res = super().write(vals)
+        # and after the save it holds only the writer's: whoever reads it next,
+        # the superuser included, reads it from the database again
+        self.invalidate_cache(["related_page_ids"], self.ids)
+        return res
+
+    def copy_data(self, default=None):
+        # A copy takes the links that the user copying can read, whatever the cache
+        # holds
+        self.invalidate_cache(["related_page_ids"], self.ids)
+        return super().copy_data(default)
+
     def action_open_page(self):
         self.ensure_one()
         return self.get_formview_action()
