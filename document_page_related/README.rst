@@ -34,7 +34,10 @@ procedure, and remove them.
 Behavior:
 
 * Only documents can be related: never a category, and never the document
-  itself.
+  itself. A document that has related documents, or that other documents list,
+  cannot be turned into a category.
+* The relation is one way: the tab of a document does not show the documents
+  that list it.
 * The *Open* button of a line opens that document; the breadcrumbs lead back.
 * Each user sees only the related documents they can read. The others do not
   appear, and editing the list does not remove them. Archived documents do
