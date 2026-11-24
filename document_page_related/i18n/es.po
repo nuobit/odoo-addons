@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-02 09:08+0000\n"
-"PO-Revision-Date: 2026-11-02 09:08+0000\n"
+"POT-Creation-Date: 2026-11-24 08:07+0000\n"
+"PO-Revision-Date: 2026-11-24 08:07+0000\n"
 "Last-Translator: Deniz Gallo <dgallo@nuobit.com>\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
@@ -19,25 +19,40 @@ msgstr ""
 #. module: document_page_related
 #: code:addons/document_page_related/models/document_page.py:0
 #, python-format
-msgid "%s cannot be related to a category."
-msgstr "%s no se puede relacionar con una categoría."
+msgid ""
+"%s cannot be related to a category. Remove the categories from its list "
+"first; some may be archived or hidden from you."
+msgstr ""
+"%s no se puede relacionar con una categoría. Quita primero las categorías de"
+" su lista; algunas pueden estar archivadas u ocultas para ti."
 
 #. module: document_page_related
 #: code:addons/document_page_related/models/document_page.py:0
 #, python-format
-msgid "A category cannot have related documents: %s"
-msgstr "Una categoría no puede tener documentos relacionados: %s"
+msgid ""
+"%s has related documents, so it cannot be a category. Remove them first; "
+"some may be archived or hidden from you."
+msgstr ""
+"%s tiene documentos relacionados, por lo que no puede ser una categoría. "
+"Quítalos primero; algunos pueden estar archivados u ocultos para ti."
+
+#. module: document_page_related
+#: code:addons/document_page_related/models/document_page.py:0
+#, python-format
+msgid ""
+"%s is a related document of other documents, so it cannot be a category. "
+"Remove it from their lists first; some of those documents may be archived or"
+" hidden from you."
+msgstr ""
+"%s es un documento relacionado de otros documentos, por lo que no puede ser "
+"una categoría. Quítalo primero de sus listas; algunos de esos documentos "
+"pueden estar archivados u ocultos para ti."
 
 #. module: document_page_related
 #: code:addons/document_page_related/models/document_page.py:0
 #, python-format
 msgid "A document cannot be related to itself: %s"
 msgstr "Un documento no puede estar relacionado consigo mismo: %s"
-
-#. module: document_page_related
-#: model:ir.model.fields,field_description:document_page_related.field_document_page__related_from_page_ids
-msgid "Cited In"
-msgstr "Citado en"
 
 #. module: document_page_related
 #: model_terms:ir.ui.view,arch_db:document_page_related.view_wiki_form_related
