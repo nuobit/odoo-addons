@@ -577,6 +577,41 @@ class TestPayslipImportConsistency(SagePayslipCase):
             january.payslip_line_ids.sage_payroll_bind_ids.mapped("sage_mesd"), [1, 2]
         )
 
+    def test_lookup_in_sage_quotes_the_dates_of_the_ids(self):
+        """January, a transfer without a payment date, holds Joan's line of
+        31/01 and Maria's of 15/01. Asking Sage which of their ids it still
+        has filters each column of the id by its values, dates included, and
+        pymssql, which formats the query before sending it, quotes them."""
+        january = self._create_payslip("transfer", 1, 1, name="January")
+        with trap_jobs() as trap:
+            january.action_paysplip_import()
+            self._run_jobs(trap)
+        queries = []
+
+        def send_to_sage(adapter, sql, params, as_dict=False):
+            # format the query as pymssql does before sending it; the schema
+            # exists and Sage answers no record
+            queries.append(_mssql.substitute_params(sql, params).decode())
+            return [(1,)] if "sys.schemas" in sql else []
+
+        with self.backend.work_on(TRANSFER_LINE) as work:
+            binder = work.component(usage="binder")
+            ids = [
+                binder.to_external(binding)
+                for binding in self.env[TRANSFER_LINE].search(
+                    [("payslip_id", "=", january.id)]
+                )
+            ]
+            with mock.patch(ADAPTER_SEARCH, REAL_SEARCH), mock.patch(
+                ADAPTER_EXEC_SQL, autospec=True, side_effect=send_to_sage
+            ):
+                work.component(usage="backend.adapter").search_existing(ids)
+        self.assertIn("FechaRegistroCV in ('2020-01-01')", queries[-1])
+        self.assertRegex(
+            queries[-1],
+            r"FechaCobro in \(('2026-01-15', '2026-01-31'|'2026-01-31', '2026-01-15')\)",
+        )
+
     def test_query_in_sage_selects_the_checks_by_the_transfer_lines(self):
         """January, a transfer paid on 31/01, imports its checks from the
         backend. The query that asks Sage for them keeps the checks whose

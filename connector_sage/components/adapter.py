@@ -205,8 +205,9 @@ class GenericAdapter(AbstractComponent):
                     where.append("%s = %%s" % k)
                     values.append(pars)
                 elif op == "in":
-                    where.append("%s in %%s" % k)
-                    values.append(pars)
+                    # a parameter per value: pymssql cannot quote a tuple of dates
+                    where.append("%s in (%s)" % (k, ", ".join(["%s"] * len(pars))))
+                    values += list(pars)
                 elif op == "between":
                     where.append("%s between %%s and %%s" % k)
                     values += list(pars)
