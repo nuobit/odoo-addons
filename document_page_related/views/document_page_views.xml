@@ -3,8 +3,8 @@
      Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
 <odoo>
-    <record id="view_wiki_form_related" model="ir.ui.view">
-        <field name="name">document.page.form.related</field>
+    <record id="view_wiki_form" model="ir.ui.view">
+        <field name="name">document.page.form.inherit.related</field>
         <field name="model">document.page</field>
         <field name="inherit_id" ref="document_page.view_wiki_form" />
         <!-- applied after the views that add their tab with the default priority -->
@@ -14,7 +14,6 @@
                 <page
                     name="related_documents"
                     string="Related Documents"
-                    groups="knowledge.group_document_user"
                     attrs="{'invisible': [('type', '!=', 'content')]}"
                 >
                     <field

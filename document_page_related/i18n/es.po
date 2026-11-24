@@ -55,12 +55,12 @@ msgid "A document cannot be related to itself: %s"
 msgstr "Un documento no puede estar relacionado consigo mismo: %s"
 
 #. module: document_page_related
-#: model_terms:ir.ui.view,arch_db:document_page_related.view_wiki_form_related
+#: model_terms:ir.ui.view,arch_db:document_page_related.view_wiki_form
 msgid "Open"
 msgstr "Abrir"
 
 #. module: document_page_related
 #: model:ir.model.fields,field_description:document_page_related.field_document_page__related_page_ids
-#: model_terms:ir.ui.view,arch_db:document_page_related.view_wiki_form_related
+#: model_terms:ir.ui.view,arch_db:document_page_related.view_wiki_form
 msgid "Related Documents"
 msgstr "Documentos relacionados"
