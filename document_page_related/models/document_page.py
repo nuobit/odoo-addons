@@ -81,4 +81,12 @@ class DocumentPage(models.Model):
 
     def action_open_page(self):
         self.ensure_one()
-        return self.get_formview_action()
+        action = self.get_formview_action()
+        # The list's context names the views of its Add dialog: they must not follow
+        # the opened document, where another model's list or search would load them
+        action["context"] = {
+            key: value
+            for key, value in action["context"].items()
+            if not key.endswith("_view_ref")
+        }
+        return action
