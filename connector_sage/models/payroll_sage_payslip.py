@@ -36,10 +36,8 @@ class Payslip(models.Model):
             )
             if len(backend) != 1:
                 raise UserError(
-                    _(
-                        "Expected 1 backend for the current company, found %i"
-                        % len(backend)
-                    )
+                    _("Expected 1 backend for the current company, found %i")
+                    % len(backend)
                 )
 
             # import lines and checks
