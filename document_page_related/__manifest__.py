@@ -14,6 +14,7 @@
         "document_page",
     ],
     "data": [
+        "views/assets.xml",
         "views/document_page_views.xml",
     ],
 }
