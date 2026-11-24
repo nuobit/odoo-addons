@@ -96,6 +96,36 @@ class TestDocumentPageRelated(TransactionCase):
         self.assertFalse(law.filtered_domain(invisible))
         self.assertEqual(self.category.filtered_domain(invisible), self.category)
 
+    def test_dialog_to_add_lists_and_searches_as_the_documents_menu(self):
+        arch = self.page_model.fields_view_get(view_type="form")["arch"]
+        field = etree.fromstring(arch).xpath("//field[@name='related_page_ids']")[0]
+        # the dialog loads its views with the context of the field
+        views = self.page_model.with_context(
+            **safe_eval(field.get("context"))
+        ).load_views([[False, "list"], [False, "search"]])["fields_views"]
+        self.assertEqual(
+            views["list"]["view_id"], self.env.ref("document_page.view_wiki_tree").id
+        )
+        self.assertEqual(
+            views["search"]["view_id"],
+            self.env.ref("document_page.view_wiki_filter").id,
+        )
+
+    def test_arrow_opens_the_document_without_the_dialog_views(self):
+        arch = self.page_model.fields_view_get(view_type="form")["arch"]
+        field = etree.fromstring(arch).xpath("//field[@name='related_page_ids']")[0]
+        law = self._create_page(name="Law")
+        # the web client calls the button of a line with the context of the field
+        action = (
+            self._as_user(self.editor, law)
+            .with_context(**safe_eval(field.get("context")))
+            .action_open_page()
+        )
+        self.assertFalse(
+            [key for key in action["context"] if key.endswith("_view_ref")]
+        )
+        self.assertEqual(action["context"]["lang"], "en_US")
+
     def test_reader_reads_and_opens_but_does_not_edit(self):
         procedure = self._create_page(name="Procedure")
         law = self._create_page(name="Law")
