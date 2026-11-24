@@ -104,20 +104,10 @@ msgid "Canceled"
 msgstr "Cancelado"
 
 #. module: document_page_distribution
-#: model:ir.model,name:document_page_distribution.model_res_company
-msgid "Companies"
-msgstr "Compañías"
-
-#. module: document_page_distribution
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__company_id
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__company_id
 msgid "Company"
 msgstr "Compañía"
-
-#. module: document_page_distribution
-#: model:ir.model,name:document_page_distribution.model_res_config_settings
-msgid "Config Settings"
-msgstr "Ajustes de configuración"
 
 #. module: document_page_distribution
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute__create_uid
@@ -170,14 +160,10 @@ msgid "Delivery Status"
 msgstr "Estado de entrega"
 
 #. module: document_page_distribution
-#: model:ir.model.fields,field_description:document_page_distribution.field_document_page__display_name
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute__display_name
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute_line__display_name
-#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history__display_name
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__display_name
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__display_name
-#: model:ir.model.fields,field_description:document_page_distribution.field_res_company__display_name
-#: model:ir.model.fields,field_description:document_page_distribution.field_res_config_settings__display_name
 msgid "Display Name"
 msgstr "Nombre mostrado"
 
@@ -239,7 +225,6 @@ msgid "Document Distribution Template"
 msgstr "Plantilla de distribución documental"
 
 #. module: document_page_distribution
-#: model:ir.model,name:document_page_distribution.model_document_page
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute__document_page_id
 msgid "Document Page"
 msgstr "Página de documento"
@@ -253,11 +238,6 @@ msgstr "Destinatario de distribución de página de documento"
 #: model:ir.model,name:document_page_distribution.model_document_page_history_recipient_send
 msgid "Document Page Distribution Send"
 msgstr "Envío de distribución de página de documento"
-
-#. module: document_page_distribution
-#: model:ir.model,name:document_page_distribution.model_document_page_history
-msgid "Document Page History"
-msgstr "Historial de página de documento"
 
 #. module: document_page_distribution
 #: model:mail.template,subject:document_page_distribution.mail_template_document_page_distribution
@@ -307,14 +287,10 @@ msgid "History"
 msgstr "Historial"
 
 #. module: document_page_distribution
-#: model:ir.model.fields,field_description:document_page_distribution.field_document_page__id
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute__id
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute_line__id
-#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history__id
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient__id
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send__id
-#: model:ir.model.fields,field_description:document_page_distribution.field_res_company__id
-#: model:ir.model.fields,field_description:document_page_distribution.field_res_config_settings__id
 msgid "ID"
 msgstr "ID"
 
@@ -325,14 +301,10 @@ msgid "If set, page is accessible only from this company"
 msgstr "Si se configura, solo se puede acceder a la página desde esta empresa"
 
 #. module: document_page_distribution
-#: model:ir.model.fields,field_description:document_page_distribution.field_document_page____last_update
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute____last_update
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_distribute_line____last_update
-#: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history____last_update
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient____last_update
 #: model:ir.model.fields,field_description:document_page_distribution.field_document_page_history_recipient_send____last_update
-#: model:ir.model.fields,field_description:document_page_distribution.field_res_company____last_update
-#: model:ir.model.fields,field_description:document_page_distribution.field_res_config_settings____last_update
 msgid "Last Modified on"
 msgstr "Última modificación el"
 
