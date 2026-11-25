@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <!-- The rules that document_page_approval puts on the versions, for their
+         files: a draft change request reaches its author only, one sent for
+         approval its author and the approvers -->
+    <record id="document_page_editable_file_rule_change_request_global" model="ir.rule">
+        <field name="name">document.page.editable.file change request global</field>
+        <field
+            name="model_id"
+            ref="document_page_editable_file.model_document_page_editable_file"
+        />
+        <field name="groups" eval="[(6, 0, [ref('knowledge.group_document_user')])]" />
+        <field
+            name="domain_force"
+        >['|',('history_id.state','=','approved'),('history_id.create_uid','=',user.id)]</field>
+    </record>
+    <record
+        id="document_page_editable_file_rule_change_request_approver"
+        model="ir.rule"
+    >
+        <field name="name">document.page.editable.file change request approver</field>
+        <field
+            name="model_id"
+            ref="document_page_editable_file.model_document_page_editable_file"
+        />
+        <field
+            name="groups"
+            eval="[(6, 0, [ref('document_page_approval.group_document_approver_user')])]"
+        />
+        <field name="domain_force">[('history_id.state','!=','draft')]</field>
+    </record>
+</odoo>
