@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="view_wiki_form" model="ir.ui.view">
+        <field name="name">document.page.form.inherit.editable.file</field>
+        <field name="model">document.page</field>
+        <field name="inherit_id" ref="document_page.view_wiki_form" />
+        <field
+            name="groups_id"
+            eval="[(6, 0, [ref('document_page.group_document_editor')])]"
+        />
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='history']" position="after">
+                <!-- A category keeps no versions, so no editable files either -->
+                <page
+                    name="editable_files"
+                    string="Editables"
+                    attrs="{'invisible': [('type', '!=', 'content')]}"
+                >
+                    <field name="history_head" invisible="1" />
+                    <button
+                        name="action_open_shown_version"
+                        type="object"
+                        string="Open the shown version"
+                        class="oe_link"
+                        attrs="{'invisible': [('history_head', '=', False)]}"
+                    />
+                    <field name="editable_file_ids">
+                        <tree>
+                            <field name="name" />
+                            <field name="file" filename="name" widget="binary" />
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="wiki_history_form" model="ir.ui.view">
+        <field name="name">document.page.history.form.inherit.editable.file</field>
+        <field name="model">document.page.history</field>
+        <field name="inherit_id" ref="document_page.wiki_history_form" />
+        <!-- Above the default priority, so that the tab goes after the one that
+             document_page_distribution adds, which this module does not depend on -->
+        <field name="priority">17</field>
+        <field
+            name="groups_id"
+            eval="[(6, 0, [ref('document_page.group_document_editor')])]"
+        />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="editable_files" string="Editables">
+                    <field name="editables_locked" invisible="1" />
+                    <!-- Read-only too on a version not saved yet, so that the form
+                         sends no list when it creates one: the new version then
+                         takes its copy of the files -->
+                    <field
+                        name="editable_file_ids"
+                        attrs="{'readonly': ['|', ('editables_locked', '=', True), ('id', '=', False)]}"
+                    >
+                        <tree editable="bottom">
+                            <field name="sequence" widget="handle" />
+                            <field name="name" />
+                            <field name="file" filename="name" widget="binary" />
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

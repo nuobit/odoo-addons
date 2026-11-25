@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <!-- The rule that document_page puts on the versions, for their files -->
+    <record id="document_page_editable_file_rule_company" model="ir.rule">
+        <field name="name">document.page.editable.file multi-company</field>
+        <field name="model_id" ref="model_document_page_editable_file" />
+        <field name="global" eval="True" />
+        <field
+            name="domain_force"
+        >['|',('history_id.company_id','=',False),('history_id.company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>
