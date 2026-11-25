@@ -7,3 +7,6 @@ files, replace, rename or sort them, and save.
 
 To see the editable files of an earlier version, open the version from the
 *History* tab of the document. They can no longer change.
+
+Where ``document_page_approval`` is installed, the editable files follow its
+change requests: the usage of ``document_page_editable_file_approval`` says how.

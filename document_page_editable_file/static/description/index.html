@@ -390,7 +390,9 @@ earlier version keeps its own. A duplicated version keeps the files of the
 version it is made from, or, given another document, starts with the files
 that document shows; a duplicated document starts without editable files.</li>
 <li>The editable files of a version change only while the document shows that
-version, so the earlier versions keep theirs as they were.</li>
+version, so the earlier versions keep theirs as they were. Where
+<tt class="docutils literal">document_page_approval</tt> is installed, <tt class="docutils literal">document_page_editable_file_approval</tt>
+makes them follow its change requests.</li>
 <li>Only the Knowledge editors, and the managers through them, see those tabs,
 download the files and search by them. A user who edits a document without
 being an editor keeps its files on the new version without seeing them. The
@@ -421,6 +423,8 @@ reads the documents sees neither tab.</p>
 files, replace, rename or sort them, and save.</p>
 <p>To see the editable files of an earlier version, open the version from the
 <em>History</em> tab of the document. They can no longer change.</p>
+<p>Where <tt class="docutils literal">document_page_approval</tt> is installed, the editable files follow its
+change requests: the usage of <tt class="docutils literal">document_page_editable_file_approval</tt> says how.</p>
 </div>
 <div class="section" id="known-issues-roadmap">
 <h2><a class="toc-backref" href="#toc-entry-2">Known issues / Roadmap</a></h2>
