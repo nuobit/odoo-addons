@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <!-- The form a row of a list of editable files opens -->
+    <record id="document_page_editable_file_view_form" model="ir.ui.view">
+        <field name="name">document.page.editable.file.form</field>
+        <field name="model">document.page.editable.file</field>
+        <field name="arch" type="xml">
+            <form string="Editable file">
+                <group>
+                    <field name="name" />
+                    <field name="file" filename="name" />
+                </group>
+            </form>
+        </field>
+    </record>
+</odoo>

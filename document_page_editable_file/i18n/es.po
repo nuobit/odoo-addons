@@ -1,0 +1,151 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* document_page_editable_file
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-24 22:49+0000\n"
+"PO-Revision-Date: 2026-11-24 22:49+0000\n"
+"Last-Translator: Eric Antones <eantones@nuobit.com>\n"
+"Language-Team: Spanish\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: document_page_editable_file
+#: code:addons/document_page_editable_file/models/document_page.py:0
+#, python-format
+msgid ""
+"\"%s\" shows no version yet: its editable files are kept with its versions."
+msgstr ""
+"\"%s\" aún no muestra ninguna versión: sus archivos editables se guardan con"
+" sus versiones."
+
+#. module: document_page_editable_file
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page_editable_file__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: document_page_editable_file
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page_editable_file__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: document_page_editable_file
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page_editable_file__display_name
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page_editable_mixin__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: document_page_editable_file
+#: model_terms:ir.ui.view,arch_db:document_page_editable_file.document_page_editable_file_view_form
+msgid "Editable file"
+msgstr "Archivo editable"
+
+#. module: document_page_editable_file
+#: model:ir.model,name:document_page_editable_file.model_document_page_editable_file
+msgid "Editable file of a document version"
+msgstr "Archivo editable de una versión de documento"
+
+#. module: document_page_editable_file
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page__editable_file_ids
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page_history__editable_file_ids
+#: model_terms:ir.ui.view,arch_db:document_page_editable_file.view_wiki_form
+#: model_terms:ir.ui.view,arch_db:document_page_editable_file.wiki_history_form
+msgid "Editables"
+msgstr "Editables"
+
+#. module: document_page_editable_file
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page_history__editables_locked
+msgid "Editables Locked"
+msgstr "Editables bloqueados"
+
+#. module: document_page_editable_file
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page_editable_file__file
+msgid "File"
+msgstr "Archivo"
+
+#. module: document_page_editable_file
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page_editable_file__name
+msgid "File name"
+msgstr "Nombre del archivo"
+
+#. module: document_page_editable_file
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page_editable_file__id
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page_editable_mixin__id
+msgid "ID"
+msgstr "ID"
+
+#. module: document_page_editable_file
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page_editable_file____last_update
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page_editable_mixin____last_update
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: document_page_editable_file
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page_editable_file__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: document_page_editable_file
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page_editable_file__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: document_page_editable_file
+#: model_terms:ir.ui.view,arch_db:document_page_editable_file.view_wiki_form
+msgid "Open the shown version"
+msgstr "Abrir la versión que se muestra"
+
+#. module: document_page_editable_file
+#: model:ir.model,name:document_page_editable_file.model_document_page_editable_mixin
+msgid "Searches on the editable files"
+msgstr "Búsquedas por los archivos editables"
+
+#. module: document_page_editable_file
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page_editable_file__sequence
+msgid "Sequence"
+msgstr "Secuencia"
+
+#. module: document_page_editable_file
+#: code:addons/document_page_editable_file/models/ir_attachment.py:0
+#, python-format
+msgid ""
+"The attachment of an editable file cannot be changed directly: change the "
+"file on the Editables tab of its version, while its files can change."
+msgstr ""
+"El adjunto de un archivo editable no se puede cambiar directamente: cambia "
+"el archivo en la pestaña Editables de su versión, mientras sus archivos "
+"puedan cambiar."
+
+#. module: document_page_editable_file
+#: code:addons/document_page_editable_file/models/document_page_editable_file.py:0
+#, python-format
+msgid "The editable file \"%s\" has no file: every editable file needs one."
+msgstr ""
+"El archivo editable \"%s\" no tiene archivo: cada archivo editable necesita "
+"uno."
+
+#. module: document_page_editable_file
+#: code:addons/document_page_editable_file/models/document_page_history.py:0
+#, python-format
+msgid ""
+"The editable files of \"%s\" cannot change: only those of the version its "
+"document shows can."
+msgstr ""
+"Los archivos editables de \"%s\" no pueden cambiar: solo pueden cambiar los "
+"de la versión que muestra su documento."
+
+#. module: document_page_editable_file
+#: model:ir.model.fields,help:document_page_editable_file.field_document_page_history__editables_locked
+msgid "The editable files of this version can no longer change."
+msgstr "Los archivos editables de esta versión ya no pueden cambiar."
+
+#. module: document_page_editable_file
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page_editable_file__history_id
+msgid "Version"
+msgstr "Versión"
