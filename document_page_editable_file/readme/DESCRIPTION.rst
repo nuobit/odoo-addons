@@ -13,7 +13,9 @@ editors.
   version it is made from, or, given another document, starts with the files
   that document shows; a duplicated document starts without editable files.
 * The editable files of a version change only while the document shows that
-  version, so the earlier versions keep theirs as they were.
+  version, so the earlier versions keep theirs as they were. Where
+  ``document_page_approval`` is installed, ``document_page_editable_file_approval``
+  makes them follow its change requests.
 * Only the Knowledge editors, and the managers through them, see those tabs,
   download the files and search by them. A user who edits a document without
   being an editor keeps its files on the new version without seeing them. The
