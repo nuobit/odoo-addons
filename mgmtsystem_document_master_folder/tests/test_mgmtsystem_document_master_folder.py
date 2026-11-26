@@ -48,6 +48,7 @@ class TestMgmtsystemDocumentMasterFolder(TransactionCase):
             {
                 "name": "Procedure reader",
                 "login": "procedure_reader",
+                "email": "procedure_reader@example.com",
                 "company_id": self.company_a.id,
                 "company_ids": [
                     (6, 0, (self.company_a | self.company_b | self.company_c).ids)
@@ -91,6 +92,7 @@ class TestMgmtsystemDocumentMasterFolder(TransactionCase):
             {
                 "name": "Procedure editor",
                 "login": "procedure_editor",
+                "email": "procedure_editor@example.com",
                 "company_id": self.company_c.id,
                 "company_ids": [(6, 0, (self.company_c | self.company_a).ids)],
                 "groups_id": [
@@ -211,6 +213,7 @@ class TestMgmtsystemDocumentMasterFolder(TransactionCase):
             {
                 "name": "Procedure editor",
                 "login": "procedure_editor",
+                "email": "procedure_editor@example.com",
                 "company_id": self.company_a.id,
                 "company_ids": [(6, 0, self.company_a.ids)],
                 "groups_id": [
