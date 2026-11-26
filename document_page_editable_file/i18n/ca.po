@@ -111,12 +111,13 @@ msgstr "Seqüència"
 #: code:addons/document_page_editable_file/models/ir_attachment.py:0
 #, python-format
 msgid ""
-"The attachment of an editable file cannot be changed directly: change the "
-"file on the Editables tab of its version, while its files can change."
+"The attachment of an editable file cannot be changed or shared directly: to "
+"change the file, use the Editables tab of its document or of its version, "
+"while its files can change."
 msgstr ""
-"L'adjunt d'un fitxer editable no es pot canviar directament: canvia el "
-"fitxer a la pestanya Editables de la seva versió, mentre els seus fitxers "
-"puguin canviar."
+"L'adjunt d'un fitxer editable no es pot canviar ni compartir directament: "
+"per canviar el fitxer, fes servir la pestanya Editables del seu document o "
+"de la seva versió, mentre els seus fitxers puguin canviar."
 
 #. module: document_page_editable_file
 #: code:addons/document_page_editable_file/models/document_page_editable_file.py:0

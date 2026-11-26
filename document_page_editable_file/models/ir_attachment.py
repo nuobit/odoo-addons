@@ -21,9 +21,9 @@ class IrAttachment(models.Model):
         if mode != "read" and not self.env.su and self._holds_editable_files(values):
             raise AccessError(
                 _(
-                    "The attachment of an editable file cannot be changed directly: "
-                    "change the file on the Editables tab of its version, while its "
-                    "files can change."
+                    "The attachment of an editable file cannot be changed or shared "
+                    "directly: to change the file, use the Editables tab of its "
+                    "document or of its version, while its files can change."
                 )
             )
 

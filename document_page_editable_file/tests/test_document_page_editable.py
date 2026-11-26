@@ -18,8 +18,9 @@ SHOWN_VERSION_LOCK = (
     "version its document shows can."
 )
 ATTACHMENT_REFUSAL = (
-    "The attachment of an editable file cannot be changed directly: change the "
-    "file on the Editables tab of its version, while its files can change."
+    "The attachment of an editable file cannot be changed or shared directly: to "
+    "change the file, use the Editables tab of its document or of its version, "
+    "while its files can change."
 )
 # Odoo's refusals: of a list a form keeps read-only, and of a stale record
 NOT_EDITABLE = "field editable_file_ids is not editable"
