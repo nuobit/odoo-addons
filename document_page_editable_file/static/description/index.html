@@ -379,14 +379,16 @@ ul.auto-toc {
 application, such as the Word file its PDF comes from, for the Knowledge
 editors.</p>
 <ul class="simple">
-<li>Each version of a document has a list of editable files, of any kind, in an
-<em>Editables</em> tab of its form: there they are uploaded, replaced, renamed,
-sorted and removed.</li>
-<li>The document shows the editable files of the version it shows, in an
-<em>Editables</em> tab right after <em>History</em>, with a button that opens that version.</li>
+<li>The document has a list of editable files, of any kind, in an <em>Editables</em> tab
+right after <em>History</em>: there they are uploaded, replaced, renamed, sorted and
+removed, as the rest of the document is edited.</li>
+<li>Each version of the document keeps its own files: the list of the document is
+that of the version it shows, and the form of each version has the same
+<em>Editables</em> tab.</li>
 <li>A save that changes the content of the document makes a new version, which
 starts with the editable files of the version the document showed; the
-earlier version keeps its own. A duplicated version keeps the files of the
+earlier version keeps its own. When the same save also changes the files, the
+new version takes the changes. A duplicated version keeps the files of the
 version it is made from, or, given another document, starts with the files
 that document shows; a duplicated document starts without editable files.</li>
 <li>The editable files of a version change only while the document shows that
@@ -418,9 +420,11 @@ them among the attachments.</li>
 <h2><a class="toc-backref" href="#toc-entry-1">Usage</a></h2>
 <p>The <em>Editables</em> tabs are for the Knowledge editors and managers. A user who only
 reads the documents sees neither tab.</p>
-<p>To store the editable files of a document, open its <em>Editables</em> tab and press
-<em>Open the shown version</em>. In the <em>Editables</em> tab of that version, add the
-files, replace, rename or sort them, and save.</p>
+<p>To store the editable files of a document, press <em>Edit</em> on the document, open
+its <em>Editables</em> tab, add the files with <em>Add a line</em>, replace, rename, sort or
+remove them, and save. The content of the document can change in the same save:
+the new version then keeps the files as saved, and the earlier version keeps
+those it had.</p>
 <p>To see the editable files of an earlier version, open the version from the
 <em>History</em> tab of the document. They can no longer change.</p>
 <p>Where <tt class="docutils literal">document_page_approval</tt> is installed, the editable files follow its

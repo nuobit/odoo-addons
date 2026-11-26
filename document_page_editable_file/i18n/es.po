@@ -60,6 +60,7 @@ msgid "Editables"
 msgstr "Editables"
 
 #. module: document_page_editable_file
+#: model:ir.model.fields,field_description:document_page_editable_file.field_document_page__editables_locked
 #: model:ir.model.fields,field_description:document_page_editable_file.field_document_page_history__editables_locked
 msgid "Editables Locked"
 msgstr "Editables bloqueados"
@@ -95,11 +96,6 @@ msgstr "Última actualización por"
 #: model:ir.model.fields,field_description:document_page_editable_file.field_document_page_editable_file__write_date
 msgid "Last Updated on"
 msgstr "Última actualización el"
-
-#. module: document_page_editable_file
-#: model_terms:ir.ui.view,arch_db:document_page_editable_file.view_wiki_form
-msgid "Open the shown version"
-msgstr "Abrir la versión que se muestra"
 
 #. module: document_page_editable_file
 #: model:ir.model,name:document_page_editable_file.model_document_page_editable_mixin
@@ -144,6 +140,11 @@ msgstr ""
 #: model:ir.model.fields,help:document_page_editable_file.field_document_page_history__editables_locked
 msgid "The editable files of this version can no longer change."
 msgstr "Los archivos editables de esta versión ya no pueden cambiar."
+
+#. module: document_page_editable_file
+#: model:ir.model.fields,help:document_page_editable_file.field_document_page__editables_locked
+msgid "The editable files this document shows can no longer change."
+msgstr "Los archivos editables que muestra este documento ya no pueden cambiar."
 
 #. module: document_page_editable_file
 #: model:ir.model.fields,field_description:document_page_editable_file.field_document_page_editable_file__history_id

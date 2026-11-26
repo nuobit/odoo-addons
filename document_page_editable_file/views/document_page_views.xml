@@ -19,16 +19,13 @@
                     string="Editables"
                     attrs="{'invisible': [('type', '!=', 'content')]}"
                 >
-                    <field name="history_head" invisible="1" />
-                    <button
-                        name="action_open_shown_version"
-                        type="object"
-                        string="Open the shown version"
-                        class="oe_link"
-                        attrs="{'invisible': [('history_head', '=', False)]}"
-                    />
-                    <field name="editable_file_ids">
-                        <tree>
+                    <field name="editables_locked" invisible="1" />
+                    <field
+                        name="editable_file_ids"
+                        attrs="{'readonly': [('editables_locked', '=', True)]}"
+                    >
+                        <tree editable="bottom">
+                            <field name="sequence" widget="handle" />
                             <field name="name" />
                             <field name="file" filename="name" widget="binary" />
                         </tree>

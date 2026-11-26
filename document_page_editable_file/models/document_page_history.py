@@ -116,14 +116,16 @@ class DocumentPageHistory(models.Model):
 
     def _copy_editable_files_from(self, source):
         """Give this version a copy of the editable files of the version
-        ``source``, which may be none."""
+        ``source``, which may be none. The copies are made in the order of the
+        files, read from the database: a save of the document that also changes
+        its files pairs each file with its copy by that order."""
         self.ensure_one()
         self.env["document.page.editable.file"].create(
             [
                 file_vals
                 for editable_file in source.with_context(
                     bin_size=False
-                ).editable_file_ids
+                ).editable_file_ids.sorted()
                 for file_vals in editable_file.copy_data(
                     default={"history_id": self.id}
                 )
