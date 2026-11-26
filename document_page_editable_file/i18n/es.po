@@ -111,12 +111,13 @@ msgstr "Secuencia"
 #: code:addons/document_page_editable_file/models/ir_attachment.py:0
 #, python-format
 msgid ""
-"The attachment of an editable file cannot be changed directly: change the "
-"file on the Editables tab of its version, while its files can change."
+"The attachment of an editable file cannot be changed or shared directly: to "
+"change the file, use the Editables tab of its document or of its version, "
+"while its files can change."
 msgstr ""
-"El adjunto de un archivo editable no se puede cambiar directamente: cambia "
-"el archivo en la pestaña Editables de su versión, mientras sus archivos "
-"puedan cambiar."
+"El adjunto de un archivo editable no se puede cambiar ni compartir "
+"directamente: para cambiar el archivo, usa la pestaña Editables de su "
+"documento o de su versión, mientras sus archivos puedan cambiar."
 
 #. module: document_page_editable_file
 #: code:addons/document_page_editable_file/models/document_page_editable_file.py:0
