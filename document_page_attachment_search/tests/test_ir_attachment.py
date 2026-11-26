@@ -38,6 +38,7 @@ class TestIrAttachmentContentFiles(TransactionCase):
             {
                 "name": "Doc Editor",
                 "login": "doceditor_unlink_test",
+                "email": "doceditor_unlink_test@example.com",
                 "groups_id": [
                     (
                         6,
@@ -54,6 +55,7 @@ class TestIrAttachmentContentFiles(TransactionCase):
             {
                 "name": "Doc Administrator",
                 "login": "docadmin_unlink_test",
+                "email": "docadmin_unlink_test@example.com",
                 "groups_id": [
                     (
                         6,
@@ -113,6 +115,7 @@ class TestIrAttachmentContentFiles(TransactionCase):
             {
                 "name": "Doc Manager",
                 "login": "docmanager_unlink_test",
+                "email": "docmanager_unlink_test@example.com",
                 "groups_id": [
                     (
                         6,

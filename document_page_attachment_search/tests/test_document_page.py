@@ -284,10 +284,20 @@ class TestDocumentPageAttachmentSearch(TransactionCase):
             )
         ]
         uploader = self.env["res.users"].create(
-            {"name": "Uploader", "login": "uploader_anchor_test", "groups_id": groups}
+            {
+                "name": "Uploader",
+                "login": "uploader_anchor_test",
+                "email": "uploader_anchor_test@example.com",
+                "groups_id": groups,
+            }
         )
         colleague = self.env["res.users"].create(
-            {"name": "Colleague", "login": "colleague_anchor_test", "groups_id": groups}
+            {
+                "name": "Colleague",
+                "login": "colleague_anchor_test",
+                "email": "colleague_anchor_test@example.com",
+                "groups_id": groups,
+            }
         )
         upload = self.Attachment.with_user(uploader).create(
             {
@@ -319,6 +329,7 @@ class TestDocumentPageAttachmentSearch(TransactionCase):
             {
                 "name": "Uploader",
                 "login": "uploader_administrator_test",
+                "email": "uploader_administrator_test@example.com",
                 "groups_id": [
                     (
                         6,
@@ -335,6 +346,7 @@ class TestDocumentPageAttachmentSearch(TransactionCase):
             {
                 "name": "Administrator",
                 "login": "administrator_anchor_test",
+                "email": "administrator_anchor_test@example.com",
                 "groups_id": [
                     (
                         6,
@@ -533,6 +545,7 @@ class TestDocumentPageAttachmentSearch(TransactionCase):
             {
                 "name": "Doc User",
                 "login": "docuser_acl_test",
+                "email": "docuser_acl_test@example.com",
                 "groups_id": [
                     (
                         6,
