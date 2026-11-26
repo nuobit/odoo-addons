@@ -239,10 +239,58 @@ class TestDocumentPageEditableFileApproval(SavepointCase):
         )
 
     def test_a_document_awaiting_its_first_approval_keeps_its_list_read_only(self):
-        page = self.env["document.page"].new(
-            {"type": "content", "approval_required": True}
+        # A document saved where approval is required shows no version until its
+        # first change request is approved: its files change only in a change
+        # request in draft
+        self.category.approval_required = True
+        page = (
+            self.env["document.page"]
+            .with_user(self.author)
+            .create(
+                {
+                    "name": "Instruction",
+                    "type": "content",
+                    "parent_id": self.category.id,
+                    "draft_name": "1.0",
+                    "draft_summary": "First version",
+                    "content": "<p>Version one</p>",
+                }
+            )
+            .with_env(self.env)
         )
+        request = self.env["document.page.history"].search([("page_id", "=", page.id)])
+        self.assertEqual(request.state, "to approve")
+        self.assertFalse(page.history_head)
         self.assertTrue(page.editables_locked)
+        # The author's form computes the lock itself, not the value cached above
+        page.invalidate_cache(["editables_locked"])
+        form = Form(page.with_user(self.author), view="document_page.view_wiki_form")
+        with self.assertRaises(AssertionError) as error:
+            form.editable_file_ids.new()
+        self.assertEqual(str(error.exception), NOT_EDITABLE)
+        with self.assertRaises(UserError) as error:
+            page.with_user(self.author).write(
+                {
+                    "editable_file_ids": [
+                        (
+                            0,
+                            0,
+                            {
+                                "name": "instruction.docx",
+                                "file": encoded("Word source of the instruction"),
+                            },
+                        )
+                    ]
+                }
+            )
+        self.assertEqual(
+            str(error.exception),
+            '"Instruction" shows no version yet: its editable files are kept with '
+            "its versions.",
+        )
+        self.assertFalse(
+            self.env[EDITABLE_FILE].search([("history_id.page_id", "=", page.id)])
+        )
 
     def test_other_editor_does_not_reach_the_files_of_a_draft(self):
         draft = self._new_draft()
