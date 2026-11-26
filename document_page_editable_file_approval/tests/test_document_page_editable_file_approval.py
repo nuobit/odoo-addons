@@ -17,6 +17,8 @@ SHOWN_VERSION_LOCK = (
     'The editable files of "Procedure #%d" cannot change: only those of the '
     "version its document shows can."
 )
+# Odoo's refusal of a list a form keeps read-only
+NOT_EDITABLE = "field editable_file_ids is not editable"
 
 
 def encoded(text):
@@ -194,6 +196,53 @@ class TestDocumentPageEditableFileApproval(SavepointCase):
         with self.assertRaises(UserError) as error:
             self.procedure_file.with_user(self.editor).write({"name": "late.docx"})
         self.assertEqual(str(error.exception), SHOWN_VERSION_LOCK % self.version.id)
+
+    def test_the_list_of_the_document_is_read_only_where_approval_is_required(self):
+        self.assertTrue(self.page.editables_locked)
+        form = Form(
+            self.page.with_user(self.author), view="document_page.view_wiki_form"
+        )
+        with self.assertRaises(AssertionError) as error:
+            form.editable_file_ids.new()
+        self.assertEqual(str(error.exception), NOT_EDITABLE)
+
+    def test_approved_files_cannot_change_through_the_document(self):
+        with self.assertRaises(UserError) as error:
+            self.page.with_user(self.editor).write(
+                {
+                    "editable_file_ids": [
+                        (1, self.procedure_file.id, {"name": "late.docx"})
+                    ]
+                }
+            )
+        self.assertEqual(str(error.exception), APPROVAL_LOCK % self.version.id)
+        self.assertEqual(self.procedure_file.name, "procedure.docx")
+
+    def test_the_document_changes_its_files_where_approval_is_not_required(self):
+        self.page.approval_required = False
+        self.assertFalse(self.page.editables_locked)
+        self.page.with_user(self.editor).write(
+            {
+                "content": "<p>Version two</p>",
+                "editable_file_ids": [
+                    (1, self.procedure_file.id, {"name": "procedure_v2.docx"})
+                ],
+            }
+        )
+        new_version = self.page.history_head
+        self.assertNotEqual(new_version, self.version)
+        self.assertEqual(
+            new_version.editable_file_ids.mapped("name"), ["procedure_v2.docx"]
+        )
+        self.assertEqual(
+            self.version.editable_file_ids.mapped("name"), ["procedure.docx"]
+        )
+
+    def test_a_document_awaiting_its_first_approval_keeps_its_list_read_only(self):
+        page = self.env["document.page"].new(
+            {"type": "content", "approval_required": True}
+        )
+        self.assertTrue(page.editables_locked)
 
     def test_other_editor_does_not_reach_the_files_of_a_draft(self):
         draft = self._new_draft()

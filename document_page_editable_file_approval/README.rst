@@ -46,7 +46,7 @@ Usage
 =====
 
 Where a document requires approval, its editable files change only in a draft
-change request:
+change request, and the *Editables* tab of the document is read-only:
 
 #. Change the content of the document and save it: this makes a change request,
    sent for approval.
