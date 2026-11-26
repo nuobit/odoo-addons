@@ -22,9 +22,17 @@ ATTACHMENT_REFUSAL = (
     "change the file, use the Editables tab of its document or of its version, "
     "while its files can change."
 )
-# Odoo's refusals: of a list a form keeps read-only, and of a stale record
+# Odoo's refusals: of a list a form keeps read-only, of a stale record, and of a
+# write of the document's list by a user outside its group, as Odoo words it for
+# an internal user, who always has the technical features
 NOT_EDITABLE = "field editable_file_ids is not editable"
 CONCURRENCY_REFUSAL = "A document was modified since you last viewed it (%s:%d)"
+LIST_WRITE_REFUSAL = (
+    "The requested operation can not be completed due to security restrictions."
+    "\n\nDocument type: Document Page (document.page)\nOperation: write\n"
+    "User: %d\nFields:\n- editable_file_ids (allowed for groups 'Knowledge / "
+    "Editor')"
+)
 
 
 def encoded(text):
@@ -226,7 +234,13 @@ class TestDocumentPageEditable(SavepointCase):
         )
 
     def test_a_save_of_content_and_files_changes_the_copy_of_each_file(self):
-        # The files are no longer in the order their list was first read in
+        # The list is read before the order of its files changes: Odoo keeps it in
+        # the order it was read in, so the save pairs each file with its copy by
+        # the order of the database, not by the list as it was read
+        self.assertEqual(
+            self.version.editable_file_ids.ids,
+            [self.procedure_file.id, self.annex_file.id],
+        )
         self.annex_file.sequence = 5
         self.page.with_user(self.editor).write(
             {
@@ -301,6 +315,19 @@ class TestDocumentPageEditable(SavepointCase):
     def test_writer_who_is_not_an_editor_cannot_change_the_files_on_the_document(
         self,
     ):
+        writers = self.env["res.groups"].create({"name": "Document writers test"})
+        for model in ("document.page", "document.page.history"):
+            self.env["ir.model.access"].create(
+                {
+                    "name": "%s writer test" % model,
+                    "model_id": self.env["ir.model"]._get(model).id,
+                    "group_id": writers.id,
+                    "perm_read": True,
+                    "perm_write": True,
+                    "perm_create": True,
+                }
+            )
+        self.reader.groups_id = [(4, writers.id)]
         with self.assertRaises(AccessError) as error:
             self.page.with_user(self.reader).write(
                 {
@@ -308,8 +335,10 @@ class TestDocumentPageEditable(SavepointCase):
                     "editable_file_ids": [(2, self.procedure_file.id, False)],
                 }
             )
-        self.assertIn("editable_file_ids", str(error.exception))
+        self.assertEqual(str(error.exception), LIST_WRITE_REFUSAL % self.reader.id)
+        # Nothing of the save is kept: neither its content nor its files
         self.assertEqual(self.page.history_head, self.version)
+        self.assertEqual(self.page.content, "<p>Version one</p>")
         self.assertEqual(
             self.version.editable_file_ids, self.procedure_file | self.annex_file
         )
