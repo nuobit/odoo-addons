@@ -30,14 +30,16 @@ Keeps the editable files of each version of a document of the Knowledge
 application, such as the Word file its PDF comes from, for the Knowledge
 editors.
 
-* Each version of a document has a list of editable files, of any kind, in an
-  *Editables* tab of its form: there they are uploaded, replaced, renamed,
-  sorted and removed.
-* The document shows the editable files of the version it shows, in an
-  *Editables* tab right after *History*, with a button that opens that version.
+* The document has a list of editable files, of any kind, in an *Editables* tab
+  right after *History*: there they are uploaded, replaced, renamed, sorted and
+  removed, as the rest of the document is edited.
+* Each version of the document keeps its own files: the list of the document is
+  that of the version it shows, and the form of each version has the same
+  *Editables* tab.
 * A save that changes the content of the document makes a new version, which
   starts with the editable files of the version the document showed; the
-  earlier version keeps its own. A duplicated version keeps the files of the
+  earlier version keeps its own. When the same save also changes the files, the
+  new version takes the changes. A duplicated version keeps the files of the
   version it is made from, or, given another document, starts with the files
   that document shows; a duplicated document starts without editable files.
 * The editable files of a version change only while the document shows that
@@ -62,9 +64,11 @@ Usage
 The *Editables* tabs are for the Knowledge editors and managers. A user who only
 reads the documents sees neither tab.
 
-To store the editable files of a document, open its *Editables* tab and press
-*Open the shown version*. In the *Editables* tab of that version, add the
-files, replace, rename or sort them, and save.
+To store the editable files of a document, press *Edit* on the document, open
+its *Editables* tab, add the files with *Add a line*, replace, rename, sort or
+remove them, and save. The content of the document can change in the same save:
+the new version then keeps the files as saved, and the earlier version keeps
+those it had.
 
 To see the editable files of an earlier version, open the version from the
 *History* tab of the document. They can no longer change.

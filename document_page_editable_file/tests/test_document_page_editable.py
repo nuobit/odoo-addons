@@ -173,26 +173,172 @@ class TestDocumentPageEditable(SavepointCase):
         self.assertEqual(result[0], 200)
         self.assertEqual(base64.b64decode(result[2]), b"Word source of the procedure")
 
-    def test_editor_opens_the_shown_version_from_the_document(self):
-        action = self.page.with_user(self.editor).action_open_shown_version()
+    def test_editor_changes_the_files_on_the_document(self):
+        with Form(
+            self.page.with_user(self.editor), view="document_page.view_wiki_form"
+        ) as form:
+            with form.editable_file_ids.new() as line:
+                line.sequence = 30
+                line.name = "notes.txt"
+                line.file = encoded("Plain text notes")
+            with form.editable_file_ids.edit(1) as line:
+                line.file = encoded("Annex sheet, second edition")
+            form.editable_file_ids.remove(0)
+        self.assertEqual(self.page.history_head, self.version)
+        files = self.version.editable_file_ids
+        self.assertEqual(files.mapped("name"), ["annex.xlsx", "notes.txt"])
         self.assertEqual(
-            action,
-            {
-                "type": "ir.actions.act_window",
-                "res_model": "document.page.history",
-                "res_id": self.version.id,
-                "view_mode": "form",
-            },
+            [base64.b64decode(file.file) for file in files],
+            [b"Annex sheet, second edition", b"Plain text notes"],
         )
 
-    def test_a_category_has_no_version_to_open(self):
+    def test_a_save_of_content_and_files_changes_the_files_of_the_new_version(self):
+        with Form(
+            self.page.with_user(self.editor), view="document_page.view_wiki_form"
+        ) as form:
+            form.content = "<p>Version two</p>"
+            form.draft_name = "2.0"
+            form.draft_summary = "Second version"
+            with form.editable_file_ids.new() as line:
+                line.sequence = 30
+                line.name = "notes.txt"
+                line.file = encoded("Plain text notes")
+            with form.editable_file_ids.edit(1) as line:
+                line.name = "annex_v2.xlsx"
+                line.file = encoded("Annex sheet, second edition")
+            form.editable_file_ids.remove(0)
+        new_version = self.page.history_head
+        self.assertNotEqual(new_version, self.version)
+        files = new_version.editable_file_ids.sorted()
+        self.assertEqual(files.mapped("name"), ["annex_v2.xlsx", "notes.txt"])
+        self.assertEqual(
+            [base64.b64decode(file.file) for file in files],
+            [b"Annex sheet, second edition", b"Plain text notes"],
+        )
+        # The earlier version keeps its own files, untouched
+        earlier_files = self.version.editable_file_ids.sorted()
+        self.assertEqual(earlier_files, self.procedure_file | self.annex_file)
+        self.assertEqual(earlier_files.mapped("name"), ["procedure.docx", "annex.xlsx"])
+        self.assertEqual(
+            [base64.b64decode(file.file) for file in earlier_files],
+            [b"Word source of the procedure", b"Annex sheet"],
+        )
+
+    def test_a_save_of_content_and_files_changes_the_copy_of_each_file(self):
+        # The files are no longer in the order their list was first read in
+        self.annex_file.sequence = 5
+        self.page.with_user(self.editor).write(
+            {
+                "content": "<p>Version two</p>",
+                "editable_file_ids": [
+                    (4, self.annex_file.id, False),
+                    (1, self.procedure_file.id, {"name": "procedure_v2.docx"}),
+                ],
+            }
+        )
+        self.assertEqual(
+            self.page.history_head.editable_file_ids.sorted().mapped("name"),
+            ["annex.xlsx", "procedure_v2.docx"],
+        )
+        self.assertEqual(
+            self.version.editable_file_ids.sorted().mapped("name"),
+            ["annex.xlsx", "procedure.docx"],
+        )
+
+    def test_a_save_of_content_that_sets_the_list_keeps_the_copies_named(self):
+        # (6, 0, ids): the web client never sends it for this list, an API call can
+        self.page.with_user(self.editor).write(
+            {
+                "content": "<p>Version two</p>",
+                "editable_file_ids": [(6, 0, self.annex_file.ids)],
+            }
+        )
+        new_version = self.page.history_head
+        self.assertNotEqual(new_version, self.version)
+        self.assertEqual(new_version.editable_file_ids.mapped("name"), ["annex.xlsx"])
+        self.assertNotIn(self.annex_file, new_version.editable_file_ids)
+        # The earlier version keeps both of its files
+        self.assertEqual(
+            self.version.editable_file_ids.sorted(),
+            self.procedure_file | self.annex_file,
+        )
+
+    def test_files_given_with_a_new_document_go_to_its_first_version(self):
+        form = Form(
+            self.env["document.page"].with_user(self.editor),
+            view="document_page.view_wiki_form",
+        )
+        form.name = "Instruction"
+        form.parent_id = self.category
+        form.content = "<p>Version one</p>"
+        form.draft_name = "1.0"
+        form.draft_summary = "First version"
+        with form.editable_file_ids.new() as line:
+            line.name = "instruction.docx"
+            line.file = encoded("Word source of the instruction")
+        page = form.save()
+        files = page.history_head.editable_file_ids
+        self.assertEqual(files.mapped("name"), ["instruction.docx"])
+        self.assertEqual(
+            base64.b64decode(files.file), b"Word source of the instruction"
+        )
+
+    def test_a_write_on_the_document_changes_the_files_of_the_shown_version(self):
+        self.page.with_user(self.editor).write(
+            {
+                "editable_file_ids": [
+                    (2, self.procedure_file.id, False),
+                    (1, self.annex_file.id, {"name": "annex_v2.xlsx"}),
+                ]
+            }
+        )
+        self.assertEqual(self.page.history_head, self.version)
+        self.assertEqual(
+            self.version.editable_file_ids.mapped("name"), ["annex_v2.xlsx"]
+        )
+
+    def test_writer_who_is_not_an_editor_cannot_change_the_files_on_the_document(
+        self,
+    ):
+        with self.assertRaises(AccessError) as error:
+            self.page.with_user(self.reader).write(
+                {
+                    "content": "<p>Version two</p>",
+                    "editable_file_ids": [(2, self.procedure_file.id, False)],
+                }
+            )
+        self.assertIn("editable_file_ids", str(error.exception))
+        self.assertEqual(self.page.history_head, self.version)
+        self.assertEqual(
+            self.version.editable_file_ids, self.procedure_file | self.annex_file
+        )
+
+    def test_a_category_takes_no_editable_files(self):
         with self.assertRaises(UserError) as error:
-            self.category.with_user(self.editor).action_open_shown_version()
+            self.category.with_user(self.editor).write(
+                {
+                    "editable_file_ids": [
+                        (0, 0, {"name": "notes.txt", "file": encoded("Notes")})
+                    ]
+                }
+            )
         self.assertEqual(
             str(error.exception),
             '"Procedures" shows no version yet: its editable files are kept with its '
             "versions.",
         )
+
+    def test_a_new_category_is_saved_with_its_empty_list_of_files(self):
+        # The web client sends the empty list of a new record
+        category = (
+            self.env["document.page"]
+            .with_user(self.editor)
+            .create({"name": "Manuals", "type": "category", "editable_file_ids": []})
+        )
+        self.assertFalse(category.history_head)
+
+    def test_the_files_of_the_shown_version_are_not_locked_on_the_document(self):
+        self.assertFalse(self.page.editables_locked)
 
     def test_the_editables_tab_shows_on_a_document_and_not_on_a_category(self):
         tab = "//page[@name='editable_files']"
@@ -201,18 +347,24 @@ class TestDocumentPageEditable(SavepointCase):
             [False, True],
         )
 
-    def test_the_button_shows_on_a_document_that_shows_a_version(self):
+    def test_a_document_that_shows_no_version_takes_files_with_its_first_content(
+        self,
+    ):
         page_without_version = self.env["document.page"].create(
             {"name": "Procedure to write", "type": "content"}
         )
         self.assertFalse(page_without_version.history_head)
-        button = "//button[@name='action_open_shown_version']"
+        page_without_version.with_user(self.editor).write(
+            {
+                "content": "<p>Version one</p>",
+                "editable_file_ids": [
+                    (0, 0, {"name": "notes.txt", "file": encoded("Notes")})
+                ],
+            }
+        )
         self.assertEqual(
-            [
-                self._hidden_by(self.page, button),
-                self._hidden_by(page_without_version, button),
-            ],
-            [False, True],
+            page_without_version.history_head.editable_file_ids.mapped("name"),
+            ["notes.txt"],
         )
 
     def test_reader_sees_no_editables_tab(self):

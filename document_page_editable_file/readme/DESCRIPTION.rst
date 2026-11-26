@@ -2,14 +2,16 @@ Keeps the editable files of each version of a document of the Knowledge
 application, such as the Word file its PDF comes from, for the Knowledge
 editors.
 
-* Each version of a document has a list of editable files, of any kind, in an
-  *Editables* tab of its form: there they are uploaded, replaced, renamed,
-  sorted and removed.
-* The document shows the editable files of the version it shows, in an
-  *Editables* tab right after *History*, with a button that opens that version.
+* The document has a list of editable files, of any kind, in an *Editables* tab
+  right after *History*: there they are uploaded, replaced, renamed, sorted and
+  removed, as the rest of the document is edited.
+* Each version of the document keeps its own files: the list of the document is
+  that of the version it shows, and the form of each version has the same
+  *Editables* tab.
 * A save that changes the content of the document makes a new version, which
   starts with the editable files of the version the document showed; the
-  earlier version keeps its own. A duplicated version keeps the files of the
+  earlier version keeps its own. When the same save also changes the files, the
+  new version takes the changes. A duplicated version keeps the files of the
   version it is made from, or, given another document, starts with the files
   that document shows; a duplicated document starts without editable files.
 * The editable files of a version change only while the document shows that
