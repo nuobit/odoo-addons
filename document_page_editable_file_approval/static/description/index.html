@@ -423,11 +423,16 @@ it is a new version even when only its editable files changed.</p>
 <div class="section" id="known-issues-roadmap">
 <h2><a class="toc-backref" href="#toc-entry-2">Known issues / Roadmap</a></h2>
 <ul class="simple">
-<li>Uninstalling <tt class="docutils literal">document_page_approval</tt> deletes its change requests that are
-not approved, and this module deletes their editable files first. Uninstalled
-alone before it, this module does not: the attachments that hold the contents
-of those files then stay once <tt class="docutils literal">document_page_approval</tt> goes, until
-<tt class="docutils literal">document_page_editable_file</tt> is uninstalled.</li>
+<li>On a new document, files added on its <em>Editables</em> tab before a category that
+requires approval is chosen are not saved: the tab turns read-only and the
+screen leaves them out of the save, with no warning. Through the API, such a
+document is refused with its files. Where a document requires approval, its
+files change in a draft change request.</li>
+<li>Uninstalling <tt class="docutils literal">document_page_approval</tt> deletes its change requests in draft,
+pending approval or cancelled, and this module deletes their editable files
+first. Uninstalled alone before it, this module does not: the attachments that
+hold the contents of those files then stay once <tt class="docutils literal">document_page_approval</tt>
+goes, until <tt class="docutils literal">document_page_editable_file</tt> is uninstalled.</li>
 </ul>
 </div>
 <div class="section" id="bug-tracker">
