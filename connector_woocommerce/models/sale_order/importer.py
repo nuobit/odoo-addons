@@ -77,8 +77,10 @@ class WooCommerceSaleOrderImporter(Component):
             )
         return parents
 
-    def _create_partner_parent(self, dir_type, value):
-        """Create the contact the ``dir_type`` block of ``value`` belongs to."""
+    def _get_partner_parent_values(self, dir_type, value):
+        """The values of a new contact for the ``dir_type`` block of ``value``:
+        named after the block's company, else its buyer, with the address,
+        the phone and the e-mail its own address gets from the block."""
         # TODO: REVIEW: slug for company name?
         name = value[dir_type]["company"] or value[dir_type]["name"]
         if not name:
@@ -89,12 +91,31 @@ class WooCommerceSaleOrderImporter(Component):
                 )
                 % (dir_type, value)
             )
+        address_values = (
+            self.component(usage="import.mapper", model_name="woocommerce.res.partner")
+            .map_record(value[dir_type])
+            .values(for_create=True)
+        )
+        # The mapper leaves out a state or a country Odoo does not have
+        customer_fields = self.env["res.partner"]._address_fields() + [
+            "phone",
+            "email",
+        ]
+        return {
+            "name": name,
+            "company_type": "company",
+            **{
+                field: address_values[field]
+                for field in customer_fields
+                if field in address_values
+            },
+            **self._additional_partner_parent_fields(value, dir_type),
+        }
+
+    def _create_partner_parent(self, dir_type, value):
+        """Create the contact the ``dir_type`` block of ``value`` belongs to."""
         return self.env["res.partner"].create(
-            {
-                "name": name,
-                "company_type": "company",
-                **self._additional_partner_parent_fields(value, dir_type),
-            }
+            self._get_partner_parent_values(dir_type, value)
         )
 
     def _get_order_customer(self, external_data):

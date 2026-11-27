@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
@@ -31,6 +32,12 @@ class Partner(models.Model):
             values.append(rec.state_id.code or None)
             values.append(rec.country_id.code or None)
             return values
+
+    def _handle_first_contact_creation(self):
+        # An address the WooCommerce import creates gives nothing to its
+        # parent (woocommerce.res.partner's create)
+        if not self.env.context.get("woocommerce_skip_first_contact_address"):
+            super()._handle_first_contact_creation()
 
     @api.depends(
         "name",

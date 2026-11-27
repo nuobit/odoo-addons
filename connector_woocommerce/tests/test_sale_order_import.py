@@ -34,15 +34,14 @@ class TestSaleOrderImport(WooCommerceSaleOrderImportCase):
         self.assertEqual(customer.name, "WooCommerce buyer")
         self.assertFalse(customer.parent_id)
         self.assertEqual(customer.company_type, "company")
-        # Odoo gives a contact with no address the one of its first child
         self.assertEqual(customer.street, "Carrer de Mallorca 1")
         self.assertEqual(customer.city, "Barcelona")
         self.assertEqual(customer.zip, "08001")
         self.assertEqual(customer.state_id, self.env.ref("base.state_es_b"))
         self.assertEqual(customer.country_id, self.env.ref("base.es"))
-        self.assertFalse(customer.phone)
+        self.assertEqual(customer.phone, "600000001")
         self.assertFalse(customer.mobile)
-        self.assertFalse(customer.email)
+        self.assertEqual(customer.email, "buyer@example.com")
         invoice_address = sale.partner_invoice_id
         self.assertEqual(invoice_address.parent_id, customer)
         self.assertEqual(invoice_address.type, "invoice")
