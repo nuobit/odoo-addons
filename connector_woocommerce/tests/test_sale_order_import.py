@@ -69,6 +69,119 @@ class TestSaleOrderImport(WooCommerceSaleOrderImportCase):
         self.assertEqual(sale.client_order_ref, "WC-30001")
         self.assertEqual(sale.state, "sale")
 
+    def test_new_buyer_gets_the_automatic_fiscal_position_of_its_country(self):
+        in_spain = self.env["account.fiscal.position"].create(
+            {
+                "name": "WooCommerce Spain",
+                "auto_apply": True,
+                "country_id": self.env.ref("base.es").id,
+            }
+        )
+        order = self._shop_order(
+            30001,
+            billing=self._address_block(
+                "WooCommerce", "buyer", email="buyer@example.com"
+            ),
+            shipping=self._address_block("WooCommerce", "buyer"),
+        )
+        self._import_order(order)
+        sale = self._imported_order(order)
+        self.assertEqual(sale.partner_id.property_account_position_id, in_spain)
+        self.assertEqual(sale.fiscal_position_id, in_spain)
+
+    def test_new_buyer_where_no_fiscal_position_applies_gets_none(self):
+        # The only automatic fiscal position is France's
+        self.env["account.fiscal.position"].search([("auto_apply", "=", True)]).write(
+            {"auto_apply": False}
+        )
+        self.env["account.fiscal.position"].create(
+            {
+                "name": "WooCommerce France",
+                "auto_apply": True,
+                "country_id": self.env.ref("base.fr").id,
+            }
+        )
+        order = self._shop_order(
+            30001,
+            billing=self._address_block(
+                "WooCommerce", "buyer", email="buyer@example.com"
+            ),
+            shipping=self._address_block("WooCommerce", "buyer"),
+        )
+        self._import_order(order)
+        sale = self._imported_order(order)
+        self.assertFalse(sale.partner_id.property_account_position_id)
+        self.assertFalse(sale.fiscal_position_id)
+
+    def test_customer_fiscal_position_wins_on_its_order(self):
+        own = self.env["account.fiscal.position"].create({"name": "WooCommerce own"})
+        self.env["account.fiscal.position"].create(
+            {
+                "name": "WooCommerce Spain",
+                "auto_apply": True,
+                "country_id": self.env.ref("base.es").id,
+            }
+        )
+        customer = self.env["res.partner"].create(
+            {
+                "name": "WooCommerce buyer",
+                "property_account_position_id": own.id,
+                "child_ids": [(0, 0, {"name": "WooCommerce contact person"})],
+            }
+        )
+        order = self._shop_order(
+            30001,
+            billing=self._address_block(
+                "WooCommerce", "buyer", email="buyer@example.com"
+            ),
+            shipping=self._address_block("WooCommerce", "buyer"),
+        )
+        self._import_order(order)
+        sale = self._imported_order(order)
+        self.assertEqual(sale.fiscal_position_id, own)
+        self.assertEqual(customer.property_account_position_id, own)
+
+    def test_order_of_a_customer_without_one_gets_its_delivery_fiscal_position(
+        self,
+    ):
+        self.env["account.fiscal.position"].create(
+            {
+                "name": "WooCommerce Spain",
+                "auto_apply": True,
+                "country_id": self.env.ref("base.es").id,
+            }
+        )
+        in_france = self.env["account.fiscal.position"].create(
+            {
+                "name": "WooCommerce France",
+                "auto_apply": True,
+                "country_id": self.env.ref("base.fr").id,
+            }
+        )
+        self.env["res.partner"].create(
+            {
+                "name": "WooCommerce buyer",
+                "child_ids": [(0, 0, {"name": "WooCommerce contact person"})],
+            }
+        )
+        order = self._shop_order(
+            30001,
+            billing=self._address_block(
+                "WooCommerce", "buyer", email="buyer@example.com"
+            ),
+            shipping=self._address_block(
+                "WooCommerce",
+                "buyer",
+                address_1="Rue de Rivoli 1",
+                city="Paris",
+                state="",
+                postcode="75001",
+                country="FR",
+            ),
+        )
+        self._import_order(order)
+        self.assertEqual(self._imported_order(order).fiscal_position_id, in_france)
+
     def test_backend_without_salesperson_and_payment_terms_leaves_odoo_s(self):
         thirty_days = self.env.ref("account.account_payment_term_30days")
         self.env["ir.property"]._set_default(

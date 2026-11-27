@@ -65,6 +65,12 @@ class TestImportMapperSaleOrder(WooCommerceCase):
     def test_order_update_keeps_its_pricelist(self):
         self.assertNotIn("pricelist_id", self._order_values(for_create=False))
 
+    def test_order_update_keeps_its_fiscal_position(self):
+        values = self._order_values(
+            for_create=False, billing=self._bound_billing(self.other_pricelist)
+        )
+        self.assertNotIn("fiscal_position_id", values)
+
     def test_order_update_keeps_its_salesperson_and_payment_terms(self):
         self.backend.salesperson_id = self.env.user
         self.backend.payment_term_id = self.env.ref(

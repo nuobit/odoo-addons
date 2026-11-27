@@ -130,10 +130,18 @@ class WooCommerceSaleOrderImporter(Component):
         }
 
     def _create_partner_parent(self, dir_type, value):
-        """Create the contact the ``dir_type`` block of ``value`` belongs to."""
-        return self.env["res.partner"].create(
+        """Create the contact the ``dir_type`` block of ``value`` belongs to,
+        with the fiscal position Odoo selects for it."""
+        customer = self.env["res.partner"].create(
             self._get_partner_parent_values(dir_type, value)
         )
+        # Odoo selects a fiscal position for each document, never for a
+        # contact: the customer gets the one Odoo selects for its own address
+        # and VAT number, which it now has
+        customer.property_account_position_id = self.env[
+            "account.fiscal.position"
+        ].get_fiscal_position(customer.id)
+        return customer
 
     def _get_order_customer(self, external_data):
         """The order's customer. A billing block already imported gives it

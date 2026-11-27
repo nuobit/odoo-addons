@@ -66,17 +66,37 @@ class WooCommerceSaleOrderImportMapper(Component):
                 "partner_invoice_id": partner.id,
             }
 
+    def _get_shipping_partner(self, record):
+        binder = self.binder_for("woocommerce.res.partner")
+        external_id = binder.dict2id(record["shipping"], in_field=False)
+        partner = binder.to_internal(external_id, unwrap=True)
+        assert partner, (
+            "partner_shipping_id %s should have been imported in "
+            "SaleOrderImporter._import_dependencies" % external_id
+        )
+        return partner
+
     @mapping
     def shipping(self, record):
         if record["shipping"]:
-            binder = self.binder_for("woocommerce.res.partner")
-            external_id = binder.dict2id(record["shipping"], in_field=False)
-            partner = binder.to_internal(external_id, unwrap=True)
-            assert partner, (
-                "partner_shipping_id %s should have been imported in "
-                "SaleOrderImporter._import_dependencies" % external_id
+            return {"partner_shipping_id": self._get_shipping_partner(record).id}
+
+    @only_create
+    @mapping
+    def fiscal_position(self, record):
+        # Odoo selects it when a user sets the order's partners, which a
+        # creation by code does not do: the import asks Odoo's own selection
+        # for the order's customer and its delivery address, or the customer
+        # alone when the order has none
+        if record["billing"]:
+            invoice_address = self._get_billing_partner(record)
+            delivery_id = (
+                self._get_shipping_partner(record).id if record["shipping"] else None
             )
-            return {"partner_shipping_id": partner.id}
+            fiscal_position = self.env["account.fiscal.position"].get_fiscal_position(
+                (invoice_address.parent_id or invoice_address).id, delivery_id
+            )
+            return {"fiscal_position_id": fiscal_position.id}
 
     @mapping
     def payment_method(self, record):
