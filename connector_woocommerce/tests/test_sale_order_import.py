@@ -161,7 +161,7 @@ class TestSaleOrderImport(WooCommerceSaleOrderImportCase):
             % (first.id, second.id),
         )
 
-    def test_delivery_to_another_name_gets_a_customer_of_its_own(self):
+    def test_delivery_to_another_name_hangs_from_the_order_customer(self):
         order = self._shop_order(
             30001,
             billing=self._address_block(
@@ -171,9 +171,76 @@ class TestSaleOrderImport(WooCommerceSaleOrderImportCase):
         )
         self._import_order(order)
         sale = self._imported_order(order)
-        delivery_customer = sale.partner_shipping_id.parent_id
-        self.assertEqual(delivery_customer.name, "WooCommerce recipient")
-        self.assertNotEqual(delivery_customer, sale.partner_id)
+        self.assertEqual(sale.partner_shipping_id.name, "WooCommerce recipient")
+        self.assertEqual(sale.partner_shipping_id.parent_id, sale.partner_id)
+        self.assertFalse(
+            self.env["res.partner"].search(
+                [("name", "=", "WooCommerce recipient"), ("parent_id", "=", False)]
+            )
+        )
+
+    def test_delivery_to_a_namesake_of_a_contact_hangs_from_the_order_customer(
+        self,
+    ):
+        namesake = self.env["res.partner"].create({"name": "WooCommerce recipient"})
+        contact_person = self.env["res.partner"].create(
+            {"name": "WooCommerce contact person", "parent_id": namesake.id}
+        )
+        order = self._shop_order(
+            30001,
+            billing=self._address_block(
+                "WooCommerce", "buyer", email="buyer@example.com"
+            ),
+            shipping=self._address_block("WooCommerce", "recipient"),
+        )
+        self._import_order(order)
+        sale = self._imported_order(order)
+        self.assertEqual(sale.partner_shipping_id.parent_id, sale.partner_id)
+        self.assertEqual(namesake.child_ids, contact_person)
+
+    def test_known_buyer_with_another_delivery_address_gets_it_under_its_customer(
+        self,
+    ):
+        billing = self._address_block("WooCommerce", "buyer", email="buyer@example.com")
+        first_order = self._shop_order(
+            30001, billing, self._address_block("WooCommerce", "buyer")
+        )
+        second_order = self._shop_order(
+            30002,
+            billing,
+            self._address_block(
+                "WooCommerce", "buyer", address_1="Carrer de Provença 2"
+            ),
+        )
+        self._import_order(first_order)
+        contacts = self._all_contacts()
+        self._import_order(second_order)
+        first_sale = self._imported_order(first_order)
+        second_sale = self._imported_order(second_order)
+        self.assertEqual(
+            self._all_contacts() - contacts, second_sale.partner_shipping_id
+        )
+        self.assertEqual(second_sale.partner_shipping_id.street, "Carrer de Provença 2")
+        self.assertEqual(second_sale.partner_id, first_sale.partner_id)
+        self.assertEqual(
+            second_sale.partner_shipping_id.parent_id, first_sale.partner_id
+        )
+
+    def test_bound_address_without_parent_is_its_own_customer(self):
+        billing = self._address_block("WooCommerce", "buyer", email="buyer@example.com")
+        first_order = self._shop_order(
+            30001, billing, self._address_block("WooCommerce", "buyer")
+        )
+        second_order = self._shop_order(
+            30002, billing, self._address_block("WooCommerce", "recipient")
+        )
+        self._import_order(first_order)
+        invoice_address = self._imported_order(first_order).partner_invoice_id
+        invoice_address.parent_id = False
+        self._import_order(second_order)
+        second_sale = self._imported_order(second_order)
+        self.assertEqual(second_sale.partner_id, invoice_address)
+        self.assertEqual(second_sale.partner_shipping_id.parent_id, invoice_address)
 
     def test_imported_order_is_not_imported_again(self):
         order = self._shop_order(

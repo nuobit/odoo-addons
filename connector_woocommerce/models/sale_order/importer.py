@@ -97,12 +97,6 @@ class WooCommerceSaleOrderImporter(Component):
             }
         )
 
-    def _add_partner_parent(self, dir_type, value):
-        parent = self._search_partner_parent(dir_type, value)
-        value[dir_type]["parent"] = (
-            parent or self._create_partner_parent(dir_type, value)
-        ).id
-
     def _get_order_customer(self, external_data):
         """The order's customer. A billing block already imported gives it
         through its binding, as the order's mapper does: the parent of its
@@ -122,20 +116,22 @@ class WooCommerceSaleOrderImporter(Component):
         return customer
 
     def _import_dependencies(self, external_data, sync_date):
-        # Customer
+        # Customer: both addresses hang from it. A shop order always has a
+        # billing block; the adapter sets the shipping block to None when the
+        # order has none.
         binder = self.binder_for("woocommerce.res.partner")
-        billing = external_data.get("billing")
-        if billing:
-            billing["parent"] = self._get_order_customer(external_data).id
-            self._import_dependency(
-                binder.dict2id(billing, in_field=False),
-                "woocommerce.res.partner",
-                sync_date,
-                external_data=billing,
-            )
-        shipping = external_data.get("shipping")
-        if shipping:
-            self._add_partner_parent("shipping", external_data)
+        customer = self._get_order_customer(external_data)
+        billing = external_data["billing"]
+        billing["parent"] = customer.id
+        self._import_dependency(
+            binder.dict2id(billing, in_field=False),
+            "woocommerce.res.partner",
+            sync_date,
+            external_data=billing,
+        )
+        shipping = external_data["shipping"]
+        if shipping is not None:
+            shipping["parent"] = customer.id
             self._import_dependency(
                 binder.dict2id(shipping, in_field=False),
                 "woocommerce.res.partner",
