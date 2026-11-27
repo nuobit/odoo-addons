@@ -77,10 +77,24 @@ class WooCommerceSaleOrderImporter(Component):
             )
         return parents
 
+    def _get_partner_parent_sales_values(self, value):
+        """The sales values of a new customer of the order ``value``: the
+        backend's discount pricelist and the order's payment mode. A value the
+        backend or the order does not have is left out, so the customer keeps
+        the default Odoo gives it."""
+        sales_values = {
+            "property_product_pricelist": self.backend_record.discount_pricelist_id,
+            "customer_payment_mode_id": self.backend_record._get_payment_mode(
+                value["payment_method"]
+            ),
+        }
+        return {field: record.id for field, record in sales_values.items() if record}
+
     def _get_partner_parent_values(self, dir_type, value):
         """The values of a new contact for the ``dir_type`` block of ``value``:
         named after the block's company, else its buyer, with the address,
-        the phone and the e-mail its own address gets from the block."""
+        the phone and the e-mail its own address gets from the block, and the
+        sales values of a new customer."""
         # TODO: REVIEW: slug for company name?
         name = value[dir_type]["company"] or value[dir_type]["name"]
         if not name:
@@ -109,6 +123,7 @@ class WooCommerceSaleOrderImporter(Component):
                 for field in customer_fields
                 if field in address_values
             },
+            **self._get_partner_parent_sales_values(value),
             **self._additional_partner_parent_fields(value, dir_type),
         }
 

@@ -42,6 +42,8 @@ class TestSaleOrderImport(WooCommerceSaleOrderImportCase):
         self.assertEqual(customer.phone, "600000001")
         self.assertFalse(customer.mobile)
         self.assertEqual(customer.email, "buyer@example.com")
+        self.assertEqual(customer.property_product_pricelist, self.discount_pricelist)
+        self.assertEqual(customer.customer_payment_mode_id, self.card)
         invoice_address = sale.partner_invoice_id
         self.assertEqual(invoice_address.parent_id, customer)
         self.assertEqual(invoice_address.type, "invoice")
@@ -315,6 +317,51 @@ class TestSaleOrderImport(WooCommerceSaleOrderImportCase):
         contacts = self._all_contacts()
         self._import_order(order)
         self.assertEqual(self._all_contacts(), contacts)
+
+    def test_new_customer_without_a_discount_pricelist_keeps_the_default_one(self):
+        self.backend.discount_pricelist_id = False
+        order = self._shop_order(
+            30001,
+            billing=self._address_block(
+                "WooCommerce", "buyer", email="buyer@example.com"
+            ),
+            shipping=self._address_block("WooCommerce", "buyer"),
+        )
+        self._import_order(order)
+        customer = self._imported_order(order).partner_id
+        # Odoo's default pricelist depends on the contact's country
+        contact_in_spain = self.env["res.partner"].create(
+            {"name": "WooCommerce contact", "country_id": self.env.ref("base.es").id}
+        )
+        self.assertEqual(
+            customer.property_product_pricelist,
+            contact_in_spain.property_product_pricelist,
+        )
+
+    def test_new_customer_of_an_order_without_payment_method_keeps_the_default(self):
+        default_mode = self.env["account.payment.mode"].create(
+            {
+                "name": "WooCommerce default mode",
+                "bank_account_link": "variable",
+                "payment_method_id": self.env.ref(
+                    "account.account_payment_method_manual_in"
+                ).id,
+            }
+        )
+        self.env["ir.property"]._set_default(
+            "customer_payment_mode_id", "res.partner", default_mode, self.env.company
+        )
+        order = self._shop_order(
+            30001,
+            billing=self._address_block(
+                "WooCommerce", "buyer", email="buyer@example.com"
+            ),
+            shipping=self._address_block("WooCommerce", "buyer"),
+        )
+        order["payment_method"] = ""
+        self._import_order(order)
+        customer = self._imported_order(order).partner_id
+        self.assertEqual(customer.customer_payment_mode_id, default_mode)
 
     def test_unmapped_payment_method_stops_the_import(self):
         order = self._shop_order(
