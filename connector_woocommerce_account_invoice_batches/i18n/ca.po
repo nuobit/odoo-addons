@@ -1,0 +1,51 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* connector_woocommerce_account_invoice_batches
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-27 17:52+0000\n"
+"PO-Revision-Date: 2026-11-27 17:52+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: connector_woocommerce_account_invoice_batches
+#: model:ir.model.fields.selection,name:connector_woocommerce_account_invoice_batches.selection__woocommerce_backend__invoice_batch_sending_method__signedfacturae
+msgid "Factura-e signed"
+msgstr "Factura-e signada"
+
+#. module: connector_woocommerce_account_invoice_batches
+#: model:ir.model.fields.selection,name:connector_woocommerce_account_invoice_batches.selection__woocommerce_backend__invoice_batch_sending_method__unsignedfacturae
+msgid "Factura-e unsigned"
+msgstr "Factura-e no signada"
+
+#. module: connector_woocommerce_account_invoice_batches
+#: model:ir.model.fields,field_description:connector_woocommerce_account_invoice_batches.field_woocommerce_backend__invoice_batch_sending_method
+msgid "Invoice Batch Sending Method"
+msgstr "Mètode d'enviament de Lot de facturació"
+
+#. module: connector_woocommerce_account_invoice_batches
+#: model:ir.model.fields.selection,name:connector_woocommerce_account_invoice_batches.selection__woocommerce_backend__invoice_batch_sending_method__pdf
+msgid "PDF"
+msgstr "Impressió"
+
+#. module: connector_woocommerce_account_invoice_batches
+#: model:ir.model.fields,help:connector_woocommerce_account_invoice_batches.field_woocommerce_backend__invoice_batch_sending_method
+msgid ""
+"The invoice batch sending method the import gives a new customer and each "
+"new invoice address, each one its own invoice batch contact."
+msgstr ""
+"El mètode d'enviament de lot de facturació que la importació dona a cada "
+"client nou i a cada adreça de factura nova, cadascun com el seu propi "
+"contacte de lot de facturació."
+
+#. module: connector_woocommerce_account_invoice_batches
+#: model:ir.model.fields.selection,name:connector_woocommerce_account_invoice_batches.selection__woocommerce_backend__invoice_batch_sending_method__email
+msgid "e-mail"
+msgstr "e-mail"
