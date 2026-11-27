@@ -174,6 +174,48 @@ class TestSaleOrderImport(WooCommerceSaleOrderImportCase):
         self.assertEqual(self._all_contacts(), contacts)
         self.assertEqual(self._imported_order(order), sale)
 
+    def test_re_import_takes_the_customer_from_its_bound_address(self):
+        order = self._shop_order(
+            30001,
+            billing=self._address_block(
+                "WooCommerce", "buyer", email="buyer@example.com"
+            ),
+            shipping=self._address_block("WooCommerce", "recipient"),
+        )
+        self._import_order(order)
+        sale = self._imported_order(order)
+        # A contact with the buyer's name and an address, as a search by
+        # name would also find
+        self.env["res.partner"].create(
+            {
+                "name": "WooCommerce buyer",
+                "child_ids": [(0, 0, {"name": "WooCommerce contact person"})],
+            }
+        )
+        contacts = self._all_contacts()
+        result = self._import_order(order)
+        self.assertEqual(
+            result,
+            "The Order %s is already imported -> Update not allowed"
+            % sale.display_name,
+        )
+        self.assertEqual(self._all_contacts(), contacts)
+
+    def test_re_import_after_the_customer_is_renamed_creates_no_contact(self):
+        order = self._shop_order(
+            30001,
+            billing=self._address_block(
+                "WooCommerce", "buyer", email="buyer@example.com"
+            ),
+            shipping=self._address_block("WooCommerce", "recipient"),
+        )
+        self._import_order(order)
+        sale = self._imported_order(order)
+        sale.partner_id.name = "WooCommerce buyer renamed"
+        contacts = self._all_contacts()
+        self._import_order(order)
+        self.assertEqual(self._all_contacts(), contacts)
+
     def test_unmapped_payment_method_stops_the_import(self):
         order = self._shop_order(
             30001,

@@ -87,13 +87,30 @@ class WooCommerceSaleOrderImporter(Component):
             parent or self._create_partner_parent(dir_type, value)
         ).id
 
+    def _get_order_customer(self, external_data):
+        """The order's customer. A billing block already imported gives it
+        through its binding, as the order's mapper does: the parent of its
+        address, or the address itself when it has none. Any other block is
+        searched for, and gets a new customer when nothing is found."""
+        binder = self.binder_for("woocommerce.res.partner")
+        # The binding's unique key binds a block to one address at most
+        address = binder.to_internal(
+            binder.dict2id(external_data["billing"], in_field=False), unwrap=True
+        )
+        if address:
+            customer = address.parent_id or address
+        else:
+            customer = self._search_partner_parent(
+                "billing", external_data
+            ) or self._create_partner_parent("billing", external_data)
+        return customer
+
     def _import_dependencies(self, external_data, sync_date):
         # Customer
         binder = self.binder_for("woocommerce.res.partner")
         billing = external_data.get("billing")
         if billing:
-            # TODO: dELETE only next line
-            self._add_partner_parent("billing", external_data)
+            billing["parent"] = self._get_order_customer(external_data).id
             self._import_dependency(
                 binder.dict2id(billing, in_field=False),
                 "woocommerce.res.partner",
