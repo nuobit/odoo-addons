@@ -3134,7 +3134,7 @@ msgid "Payment Tokens"
 msgstr ""
 
 #. module: connector_woocommerce
-#: code:addons/connector_woocommerce/models/sale_order/import_mapper.py:0
+#: code:addons/connector_woocommerce/models/backend/backend.py:0
 #, python-format
 msgid "Payment method '%s' is not defined on backend"
 msgstr ""

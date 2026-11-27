@@ -80,15 +80,8 @@ class WooCommerceSaleOrderImportMapper(Component):
 
     @mapping
     def payment_method(self, record):
-        payment_mode = self.backend_record.payment_mode_ids.filtered(
-            lambda x: record["payment_method"] == x.woocommerce_payment_mode
-        )
-        if not payment_mode and record["payment_method"]:
-            raise ValidationError(
-                _("Payment method '%s' is not defined on backend")
-                % record.get("payment_method")
-            )
-        return {"payment_mode_id": payment_mode.payment_mode_id.id}
+        payment_mode = self.backend_record._get_payment_mode(record["payment_method"])
+        return {"payment_mode_id": payment_mode.id}
 
     def _get_currency(self, record):
         currency = self.env["res.currency"].search([("name", "=", record["currency"])])
