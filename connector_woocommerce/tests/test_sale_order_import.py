@@ -18,7 +18,15 @@ class TestSaleOrderImport(WooCommerceSaleOrderImportCase):
             billing=self._address_block(
                 "WooCommerce", "buyer", email="buyer@example.com", phone="600000001"
             ),
-            shipping=self._address_block("WooCommerce", "buyer", phone="600000002"),
+            shipping=self._address_block(
+                "WooCommerce",
+                "buyer",
+                address_1="Carrer de Provença 2",
+                city="Girona",
+                state="GI",
+                postcode="17001",
+                phone="600000002",
+            ),
         )
         self._import_order(order)
         sale = self._imported_order(order)
@@ -28,6 +36,10 @@ class TestSaleOrderImport(WooCommerceSaleOrderImportCase):
         self.assertEqual(customer.company_type, "company")
         # Odoo gives a contact with no address the one of its first child
         self.assertEqual(customer.street, "Carrer de Mallorca 1")
+        self.assertEqual(customer.city, "Barcelona")
+        self.assertEqual(customer.zip, "08001")
+        self.assertEqual(customer.state_id, self.env.ref("base.state_es_b"))
+        self.assertEqual(customer.country_id, self.env.ref("base.es"))
         self.assertFalse(customer.phone)
         self.assertFalse(customer.mobile)
         self.assertFalse(customer.email)
@@ -36,13 +48,14 @@ class TestSaleOrderImport(WooCommerceSaleOrderImportCase):
         self.assertEqual(invoice_address.type, "invoice")
         self.assertEqual(invoice_address.name, "WooCommerce buyer")
         self.assertEqual(invoice_address.email, "buyer@example.com")
-        self.assertEqual(invoice_address.mobile, "600000001")
-        self.assertFalse(invoice_address.phone)
+        self.assertEqual(invoice_address.phone, "600000001")
+        self.assertFalse(invoice_address.mobile)
         delivery_address = sale.partner_shipping_id
         self.assertEqual(delivery_address.parent_id, customer)
         self.assertEqual(delivery_address.type, "delivery")
-        self.assertEqual(delivery_address.mobile, "600000002")
-        self.assertFalse(delivery_address.phone)
+        self.assertEqual(delivery_address.street, "Carrer de Provença 2")
+        self.assertEqual(delivery_address.phone, "600000002")
+        self.assertFalse(delivery_address.mobile)
         self.assertEqual(customer.child_ids, invoice_address | delivery_address)
         self.assertEqual(sale.payment_mode_id, self.card)
         self.assertEqual(sale.pricelist_id, self.discount_pricelist)
