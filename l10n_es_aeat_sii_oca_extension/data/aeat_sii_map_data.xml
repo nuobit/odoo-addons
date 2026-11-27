@@ -10,4 +10,13 @@
             eval="[(4, ref('l10n_es_extension.account_tax_template_s_iva0_sdd'))]"
         />
     </record>
+    <record
+        id="l10n_es_aeat_sii_oca.aeat_sii_map_line_SFRNS"
+        model="aeat.sii.map.lines"
+    >
+        <field
+            name="taxes"
+            eval="[(4, ref('l10n_es_extension.account_tax_template_s_iva_ns_bi'))]"
+        />
+    </record>
 </odoo>

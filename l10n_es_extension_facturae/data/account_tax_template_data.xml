@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record
+        id="l10n_es_extension.account_tax_template_s_iva0_sdd"
+        model="account.tax.template"
+    >
+        <field name="facturae_code">01</field>
+    </record>
+    <record
+        id="l10n_es_extension.account_tax_template_s_iva_ns_bi"
+        model="account.tax.template"
+    >
+        <field name="facturae_code">01</field>
+    </record>
+    <record
+        id="l10n_es_extension.account_tax_template_p_iva0_sp_in"
+        model="account.tax.template"
+    >
+        <field name="facturae_code">01</field>
+    </record>
+</odoo>
