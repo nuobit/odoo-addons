@@ -4,9 +4,12 @@
 
 import base64
 import logging
+from collections import Counter
 
 from odoo import _, fields, models
 from odoo.exceptions import UserError
+
+from ..models.common import BATCH_SENDING_METHODS
 
 _logger = logging.getLogger(__name__)
 
@@ -81,12 +84,78 @@ class AccountInvoiceBatchProcess(models.TransientModel):
     def send_email(self, move_id):
         inv = self.env["account.move"].browse(move_id)
         if not inv.is_move_sent:
-            inv.with_context(lang=inv.partner_id.lang).message_post_with_template(
-                self.invoice_batch_sending_email_template_id.id,
+            batch = inv.invoice_batch_id
+            if not batch:
+                raise UserError(
+                    _("Invoice %s does not belong to a batch.", inv.display_name)
+                )
+            # the e-mail belongs to the invoice batch user of the batch company
+            # (author of the message, mailbox of the replies); a configuration
+            # withdrawn between the enqueue and the run fails loud here
+            user = batch.company_id._get_invoice_batch_user()
+            template_id = self.invoice_batch_sending_email_template_id.id
+            inv = inv.with_user(user).with_context(
+                allowed_company_ids=batch.company_id.ids, lang=inv.partner_id.lang
+            )
+            inv.message_post_with_template(
+                template_id,
                 message_type="comment",
                 composition_mode="mass_mail",
             )
             inv.is_move_sent = True
+
+    def _invoice_batch_user_required(self):
+        """Whether the processing needs the invoice batch user of the companies.
+
+        Only the e-mail job runs as that user: printing and factura-e keep the
+        launcher's identity, so a batch of a company without user can still be
+        printed or sent as factura-e.
+        """
+        self.ensure_one()
+        return bool(self.invoice_batch_sending_email)
+
+    def _invoice_batch_check_users(self, batches):
+        """Fail before enqueueing anything when a batch company has no valid user."""
+        for company in batches.mapped("company_id"):
+            company._get_invoice_batch_user()
+
+    def _get_invoice_batch_enabled_sending_methods(self):
+        """Sending methods enabled on this wizard, in BATCH_SENDING_METHODS order.
+
+        Extend it together with BATCH_SENDING_METHODS to add a method.
+        """
+        self.ensure_one()
+        enabled = {
+            "pdf": self.invoice_batch_sending_pdf,
+            "email": self.invoice_batch_sending_email,
+            "signedfacturae": self.invoice_batch_sending_signedfacturae,
+            "unsignedfacturae": self.invoice_batch_sending_unsignedfacturae,
+        }
+        # a method without flag here fails loud (KeyError) instead of vanishing
+        return [method for method, _label in BATCH_SENDING_METHODS if enabled[method]]
+
+    def _post_invoice_batch_launch_note(self, batch, invoices):
+        """Note on the batch, as the launcher, counting the invoices per method.
+
+        Only the invoices to be sent with an enabled method are counted; when
+        there is none, nothing was launched and no note is posted.
+        """
+        labels = dict(
+            self.env["account.move"]
+            ._fields["invoice_batch_sending_method"]
+            ._description_selection(self.env)
+        )
+        counted = Counter(invoices.mapped("invoice_batch_sending_method"))
+        counts = [
+            "%d %s" % (counted[method], labels[method])
+            for method in self._get_invoice_batch_enabled_sending_methods()
+            if counted[method]
+        ]
+        if counts:
+            batch.message_post(
+                body=_("Batch processing launched: %s", ", ".join(counts)),
+                subtype_xmlid="mail.mt_note",
+            )
 
     def prepare_invoices(self, invoices):
         self.ensure_one()
@@ -136,16 +205,26 @@ class AccountInvoiceBatchProcess(models.TransientModel):
         if model == "account.invoice.batch":
             if not active_objects.mapped("unsent_invoice_ids"):
                 raise UserError(_("There's no invoices to process"))
+            if self._invoice_batch_user_required():
+                self._invoice_batch_check_users(active_objects)
             for batch in active_objects:
                 invoices = batch.unsent_invoice_ids
                 invoices_pdf += self.prepare_invoices(invoices)
+                self._post_invoice_batch_launch_note(batch, invoices)
         elif model == "account.move":
             if not active_objects:
                 raise UserError(_("There's no invoices to process"))
             invoices = active_objects.filtered(
                 lambda x: x.invoice_batch_id and not x.is_move_sent
             )
+            if self._invoice_batch_user_required():
+                self._invoice_batch_check_users(invoices.mapped("invoice_batch_id"))
             invoices_pdf = self.prepare_invoices(invoices)
+            for batch in invoices.mapped("invoice_batch_id"):
+                self._post_invoice_batch_launch_note(
+                    batch,
+                    invoices.filtered_domain([("invoice_batch_id", "=", batch.id)]),
+                )
         else:
             raise UserError(_("Unexpected model '%s'" % model))
 

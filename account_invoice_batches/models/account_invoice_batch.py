@@ -9,6 +9,7 @@ from odoo import api, fields, models
 
 class AccountInvoiceBatch(models.Model):
     _name = "account.invoice.batch"
+    _inherit = ["mail.thread"]
     _description = "Account Invoice Batch"
     _order = "date desc"
 
