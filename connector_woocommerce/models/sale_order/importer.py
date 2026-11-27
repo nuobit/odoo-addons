@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 from odoo import _
 from odoo.exceptions import ValidationError
@@ -47,33 +48,44 @@ class WooCommerceSaleOrderImporter(Component):
     def _additional_partner_parent_fields(self, value, dir_type):
         return {}
 
-    def _add_partner_parent(self, dir_type, value):
-        # TODO: REVIEW: slug for company name?
-        domain = self._get_partner_parent_domain(dir_type, value)
-        parent = self.env["res.partner"].search(domain)
-        if not parent:
-            name = value[dir_type]["company"] or value[dir_type]["name"]
-            if not name:
-                raise ValidationError(
-                    _(
-                        "Cannot create the parent partner for %s: %s because neither "
-                        "company nor name is set."
-                    )
-                    % (dir_type, value)
-                )
-            parent = self.env["res.partner"].create(
-                {
-                    "name": name,
-                    "company_type": "company",
-                    **self._additional_partner_parent_fields(value, dir_type),
-                }
-            )
-        elif len(parent) > 1:
+    def _search_partner_parent(self, dir_type, value):
+        """The contact the ``dir_type`` block of ``value`` belongs to, or none.
+        More than one is refused."""
+        parent = self.env["res.partner"].search(
+            self._get_partner_parent_domain(dir_type, value)
+        )
+        if len(parent) > 1:
             raise ValidationError(
                 _("There are more than one parent partner with the same name %s")
                 % value[dir_type]["name"]
             )
-        value[dir_type]["parent"] = parent.id
+        return parent
+
+    def _create_partner_parent(self, dir_type, value):
+        """Create the contact the ``dir_type`` block of ``value`` belongs to."""
+        # TODO: REVIEW: slug for company name?
+        name = value[dir_type]["company"] or value[dir_type]["name"]
+        if not name:
+            raise ValidationError(
+                _(
+                    "Cannot create the parent partner for %s: %s because neither "
+                    "company nor name is set."
+                )
+                % (dir_type, value)
+            )
+        return self.env["res.partner"].create(
+            {
+                "name": name,
+                "company_type": "company",
+                **self._additional_partner_parent_fields(value, dir_type),
+            }
+        )
+
+    def _add_partner_parent(self, dir_type, value):
+        parent = self._search_partner_parent(dir_type, value)
+        value[dir_type]["parent"] = (
+            parent or self._create_partner_parent(dir_type, value)
+        ).id
 
     def _import_dependencies(self, external_data, sync_date):
         # Customer
