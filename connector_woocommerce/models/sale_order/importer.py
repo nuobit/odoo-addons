@@ -37,11 +37,16 @@ class WooCommerceSaleOrderImporter(Component):
 
     _apply_on = "woocommerce.sale.order"
 
+    def _get_partner_parent_key(self, dir_type, value):
+        """The field and the value that find the contact of the ``dir_type``
+        block of ``value``: the name of its company, else its own."""
+        return "name", value[dir_type].get("company") or value[dir_type].get("name")
+
     def _get_partner_parent_domain(self, dir_type, value):
-        name = value[dir_type].get("company") or value[dir_type].get("name")
+        field, key = self._get_partner_parent_key(dir_type, value)
         return [
             ("child_ids", "!=", False),
-            ("name", "=", name),
+            (field, "=", key),
         ]
 
     def _additional_partner_parent_fields(self, value, dir_type):
@@ -49,16 +54,28 @@ class WooCommerceSaleOrderImporter(Component):
 
     def _search_partner_parent(self, dir_type, value):
         """The contact the ``dir_type`` block of ``value`` belongs to, or none.
-        More than one is refused."""
-        parent = self.env["res.partner"].search(
+        More than one is refused, each of them listed."""
+        parents = self.env["res.partner"].search(
             self._get_partner_parent_domain(dir_type, value)
         )
-        if len(parent) > 1:
+        if len(parents) > 1:
+            field, key = self._get_partner_parent_key(dir_type, value)
             raise ValidationError(
-                _("There are more than one parent partner with the same name %s")
-                % value[dir_type]["name"]
+                _(
+                    "%(count)s contacts have the %(field)s %(value)s, which must "
+                    "belong to one contact only:"
+                )
+                % {
+                    "count": len(parents),
+                    "field": parents.fields_get([field], ["string"])[field]["string"],
+                    "value": key,
+                }
+                + "".join(
+                    "\n- %s %s" % (parent.id, parent.display_name)
+                    for parent in parents.sorted("id")
+                )
             )
-        return parent
+        return parents
 
     def _create_partner_parent(self, dir_type, value):
         """Create the contact the ``dir_type`` block of ``value`` belongs to."""

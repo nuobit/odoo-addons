@@ -132,14 +132,19 @@ class TestSaleOrderImport(WooCommerceSaleOrderImportCase):
             self._import_order(order)
         expression_logger.error.assert_not_called()
 
-    def test_two_contacts_with_the_buyer_name_stop_the_import(self):
-        for _contact in range(2):
-            self.env["res.partner"].create(
+    def test_two_contacts_with_the_buyer_name_stop_the_import_naming_both(self):
+        first, second = self.env["res.partner"].create(
+            [
                 {
                     "name": "WooCommerce buyer",
                     "child_ids": [(0, 0, {"name": "WooCommerce contact person"})],
-                }
-            )
+                },
+                {
+                    "name": "WooCommerce buyer",
+                    "child_ids": [(0, 0, {"name": "WooCommerce contact person"})],
+                },
+            ]
+        )
         order = self._shop_order(
             30001,
             billing=self._address_block(
@@ -147,12 +152,14 @@ class TestSaleOrderImport(WooCommerceSaleOrderImportCase):
             ),
             shipping=self._address_block("WooCommerce", "buyer"),
         )
-        with self.assertRaisesRegex(
-            ValidationError,
-            "There are more than one parent partner with the same name "
-            "WooCommerce buyer",
-        ):
+        with self.assertRaises(ValidationError) as error:
             self._import_order(order)
+        self.assertEqual(
+            error.exception.args[0],
+            "2 contacts have the Name WooCommerce buyer, which must belong to one "
+            "contact only:\n- %s WooCommerce buyer\n- %s WooCommerce buyer"
+            % (first.id, second.id),
+        )
 
     def test_delivery_to_another_name_gets_a_customer_of_its_own(self):
         order = self._shop_order(

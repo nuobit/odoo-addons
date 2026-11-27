@@ -68,6 +68,16 @@ msgid "# of Expenses"
 msgstr ""
 
 #. module: connector_woocommerce
+#: code:addons/connector_woocommerce/models/sale_order/importer.py:0
+#, python-format
+msgid ""
+"%(count)s contacts have the %(field)s %(value)s, which must belong to one "
+"contact only:"
+msgstr ""
+"%(count)s contactos tienen el %(field)s %(value)s, que debe pertenecer a un "
+"solo contacto:"
+
+#. module: connector_woocommerce
 #: model:ir.model.fields,help:connector_woocommerce.field_woocommerce_product_attribute__create_variant
 msgid ""
 "- Instantly: All possible variants are created as soon as the attribute and its values are added to a product.\n"
