@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Frank Cespedes <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <template
+        id="administrative_center"
+        inherit_id="l10n_es_facturae.administrative_center"
+    >
+        <xpath expr="//RoleTypeCode" position="after">
+            <Name
+                t-length="40"
+                t-esc="move.cege"
+                t-if="partner.is_company and move.cege and role_type_code == '02'"
+            />
+        </xpath>
+    </template>
+</odoo>
