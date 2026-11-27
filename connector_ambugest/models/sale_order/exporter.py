@@ -23,7 +23,7 @@ class SaleOrderExporter(Component):
         order_number, order_date = None, None
         if not clear:
             order_number = binding.name
-            order_date = binding.date_order
+            order_date = self.backend_record.utc_to_local(binding.date_order)
 
         values = {
             "Odoo_Numero_Albaran": order_number,
