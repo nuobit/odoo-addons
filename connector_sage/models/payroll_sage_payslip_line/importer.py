@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -23,6 +24,13 @@ class PayslipLineDelayedBatchImporter(Component):
         record_ids = self.backend_adapter.search(filters)
         for record_id in record_ids:
             self._import_record(record_id)
+
+    def _import_record(self, external_id, job_options=None):
+        """Delay the import of the record into the payslip of this import"""
+        delayable = self.model.with_delay(**job_options or {})
+        delayable.import_record(
+            self.backend_record, external_id, payslip=self.work.payslip
+        )
 
 
 class PayslipLineImporter(Component):

@@ -1,6 +1,10 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
+
+from odoo import _
+from odoo.exceptions import UserError
 
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping, only_create
@@ -45,4 +49,14 @@ class PayslipCheckImportMapper(Component):
     @only_create
     @mapping
     def payslip_id(self, record):
-        return {"payslip_id": self.backend_record.import_payslip_check_id.id}
+        payslip = self.work.payslip
+        if payslip is None or not payslip.exists():
+            raise UserError(
+                _(
+                    "This job has no destination payslip, because it was queued "
+                    "without one or because its payslip was deleted. Cancel the "
+                    "job and, if the payslip still exists, import it again."
+                )
+            )
+        payslip.ensure_one()
+        return {"payslip_id": payslip.id}
