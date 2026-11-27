@@ -16,3 +16,7 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 "access_oxigesti_stock_production_lot","oxigesti_stock_production_lot connector manager","model_oxigesti_stock_production_lot","connector.group_connector_manager",1,1,1,1
 "access_oxigesti_stock_production_lot_group_user","oxigesti_stock_production_lot group_user","model_oxigesti_stock_production_lot","base.group_user",1,0,0,0
 "access_oxigesti_backend","oxigesti_backend connector manager","model_oxigesti_backend","connector.group_connector_manager",1,1,1,1
+"access_oxigesti_mrp_production","oxigesti_mrp_production connector manager","model_oxigesti_mrp_production","connector.group_connector_manager",1,1,1,1
+"access_oxigesti_mrp_production_group_user","oxigesti_mrp_production group_user","model_oxigesti_mrp_production","base.group_user",1,0,0,0
+"access_oxigesti_backend_product_attribute_map","oxigesti_backend_product_attribute_map connector manager","model_oxigesti_backend_product_attribute_map","connector.group_connector_manager",1,1,1,1
+"access_oxigesti_backend_product_attribute_map_group_user","oxigesti_backend_product_attribute_map group_user","model_oxigesti_backend_product_attribute_map","base.group_user",1,1,1,1

@@ -1,6 +1,7 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 from odoo import _
+from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping, only_create
@@ -11,6 +12,14 @@ class ResPartnerImportMapper(Component):
     _inherit = "oxigesti.import.mapper"
 
     _apply_on = "oxigesti.stock.production.lot"
+
+    direct = [
+        ("Peso", "weight"),
+        ("FechaFabricacion", "manufacture_date"),
+        ("FechaRetimbrado", "retesting_date"),
+        ("FechaProximoRetimbrado", "next_retesting_date"),
+        ("FechaCaducidad", "removal_date"),
+    ]
 
     @mapping
     def backend_id(self, record):
@@ -72,6 +81,34 @@ class ResPartnerImportMapper(Component):
         # Odoo will throw a constraint of the module oxigen_stock_alternate_lot
         values["dn_unknown"] = record["dn_unknown"]
         return values
+
+    # TODO: REVIEW: improve this mapping, exists the possibility that the
+    #  manufacturer has a different name in Odoo than in Oxigesti
+    @mapping
+    def manufacturer_id(self, record):
+        if record["Fabricante"]:
+            manufacturer = self.env["res.partner"].search(
+                [
+                    ("name", "=", record["Fabricante"]),
+                    ("company_id", "in", (False, self.backend_record.company_id.id)),
+                ]
+            )
+            if not manufacturer:
+                raise ValidationError(
+                    _("Manufacturer (%s) does not exist with this name on Odoo")
+                    % (record["Fabricante"],)
+                )
+            if len(manufacturer) > 1:
+                raise ValidationError(
+                    _(
+                        "Found more than one manufacturer (%i) with "
+                        "the same name (%s) in Odoo"
+                    )
+                    % (len(manufacturer), record["Fabricante"])
+                )
+            return {"manufacturer_id": manufacturer.id}
+        else:
+            return {"manufacturer_id": None}
 
     @mapping
     def oxigesti_write_date(self, record):
