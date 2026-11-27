@@ -40,7 +40,6 @@ class WooCommerceSaleOrderImporter(Component):
     def _get_partner_parent_domain(self, dir_type, value):
         name = value[dir_type].get("company") or value[dir_type].get("name")
         return [
-            ("company_type", "in", (False, "company")),
             ("child_ids", "!=", False),
             ("name", "=", name),
         ]

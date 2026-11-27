@@ -1,6 +1,8 @@
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+from unittest.mock import patch
+
 from odoo.exceptions import ValidationError
 
 from .common import WooCommerceSaleOrderImportCase
@@ -117,6 +119,18 @@ class TestSaleOrderImport(WooCommerceSaleOrderImportCase):
         self.assertNotEqual(sale.partner_id, namesake)
         self.assertEqual(sale.partner_id.name, "WooCommerce buyer")
         self.assertFalse(namesake.child_ids)
+
+    def test_customer_search_by_name_logs_no_error(self):
+        order = self._shop_order(
+            30001,
+            billing=self._address_block(
+                "WooCommerce", "buyer", email="buyer@example.com"
+            ),
+            shipping=self._address_block("WooCommerce", "buyer"),
+        )
+        with patch("odoo.osv.expression._logger") as expression_logger:
+            self._import_order(order)
+        expression_logger.error.assert_not_called()
 
     def test_two_contacts_with_the_buyer_name_stop_the_import(self):
         for _contact in range(2):
