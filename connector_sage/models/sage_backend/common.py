@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -131,6 +132,7 @@ class SageBackend(models.Model):
             if not rec.import_payslip_line_id:
                 raise exceptions.UserError(_("There's no Payslip selected!"))
             payslip_id = rec.import_payslip_line_id
+            payslip_id._check_can_import()
             if payslip_id.type == "transfer":
                 model = "sage.payroll.sage.payslip.line.transfer"
             elif payslip_id.type == "payroll":
@@ -148,6 +150,7 @@ class SageBackend(models.Model):
             if not rec.import_payslip_check_id:
                 raise exceptions.UserError(_("There's no Payslip selected!"))
             payslip_id = rec.import_payslip_check_id
+            payslip_id._check_can_import()
             if payslip_id.type != "transfer":
                 raise exceptions.UserError(
                     _("Check import only makes sense on transfer payslips!")

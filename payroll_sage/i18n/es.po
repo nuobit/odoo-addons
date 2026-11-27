@@ -245,6 +245,16 @@ msgid "Lines"
 msgstr "Lineas"
 
 #. module: payroll_sage
+#: code:addons/payroll_sage/models/payslip.py:0
+#, python-format
+msgid ""
+"Lines and checks of a posted payslip cannot be created, changed or deleted "
+"(%s)."
+msgstr ""
+"No se pueden crear, cambiar ni borrar líneas ni cheques de una nómina "
+"contabilizada (%s)."
+
+#. module: payroll_sage
 #: model:ir.model.fields,help:payroll_sage.field_payroll_sage_payslip__move_id
 msgid "Link to the automatically generated Journal Items."
 msgstr "Enlace a los asientos generados automáticamente."

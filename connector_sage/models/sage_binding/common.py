@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -20,11 +21,11 @@ class SageBinding(models.AbstractModel):
     )
 
     @api.model
-    def import_batch(self, backend, filters=None):
+    def import_batch(self, backend, filters=None, payslip=None):
         """Prepare the import of records modified on Sage"""
         if filters is None:
             filters = {}
-        with backend.work_on(self._name) as work:
+        with backend.work_on(self._name, payslip=payslip) as work:
             # TODO: jobs are created with the default company
             #  of the user instead of the current company of the user
             if work.env.company != self.env.company:
@@ -38,11 +39,32 @@ class SageBinding(models.AbstractModel):
             return importer.run(filters=filters)
 
     @api.model
-    def import_record(self, backend, external_id):
+    def import_record(self, backend, external_id, payslip=None):
         """Import a Sage record"""
-        with backend.work_on(self._name) as work:
+        with backend.work_on(self._name, payslip=payslip) as work:
             importer = work.component(usage="record.importer")
             return importer.run(external_id)
+
+    @api.model
+    def _job_store_values(self, job):
+        """Link the jobs of a payslip's import to the payslip, so that posting
+        it can wait for them"""
+        values = super()._job_store_values(job)
+        if job.method_name == "import_record":
+            payslip = job.kwargs.get("payslip")
+        elif job.method_name in (
+            "import_payslip_lines",
+            "import_payslip_checks",
+            "import_payslip_lines_and_checks",
+        ):
+            payslip = job.args[0]
+        else:
+            payslip = None
+        if payslip is not None:
+            # the job is stored again when it runs, and its payslip may have
+            # been deleted by then
+            values["sage_payslip_id"] = payslip.exists().id
+        return values
 
     def resync(self):
         for record in self:

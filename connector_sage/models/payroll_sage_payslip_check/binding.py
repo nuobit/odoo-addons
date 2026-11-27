@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import fields, models
@@ -50,15 +51,12 @@ class PayslipCheckBinding(models.Model):
 
     def import_payslip_checks(self, payslip_id, backend_record):
         """Prepare the import of payslip from Sage"""
-        filters = {
-            "CodigoEmpresa": backend_record.sage_company_id,
-            "Año": payslip_id.year,
-            "MesD": ("between", (payslip_id.month_from, payslip_id.month_to)),
-            "TipoProceso": payslip_id.process_id.name,
-        }
-
+        # the checks follow the payslip's transfer lines
+        filters = self.env[
+            "sage.payroll.sage.payslip.line.transfer"
+        ]._get_payslip_filters(payslip_id, backend_record)
         self.env["sage.payroll.sage.payslip.check"].import_batch(
-            backend=backend_record, filters=filters
+            backend=backend_record, filters=filters, payslip=payslip_id
         )
 
         return True

@@ -9,3 +9,4 @@ from . import payroll_sage_payslip_line_payroll
 from . import payroll_sage_payslip_line_transfer
 from . import payroll_sage_payslip_check
 from . import payroll_sage_payslip
+from . import queue_job

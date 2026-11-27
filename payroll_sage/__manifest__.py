@@ -10,6 +10,7 @@
     "website": "https://github.com/nuobit/odoo-addons",
     "depends": [
         "account",
+        "hr",
     ],
     "data": [
         "security/payroll_sage.xml",
