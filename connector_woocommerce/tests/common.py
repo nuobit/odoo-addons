@@ -1,11 +1,13 @@
 # Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+import copy
 from datetime import timedelta
 from unittest.mock import patch
 
 from freezegun import freeze_time
 
+from odoo import fields
 from odoo.modules.graph import Graph
 from odoo.modules.migration import MigrationManager
 from odoo.modules.module import load_information_from_description_file
@@ -354,3 +356,105 @@ class WooCommerceOrderCase(WooCommerceCase):
             line.to_refund = to_refund
         action = wizard.create_returns()
         return self.env["stock.picking"].browse(action["res_id"])
+
+
+class WooCommerceSaleOrderImportCase(WooCommerceCase):
+    """Shop orders imported by the order importer, only the shop's API faked."""
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.card = cls.env["account.payment.mode"].create(
+            {
+                "name": "WooCommerce card",
+                "bank_account_link": "variable",
+                "payment_method_id": cls.env.ref(
+                    "account.account_payment_method_manual_in"
+                ).id,
+            }
+        )
+        cls.backend.payment_mode_ids = [
+            (
+                0,
+                0,
+                {"woocommerce_payment_mode": "redsys", "payment_mode_id": cls.card.id},
+            )
+        ]
+        cls.salesperson = cls.env["res.users"].create(
+            {"name": "WooCommerce salesperson", "login": "woocommerce_salesperson"}
+        )
+        cls.immediate_payment = cls.env.ref("account.account_payment_term_immediate")
+
+    def _address_block(self, first_name, last_name, **values):
+        """A checkout address block as the shop's API sends it, the given
+        ``values`` over an address in Barcelona with no company and no phone."""
+        return {
+            "first_name": first_name,
+            "last_name": last_name,
+            "company": "",
+            "address_1": "Carrer de Mallorca 1",
+            "address_2": "",
+            "city": "Barcelona",
+            "state": "B",
+            "postcode": "08001",
+            "country": "ES",
+            "phone": "",
+            **values,
+        }
+
+    def _shop_order(self, order_id, billing, shipping, meta_data=()):
+        """A paid shop order of one unit of the bound product, as the shop's
+        API sends it, with its ``billing`` and ``shipping`` blocks."""
+        return {
+            "id": order_id,
+            "customer_id": 0,
+            "status": "processing",
+            "currency": self.env.company.currency_id.name,
+            "payment_method": "redsys",
+            "customer_note": "",
+            "billing": billing,
+            "shipping": shipping,
+            "meta_data": list(meta_data),
+            "line_items": [
+                {
+                    "id": order_id * 10,
+                    "name": "WooCommerce bound product",
+                    "product_id": 1001,
+                    "variation_id": 0,
+                    "sku": "",
+                    "quantity": 1,
+                    "subtotal": "100.00",
+                    "total": "100.00",
+                    "total_tax": "0.00",
+                    "taxes": [],
+                }
+            ],
+            "shipping_lines": [],
+        }
+
+    def _import_order(self, order):
+        """Import ``order`` as its job does, the shop's API answering with it,
+        and return what the job returns."""
+        with self.backend.work_on("woocommerce.sale.order") as work:
+            adapter = work.component(usage="backend.adapter")
+        # The adapter reorganizes what it reads in place: each read gets a copy
+        with patch.object(
+            type(adapter),
+            "_exec",
+            side_effect=lambda *args, **kwargs: [copy.deepcopy(order)],
+        ):
+            return self.env["woocommerce.sale.order"].import_record(
+                self.backend, [order["id"]], fields.Datetime.now()
+            )
+
+    def _imported_order(self, order):
+        return (
+            self.env["woocommerce.sale.order"]
+            .search(
+                [
+                    ("backend_id", "=", self.backend.id),
+                    ("woocommerce_idsaleorder", "=", order["id"]),
+                ]
+            )
+            .odoo_id
+        )

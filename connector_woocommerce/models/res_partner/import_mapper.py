@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 from odoo import _
 from odoo.exceptions import ValidationError
@@ -76,5 +77,5 @@ class WooCommerceResPartnerImportMapper(Component):
         return {"email": record.get("email")}
 
     @mapping
-    def mobile(self, record):
-        return {"mobile": record.get("phone")}
+    def phone(self, record):
+        return {"phone": record.get("phone")}

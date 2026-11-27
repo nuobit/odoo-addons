@@ -21,3 +21,5 @@ from . import test_category_dependency_export
 from . import test_adapter_errors
 from . import test_related_products_export
 from . import test_resync
+from . import test_sale_order_import
+from . import test_partner_binding

@@ -37,6 +37,21 @@ class WooCommerceBackend(models.Model):
         inverse_name="backend_id",
         string="Payment Mode",
     )
+
+    def _get_payment_mode(self, payment_method):
+        """The payment mode of the shop's ``payment_method``, none for an empty
+        one. A method the backend does not map is refused."""
+        self.ensure_one()
+        # The backend maps each shop payment method once at most (SQL unique)
+        payment_mode = self.payment_mode_ids.filtered(
+            lambda x: x.woocommerce_payment_mode == payment_method
+        ).payment_mode_id
+        if not payment_mode and payment_method:
+            raise ValidationError(
+                _("Payment method '%s' is not defined on backend") % payment_method
+            )
+        return payment_mode
+
     tax_map_ids = fields.One2many(
         comodel_name="woocommerce.backend.account.tax",
         inverse_name="backend_id",
@@ -83,6 +98,19 @@ class WooCommerceBackend(models.Model):
         check_company=True,
         help="Its rules give the sale prices exported to WooCommerce, and the "
         "orders imported from WooCommerce get it as their pricelist.",
+    )
+    salesperson_id = fields.Many2one(
+        comodel_name="res.users",
+        domain=[("share", "=", False)],
+        help="The salesperson of the orders imported from WooCommerce and of "
+        "the customers the import creates.",
+    )
+    payment_term_id = fields.Many2one(
+        comodel_name="account.payment.term",
+        string="Payment Terms",
+        check_company=True,
+        help="The payment terms of the orders imported from WooCommerce and of "
+        "the customers the import creates.",
     )
     wordpress_backend_id = fields.Many2one(
         comodel_name="wordpress.backend",

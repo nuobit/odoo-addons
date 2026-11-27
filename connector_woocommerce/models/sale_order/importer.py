@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 from odoo import _
 from odoo.exceptions import ValidationError
@@ -36,61 +37,147 @@ class WooCommerceSaleOrderImporter(Component):
 
     _apply_on = "woocommerce.sale.order"
 
+    def _get_partner_parent_key(self, dir_type, value):
+        """The field and the value that find the contact of the ``dir_type``
+        block of ``value``: the name of its company, else its own."""
+        return "name", value[dir_type].get("company") or value[dir_type].get("name")
+
     def _get_partner_parent_domain(self, dir_type, value):
-        name = value[dir_type].get("company") or value[dir_type].get("name")
+        field, key = self._get_partner_parent_key(dir_type, value)
         return [
-            ("company_type", "in", (False, "company")),
             ("child_ids", "!=", False),
-            ("name", "=", name),
+            (field, "=", key),
         ]
 
     def _additional_partner_parent_fields(self, value, dir_type):
         return {}
 
-    def _add_partner_parent(self, dir_type, value):
-        # TODO: REVIEW: slug for company name?
-        domain = self._get_partner_parent_domain(dir_type, value)
-        parent = self.env["res.partner"].search(domain)
-        if not parent:
-            name = value[dir_type]["company"] or value[dir_type]["name"]
-            if not name:
-                raise ValidationError(
-                    _(
-                        "Cannot create the parent partner for %s: %s because neither "
-                        "company nor name is set."
-                    )
-                    % (dir_type, value)
-                )
-            parent = self.env["res.partner"].create(
-                {
-                    "name": name,
-                    "company_type": "company",
-                    **self._additional_partner_parent_fields(value, dir_type),
-                }
-            )
-        elif len(parent) > 1:
+    def _search_partner_parent(self, dir_type, value):
+        """The contact the ``dir_type`` block of ``value`` belongs to, or none.
+        More than one is refused, each of them listed."""
+        parents = self.env["res.partner"].search(
+            self._get_partner_parent_domain(dir_type, value)
+        )
+        if len(parents) > 1:
+            field, key = self._get_partner_parent_key(dir_type, value)
             raise ValidationError(
-                _("There are more than one parent partner with the same name %s")
-                % value[dir_type]["name"]
+                _(
+                    "%(count)s contacts have the %(field)s %(value)s, which must "
+                    "belong to one contact only:"
+                )
+                % {
+                    "count": len(parents),
+                    "field": parents.fields_get([field], ["string"])[field]["string"],
+                    "value": key,
+                }
+                + "".join(
+                    "\n- %s %s" % (parent.id, parent.display_name)
+                    for parent in parents.sorted("id")
+                )
             )
-        value[dir_type]["parent"] = parent.id
+        return parents
+
+    def _get_partner_parent_sales_values(self, value):
+        """The sales values of a new customer of the order ``value``: the
+        backend's salesperson, payment terms and discount pricelist, and the
+        order's payment mode. A value the backend or the order does not have is
+        left out, so the customer keeps the default Odoo gives it."""
+        sales_values = {
+            "user_id": self.backend_record.salesperson_id,
+            "property_payment_term_id": self.backend_record.payment_term_id,
+            "property_product_pricelist": self.backend_record.discount_pricelist_id,
+            "customer_payment_mode_id": self.backend_record._get_payment_mode(
+                value["payment_method"]
+            ),
+        }
+        return {field: record.id for field, record in sales_values.items() if record}
+
+    def _get_partner_parent_values(self, dir_type, value):
+        """The values of a new contact for the ``dir_type`` block of ``value``:
+        named after the block's company, else its buyer, with the address,
+        the phone and the e-mail its own address gets from the block, and the
+        sales values of a new customer."""
+        # TODO: REVIEW: slug for company name?
+        name = value[dir_type]["company"] or value[dir_type]["name"]
+        if not name:
+            raise ValidationError(
+                _(
+                    "Cannot create the parent partner for %s: %s because neither "
+                    "company nor name is set."
+                )
+                % (dir_type, value)
+            )
+        address_values = (
+            self.component(usage="import.mapper", model_name="woocommerce.res.partner")
+            .map_record(value[dir_type])
+            .values(for_create=True)
+        )
+        # The mapper leaves out a state or a country Odoo does not have
+        customer_fields = self.env["res.partner"]._address_fields() + [
+            "phone",
+            "email",
+        ]
+        return {
+            "name": name,
+            "company_type": "company",
+            **{
+                field: address_values[field]
+                for field in customer_fields
+                if field in address_values
+            },
+            **self._get_partner_parent_sales_values(value),
+            **self._additional_partner_parent_fields(value, dir_type),
+        }
+
+    def _create_partner_parent(self, dir_type, value):
+        """Create the contact the ``dir_type`` block of ``value`` belongs to,
+        with the fiscal position Odoo selects for it."""
+        customer = self.env["res.partner"].create(
+            self._get_partner_parent_values(dir_type, value)
+        )
+        # Odoo selects a fiscal position for each document, never for a
+        # contact: the customer gets the one Odoo selects for its own address
+        # and VAT number, which it now has
+        customer.property_account_position_id = self.env[
+            "account.fiscal.position"
+        ].get_fiscal_position(customer.id)
+        return customer
+
+    def _get_order_customer(self, external_data):
+        """The order's customer. A billing block already imported gives it
+        through its binding, as the order's mapper does: the parent of its
+        address, or the address itself when it has none. Any other block is
+        searched for, and gets a new customer when nothing is found."""
+        binder = self.binder_for("woocommerce.res.partner")
+        # The binding's unique key binds a block to one address at most
+        address = binder.to_internal(
+            binder.dict2id(external_data["billing"], in_field=False), unwrap=True
+        )
+        if address:
+            customer = address.parent_id or address
+        else:
+            customer = self._search_partner_parent(
+                "billing", external_data
+            ) or self._create_partner_parent("billing", external_data)
+        return customer
 
     def _import_dependencies(self, external_data, sync_date):
-        # Customer
+        # Customer: both addresses hang from it. A shop order always has a
+        # billing block; the adapter sets the shipping block to None when the
+        # order has none.
         binder = self.binder_for("woocommerce.res.partner")
-        billing = external_data.get("billing")
-        if billing:
-            # TODO: dELETE only next line
-            self._add_partner_parent("billing", external_data)
-            self._import_dependency(
-                binder.dict2id(billing, in_field=False),
-                "woocommerce.res.partner",
-                sync_date,
-                external_data=billing,
-            )
-        shipping = external_data.get("shipping")
-        if shipping:
-            self._add_partner_parent("shipping", external_data)
+        customer = self._get_order_customer(external_data)
+        billing = external_data["billing"]
+        billing["parent"] = customer.id
+        self._import_dependency(
+            binder.dict2id(billing, in_field=False),
+            "woocommerce.res.partner",
+            sync_date,
+            external_data=billing,
+        )
+        shipping = external_data["shipping"]
+        if shipping is not None:
+            shipping["parent"] = customer.id
             self._import_dependency(
                 binder.dict2id(shipping, in_field=False),
                 "woocommerce.res.partner",

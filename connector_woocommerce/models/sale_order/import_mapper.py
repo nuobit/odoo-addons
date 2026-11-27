@@ -66,29 +66,42 @@ class WooCommerceSaleOrderImportMapper(Component):
                 "partner_invoice_id": partner.id,
             }
 
+    def _get_shipping_partner(self, record):
+        binder = self.binder_for("woocommerce.res.partner")
+        external_id = binder.dict2id(record["shipping"], in_field=False)
+        partner = binder.to_internal(external_id, unwrap=True)
+        assert partner, (
+            "partner_shipping_id %s should have been imported in "
+            "SaleOrderImporter._import_dependencies" % external_id
+        )
+        return partner
+
     @mapping
     def shipping(self, record):
         if record["shipping"]:
-            binder = self.binder_for("woocommerce.res.partner")
-            external_id = binder.dict2id(record["shipping"], in_field=False)
-            partner = binder.to_internal(external_id, unwrap=True)
-            assert partner, (
-                "partner_shipping_id %s should have been imported in "
-                "SaleOrderImporter._import_dependencies" % external_id
+            return {"partner_shipping_id": self._get_shipping_partner(record).id}
+
+    @only_create
+    @mapping
+    def fiscal_position(self, record):
+        # Odoo selects it when a user sets the order's partners, which a
+        # creation by code does not do: the import asks Odoo's own selection
+        # for the order's customer and its delivery address, or the customer
+        # alone when the order has none
+        if record["billing"]:
+            invoice_address = self._get_billing_partner(record)
+            delivery_id = (
+                self._get_shipping_partner(record).id if record["shipping"] else None
             )
-            return {"partner_shipping_id": partner.id}
+            fiscal_position = self.env["account.fiscal.position"].get_fiscal_position(
+                (invoice_address.parent_id or invoice_address).id, delivery_id
+            )
+            return {"fiscal_position_id": fiscal_position.id}
 
     @mapping
     def payment_method(self, record):
-        payment_mode = self.backend_record.payment_mode_ids.filtered(
-            lambda x: record["payment_method"] == x.woocommerce_payment_mode
-        )
-        if not payment_mode and record["payment_method"]:
-            raise ValidationError(
-                _("Payment method '%s' is not defined on backend")
-                % record.get("payment_method")
-            )
-        return {"payment_mode_id": payment_mode.payment_mode_id.id}
+        payment_mode = self.backend_record._get_payment_mode(record["payment_method"])
+        return {"payment_mode_id": payment_mode.id}
 
     def _get_currency(self, record):
         currency = self.env["res.currency"].search([("name", "=", record["currency"])])
@@ -140,6 +153,21 @@ class WooCommerceSaleOrderImportMapper(Component):
                 }
             )
         return {"pricelist_id": pricelist.id}
+
+    # The backend's salesperson and payment terms are Odoo's choice, not shop
+    # data, so an update leaves them alone. Without them on the backend, the
+    # order keeps the ones Odoo gives it.
+    @only_create
+    @mapping
+    def salesperson(self, record):
+        salesperson = self.backend_record.salesperson_id
+        return {"user_id": salesperson.id} if salesperson else {}
+
+    @only_create
+    @mapping
+    def payment_term(self, record):
+        payment_term = self.backend_record.payment_term_id
+        return {"payment_term_id": payment_term.id} if payment_term else {}
 
     @mapping
     def woocommerce_order_id(self, record):

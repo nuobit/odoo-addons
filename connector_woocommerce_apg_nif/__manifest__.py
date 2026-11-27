@@ -3,7 +3,7 @@
 
 {
     "name": "Connector WooCommerce APG NIF",
-    "version": "14.0.0.1.0",
+    "version": "14.0.0.2.0",
     "author": "NuoBiT Solutions, S.L.",
     "license": "AGPL-3",
     "category": "Connector",
@@ -14,6 +14,7 @@
         ],
     },
     "depends": [
+        "base_vat",
         "connector_woocommerce",
     ],
     "installable": True,

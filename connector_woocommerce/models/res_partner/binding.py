@@ -1,7 +1,8 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class WooCommerceResPartner(models.Model):
@@ -40,3 +41,13 @@ class WooCommerceResPartner(models.Model):
             "A binding already exists with the same hash) ID.",
         ),
     ]
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        # Odoo gives a parent without an address the one of its first child.
+        # The import gives a new customer its address when it creates it, and
+        # leaves the one of a customer found in Odoo as it is.
+        return super(
+            WooCommerceResPartner,
+            self.with_context(woocommerce_skip_first_contact_address=True),
+        ).create(vals_list)
