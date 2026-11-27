@@ -99,6 +99,19 @@ class WooCommerceBackend(models.Model):
         help="Its rules give the sale prices exported to WooCommerce, and the "
         "orders imported from WooCommerce get it as their pricelist.",
     )
+    salesperson_id = fields.Many2one(
+        comodel_name="res.users",
+        domain=[("share", "=", False)],
+        help="The salesperson of the orders imported from WooCommerce and of "
+        "the customers the import creates.",
+    )
+    payment_term_id = fields.Many2one(
+        comodel_name="account.payment.term",
+        string="Payment Terms",
+        check_company=True,
+        help="The payment terms of the orders imported from WooCommerce and of "
+        "the customers the import creates.",
+    )
     wordpress_backend_id = fields.Many2one(
         comodel_name="wordpress.backend",
     )

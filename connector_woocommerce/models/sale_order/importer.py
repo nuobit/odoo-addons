@@ -79,10 +79,12 @@ class WooCommerceSaleOrderImporter(Component):
 
     def _get_partner_parent_sales_values(self, value):
         """The sales values of a new customer of the order ``value``: the
-        backend's discount pricelist and the order's payment mode. A value the
-        backend or the order does not have is left out, so the customer keeps
-        the default Odoo gives it."""
+        backend's salesperson, payment terms and discount pricelist, and the
+        order's payment mode. A value the backend or the order does not have is
+        left out, so the customer keeps the default Odoo gives it."""
         sales_values = {
+            "user_id": self.backend_record.salesperson_id,
+            "property_payment_term_id": self.backend_record.payment_term_id,
             "property_product_pricelist": self.backend_record.discount_pricelist_id,
             "customer_payment_mode_id": self.backend_record._get_payment_mode(
                 value["payment_method"]

@@ -289,6 +289,8 @@
                                         widget="many2many_tags"
                                     />
                                     <field name="discount_pricelist_id" />
+                                    <field name="salesperson_id" />
+                                    <field name="payment_term_id" />
                                     <field name="client_order_ref_prefix" />
                                     <field name="language_id" />
                                     <field name="use_main_product_image" />

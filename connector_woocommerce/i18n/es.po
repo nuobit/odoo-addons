@@ -3134,9 +3134,10 @@ msgid "Payment Ref."
 msgstr ""
 
 #. module: connector_woocommerce
+#: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_backend__payment_term_id
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_sale_order__payment_term_id
 msgid "Payment Terms"
-msgstr ""
+msgstr "Plazos de pago"
 
 #. module: connector_woocommerce
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_res_partner__payment_token_ids
@@ -3887,11 +3888,12 @@ msgid "Sales Warnings"
 msgstr ""
 
 #. module: connector_woocommerce
+#: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_backend__salesperson_id
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_res_partner__user_id
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_sale_order__user_id
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_sale_order_line__salesman_id
 msgid "Salesperson"
-msgstr ""
+msgstr "Comercial"
 
 #. module: connector_woocommerce
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_res_partner__phone_sanitized
@@ -4543,6 +4545,15 @@ msgid "The payment communication of this sale order."
 msgstr ""
 
 #. module: connector_woocommerce
+#: model:ir.model.fields,help:connector_woocommerce.field_woocommerce_backend__payment_term_id
+msgid ""
+"The payment terms of the orders imported from WooCommerce and of the "
+"customers the import creates."
+msgstr ""
+"Los plazos de pago de los pedidos importados de WooCommerce y de los "
+"clientes que crea la importación."
+
+#. module: connector_woocommerce
 #: code:addons/connector_woocommerce/models/sale_order/importer.py:0
 #: code:addons/connector_woocommerce/models/sale_order/importer.py:0
 #, python-format
@@ -4573,6 +4584,15 @@ msgid ""
 "The sale price is managed from the product template. Click on the 'Configure"
 " Variants' button to set the extra attribute prices."
 msgstr ""
+
+#. module: connector_woocommerce
+#: model:ir.model.fields,help:connector_woocommerce.field_woocommerce_backend__salesperson_id
+msgid ""
+"The salesperson of the orders imported from WooCommerce and of the customers"
+" the import creates."
+msgstr ""
+"El comercial de los pedidos importados de WooCommerce y de los clientes que "
+"crea la importación."
 
 #. module: connector_woocommerce
 #: model:ir.model.fields,help:connector_woocommerce.field_woocommerce_res_partner__property_stock_customer

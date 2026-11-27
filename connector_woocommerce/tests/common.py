@@ -380,6 +380,10 @@ class WooCommerceSaleOrderImportCase(WooCommerceCase):
                 {"woocommerce_payment_mode": "redsys", "payment_mode_id": cls.card.id},
             )
         ]
+        cls.salesperson = cls.env["res.users"].create(
+            {"name": "WooCommerce salesperson", "login": "woocommerce_salesperson"}
+        )
+        cls.immediate_payment = cls.env.ref("account.account_payment_term_immediate")
 
     def _address_block(self, first_name, last_name, **values):
         """A checkout address block as the shop's API sends it, the given

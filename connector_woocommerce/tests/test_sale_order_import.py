@@ -13,6 +13,8 @@ class TestSaleOrderImport(WooCommerceSaleOrderImportCase):
         return self.env["res.partner"].with_context(active_test=False).search([])
 
     def test_new_buyer_gets_a_customer_with_its_two_addresses(self):
+        self.backend.salesperson_id = self.salesperson
+        self.backend.payment_term_id = self.immediate_payment
         order = self._shop_order(
             30001,
             billing=self._address_block(
@@ -44,6 +46,8 @@ class TestSaleOrderImport(WooCommerceSaleOrderImportCase):
         self.assertEqual(customer.email, "buyer@example.com")
         self.assertEqual(customer.property_product_pricelist, self.discount_pricelist)
         self.assertEqual(customer.customer_payment_mode_id, self.card)
+        self.assertEqual(customer.user_id, self.salesperson)
+        self.assertEqual(customer.property_payment_term_id, self.immediate_payment)
         invoice_address = sale.partner_invoice_id
         self.assertEqual(invoice_address.parent_id, customer)
         self.assertEqual(invoice_address.type, "invoice")
@@ -60,8 +64,29 @@ class TestSaleOrderImport(WooCommerceSaleOrderImportCase):
         self.assertEqual(customer.child_ids, invoice_address | delivery_address)
         self.assertEqual(sale.payment_mode_id, self.card)
         self.assertEqual(sale.pricelist_id, self.discount_pricelist)
+        self.assertEqual(sale.user_id, self.salesperson)
+        self.assertEqual(sale.payment_term_id, self.immediate_payment)
         self.assertEqual(sale.client_order_ref, "WC-30001")
         self.assertEqual(sale.state, "sale")
+
+    def test_backend_without_salesperson_and_payment_terms_leaves_odoo_s(self):
+        thirty_days = self.env.ref("account.account_payment_term_30days")
+        self.env["ir.property"]._set_default(
+            "property_payment_term_id", "res.partner", thirty_days, self.env.company
+        )
+        order = self._shop_order(
+            30001,
+            billing=self._address_block(
+                "WooCommerce", "buyer", email="buyer@example.com"
+            ),
+            shipping=self._address_block("WooCommerce", "buyer"),
+        )
+        self._import_order(order)
+        sale = self._imported_order(order)
+        self.assertEqual(sale.user_id, self.env.user)
+        self.assertFalse(sale.payment_term_id)
+        self.assertFalse(sale.partner_id.user_id)
+        self.assertEqual(sale.partner_id.property_payment_term_id, thirty_days)
 
     def test_same_blocks_again_reuse_their_contacts(self):
         billing = self._address_block("WooCommerce", "buyer", email="buyer@example.com")

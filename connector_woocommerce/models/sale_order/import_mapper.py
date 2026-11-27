@@ -134,6 +134,21 @@ class WooCommerceSaleOrderImportMapper(Component):
             )
         return {"pricelist_id": pricelist.id}
 
+    # The backend's salesperson and payment terms are Odoo's choice, not shop
+    # data, so an update leaves them alone. Without them on the backend, the
+    # order keeps the ones Odoo gives it.
+    @only_create
+    @mapping
+    def salesperson(self, record):
+        salesperson = self.backend_record.salesperson_id
+        return {"user_id": salesperson.id} if salesperson else {}
+
+    @only_create
+    @mapping
+    def payment_term(self, record):
+        payment_term = self.backend_record.payment_term_id
+        return {"payment_term_id": payment_term.id} if payment_term else {}
+
     @mapping
     def woocommerce_order_id(self, record):
         client_order_ref = (
