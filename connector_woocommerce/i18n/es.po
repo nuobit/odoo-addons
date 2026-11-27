@@ -653,7 +653,7 @@ msgstr ""
 #. module: connector_woocommerce
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_sale_order_line__product_uom_category_id
 msgid "Category"
-msgstr "Categoria"
+msgstr "Categoría"
 
 #. module: connector_woocommerce
 #: model:ir.model.fields,field_description:connector_woocommerce.field_woocommerce_product_public_category__website_description

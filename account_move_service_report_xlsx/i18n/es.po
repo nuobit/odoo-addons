@@ -252,7 +252,7 @@ msgstr "Origen"
 #: code:addons/account_move_service_report_xlsx/report/report_sale.py:0
 #, python-format
 msgid "Patient (name and surname)"
-msgstr "Pacient (nom i cognoms)"
+msgstr "Paciente (nombre y apellidos)"
 
 #. module: account_move_service_report_xlsx
 #: model:ir.model.fields,field_description:account_move_service_report_xlsx.field_res_partner_service_report_config_type__product_ids
