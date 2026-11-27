@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="payslip_process_view_form_inherit_connector_sage" model="ir.ui.view">
+        <field name="name">payslip.process.form.inherit.connector.sage</field>
+        <field name="model">payroll.sage.payslip.process</field>
+        <field name="inherit_id" ref="payroll_sage.payslip_process_view_form" />
+        <field
+            name="groups_id"
+            eval="[(4, ref('connector.group_connector_manager'))]"
+        />
+        <field name="arch" type="xml">
+            <xpath expr="//form/group" position="after">
+                <notebook>
+                    <page string="Connectors">
+                        <group string="Sage Bindings">
+                            <field name="sage_bind_ids" nolabel="1" />
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sage_payslip_process_view_form" model="ir.ui.view">
+        <field name="name">sage.payslip.process.form</field>
+        <field name="model">sage.payroll.sage.payslip.process</field>
+        <field name="arch" type="xml">
+            <form string="Sage Payslip process">
+                <group>
+                    <field name="backend_id" />
+                    <field name="odoo_id" readonly="True" />
+                    <field name="sage_codigo_empresa" readonly="True" />
+                    <field name="sage_tipo_proceso" readonly="True" />
+                    <field name="sync_date" readonly="True" />
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="sage_payslip_process_view_tree" model="ir.ui.view">
+        <field name="name">sage.payslip.process.tree</field>
+        <field name="model">sage.payroll.sage.payslip.process</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="backend_id" />
+                <field name="odoo_id" />
+                <field name="sage_codigo_empresa" readonly="True" />
+                <field name="sage_tipo_proceso" readonly="True" />
+                <field name="sync_date" />
+                <button
+                    name="resync"
+                    type="object"
+                    string="Resynchronize"
+                    icon="fa-refresh fa-lg"
+                />
+            </tree>
+        </field>
+    </record>
+
+    <record id="sage_payslip_process_action" model="ir.actions.act_window">
+        <field name="name">Payslip process</field>
+        <field name="res_model">sage.payroll.sage.payslip.process</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
